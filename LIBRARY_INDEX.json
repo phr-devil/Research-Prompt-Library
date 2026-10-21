@@ -1,0 +1,207 @@
+[
+  {
+    "id": "S01",
+    "name": "全球范围系统检索",
+    "group": "01_信息检索",
+    "file": "01_信息检索/S01_全球范围系统检索.md",
+    "source_urls": [
+      "https://github.com/langgptai/wonderful-prompts",
+      "https://github.com/langgptai/awesome-deep-research-prompts",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "S02",
+    "name": "官方网站与资格核实",
+    "group": "01_信息检索",
+    "file": "01_信息检索/S02_官方网站与资格核实.md",
+    "source_urls": [
+      "https://github.com/langgptai/wonderful-prompts",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "R01",
+    "name": "科研选题与创新性探索",
+    "group": "02_科研研究设计",
+    "file": "02_科研研究设计/R01_科研选题与创新性探索.md",
+    "source_urls": [
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
+      "https://github.com/bohyy/academic-ai-prompt",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "R02",
+    "name": "实验与算法方案设计及结果审计",
+    "group": "02_科研研究设计",
+    "file": "02_科研研究设计/R02_实验与算法方案设计及结果审计.md",
+    "source_urls": [
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
+      "https://github.com/bohyy/academic-ai-prompt",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md",
+      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "P01",
+    "name": "论文结构、论证逻辑与图表规划",
+    "group": "03_SCI论文",
+    "file": "03_SCI论文/P01_论文结构、论证逻辑与图表规划.md",
+    "source_urls": [
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_academic_paper/system.md",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
+      "https://github.com/bohyy/academic-ai-prompt"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "P02",
+    "name": "SCI 论文章节正文撰写",
+    "group": "03_SCI论文",
+    "file": "03_SCI论文/P02_SCI 论文章节正文撰写.md",
+    "source_urls": [
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_academic_paper/system.md",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
+      "https://github.com/bohyy/academic-ai-prompt",
+      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "P03",
+    "name": "SCI 论文保守型语言润色与审稿",
+    "group": "03_SCI论文",
+    "file": "03_SCI论文/P03_SCI 论文保守型语言润色与审稿.md",
+    "source_urls": [
+      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "G01",
+    "name": "资助方向适配与基金课题规划",
+    "group": "04_日本科研基金",
+    "file": "04_日本科研基金/G01_资助方向适配与基金课题规划.md",
+    "source_urls": [
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
+      "https://github.com/bohyy/academic-ai-prompt",
+      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh"
+    ],
+    "source_status": "跨场景改编；无高星日本基金专用 Prompt"
+  },
+  {
+    "id": "G02",
+    "name": "科研基金申请书逐栏撰写",
+    "group": "04_日本科研基金",
+    "file": "04_日本科研基金/G02_科研基金申请书逐栏撰写.md",
+    "source_urls": [
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_academic_paper/system.md",
+      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh"
+    ],
+    "source_status": "跨场景改编；无高星日本基金专用 Prompt"
+  },
+  {
+    "id": "G03",
+    "name": "基金申请书全面审查与原文替换",
+    "group": "04_日本科研基金",
+    "file": "04_日本科研基金/G03_基金申请书全面审查与原文替换.md",
+    "source_urls": [
+      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing"
+    ],
+    "source_status": "跨场景改编；无高星日本基金专用 Prompt"
+  },
+  {
+    "id": "L01",
+    "name": "中英日专业双向翻译",
+    "group": "05_翻译与表达",
+    "file": "05_翻译与表达/L01_中英日专业双向翻译.md",
+    "source_urls": [
+      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88",
+      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh",
+      "https://github.com/f/prompts.chat/blob/main/PROMPTS.md"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "L02",
+    "name": "自然表达与去机械化AI腔",
+    "group": "05_翻译与表达",
+    "file": "05_翻译与表达/L02_自然表达与去机械化AI腔.md",
+    "source_urls": [
+      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md",
+      "https://github.com/haidrrrry/humanize-ai-writing/blob/main/PROMPT.md"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "M01",
+    "name": "科研长对话完整归档与跨对话接力",
+    "group": "06_对话与文件",
+    "file": "06_对话与文件/M01_科研长对话完整归档与跨对话接力.md",
+    "source_urls": [
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/summarize/system.md",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md",
+      "https://github.com/f/prompts.chat/blob/main/PROMPTS.md"
+    ],
+    "source_status": "方法融合自摘要 Prompt；科研接力结构为针对日常工作新编"
+  },
+  {
+    "id": "M02",
+    "name": "多文件事实、逻辑和语言交叉审查",
+    "group": "06_对话与文件",
+    "file": "06_对话与文件/M02_多文件事实、逻辑和语言交叉审查.md",
+    "source_urls": [
+      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "X01",
+    "name": "Codex 科研代码结果审计与下一步指令",
+    "group": "07_专项",
+    "file": "07_专项/X01_Codex 科研代码结果审计与下一步指令.md",
+    "source_urls": [
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/summarize/system.md"
+    ],
+    "source_status": "基于分析与总结 Prompt 结构自行适配；并非 GitHub 现成 Codex Prompt"
+  },
+  {
+    "id": "X02",
+    "name": "日英双语正式邮件撰写与回复",
+    "group": "07_专项",
+    "file": "07_专项/X02_日英双语正式邮件撰写与回复.md",
+    "source_urls": [
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_formal_email/system.md",
+      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh",
+      "https://github.com/f/prompts.chat/blob/main/PROMPTS.md"
+    ],
+    "source_status": "融合改写"
+  },
+  {
+    "id": "X03",
+    "name": "日本作文比赛策划与日语自然化写作",
+    "group": "07_专项",
+    "file": "07_专项/X03_日本作文比赛策划与日语自然化写作.md",
+    "source_urls": [
+      "https://github.com/f/prompts.chat/blob/main/PROMPTS.md",
+      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md"
+    ],
+    "source_status": "借鉴写作角色和润色 Prompt；比赛评审流程为自行适配"
+  }
+]
