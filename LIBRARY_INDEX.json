@@ -5,11 +5,10 @@
     "group": "01_信息检索",
     "file": "01_信息检索/S01_全球范围系统检索.md",
     "source_urls": [
-      "https://github.com/langgptai/wonderful-prompts",
-      "https://github.com/langgptai/awesome-deep-research-prompts",
-      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing"
+      "https://github.com/langgptai/wonderful-prompts#ai-搜索提示词",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#literature-review"
     ],
-    "source_status": "融合改写"
+    "source_status": "借鉴基于来源回答、缺少证据就说明的写法；任务模式、跨国资格审查及去重流程为本库适配内容。"
   },
   {
     "id": "S02",
@@ -41,12 +40,11 @@
     "group": "02_科研研究设计",
     "file": "02_科研研究设计/R02_实验与算法方案设计及结果审计.md",
     "source_urls": [
-      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
-      "https://github.com/bohyy/academic-ai-prompt",
       "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md",
-      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88"
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#methodology",
+      "https://github.com/Leey21/awesome-ai-research-writing#实验分析"
     ],
-    "source_status": "融合改写"
+    "source_status": "借鉴论文严谨性审核、实验方案与负结果实述方法；GO/HOLD/STOP、失败归因和重构门槛为本库原创整合。"
   },
   {
     "id": "P01",
@@ -79,11 +77,12 @@
     "group": "03_SCI论文",
     "file": "03_SCI论文/P03_SCI 论文保守型语言润色与审稿.md",
     "source_urls": [
-      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88",
-      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md",
-      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing"
+      "https://github.com/Leey21/awesome-ai-research-writing#表达润色英文论文",
+      "https://github.com/Leey21/awesome-ai-research-writing#逻辑检查",
+      "https://github.com/Leey21/awesome-ai-research-writing#论文整体以-reviewer-视角进行审视",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md"
     ],
-    "source_status": "融合改写"
+    "source_status": "借鉴原仓库对润色、逻辑审查、审稿分别设定任务和输出的组织方式；三个模式合并为一个可复制模板。"
   },
   {
     "id": "G01",
@@ -103,11 +102,11 @@
     "group": "04_日本科研基金",
     "file": "04_日本科研基金/G02_科研基金申请书逐栏撰写.md",
     "source_urls": [
-      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
-      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_academic_paper/system.md",
-      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh"
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#planpresentation",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#methodology",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_academic_paper/system.md"
     ],
-    "source_status": "跨场景改编；无高星日本基金专用 Prompt"
+    "source_status": "没有核实到高星日本研究助成的逐栏专用 Prompt。本文件借鉴通用研究计划、方法写作的文字指令，再独立加入表格、官方资格、预算和日语约束。"
   },
   {
     "id": "G03",
@@ -152,10 +151,9 @@
     "file": "06_对话与文件/M01_科研长对话完整归档与跨对话接力.md",
     "source_urls": [
       "https://github.com/danielmiessler/fabric/blob/main/data/patterns/summarize/system.md",
-      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md",
-      "https://github.com/f/prompts.chat/blob/main/PROMPTS.md"
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md"
     ],
-    "source_status": "方法融合自摘要 Prompt；科研接力结构为针对日常工作新编"
+    "source_status": "借鉴 Markdown 摘要与证据质量整理的输出结构；双层科研接力、状态与来源、失败路线归档为本库自主设计。"
   },
   {
     "id": "M02",

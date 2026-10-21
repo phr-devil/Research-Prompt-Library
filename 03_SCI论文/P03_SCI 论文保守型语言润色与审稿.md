@@ -1,39 +1,45 @@
 # P03 · SCI 论文保守型语言润色与审稿
 
 > **用途**：润色英语/中文论文，兼顾逻辑和审稿人视角  
-> **版本**：v1.1（2026-10-21，润色与结构优化）  
+> **版本**：v1.2（2026-10-21，重点任务重构）  
 > **来源类型**：融合改写；以下正文为重新组织的原创适配版，不是 GitHub 原文的逐字复制。
 
 ## 使用前填写
 
-需要润色的原文、语言与期刊、轻度/中度编辑强度、Word/LaTeX 格式
+模式（语言润色/逻辑检查/模拟审稿）、原文与可访问范围、语言、学科、目标期刊、Word/LaTeX 格式
 
 ## 可直接复制的 Prompt
 
 ```text
-请作为【领域】的学术语言编辑，对【语言】原文进行【轻度校对 / 中度润色】，保留作者原意、科学声明力度和术语。
+你是一位克制的【学科】学术编辑。请仅执行所选模式：【语言润色 / 逻辑检查 / 模拟审稿】。材料：【论文段落/全文/图表】；语言：【】；目标期刊及已知格式：【】；文件格式：【Word 纯文本 / LaTeX】。
 
-检查顺序：
-1. 科学层面：检查数值、单位、变量、统计定义、图表和结论是否有可见矛盾；仅凭当前段落无法证明的问题只标『需作者核查』，不杜撰修正数据。
-2. 逻辑：指代不明、因果过度、主张无证据、前后矛盾、时态与冠词、连接顺序。
-3. 语言：用自然简洁的学术英语/中文替换翻译腔、重复套话和过度修饰。准确保留 may / suggest / associated with 等限定表达。
-4. 格式：原文为 LaTeX 时保留所有命令、公式、引用键与特殊字符；原文为 Word 时输出方便粘贴的纯文本，不额外插入 Markdown。
+共同底线：不能添加新文献、实验结果、性能数字或因果关系；不得改变单位、公式、变量、引用键、图号及结论强度；无法从提供材料证实的事实，标记「待核实」。只修改真正影响准确性或可读性的地方，原文已经妥当则保留。
 
-输出：
-Part A：完整修改稿（逐段对应原文）。
-Part B：最多列 8 项必要修改『原文片段 | 替换 | 理由（语言/逻辑/科学）』；不用为了凑数修改正确句子。
-Part C：不能通过语言润色解决的实质问题（如无则写无）。
+模式 A｜语言润色（默认）：
+- 改正语法、用词、歧义、冗余、句间衔接与翻译腔；保持自然、简洁的学术语体。
+- 输出 ①可直接替换的完整正文；②最多 5 项重要修改对照「原文→建议→理由」。没有必要修改时直接保留全文。
+- 不额外生成中文翻译或审稿报告，除非作者要求。
 
-如果句子本来已清楚准确，不要为了显得做了工作而强行改写。
+模式 B｜逻辑检查：
+- 只检查前后论点冲突、术语漂移、主张与已有结果不匹配、因果过度和明显统计表述问题。
+- 按「严重/重要」排序，并引用可定位的原句及修改建议；不为风格偏好重写全文。没有发现实质问题时写「在已提供范围内未发现明显逻辑问题」。
 
-语言润色不等于完整同行评审或实验事实验证。将可直接投稿的正文与疑问说明分开，正文内不混入解释。
+模式 C｜模拟审稿：
+- 仅在提供较完整稿件和实验材料时评估贡献、与相关工作的差别、基线公平性、研究设计、消融、统计可靠性和局限。
+- 输出「成立的贡献 → 主要实质问题 → 修复优先级与所需证据」，区分科学缺陷与表达缺陷；不伪造真实审稿决定或具体期刊录用概率。
+- 材料不足时明确限制审稿范围，不把空缺直接判为论文错误。
+
+LaTeX 模式必须原样保留命令、数学与引用键；Word 模式维持段落结构。输出首先满足所选模式，不附无关套话。
 ```
 
 ## 原始 GitHub Prompt 来源
 
-- [Awesome AI Research Writing / 可复制 Prompt 正文](https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88)
-- [Fabric / improve_writing](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md)
-- [ChatGPT Prompts for Academic Writing / brainstorming + writing + plan](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing)
+- [Awesome AI Research Writing / 表达润色（英文论文）](https://github.com/Leey21/awesome-ai-research-writing#表达润色英文论文)
+- [Awesome AI Research Writing / 逻辑检查](https://github.com/Leey21/awesome-ai-research-writing#逻辑检查)
+- [Awesome AI Research Writing / Reviewer 视角审视](https://github.com/Leey21/awesome-ai-research-writing#论文整体以-reviewer-视角进行审视)
+- [Fabric / improve_writing（保持原意，直接输出精炼文字）](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md)
+
+**改写说明**：借鉴原仓库对润色、逻辑审查、审稿分别设定任务和输出的组织方式；三个模式合并为一个可复制模板。
 
 ## 使用提醒
 

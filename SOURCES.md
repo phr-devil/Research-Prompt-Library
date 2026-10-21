@@ -1,4 +1,4 @@
-# GitHub 来源、热度与改编关系（v1.1）
+# GitHub 来源、热度与改编关系（v1.2）
 
 > 检查日期：2026-10-21。Stars 为既有整理时的近似快照，本次润色未逐项重新核实，会随时间变化。热度只用于筛选，不作为提示词实际效果的证据。下面列的仓库中，仅引用公开的**文字 Prompt**。
 
@@ -29,3 +29,47 @@
 ## 本次修订说明
 
 v1.1 仅润色现有 Prompt 的任务定义、输出要求和证据边界，没有新增来源或复刻第三方全文。各文件的 GitHub 链接表示参考过的**公开文字 Prompt 或组织方法**，不代表对方仓库具有完全相同的任务模板。
+
+## v1.2 具体来源与改写关系
+
+v1.2 只对现有 S01、R02、P03、G02、M01 做重点修改。阅读了 GitHub 仓库中的原始文字 Prompt，重点提取输出结构、领域审核和事实约束；本库的中文正文独立改写，并不复制原文或沿用其未经验证的效果宣传。
+
+### S01
+
+- [Wonderful Prompts / AI 搜索提示词（RAG 证据对应与缺失声明）](https://github.com/langgptai/wonderful-prompts#ai-搜索提示词)
+- [Academic Writing Prompts / Literature Review（核查参考文献存在）](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#literature-review)
+
+改写方式：借鉴基于来源回答、缺少证据就说明的写法；任务模式、跨国资格审查及去重流程为本库适配内容。
+
+### R02
+
+- [Fabric / analyze_paper（研究设计、样本量、置信区间、复现性审查）](https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md)
+- [Academic Writing Prompts / Methodology 与 Experiments](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#methodology)
+- [Awesome AI Research Writing / 实验分析（负结果不强行写成提升）](https://github.com/Leey21/awesome-ai-research-writing#实验分析)
+
+改写方式：借鉴论文严谨性审核、实验方案与负结果实述方法；GO/HOLD/STOP、失败归因和重构门槛为本库原创整合。
+
+### P03
+
+- [Awesome AI Research Writing / 表达润色（英文论文）](https://github.com/Leey21/awesome-ai-research-writing#表达润色英文论文)
+- [Awesome AI Research Writing / 逻辑检查](https://github.com/Leey21/awesome-ai-research-writing#逻辑检查)
+- [Awesome AI Research Writing / Reviewer 视角审视](https://github.com/Leey21/awesome-ai-research-writing#论文整体以-reviewer-视角进行审视)
+- [Fabric / improve_writing（保持原意，直接输出精炼文字）](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md)
+
+改写方式：借鉴原仓库对润色、逻辑审查、审稿分别设定任务和输出的组织方式；三个模式合并为一个可复制模板。
+
+### G02
+
+- [Academic Writing Prompts / PLAN/PRESENTATION（研究计划与进度）](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#planpresentation)
+- [Academic Writing Prompts / Methodology（目标、方法与局限）](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#methodology)
+- [Fabric / create_academic_paper（仅借鉴清晰学术组织，不沿用论文排版）](https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_academic_paper/system.md)
+
+改写方式：没有核实到高星日本研究助成的逐栏专用 Prompt。本文件借鉴通用研究计划、方法写作的文字指令，再独立加入表格、官方资格、预算和日语约束。
+
+### M01
+
+- [Fabric / summarize（核心摘要与要点分层）](https://github.com/danielmiessler/fabric/blob/main/data/patterns/summarize/system.md)
+- [Fabric / analyze_paper（事实、研究设计与证据对应）](https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md)
+
+改写方式：借鉴 Markdown 摘要与证据质量整理的输出结构；双层科研接力、状态与来源、失败路线归档为本库自主设计。
+
