@@ -254,3 +254,16 @@ python eval_runner.py --score --output-dir .eval_runs/pilot-live
 ## GitHub Actions 依赖维护（2026-10-26）
 
 首次独立 CI 成功后，日志显示 `actions/checkout@v4` 的 Node.js 20 弃用警告。根据官方 2026-07-20 发布的 [checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1)，已升级至固定 SHA `3d3c42e5aac5ba805825da76410c181273ba90b1`；其 `action.yml` 声明 `node24`。再次运行 CI 后方可确认升级未引入回归。
+
+## 配对科研评估与截断保护（2026-10-26）
+
+相比只报告每版本分别通过几次，新增真正基于 `case_id + repeat` 匹配的成对四格表：
+
+- `candidate_only`：只有新版本满足所有必需条件且无严重错误；
+- `baseline_only`：只有旧版本满足要求；
+- `both_pass`：两版均通过；
+- `both_fail`：两版均未通过。
+
+只有每个测试题的对应轮次都同时有两版完整回答，才可生成 `scores.json`。同时对服务端可用的输入 Token、输出 Token、总 Token 分别汇总，并记录测试时设定的 `temperature`；缺失服务 Token 字段为 `null`。出现 `finish_reason=length/max_tokens` 时，此轮运行标记 `FAILED_OR_INCOMPLETE`，禁止把截断回答误作正常失败或正常通过；需要用户明确发起新的、完整的运行，程序不静默重新尝试收费调用。
+
+现有 GitHub Actions CI 扩展为20项单元测试、4题Pilot离线计划以及13题全量夹具离线计划。全量夹具须显式允许未修改 Prompt 的负对照（如T08），但该项不能作为新版本效果改善的主要证据。**独立模型输出依然 NOT_RUN；脚本正确性 ≠ Prompt 有效性。**

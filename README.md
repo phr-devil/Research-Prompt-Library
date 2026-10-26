@@ -113,3 +113,9 @@ python eval_runner.py --output-dir .eval_runs/pilot-plan
 `.github/workflows/eval-ci.yml` 在推送或 PR 时运行标准库单元测试、语法和 JSON 校验，并验证 **4 个已修改 Prompt × 两版本、仅计划 8 次模型调用**。工作流只读、无密钥、无模型 API 请求；这是工程测试，不是模型效果验证。若首次运行失败，请以 Actions 原始日志为准，不把提交成功当作测试通过。
 
 CI 依赖已改为 [actions/checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) 的固定提交 SHA（Node.js 24），避免旧版 v4 的 Node.js 20 过时警告。后续 CI 的通过情况以 GitHub Actions 的实际执行记录为准。
+
+### 配对评分与全量离线门禁（2026-10-26）
+
+评测器现在按**测试题 × 重复轮次**记录真实成对比较，输出 `paired_summary` 和 `per_case`，区分新版单独通过、旧版单独通过、两版都通过及都未通过。分别累计服务实际报告的 `prompt_tokens`、`completion_tokens`、`total_tokens`，缺失字段仍为 `null`。如服务返回完成原因 `length`，立即标记该批次为不完整，禁止评分；可通过 `--temperature 0` 在支持的服务中固定采样温度（默认不传，避免不兼容）。
+
+GitHub Actions 离线 CI 已扩展为 **20 项单元测试**，并分别校验 4 题 Pilot（8 条计划）和 13 题全量夹具（26 条计划，仅供离线检查）。全量预检使用 `--allow-unchanged-controls` 保留未修改 Prompt 作为负对照，但不会执行任何模型推理。以上规则须以新的 CI 运行日志确认，不将代码提交本身视为测试成功。

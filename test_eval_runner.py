@@ -52,7 +52,7 @@ class EvalHarnessTest(unittest.TestCase):
         self.assertFalse((self.out/"raw_responses.jsonl").exists())
     def test_mock_client_needs_blind_review(self):
         with patch.dict(os.environ,{"OPENAI_API_KEY":"DUMMY"}):
-            with patch.object(m,"invoke",return_value=("MOCK ONLY",{"total_tokens":10})):
+            with patch.object(m,"invoke",return_value=("MOCK ONLY",{"prompt_tokens":7,"completion_tokens":3,"total_tokens":10},{"model":"mock-model","finish_reason":"stop"})):
                 self.call(["--live","--model","mock-model"])
         self.assertEqual(m.read(self.out/"manifest.json")["status"],"MODEL_OUTPUTS_UNSCORED")
         with self.assertRaises(ValueError):self.call(["--score"])
@@ -86,7 +86,7 @@ class EvalHarnessTest(unittest.TestCase):
 
     def run_mock(self):
         with patch.dict(os.environ,{"OPENAI_API_KEY":"DUMMY"}):
-            with patch.object(m,"invoke",return_value=("MOCK ONLY",{"total_tokens":10})):
+            with patch.object(m,"invoke",return_value=("MOCK ONLY",{"prompt_tokens":7,"completion_tokens":3,"total_tokens":10},{"model":"mock-model","finish_reason":"stop"})):
                 self.call(["--live","--model","mock-model"])
         with (self.out/"blind_review.csv").open(encoding="utf-8-sig",newline="") as f:
             rows=list(csv.DictReader(f))
@@ -142,5 +142,53 @@ class EvalHarnessTest(unittest.TestCase):
     def test_rejects_model_api_redirect(self):
         with self.assertRaisesRegex(ValueError,"redirect rejected"):
             m.RejectRedirect().redirect_request(None,None,302,"Moved",{},"https://other.example/v1")
+
+
+    def test_pairwise_summary_records_wins_and_ties(self):
+        rows=self.run_mock()
+        self.set_review(rows)
+        self.call(["--score"])
+        summary=m.read(self.out/"scores.json")["paired_summary"]
+        self.assertEqual(summary,{"n_pairs":1,"candidate_only":0,"baseline_only":0,
+                                  "both_pass":1,"both_fail":0})
+        result=m.read(self.out/"scores.json")
+        self.assertEqual(result["baseline"]["measured_prompt_tokens"],7)
+        self.assertEqual(result["candidate"]["measured_completion_tokens"],3)
+
+    def test_truncated_model_response_is_not_scored(self):
+        with patch.dict(os.environ,{"OPENAI_API_KEY":"DUMMY"}):
+            with patch.object(m,"invoke",return_value=("CUT OFF",{"total_tokens":10},
+                     {"model":"mock-model","finish_reason":"length"})):
+                with self.assertRaisesRegex(ValueError,"truncated"):
+                    self.call(["--live","--model","mock-model"])
+        manifest=m.read(self.out/"manifest.json")
+        self.assertEqual(manifest["status"],"FAILED_OR_INCOMPLETE")
+        self.assertEqual(manifest["actual_calls"],1)
+        self.assertFalse((self.out/"scores.json").exists())
+        with self.assertRaisesRegex(ValueError,"No completed"):
+            self.call(["--score"])
+
+    def test_temperature_config_is_recorded(self):
+        self.call(["--temperature","0"])
+        mfest=m.read(self.out/"manifest.json")
+        self.assertEqual(mfest["temperature"],0.0)
+        self.assertEqual(mfest["status"],"PLAN_ONLY")
+
+    def test_invalid_temperature_rejected_before_write(self):
+        with self.assertRaisesRegex(ValueError,"Temperature"):
+            self.call(["--temperature","2.5"])
+        self.assertFalse(self.out.exists())
+
+    def test_reviewer_mapping_repeat_tamper_rejected(self):
+        rows=self.run_mock()
+        self.set_review(rows)
+        p=self.out/"private_mapping.json"
+        mapping=m.read(p)
+        first=next(iter(mapping))
+        mapping[first]["repeat"]=99
+        m.save(p,mapping)
+        with self.assertRaisesRegex(ValueError,"mapping disagrees"):
+            self.call(["--score"])
+        self.assertFalse((self.out/"scores.json").exists())
 
 if __name__=="__main__":unittest.main()

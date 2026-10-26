@@ -44,5 +44,23 @@ jobs:
           assert manifest["unchanged_control_cases"]==[],manifest
           assert len(plan)==8,len(plan)
           assert not (d/"raw_responses.jsonl").exists()
-          print("OFFLINE_CI_PASS: 15 tests, 8 planned calls, 0 model calls")
+          print("OFFLINE_CI_PASS: 20 tests, 8 planned calls, 0 model calls")
+          PY
+
+      - name: Full fixture preflight, no model calls
+        run: |
+          python3 eval_runner.py --all --allow-unchanged-controls --max-calls 26 --output-dir .eval_runs/ci-all
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path(".eval_runs/ci-all")
+          m=json.loads((d/"manifest.json").read_text(encoding="utf-8"))
+          jobs=json.loads((d/"plan.json").read_text(encoding="utf-8"))
+          assert m["status"]=="PLAN_ONLY"
+          assert m["planned_calls"]==26 and m["actual_calls"]==0
+          assert len(m["selected_cases"])==13
+          assert len(jobs)==26
+          assert "T08" in m["unchanged_control_cases"]
+          assert not (d/"raw_responses.jsonl").exists()
+          print("FULL_FIXTURE_PREFLIGHT_PASS: 13 cases, 26 planned calls, 0 model calls")
           PY
