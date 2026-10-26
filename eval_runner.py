@@ -103,12 +103,13 @@ def main():
     a=argparse.ArgumentParser(description=__doc__)
     a.add_argument("--repo",type=Path,default=Path(__file__).resolve().parent)
     a.add_argument("--base-ref",default=BASE);a.add_argument("--candidate-ref",default=CAND)
-    a.add_argument("--cases",default="T03,T04,T08,T11");a.add_argument("--all",action="store_true")
+    a.add_argument("--cases",default=",".join(read(Path(__file__).resolve().parent/"EVAL_CASES.json")["pilot_ids"]));a.add_argument("--all",action="store_true")
     a.add_argument("--repeat",type=int,default=1);a.add_argument("--seed",type=int,default=20261026)
     a.add_argument("--max-calls",type=int,default=8);a.add_argument("--output-dir",type=Path,default=Path(".eval_runs/pilot"))
     a.add_argument("--model",default="");a.add_argument("--live",action="store_true");a.add_argument("--score",action="store_true")
     a.add_argument("--api-base",default=os.getenv("OPENAI_BASE_URL","https://api.openai.com/v1"))
     a.add_argument("--token-limit",type=int,default=650)
+    a.add_argument("--allow-unchanged-controls",action="store_true",help="Explicitly allow cases whose compared prompt text is identical")
     a.add_argument("--token-field",choices=("max_completion_tokens","max_tokens"),default="max_completion_tokens")
     a.add_argument("--timeout",type=int,default=90)
     arg=a.parse_args();repo=arg.repo.resolve();out=arg.output_dir.resolve()
@@ -132,6 +133,16 @@ def main():
                 jobs.append({"case_id":test_id,"repeat":rep+1,"version":name,"ref":ref,
                              "system":s,"task":case["input"],
                              "prompt_sha256":hashlib.sha256(s.encode()).hexdigest()})
+    unchanged=[]
+    for case_id in selection:
+        paired=[j["prompt_sha256"] for j in jobs if j["case_id"]==case_id and j["repeat"]==1]
+        if len(paired)!=2:
+            raise ValueError("Unpaired comparison for "+case_id)
+        if paired[0]==paired[1]:
+            unchanged.append(case_id)
+    if unchanged and not arg.allow_unchanged_controls:
+        raise ValueError("Compared Prompt texts are identical for "+",".join(unchanged)+
+                         "; choose changed scenarios or explicitly use --allow-unchanged-controls")
     rng.shuffle(jobs)
     if len(jobs)>arg.max_calls:raise ValueError("Call budget exceeded; raise --max-calls explicitly")
     # Validate the live endpoint and credentials BEFORE writing any output files.
@@ -145,7 +156,7 @@ def main():
     fixture_hash=hashlib.sha256(json.dumps(
         [byid[x] for x in selection],ensure_ascii=False,sort_keys=True
         ).encode("utf-8")).hexdigest()
-    m={"selected_cases":selection,"fixture_sha256":fixture_hash,
+    m={"selected_cases":selection,"unchanged_control_cases":unchanged,"fixture_sha256":fixture_hash,
        "seed":arg.seed,"repeat":arg.repeat,"token_field":arg.token_field,
        "status":"PLAN_ONLY","base_ref":arg.base_ref,"candidate_ref":arg.candidate_ref,
        "model":arg.model if arg.live else None,"planned_calls":len(jobs),"actual_calls":0}

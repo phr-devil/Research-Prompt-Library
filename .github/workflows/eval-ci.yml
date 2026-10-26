@@ -1,0 +1,48 @@
+name: Prompt evaluator offline checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  offline-evaluation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository and frozen revisions
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Run offline unit tests and syntax checks
+        run: |
+          python3 --version
+          python3 -m unittest -v test_eval_runner.py
+          python3 -m py_compile eval_runner.py test_eval_runner.py
+          python3 -m json.tool EVAL_CASES.json > /dev/null
+
+      - name: Check dry-run plan without invoking a model
+        run: |
+          python3 eval_runner.py --output-dir .eval_runs/ci-offline
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path(".eval_runs/ci-offline")
+          manifest=json.loads((d/"manifest.json").read_text(encoding="utf-8"))
+          plan=json.loads((d/"plan.json").read_text(encoding="utf-8"))
+          expected=["T03","T04","T09","T11"]
+          assert manifest["status"]=="PLAN_ONLY",manifest
+          assert manifest["planned_calls"]==8,manifest
+          assert manifest["actual_calls"]==0,manifest
+          assert manifest["selected_cases"]==expected,manifest
+          assert manifest["unchanged_control_cases"]==[],manifest
+          assert len(plan)==8,len(plan)
+          assert not (d/"raw_responses.jsonl").exists()
+          print("OFFLINE_CI_PASS: 15 tests, 8 planned calls, 0 model calls")
+          PY

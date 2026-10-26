@@ -126,6 +126,19 @@ class EvalHarnessTest(unittest.TestCase):
             self.call(["--score"])
         self.assertFalse((self.out/"scores.json").exists())
 
+    def test_rejects_unchanged_prompt_text_by_default(self):
+        with patch.object(m,"prompt",return_value="IDENTICAL PROMPT "*40):
+            with self.assertRaisesRegex(ValueError,"identical"):
+                self.call([])
+        self.assertFalse(self.out.exists())
+
+    def test_allows_explicit_unchanged_control(self):
+        with patch.object(m,"prompt",return_value="IDENTICAL PROMPT "*40):
+            self.call(["--allow-unchanged-controls"])
+        manifest=m.read(self.out/"manifest.json")
+        self.assertEqual(manifest["unchanged_control_cases"],["T03"])
+        self.assertEqual(manifest["status"],"PLAN_ONLY")
+
     def test_rejects_model_api_redirect(self):
         with self.assertRaisesRegex(ValueError,"redirect rejected"):
             m.RejectRedirect().redirect_request(None,None,302,"Moved",{},"https://other.example/v1")
