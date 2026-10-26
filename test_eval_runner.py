@@ -65,4 +65,69 @@ class EvalHarnessTest(unittest.TestCase):
         self.call(["--score"])
         self.assertEqual(m.read(self.out/"scores.json")["baseline"]["full_pass"],1)
         self.assertEqual(m.read(self.out/"scores.json")["candidate"]["measured_total_tokens"],10)
+
+    def test_prevents_overwriting_existing_results(self):
+        self.out.mkdir(exist_ok=True)
+        p=self.out/"manifest.json"
+        p.write_text("ORIGINAL",encoding="utf-8")
+        with self.assertRaisesRegex(ValueError,"not empty"):
+            self.call([])
+        self.assertEqual(p.read_text(encoding="utf-8"),"ORIGINAL")
+
+    def test_live_missing_key_does_not_create_run(self):
+        with patch.dict(os.environ,{"OPENAI_API_KEY":""}):
+            with self.assertRaises(ValueError):
+                self.call(["--live","--model","test"])
+        self.assertFalse(self.out.exists())
+
+    def test_rejects_identical_compared_revisions(self):
+        with self.assertRaisesRegex(ValueError,"must differ"):
+            self.call(["--candidate-ref",self.base])
+
+    def run_mock(self):
+        with patch.dict(os.environ,{"OPENAI_API_KEY":"DUMMY"}):
+            with patch.object(m,"invoke",return_value=("MOCK ONLY",{"total_tokens":10})):
+                self.call(["--live","--model","mock-model"])
+        with (self.out/"blind_review.csv").open(encoding="utf-8-sig",newline="") as f:
+            rows=list(csv.DictReader(f))
+        for row in rows:
+            row.update(must_pass_count="2",critical_error_0_or_1="0")
+        return rows
+
+    def set_review(self,rows):
+        with (self.out/"blind_review.csv").open("w",encoding="utf-8-sig",newline="") as f:
+            w=csv.DictWriter(f,fieldnames=rows[0].keys())
+            w.writeheader();w.writerows(rows)
+
+    def test_duplicate_review_ids_fail_closed(self):
+        rows=self.run_mock()
+        rows[1]["blind_id"]=rows[0]["blind_id"]
+        self.set_review(rows)
+        with self.assertRaisesRegex(ValueError,"Duplicate"):
+            self.call(["--score"])
+        self.assertFalse((self.out/"scores.json").exists())
+
+    def test_modified_response_fail_closed(self):
+        rows=self.run_mock()
+        rows[0]["response"]="INJECTED ANSWER"
+        self.set_review(rows)
+        with self.assertRaisesRegex(ValueError,"altered"):
+            self.call(["--score"])
+        self.assertFalse((self.out/"scores.json").exists())
+
+    def test_modified_test_rubric_fail_closed(self):
+        rows=self.run_mock()
+        self.set_review(rows)
+        p=self.repo/"EVAL_CASES.json"
+        data=json.loads(p.read_text(encoding="utf-8"))
+        data["cases"][0]["must"].append("ADDED AFTER INFERENCE")
+        p.write_text(json.dumps(data),encoding="utf-8")
+        with self.assertRaisesRegex(ValueError,"rubric changed"):
+            self.call(["--score"])
+        self.assertFalse((self.out/"scores.json").exists())
+
+    def test_rejects_model_api_redirect(self):
+        with self.assertRaisesRegex(ValueError,"redirect rejected"):
+            m.RejectRedirect().redirect_request(None,None,302,"Moved",{},"https://other.example/v1")
+
 if __name__=="__main__":unittest.main()

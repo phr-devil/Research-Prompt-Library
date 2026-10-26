@@ -61,6 +61,25 @@
 
 ## 模型 A/B 效果验证（2026-10-26）
 
+### 评测器安全与评分增强（v0.2 · 2026-10-26）
+
+- 默认只生成离线计划；`--live` 需要明确提供模型名称及 API 凭据，且**输出目录必须为空**，防止覆盖已有结果。
+- API 只允许 HTTPS 或本机回环 HTTP，并拒绝重定向，避免凭据跟随跳转；支持 `--token-field max_tokens` 兼容部分 Chat Completions 服务。
+- `--score` 检查盲评编号不重复、不缺失，CSV 中的回答与原始输出一致；固定测试题、各版本 Git SHA 和计划内容也必须匹配。
+- 输出既有版本总计，也有各场景的成对通过情况。真实 Token 计数仅取模型服务返回的 usage，不推测缺失值。
+- 本地较完整评测原型已通过 13 项工程测试；**GitHub 的更新版脚本仍需在克隆仓库后运行其 13 项测试**。这些都不属于模型效果数据。
+
+建议先执行：
+
+```bash
+python -m unittest -q test_eval_runner.py
+python eval_runner.py --output-dir .eval_runs/new-plan
+```
+
+已运行过的输出目录不可复用。正式推理时请为每次 Pilot 指定全新的 `--output-dir`，勿把 API Key、原始输出或隐藏盲评映射提交到公开仓库。
+
+
+
 已加入根目录 [eval_runner.py](eval_runner.py)、[EVAL_CASES.json](EVAL_CASES.json) 和 [test_eval_runner.py](test_eval_runner.py)，可在**同一个模型和工具配置**下，比较冻结的 v1.3 与 v1.5 Prompt。首次 Pilot 固定使用 T03/T04/T08/T11，共 4 个场景、2 个版本、各 1 次；如实际运行，最多 8 次推理调用。
 
 默认**只生成计划、不调用模型**：
