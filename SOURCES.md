@@ -1,6 +1,6 @@
-# GitHub 来源、热度与改编关系（v1.2）
+# GitHub 来源、热度与改编关系（v1.3）
 
-> 检查日期：2026-10-21。Stars 为既有整理时的近似快照，本次润色未逐项重新核实，会随时间变化。热度只用于筛选，不作为提示词实际效果的证据。下面列的仓库中，仅引用公开的**文字 Prompt**。
+> 原始热度快照整理于 2026-10-21；2026-10-26 核查了下列主要文本来源。表中的 Stars 仍为旧快照、不是实时数字，更不是提示词质量的实证评分。热度只用于筛选，不作为提示词实际效果的证据。下面列的仓库中，仅引用公开的**文字 Prompt**。
 
 | 仓库 | Stars（约） | 用到的文字内容 | 原始链接 |
 |---|---:|---|---|
@@ -73,3 +73,19 @@ v1.2 只对现有 S01、R02、P03、G02、M01 做重点修改。阅读了 GitHub
 
 改写方式：借鉴 Markdown 摘要与证据质量整理的输出结构；双层科研接力、状态与来源、失败路线归档为本库自主设计。
 
+
+## v1.3：实际借鉴的具体原文及改写边界（2026-10-26）
+
+这里列出公开的文字 Prompt，**不是将开源文案复制进本库**。原始 GitHub 的部分写法较冗长、要求固定输出或含有未经验证的质量承诺；本库只抽取可验证、有助于科研执行的部分。未单独列出的模板沿用其原有来源说明。
+
+| 本库模板 | 核对的具体来源 | 采纳的设计原则 | 本库独立补充 |
+|---|---|---|---|
+| S01、S02 | [Wonderful Prompts / AI 搜索提示词](https://github.com/langgptai/wonderful-prompts#ai-搜索提示词) | 回答对应可访问的来源，缺乏上下文时说明不足 | 多语言检索、官方年度版本、资格和搜索覆盖边界 |
+| R01、P02 | [Academic Writing / Literature Review](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#literature-review) | 文献存在性必须交叉核查；研究问题和引用相互对应 | 全文/摘要/二手证据等级、禁止推断未阅读的方法 |
+| R02 | [Fabric / analyze_paper](https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md)；[Academic Writing / Methodology](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#methodology) | 研究设计、样本、置信区间和复现性评估 | 正式门槛必须有人类批准、GO/HOLD/STOP、GPU 门禁 |
+| P03 | [Awesome AI Research Writing / 逻辑检查](https://github.com/Leey21/awesome-ai-research-writing#逻辑检查)；[Reviewer 视角](https://github.com/Leey21/awesome-ai-research-writing#论文整体以-reviewer-视角进行审视) | 润色与科学审核分开，严重问题应有可定位依据 | 避免没有全文时假装已完成审稿 |
+| G02、G03 | [Academic Writing / Plan](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#planpresentation)；[Fabric / improve_writing](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md) | 目标、时间计划、清晰日语文字及修订内容输出 | 日本财团表格、预算计算、字符计数、行政合规分级（**无专用高星原文**） |
+| M01 | [Fabric / summarize](https://github.com/danielmiessler/fabric/blob/main/data/patterns/summarize/system.md) | 快速摘要与分层信息呈现 | 完整实验记录、证据/版本/授权分离、真实 .md 交付 |
+| X01、M02 | [Fabric / improve_prompt](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_prompt/system.md)；[Fabric / analyze_paper](https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md) | 明确输入、步骤、输出、可测验证条件 | Codex 执行权限、实验日志审计、多文件版本锁定（**并非现成 Codex Prompt**） |
+
+**证据等级**：直接看到相同任务的公开文字 Prompt，可称“直接参考”；只借鉴分析或写作步骤，标“方法借鉴”；日本基金、科研接力与 Codex 审计中的专业流程主要为本库的跨场景改写。所有 GitHub Star 仅供筛选，不能代替用户真实任务上的测试。
