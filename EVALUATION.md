@@ -267,3 +267,14 @@ python eval_runner.py --score --output-dir .eval_runs/pilot-live
 只有每个测试题的对应轮次都同时有两版完整回答，才可生成 `scores.json`。同时对服务端可用的输入 Token、输出 Token、总 Token 分别汇总，并记录测试时设定的 `temperature`；缺失服务 Token 字段为 `null`。出现 `finish_reason=length/max_tokens` 时，此轮运行标记 `FAILED_OR_INCOMPLETE`，禁止把截断回答误作正常失败或正常通过；需要用户明确发起新的、完整的运行，程序不静默重新尝试收费调用。
 
 现有 GitHub Actions CI 扩展为20项单元测试、4题Pilot离线计划以及13题全量夹具离线计划。全量夹具须显式允许未修改 Prompt 的负对照（如T08），但该项不能作为新版本效果改善的主要证据。**独立模型输出依然 NOT_RUN；脚本正确性 ≠ Prompt 有效性。**
+
+### 完整工程验收（2026-10-26）
+
+最新 [GitHub Actions 离线验收](https://github.com/phr-devil/Research-Prompt-Library/actions/runs/40288692209) 已在提交 `091b2b5fd2fe4fc6b9bf565c1b9fb64f7771cc14` 上实际完成，且 job 结果为 **SUCCESS**：
+
+- **20/20** 单元测试通过（包括版本配对、篡改检测、截断结果拒绝评分、Token 字段、温度参数和授权边界）；
+- Pilot：4 个存在实质差异的 Prompt × 2 版本 = **8 个计划任务，0 次真实推理**；
+- 全量：13 个合成场景 × 2 版本 = **26 个计划任务，0 次真实推理**；
+- Python 编译检查和 JSON 结构校验均通过。
+
+此结果仅证明评测工具的离线工程门禁通过，**不证明任何 Prompt 的模型表现优于旧版**。真实 A/B、Token 对比、人工盲评均标记 `NOT_RUN` / `NOT_MEASURED`。运行付费模型测试必须显式指定 `--live` 并提供有效模型 API 凭据。

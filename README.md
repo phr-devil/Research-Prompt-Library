@@ -95,6 +95,18 @@ python eval_runner.py --output-dir .eval_runs/pilot-plan
 
 **目前状态：独立模型 A/B 仍为 NOT_RUN。** 早期 20/20 属于静态指令检查；本地测试程序的模拟运行也不是模型能力评估。GitHub Models 已于 2026-07-30 退役，不可作为现有的免费模型端点。
 
+
+### 完整工程验收（2026-10-26）
+
+最新 [GitHub Actions 离线验收](https://github.com/phr-devil/Research-Prompt-Library/actions/runs/40288692209) 已在提交 `091b2b5fd2fe4fc6b9bf565c1b9fb64f7771cc14` 上实际完成，且 job 结果为 **SUCCESS**：
+
+- **20/20** 单元测试通过（包括版本配对、篡改检测、截断结果拒绝评分、Token 字段、温度参数和授权边界）；
+- Pilot：4 个存在实质差异的 Prompt × 2 版本 = **8 个计划任务，0 次真实推理**；
+- 全量：13 个合成场景 × 2 版本 = **26 个计划任务，0 次真实推理**；
+- Python 编译检查和 JSON 结构校验均通过。
+
+此结果仅证明评测工具的离线工程门禁通过，**不证明任何 Prompt 的模型表现优于旧版**。真实 A/B、Token 对比、人工盲评均标记 `NOT_RUN` / `NOT_MEASURED`。运行付费模型测试必须显式指定 `--live` 并提供有效模型 API 凭据。
+
 ## 简明版本记录
 
 | 版本 | 核心变更 |
