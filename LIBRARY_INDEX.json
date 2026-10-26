@@ -52,11 +52,11 @@
     "group": "03_SCI论文",
     "file": "03_SCI论文/P01_论文结构、论证逻辑与图表规划.md",
     "source_urls": [
-      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_academic_paper/system.md",
-      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
-      "https://github.com/bohyy/academic-ai-prompt"
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#outline",
+      "https://github.com/Leey21/awesome-ai-research-writing#论文架构图",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md"
     ],
-    "source_status": "融合改写"
+    "source_status": "方法融合：借鉴论文提纲与证据审查；图表—主张矩阵、仅输出所选模式和真实证据边界为本库改写。"
   },
   {
     "id": "P02",
@@ -90,11 +90,11 @@
     "group": "04_日本科研基金",
     "file": "04_日本科研基金/G01_资助方向适配与基金课题规划.md",
     "source_urls": [
-      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing",
-      "https://github.com/bohyy/academic-ai-prompt",
-      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh"
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#brainstorming",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#planpresentation",
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md"
     ],
-    "source_status": "跨场景改编；无高星日本基金专用 Prompt"
+    "source_status": "跨场景改写：借鉴选题、研究计划和证据审查；日本基金资格、校内推荐、既定题目优先及真实预算约束为本库独立设计。"
   },
   {
     "id": "G02",
@@ -138,11 +138,11 @@
     "group": "05_翻译与表达",
     "file": "05_翻译与表达/L02_自然表达与去机械化AI腔.md",
     "source_urls": [
-      "https://github.com/Leey21/awesome-ai-research-writing#part-i-%E5%86%99%E4%BD%9C-prompt-%E9%9B%86%E5%90%88",
       "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md",
+      "https://github.com/Leey21/awesome-ai-research-writing#表达润色中文论文",
       "https://github.com/haidrrrry/humanize-ai-writing/blob/main/PROMPT.md"
     ],
-    "source_status": "融合改写"
+    "source_status": "方法融合：借鉴清晰、简洁和保留原意；不采用外部模板的绝对禁词表或检测规避导向，默认只输出成稿以节省阅读时间。"
   },
   {
     "id": "M01",
@@ -185,10 +185,9 @@
     "file": "07_专项/X02_日英双语正式邮件撰写与回复.md",
     "source_urls": [
       "https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_formal_email/system.md",
-      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh",
-      "https://github.com/f/prompts.chat/blob/main/PROMPTS.md"
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md"
     ],
-    "source_status": "融合改写"
+    "source_status": "直接参考正式通信的意图、关系和语气核对；日语大学事务与供应商情境、默认单稿及不擅自发送为本库适配。"
   },
   {
     "id": "X03",
@@ -196,10 +195,9 @@
     "group": "07_专项",
     "file": "07_专项/X03_日本作文比赛策划与日语自然化写作.md",
     "source_urls": [
-      "https://github.com/f/prompts.chat/blob/main/PROMPTS.md",
-      "https://github.com/PlexPt/awesome-chatgpt-prompts-zh",
-      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md"
+      "https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md",
+      "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#brainstorming"
     ],
-    "source_status": "借鉴写作角色和润色 Prompt；比赛评审流程为自行适配"
+    "source_status": "跨场景改写：参考写作润色与分段构思结构；比赛规则、AI 代写限制和真实叙事约束并非原仓库的现成作文比赛 Prompt。"
   }
 ]
