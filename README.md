@@ -67,7 +67,7 @@
 - API 只允许 HTTPS 或本机回环 HTTP，并拒绝重定向，避免凭据跟随跳转；支持 `--token-field max_tokens` 兼容部分 Chat Completions 服务。
 - `--score` 检查盲评编号不重复、不缺失，CSV 中的回答与原始输出一致；固定测试题、各版本 Git SHA 和计划内容也必须匹配。
 - 输出既有版本总计，也有各场景的成对通过情况。真实 Token 计数仅取模型服务返回的 usage，不推测缺失值。
-- 本地较完整评测原型已通过 13 项工程测试；**GitHub 的更新版脚本仍需在克隆仓库后运行其 13 项测试**。这些都不属于模型效果数据。
+- GitHub Actions 首次离线执行已完成：**15 项单元测试通过，8 次计划调用、0 次模型请求**（[运行日志](https://github.com/phr-devil/Research-Prompt-Library/actions/runs/40285869513)）。这属于工程验证，**不是模型 A/B 效果测试**。这些都不属于模型效果数据。
 
 建议先执行：
 
@@ -111,3 +111,5 @@ python eval_runner.py --output-dir .eval_runs/pilot-plan
 ### 自动离线回归（GitHub Actions）
 
 `.github/workflows/eval-ci.yml` 在推送或 PR 时运行标准库单元测试、语法和 JSON 校验，并验证 **4 个已修改 Prompt × 两版本、仅计划 8 次模型调用**。工作流只读、无密钥、无模型 API 请求；这是工程测试，不是模型效果验证。若首次运行失败，请以 Actions 原始日志为准，不把提交成功当作测试通过。
+
+CI 依赖已改为 [actions/checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) 的固定提交 SHA（Node.js 24），避免旧版 v4 的 Node.js 20 过时警告。后续 CI 的通过情况以 GitHub Actions 的实际执行记录为准。

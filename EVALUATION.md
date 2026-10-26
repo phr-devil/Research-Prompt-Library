@@ -242,7 +242,7 @@ python eval_runner.py --score --output-dir .eval_runs/pilot-live
 
 针对不同 OpenAI 兼容服务的 token 参数不兼容，可尝试 `--token-field max_tokens`；脚本不会自动在失败后带凭据改用另一模型、端点或更高调用预算。
 
-在此次对话中，本地较完整的评测原型执行了 **13/13 工程测试通过**。公开仓库当前的新脚本和新增 13 个测试方法已经发布前审查，但实际模型输出仍为 **NOT_RUN**；仓库端的测试脚本应由用户在克隆仓库后独立执行确认。
+在此次对话中，本地较完整的评测原型执行了 **13/13 工程测试通过**。GitHub Actions 已在提交 `b7a1614de2b13d085eecfd1a16da0a106e037ad1` 上完成离线测试（[运行 40285869513](https://github.com/phr-devil/Research-Prompt-Library/actions/runs/40285869513)）：**15/15 单元测试通过**、语法与 JSON 校验通过、默认 Pilot 生成 8 个任务而未调用模型。实际模型输出仍为 **NOT_RUN**，因此不能报告 Prompt 优胜率。
 
 
 ## 首轮 A/B 设计缺陷修正（2026-10-26）
@@ -250,3 +250,7 @@ python eval_runner.py --score --output-dir .eval_runs/pilot-live
 通过 GitHub 固定提交 SHA 核对，T08/P03 在 v1.3 和 v1.5 的文件 Blob SHA 完全相同，不应作为本轮提示词提升的主要测试。已经将默认 Pilot 调整为 **T03、T04、T09、T11**（4 个存在真实差异的 Prompt）；T08 仍保留于 13 题的总测试集，可显式作为不变模板的负对照。评测器遇到相同 Prompt 默认报错，只有 `--allow-unchanged-controls` 才允许继续，并将控制项记入 manifest。
 
 这项修订基于实际版本差异审计，而不是模型输出胜率。单轮 4×2=8 次模型调用的统计能力仍然很弱，尤其不得用一个任务的结果宣称整体库性能提升。
+
+## GitHub Actions 依赖维护（2026-10-26）
+
+首次独立 CI 成功后，日志显示 `actions/checkout@v4` 的 Node.js 20 弃用警告。根据官方 2026-07-20 发布的 [checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1)，已升级至固定 SHA `3d3c42e5aac5ba805825da76410c181273ba90b1`；其 `action.yml` 声明 `node24`。再次运行 CI 后方可确认升级未引入回归。
