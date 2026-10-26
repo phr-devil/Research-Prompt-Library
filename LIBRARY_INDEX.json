@@ -199,5 +199,17 @@
       "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#brainstorming"
     ],
     "source_status": "跨场景改写：参考写作润色与分段构思结构；比赛规则、AI 代写限制和真实叙事约束并非原仓库的现成作文比赛 Prompt。"
+  },
+  {
+    "id": "V01",
+    "name": "目标驱动的算法检验任务规划",
+    "group": "08_算法检验与优化",
+    "file": "08_算法检验与优化/V01_目标驱动的算法检验任务规划.md",
+    "source_urls": [
+      "https://github.com/obra/superpowers",
+      "https://github.com/gsd-build/get-shit-done",
+      "https://github.com/gastownhall/beads"
+    ],
+    "source_status": "概念级参考连续执行、验收反推与任务依赖；独立撰写面向科研算法验证规划的纯文本 Prompt，不复制第三方 Skill。"
   }
 ]

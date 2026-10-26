@@ -1,6 +1,6 @@
 # GitHub 参考来源与改写关系
 
-> 核查日期：2026-10-26。Star 数是当日 GitHub 仓库公开数据的快照，**不代表提示词效果排名**。本项目保存的是基于公开文字 Prompt 的重新组织与独立适配稿，不批量复制第三方原文。
+> 核查日期：2026-10-26。Star 数是当日 GitHub 仓库公开数据的快照，**不代表提示词效果排名**。本项目保存的是基于公开文字 Prompt 或 Skill/Agent 工作机制的独立适配稿，不批量复制第三方原文。
 
 ## 主要参考仓库
 
@@ -16,7 +16,7 @@
 
 许可字段仅记录仓库元数据，不构成法律授权结论；引用或再发布原始 Prompt 全文前，请单独检查其实际许可证、贡献者及署名条款。
 
-## 17 条 Prompt 的具体来源与适配性质
+## 18 条 Prompt 的具体来源与适配性质
 
 | 模板 | 原始来源链接（可能指向具体章节或项目首页） | 改写性质 |
 |---|---|---|
@@ -37,6 +37,7 @@
 | X01 Codex 科研代码结果审计与下一步指令 | [来源 1](https://github.com/danielmiessler/fabric/blob/main/data/patterns/analyze_paper/system.md) · [来源 2](https://github.com/danielmiessler/fabric/blob/main/data/patterns/summarize/system.md) | 基于分析与总结 Prompt 结构自行适配；并非 GitHub 现成 Codex Prompt |
 | X02 日英双语正式邮件撰写与回复 | [来源 1](https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_formal_email/system.md) · [来源 2](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md) | 直接参考正式通信的意图、关系和语气核对；日语大学事务与供应商情境、默认单稿及不擅自发送为本库适配。 |
 | X03 日本作文比赛策划与日语自然化写作 | [来源 1](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md) · [来源 2](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#brainstorming) | 跨场景改写：参考写作润色与分段构思结构；比赛规则、AI 代写限制和真实叙事约束并非原仓库的现成作文比赛 Prompt。 |
+| V01 目标驱动的算法检验任务规划 | [Superpowers](https://github.com/obra/superpowers) · [GSD](https://github.com/gsd-build/get-shit-done) · [Beads](https://github.com/gastownhall/beads) | 概念级参考连续执行、验收反推与任务依赖管理；针对科研验证的任务规划与 Token 效率规则为原创改写，不安装或复制第三方 Skill。 |
 
 **来源解读：**“直接参考”表示核对了相近任务的原始文字指令；“方法融合”表示只借鉴结构、证据或格式原则；“跨场景改写”表示针对日本科研助成、长对话归档、Codex 审计或作文比赛独立设计。部分旧链接仍定位到仓库首页，属于参考项目而非逐句来源；后续可在不新增模板的前提下逐步提高引用定位精度。
 
