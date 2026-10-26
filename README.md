@@ -58,6 +58,24 @@
 
 详见 [SOURCES.md](SOURCES.md)（来源列表与热度快照）和 [00_使用规范.md](00_使用规范.md)。
 
+
+## 模型 A/B 效果验证（2026-10-26）
+
+已加入根目录 [eval_runner.py](eval_runner.py)、[EVAL_CASES.json](EVAL_CASES.json) 和 [test_eval_runner.py](test_eval_runner.py)，可在**同一个模型和工具配置**下，比较冻结的 v1.3 与 v1.5 Prompt。首次 Pilot 固定使用 T03/T04/T08/T11，共 4 个场景、2 个版本、各 1 次；如实际运行，最多 8 次推理调用。
+
+默认**只生成计划、不调用模型**：
+
+```bash
+python -m unittest -q test_eval_runner.py
+python eval_runner.py --output-dir .eval_runs/pilot-plan
+```
+
+若已自行配置支持 OpenAI Chat Completions 的 API 服务与 `OPENAI_API_KEY` 环境变量，才可以明确使用 `--live --model MODEL_ID` 开始真实试验。服务可能产生费用；脚本不自动安装模型或下载数据，实际输出与盲评记录保存在已忽略的本地目录。
+
+完成推理后填写 `blind_review.csv` 中的评分字段，再运行 `--score` 得到对照结果。详细评分、原始测试条件与安全注意事项见 [EVALUATION.md](EVALUATION.md)。
+
+**目前状态：独立模型 A/B 仍为 NOT_RUN。** 早期 20/20 属于静态指令检查；本地测试程序的模拟运行也不是模型能力评估。GitHub Models 已于 2026-07-30 退役，不可作为现有的免费模型端点。
+
 ## 简明版本记录
 
 | 版本 | 核心变更 |

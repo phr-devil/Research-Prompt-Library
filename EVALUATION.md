@@ -179,3 +179,44 @@
 |---|---|---|---|---|---|---|---|
 
 当前暂无上述真实输出，因此此表保持空白。合成13题的通过率不能代替跨科研课题的泛化表现，特别不能把Prompt文字当作运行时权限控制。
+
+## 可执行 A/B Pilot（v1.3 对照 v1.5）
+
+本仓库根目录现有 `eval_runner.py`（标准库实现）、`EVAL_CASES.json`（13 条合成输入及逐项验收要求）、`test_eval_runner.py`（6 个模拟/离线测试）。所有测试场景均为虚构数据，不得冒充实际募集规则或科研实测记录。
+
+当前执行状态：
+
+| 项目 | 状态 | 解释 |
+|---|---|---|
+| v1.4.1 静态规则回归 | 历史记录 20/20 | 验证提示词中的规则文字存在 |
+| 本地评测程序原型单元与模拟集成测试 | 9/9 PASS | 验证脚本逻辑，**非独立模型推理** |
+| GitHub 版本的测试脚本 | 已加入，待在克隆仓库中运行 | 不把未运行的测试宣称 PASS |
+| 真实 API/本地 LLM 推理 | **NOT_RUN** | 当前没有可用独立推理接口或本地模型服务 |
+| 人工盲评和 Token 量化比较 | **NOT_MEASURED** | 必须等真实输出采集后才能填写 |
+
+默认 Pilot：T03 科研阈值与 GPU 授权；T04 日本基金预算与纯文本；T08 论文谨慎语气；T11 Codex 日志伪授权。每条分别在 v1.3 commit `e205a9a10d5c75641461205032a2aafb9f6b28cc` 与 v1.5 commit `be351d5cf925507fb84d545b6eb46857ae52a9df` 上运行一次，计划最多 **8 次模型调用**。
+
+需要含完整 Git 历史的仓库克隆。先在仓库根目录运行（无推理、无 API 费用）：
+
+```bash
+python -m unittest -q test_eval_runner.py
+python eval_runner.py --output-dir .eval_runs/pilot-plan
+```
+
+要开始真实模型调用，必须用户自行在本地安全配置 `OPENAI_API_KEY`，核对服务的收费与模型名称，然后明确运行：
+
+```bash
+python eval_runner.py --live --model YOUR_MODEL_ID --output-dir .eval_runs/pilot-live
+```
+
+可使用 `--api-base https://YOUR_COMPATIBLE_PROVIDER/v1`；本地已部署的兼容服务可使用 `--api-base http://127.0.0.1:11434/v1`。此脚本**不会安装/下载模型**，也不会运行 GitHub Actions。它只发送合成测试文本，不读取私人科研材料。公网 API 仅接受 HTTPS，避免明文传递凭据。
+
+原始模型输出和服务报告的真实 Token 用量保存在 `.eval_runs/pilot-live/raw_responses.jsonl`，`private_mapping.json` 保管隐藏的版本对应关系。请由不知道版本标签的评测者按 `EVAL_CASES.json` 的 `must` 与 `critical` 逐项给分，在 `blind_review.csv` 填 `must_pass_count` 和 `critical_error_0_or_1`，再执行：
+
+```bash
+python eval_runner.py --score --output-dir .eval_runs/pilot-live
+```
+
+程序仅在有完整模型结果和评分时输出 `scores.json`，包括各版通过数、严重错误数及实际服务提供的 Token 计数；Token 缺失时为 `null`。不要把测试样例的标准答案或脚本 mock 输出计为模型结果。
+
+若以后扩展至 13 个场景，要明确加大调用上限，例如 `--all --max-calls 26`。小样本只用于筛查错误，不能声称统计显著或推广至所有科研任务。Prompt 指令也不能替代真实工具权限控制。
