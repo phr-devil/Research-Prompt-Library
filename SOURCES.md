@@ -1,6 +1,6 @@
 # GitHub 参考来源与改写关系
 
-> 核查日期：2026-10-26。Star 数是当日 GitHub 仓库公开数据的快照，**不代表提示词效果排名**。本项目保存的是基于公开文字 Prompt 或 Skill/Agent 工作机制的独立适配稿，不批量复制第三方原文。
+> 主要来源核查日期：2026-10-26；V02/V03 补充项目核查：2026-10-27。Star 数是当日 GitHub 仓库公开数据的快照，**不代表提示词效果排名**。本项目保存的是基于公开文字 Prompt 或 Skill/Agent 工作机制的独立适配稿，不批量复制第三方原文。
 
 ## 主要参考仓库
 
@@ -16,7 +16,7 @@
 
 许可字段仅记录仓库元数据，不构成法律授权结论；引用或再发布原始 Prompt 全文前，请单独检查其实际许可证、贡献者及署名条款。
 
-## 18 条 Prompt 的具体来源与适配性质
+## 20 条 Prompt 的具体来源与适配性质
 
 | 模板 | 原始来源链接（可能指向具体章节或项目首页） | 改写性质 |
 |---|---|---|
@@ -38,6 +38,8 @@
 | X02 日英双语正式邮件撰写与回复 | [来源 1](https://github.com/danielmiessler/fabric/blob/main/data/patterns/create_formal_email/system.md) · [来源 2](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md) | 直接参考正式通信的意图、关系和语气核对；日语大学事务与供应商情境、默认单稿及不擅自发送为本库适配。 |
 | X03 日本作文比赛策划与日语自然化写作 | [来源 1](https://github.com/danielmiessler/fabric/blob/main/data/patterns/improve_writing/system.md) · [来源 2](https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#brainstorming) | 跨场景改写：参考写作润色与分段构思结构；比赛规则、AI 代写限制和真实叙事约束并非原仓库的现成作文比赛 Prompt。 |
 | V01 目标驱动的算法检验任务规划 | [Superpowers](https://github.com/obra/superpowers) · [GSD](https://github.com/gsd-build/get-shit-done) · [Beads](https://github.com/gastownhall/beads) | 概念级参考连续执行、验收反推与任务依赖管理；针对科研验证的任务规划与 Token 效率规则为原创改写，不安装或复制第三方 Skill。 |
+| V02 独立审查触发与范围判断 | [Superpowers](https://github.com/obra/superpowers) · [Awesome Copilot](https://github.com/github/awesome-copilot) · [Claude Code Security Review](https://github.com/anthropics/claude-code-security-review) | 借鉴阶段审查、可操作问题与增量审查思想；风险触发、证据复用和实验授权门禁为本库独立改写。 |
+| V03 算法证据交接与独立复核 | [Repomix](https://github.com/yamadashy/repomix) · [DVC](https://github.com/treeverse/dvc) · [Hypothesis](https://github.com/HypothesisWorks/hypothesis) · [Inspect AI](https://github.com/UKGovernmentBEIS/inspect_ai) · [Promptfoo](https://github.com/promptfoo/promptfoo) | 借鉴上下文精简、数据/实验版本追溯、可执行性质检查与评测记录；跨 AI 科研交接协议为原创融合，未调用外部工具完成独立验证。 |
 
 **来源解读：**“直接参考”表示核对了相近任务的原始文字指令；“方法融合”表示只借鉴结构、证据或格式原则；“跨场景改写”表示针对日本科研助成、长对话归档、Codex 审计或作文比赛独立设计。部分旧链接仍定位到仓库首页，属于参考项目而非逐句来源；后续可在不新增模板的前提下逐步提高引用定位精度。
 
@@ -47,5 +49,6 @@
 - v1.2：重点优化 S01、R02、P03、G02、M01。
 - v1.3：加强授权门禁、科研证据、预算表格与文件归档核查。
 - v1.4：精修 P01、G01、L02、X02、X03，压缩重复来源说明。
+- v1.6（2026-10-27）：第 8 类新增 V02、V03 跨 AI 独立审查子栏目（参考资料与方法级适配，非模型效果实测）。
 
 **提示**：所有改动都应以真实任务评测质量（事实准确性、必要信息遗漏、可直接使用程度、人工修订量与 Token 开销）；高 Star 或模板变长都不证明效果提升。
