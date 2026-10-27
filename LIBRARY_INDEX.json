@@ -211,5 +211,31 @@
       "https://github.com/gastownhall/beads"
     ],
     "source_status": "概念级参考连续执行、验收反推与任务依赖；独立撰写面向科研算法验证规划的纯文本 Prompt，不复制第三方 Skill。"
+  },
+  {
+    "id": "V02",
+    "name": "独立审查触发与范围判断",
+    "group": "08_算法检验与优化",
+    "file": "08_算法检验与优化/跨AI独立审查/V02_独立审查触发与范围判断.md",
+    "source_urls": [
+      "https://github.com/obra/superpowers",
+      "https://github.com/github/awesome-copilot",
+      "https://github.com/anthropics/claude-code-security-review"
+    ],
+    "source_status": "概念级参考阶段性审查、可操作问题与变更审查；科研算法风险触发、身份复用和人工实验门禁为本库独立设计。"
+  },
+  {
+    "id": "V03",
+    "name": "算法证据交接与独立复核",
+    "group": "08_算法检验与优化",
+    "file": "08_算法检验与优化/跨AI独立审查/V03_算法证据交接与独立复核.md",
+    "source_urls": [
+      "https://github.com/yamadashy/repomix",
+      "https://github.com/treeverse/dvc",
+      "https://github.com/HypothesisWorks/hypothesis",
+      "https://github.com/UKGovernmentBEIS/inspect_ai",
+      "https://github.com/promptfoo/promptfoo"
+    ],
+    "source_status": "概念级参考按需上下文、版本证据链、不变量检查及结构化评测；三文件交接和独立科研审查协议为原创组合，不复制第三方 Skill。"
   }
 ]
