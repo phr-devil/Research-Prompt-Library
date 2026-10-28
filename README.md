@@ -67,6 +67,10 @@
 详见 [SOURCES.md](SOURCES.md)（来源列表与热度快照）和 [00_使用规范.md](00_使用规范.md)。
 
 
+## 当前维护状态（2026-10-28）
+
+最新维护已修正跨仓库 Pilot 选择、夹具验证、非正常模型输出拒绝评分和文档测试题漂移；CI 同时执行库内相对链接/索引预检。**唯一可执行案例来源：[EVAL_CASES.json](EVAL_CASES.json)**。历史工程测试数字保留为当时快照；真实模型效果测试仍未运行。运行 `python library_check.py` 可在本地检查仓库引用，`python -m unittest -v test_eval_runner.py` 检查评测器。
+
 ## 模型 A/B 效果验证（2026-10-26）
 
 ### 评测器安全与评分增强（v0.2 · 2026-10-26）
@@ -88,7 +92,7 @@ python eval_runner.py --output-dir .eval_runs/new-plan
 
 
 
-已加入根目录 [eval_runner.py](eval_runner.py)、[EVAL_CASES.json](EVAL_CASES.json) 和 [test_eval_runner.py](test_eval_runner.py)，可在**同一个模型和工具配置**下，比较冻结的 v1.3 与 v1.5 Prompt。首次 Pilot 固定使用 T03/T04/T08/T11，共 4 个场景、2 个版本、各 1 次；如实际运行，最多 8 次推理调用。
+已加入根目录 [eval_runner.py](eval_runner.py)、[EVAL_CASES.json](EVAL_CASES.json) 和 [test_eval_runner.py](test_eval_runner.py)，可在**同一个模型和工具配置**下，比较冻结的 v1.3 与 v1.5 Prompt。当前默认 Pilot 由 `EVAL_CASES.json` 中的 `pilot_ids` 决定：T03/T04/T09/T11，共4个场景、2个版本、各1次；如实际运行，最多8次推理调用。T08 为未修改 Prompt 的历史负对照，不纳入默认 Pilot。
 
 默认**只生成计划、不调用模型**：
 
