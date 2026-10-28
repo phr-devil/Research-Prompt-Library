@@ -9,16 +9,26 @@ on:
 permissions:
   contents: read
 
+# Avoid paying for obsolete offline checks on rapid successive PR updates.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   offline-evaluation:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Checkout repository and frozen revisions
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1, Node.js 24
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Set up deterministic Python runtime
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
 
       - name: Run offline unit tests and syntax checks
         run: |
@@ -26,41 +36,48 @@ jobs:
           python3 -m unittest -v test_eval_runner.py
           python3 -m py_compile eval_runner.py test_eval_runner.py
           python3 -m json.tool EVAL_CASES.json > /dev/null
+          python3 -m json.tool LIBRARY_INDEX.json > /dev/null
 
-      - name: Check dry-run plan without invoking a model
+      - name: Verify pilot and full fixture plans without model calls
         run: |
-          python3 eval_runner.py --output-dir .eval_runs/ci-offline
           python3 - <<'PY'
           import json
+          import subprocess
+          import sys
+          from collections import Counter
           from pathlib import Path
-          d=Path(".eval_runs/ci-offline")
-          manifest=json.loads((d/"manifest.json").read_text(encoding="utf-8"))
-          plan=json.loads((d/"plan.json").read_text(encoding="utf-8"))
-          expected=["T03","T04","T09","T11"]
-          assert manifest["status"]=="PLAN_ONLY",manifest
-          assert manifest["planned_calls"]==8,manifest
-          assert manifest["actual_calls"]==0,manifest
-          assert manifest["selected_cases"]==expected,manifest
-          assert manifest["unchanged_control_cases"]==[],manifest
-          assert len(plan)==8,len(plan)
-          assert not (d/"raw_responses.jsonl").exists()
-          print("OFFLINE_CI_PASS: 20 tests, 8 planned calls, 0 model calls")
-          PY
 
-      - name: Full fixture preflight, no model calls
-        run: |
-          python3 eval_runner.py --all --allow-unchanged-controls --max-calls 26 --output-dir .eval_runs/ci-all
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          d=Path(".eval_runs/ci-all")
-          m=json.loads((d/"manifest.json").read_text(encoding="utf-8"))
-          jobs=json.loads((d/"plan.json").read_text(encoding="utf-8"))
-          assert m["status"]=="PLAN_ONLY"
-          assert m["planned_calls"]==26 and m["actual_calls"]==0
-          assert len(m["selected_cases"])==13
-          assert len(jobs)==26
-          assert "T08" in m["unchanged_control_cases"]
-          assert not (d/"raw_responses.jsonl").exists()
-          print("FULL_FIXTURE_PREFLIGHT_PASS: 13 cases, 26 planned calls, 0 model calls")
+          fixture = json.loads(Path("EVAL_CASES.json").read_text(encoding="utf-8"))
+          all_ids = sorted(c["id"] for c in fixture["cases"])
+          pilot_ids = fixture["pilot_ids"]
+          assert pilot_ids and all_ids, "Missing evaluation fixtures"
+
+          for label, selected, flags in (
+              ("pilot", pilot_ids, []),
+              ("all", all_ids, ["--all", "--allow-unchanged-controls"]),
+          ):
+              directory = Path(".eval_runs") / ("ci-" + label)
+              budget = 2 * len(selected)  # one baseline and one candidate per case
+              subprocess.run([
+                  sys.executable, "eval_runner.py", "--max-calls", str(budget),
+                  "--output-dir", str(directory), *flags
+              ], check=True)
+              manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
+              plan = json.loads((directory / "plan.json").read_text(encoding="utf-8"))
+
+              assert manifest["status"] == "PLAN_ONLY", manifest
+              assert manifest["actual_calls"] == 0
+              assert manifest["planned_calls"] == budget == len(plan)
+              assert manifest["selected_cases"] == selected
+              assert len(set(selected)) == len(selected)
+              assert manifest["base_ref"] != manifest["candidate_ref"]
+              assert set(manifest["unchanged_control_cases"]) <= set(selected)
+              assert all(len(j["prompt_sha256"]) == 64 for j in plan)
+              assert Counter((j["case_id"], j["version"], j["repeat"]) for j in plan) == Counter(
+                  (case_id, version, 1) for case_id in selected
+                  for version in ("baseline", "candidate")
+              )
+              assert not (directory / "raw_responses.jsonl").exists()
+              assert not (directory / "blind_review.csv").exists()
+              print(f"OFFLINE_PLAN_PASS: {label}, {len(selected)} cases, {budget} planned, 0 model calls")
           PY
