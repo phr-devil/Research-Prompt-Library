@@ -61,7 +61,7 @@ def validate(root=ROOT):
     if s01 and s01.is_file():
         doc = s01.read_text(encoding="utf-8")
         sections = re.findall(
-            r"(?ms)^### ([AB]) ·[^\\n]*\\n(.*?)(?=^### [AB] ·|^## 使用及维护说明|\\Z)",
+            r"(?ms)^### ([AB]) ·[^\n]*\n(.*?)(?=^### [AB] ·|^## 使用及维护说明|\Z)",
             doc,
         )
         if [label for label, _ in sections] != ["A", "B"]:
