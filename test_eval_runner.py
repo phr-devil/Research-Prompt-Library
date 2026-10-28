@@ -44,6 +44,40 @@ class EvalHarnessTest(unittest.TestCase):
             self.call([])
         self.assertEqual(m.read(self.out/"manifest.json")["status"],"PLAN_ONLY")
         self.assertEqual(len(m.read(self.out/"plan.json")),2)
+    def test_default_pilot_is_loaded_from_target_repo(self):
+        # Regression: --repo must not silently select pilot IDs from the runner's checkout.
+        fixture=m.read(self.repo/"EVAL_CASES.json")
+        fixture["pilot_ids"]=["T03"]
+        m.save(self.repo/"EVAL_CASES.json",fixture)
+        argv=self.args([])
+        i=argv.index("--cases")
+        del argv[i:i+2]
+        with patch.object(sys,"argv",argv),contextlib.redirect_stdout(io.StringIO()):
+            m.main()
+        self.assertEqual(m.read(self.out/"manifest.json")["selected_cases"],["T03"])
+        self.assertEqual(len(m.read(self.out/"plan.json")),2)
+
+    def test_empty_rubric_fails_before_outputs(self):
+        fixture=m.read(self.repo/"EVAL_CASES.json")
+        fixture["cases"][0]["must"]=[]
+        m.save(self.repo/"EVAL_CASES.json",fixture)
+        with self.assertRaisesRegex(ValueError,"Invalid cases fixture"):
+            self.call([])
+        self.assertFalse(self.out.exists())
+
+    def test_unknown_prompt_id_fails_before_outputs(self):
+        fixture=m.read(self.repo/"EVAL_CASES.json")
+        fixture["cases"][0]["prompt_id"]="MISSING"
+        m.save(self.repo/"EVAL_CASES.json",fixture)
+        with self.assertRaisesRegex(ValueError,"unknown prompt_id"):
+            self.call([])
+        self.assertFalse(self.out.exists())
+
+    def test_all_and_cases_cannot_silently_conflict(self):
+        with self.assertRaisesRegex(ValueError,"Choose --all or --cases"):
+            self.call(["--all"])
+        self.assertFalse(self.out.exists())
+
     def test_call_cap_prevents_overuse(self):
         with self.assertRaises(ValueError):self.call(["--repeat","5","--max-calls","8"])
     def test_live_requires_credential(self):

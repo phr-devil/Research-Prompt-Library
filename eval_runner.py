@@ -123,7 +123,7 @@ def main():
     a=argparse.ArgumentParser(description=__doc__)
     a.add_argument("--repo",type=Path,default=Path(__file__).resolve().parent)
     a.add_argument("--base-ref",default=BASE);a.add_argument("--candidate-ref",default=CAND)
-    a.add_argument("--cases",default=",".join(read(Path(__file__).resolve().parent/"EVAL_CASES.json")["pilot_ids"]));a.add_argument("--all",action="store_true")
+    a.add_argument("--cases",default=None);a.add_argument("--all",action="store_true")
     a.add_argument("--repeat",type=int,default=1);a.add_argument("--seed",type=int,default=20261026)
     a.add_argument("--max-calls",type=int,default=8);a.add_argument("--output-dir",type=Path,default=Path(".eval_runs/pilot"))
     a.add_argument("--model",default="");a.add_argument("--live",action="store_true");a.add_argument("--score",action="store_true")
@@ -135,11 +135,32 @@ def main():
     a.add_argument("--temperature",type=float,default=None,help="Explicit generation temperature; omit if unsupported")
     arg=a.parse_args();repo=arg.repo.resolve();out=arg.output_dir.resolve()
     if arg.score: return score(out,repo)
-    cases=read(repo/"EVAL_CASES.json")["cases"];byid={x["id"]:x for x in cases}
-    index={x["id"]:x["file"] for x in read(repo/"LIBRARY_INDEX.json")}
-    selection=sorted(byid) if arg.all else [x.strip() for x in arg.cases.split(",")]
-    if len(cases)!=len(byid) or len(selection)!=len(set(selection)) or any(x not in byid for x in selection):
-        raise ValueError("Duplicate or unknown case")
+    fixture=read(repo/"EVAL_CASES.json")
+    cases=fixture["cases"]
+    if not isinstance(cases,list) or not cases or any(
+        not isinstance(c,dict) or not isinstance(c.get("id"),str) or not c["id"]
+        or not isinstance(c.get("prompt_id"),str) or not c["prompt_id"]
+        or not isinstance(c.get("input"),str) or not c["input"].strip()
+        or any(not isinstance(c.get(k),list) or not c[k] or any(
+            not isinstance(v,str) or not v.strip() for v in c[k])
+            for k in ("must","critical"))
+        for c in cases):
+        raise ValueError("Invalid cases fixture: IDs, inputs, and rubrics must be nonempty")
+    byid={x["id"]:x for x in cases}
+    index_items=read(repo/"LIBRARY_INDEX.json")
+    index={x["id"]:x["file"] for x in index_items}
+    if len(cases)!=len(byid) or len(index_items)!=len(index) or any(
+        c["prompt_id"] not in index for c in cases):
+        raise ValueError("Duplicate case/index ID or unknown prompt_id")
+    if arg.all and arg.cases is not None:
+        raise ValueError("Choose --all or --cases, not both")
+    selection=(sorted(byid) if arg.all else
+               fixture.get("pilot_ids") if arg.cases is None else
+               [x.strip() for x in arg.cases.split(",")])
+    if (not isinstance(selection,list) or not selection
+        or any(not isinstance(x,str) or not x.strip() for x in selection)
+        or len(selection)!=len(set(selection)) or any(x not in byid for x in selection)):
+        raise ValueError("Duplicate, empty or unknown case in selection")
     if arg.temperature is not None and not 0<=arg.temperature<=2:raise ValueError("Temperature must be in [0,2]")
     if not 1<=arg.repeat<=10 or not 1<=arg.token_limit<=4096 or not 5<=arg.timeout<=600:
         raise ValueError("Invalid repeat/token/timeout limit")
