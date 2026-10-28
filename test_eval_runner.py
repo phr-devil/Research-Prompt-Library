@@ -193,7 +193,7 @@ class EvalHarnessTest(unittest.TestCase):
         with patch.dict(os.environ,{"OPENAI_API_KEY":"DUMMY"}):
             with patch.object(m,"invoke",return_value=("CUT OFF",{"total_tokens":10},
                      {"model":"mock-model","finish_reason":"length"})):
-                with self.assertRaisesRegex(ValueError,"truncated"):
+                with self.assertRaisesRegex(ValueError,"not normally completed"):
                     self.call(["--live","--model","mock-model"])
         manifest=m.read(self.out/"manifest.json")
         self.assertEqual(manifest["status"],"FAILED_OR_INCOMPLETE")
@@ -217,7 +217,7 @@ class EvalHarnessTest(unittest.TestCase):
         path=self.out/"raw_responses.jsonl"
         records=[json.loads(s) for s in path.read_text(encoding="utf-8").splitlines()]
         records[0]["model_meta"]["finish_reason"]="content_filter"
-        path.write_text("".join(json.dumps(v)+"\\n" for v in records),encoding="utf-8")
+        path.write_text("".join(json.dumps(v)+chr(10) for v in records),encoding="utf-8")
         with self.assertRaisesRegex(ValueError,"Incomplete"):
             self.call(["--score"])
         self.assertFalse((self.out/"scores.json").exists())
@@ -228,7 +228,7 @@ class EvalHarnessTest(unittest.TestCase):
         path=self.out/"raw_responses.jsonl"
         records=[json.loads(s) for s in path.read_text(encoding="utf-8").splitlines()]
         records[0]["model_meta"]["model"]="other-backend"
-        path.write_text("".join(json.dumps(v)+"\\n" for v in records),encoding="utf-8")
+        path.write_text("".join(json.dumps(v)+chr(10) for v in records),encoding="utf-8")
         with self.assertRaisesRegex(ValueError,"Model identity changed"):
             self.call(["--score"])
         self.assertFalse((self.out/"scores.json").exists())
