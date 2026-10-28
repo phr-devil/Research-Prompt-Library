@@ -52,3 +52,17 @@
 - v1.6（2026-10-27）：第 8 类新增 V02、V03 跨 AI 独立审查子栏目（参考资料与方法级适配，非模型效果实测）。
 
 **提示**：所有改动都应以真实任务评测质量（事实准确性、必要信息遗漏、可直接使用程度、人工修订量与 Token 开销）；高 Star 或模板变长都不证明效果提升。
+
+## v1.7 补充：计算机算法论文五阶段工作流（2026-10-28）
+
+第八项 [Research Workflow v4.1](08_算法检验与优化/高水平计算机论文工作流/README.md) 主要方法级参考：
+
+- [Microsoft ResearchStudio](https://github.com/microsoft/ResearchStudio)：选题、文献近邻、新颖性碰撞检查。
+- [Anthropic Knowledge Work / Scientific Problem Selection](https://github.com/anthropics/knowledge-work-plugins)：研究决策、致命风险与最小反证；原 Skill 的领域实例不直接等同于计算机论文规则。
+- [Sakana AI AI-Scientist-v2](https://github.com/SakanaAI/AI-Scientist-v2)：有界实验探索的思想，不照搬全自动系统。
+- [obra/superpowers](https://github.com/obra/superpowers)：计划、测试、调试、验证后完成。
+- [karpathy/autoresearch](https://github.com/karpathy/autoresearch)：固定评价与 KEEP/DISCARD/INVALID；禁止采用其无限试验循环。
+- [Orchestra-Research/AI-Research-SKILLs](https://github.com/Orchestra-Research/AI-Research-SKILLs)：科研严谨性与论文写作。
+- [openai/skills](https://github.com/openai/skills)：Skill 的按需加载与渐进式资源组织。
+
+**说明**：以上均为概念/结构参考，24条 Prompt 与路由 Skill 是本库独立写作；GitHub Star 不等于方法有效。未运行跨模型独立 A/B，也未实测 Token 降幅。旧 V01/V02/V03 与新版本重复的正文已改为兼容链接，可从旧 Git 历史恢复。

@@ -210,7 +210,7 @@
       "https://github.com/gsd-build/get-shit-done",
       "https://github.com/gastownhall/beads"
     ],
-    "source_status": "概念级参考连续执行、验收反推与任务依赖；独立撰写面向科研算法验证规划的纯文本 Prompt，不复制第三方 Skill。"
+    "source_status": "v1.7 兼容入口；实质任务统一路由至 08/高水平计算机论文工作流 v4.1，保留历史路径与 Git 版本记录。"
   },
   {
     "id": "V02",
@@ -222,7 +222,7 @@
       "https://github.com/github/awesome-copilot",
       "https://github.com/anthropics/claude-code-security-review"
     ],
-    "source_status": "概念级参考阶段性审查、可操作问题与变更审查；科研算法风险触发、身份复用和人工实验门禁为本库独立设计。"
+    "source_status": "v1.7 兼容入口；实质任务统一路由至 08/高水平计算机论文工作流 v4.1，保留历史路径与 Git 版本记录。"
   },
   {
     "id": "V03",
@@ -236,6 +236,20 @@
       "https://github.com/UKGovernmentBEIS/inspect_ai",
       "https://github.com/promptfoo/promptfoo"
     ],
-    "source_status": "概念级参考按需上下文、版本证据链、不变量检查及结构化评测；三文件交接和独立科研审查协议为原创组合，不复制第三方 Skill。"
+    "source_status": "v1.7 兼容入口；实质任务统一路由至 08/高水平计算机论文工作流 v4.1，保留历史路径与 Git 版本记录。"
+  },
+  {
+    "id": "WF41",
+    "name": "高水平计算机论文科研研发工作流 v4.1（五阶段/24场景）",
+    "group": "08_算法检验与优化",
+    "file": "08_算法检验与优化/高水平计算机论文工作流/README.md",
+    "source_urls": [
+      "https://github.com/microsoft/ResearchStudio",
+      "https://github.com/obra/superpowers",
+      "https://github.com/karpathy/autoresearch",
+      "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+      "https://github.com/anthropics/knowledge-work-plugins"
+    ],
+    "source_status": "方法级独立适配；整合科学选题、最小反证、受控研发、风险驱动复核与论文。24场景提示词、可选 Skill 路由和统一约束；未开展真实模型 A/B 和 Token 效果测试。"
   }
 ]
