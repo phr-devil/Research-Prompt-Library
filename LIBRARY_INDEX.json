@@ -1,14 +1,14 @@
 [
   {
     "id": "S01",
-    "name": "全球范围系统检索",
+    "name": "系统检索（科研资助 / 通用信息双 Prompt）",
     "group": "01_信息检索",
     "file": "01_信息检索/S01_全球范围系统检索.md",
     "source_urls": [
       "https://github.com/langgptai/wonderful-prompts#ai-搜索提示词",
       "https://github.com/ahmetbersoz/chatgpt-prompts-for-academic-writing#literature-review"
     ],
-    "source_status": "借鉴基于来源回答、缺少证据就说明的写法；任务模式、跨国资格审查及去重流程为本库适配内容。"
+    "source_status": "在原跨语言、原始来源核查方法基础上，独立设计 A 科研资助/奖学金发现与 B 通用信息两套 Prompt；稳定保留 S01 ID 和路径，原始方法来源不变。"
   },
   {
     "id": "S02",
