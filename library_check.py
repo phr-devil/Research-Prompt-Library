@@ -56,6 +56,25 @@ def validate(root=ROOT):
         if len(PROMPT.findall(data)) != 1 or not FENCE.search(data.split("## 可直接复制的 Prompt", 1)[-1]):
             errors.append(f"{case['id']}: prompt extractor cannot locate fenced prompt in {key}")
 
+    # S01 is a compatibility entry with exactly two separately copyable prompts.
+    s01 = entries.get("S01")
+    if s01 and s01.is_file():
+        doc = s01.read_text(encoding="utf-8")
+        sections = re.findall(
+            r"(?ms)^### ([AB]) ·[^\n]*\n(.*?)(?=^### [AB] ·|^## 使用及维护说明|\Z)",
+            doc,
+        )
+        if [label for label, _ in sections] != ["A", "B"]:
+            errors.append("S01 must provide distinct A (funding) and B (general) sections")
+        else:
+            blocks = [FENCE.findall(body) for _, body in sections]
+            if any(len(block) != 1 or len(block[0].strip()) < 200 for block in blocks):
+                errors.append("S01 A/B must each contain one substantive text prompt")
+            elif blocks[0][0].strip() == blocks[1][0].strip():
+                errors.append("S01 A/B prompts must be different")
+            elif FENCE.search(doc.split("## 可直接复制的 Prompt", 1)[-1]).group(1) != blocks[0][0]:
+                errors.append("S01 legacy extractor must select the funding prompt first")
+
     checked = 0
     for source in root.rglob("*.md"):
         if ".git" in source.parts or ".eval_runs" in source.parts:
