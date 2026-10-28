@@ -39,6 +39,8 @@ def invoke(url,key,model,sys_prompt,task,limit,token_field="max_completion_token
     answer=obj["choices"][0].get("message",{}).get("content")
     if not isinstance(answer,str) or not answer.strip(): raise ValueError("Empty/non-textual model response")
     meta={"model":obj.get("model") or model,"finish_reason":obj["choices"][0].get("finish_reason")}
+    if meta["finish_reason"]!="stop":
+        raise ValueError("Model response did not finish normally: "+str(meta["finish_reason"]))
     return answer,obj.get("usage") or {},meta
 def score(out,repo):
     m=read(out/"manifest.json")
@@ -67,7 +69,7 @@ def score(out,repo):
         x=raw_by_id[label]
         if x.get("ref")!=p["ref"] or x.get("case_id")!=p["case_id"] or x.get("prompt_sha256")!=p["prompt_sha256"]:
             raise ValueError("Raw model output does not match the frozen plan")
-        if x.get("repeat")!=p["repeat"] or x.get("model_meta",{}).get("finish_reason") in ("length","max_tokens"):
+        if x.get("repeat")!=p["repeat"] or x.get("model_meta",{}).get("finish_reason")!="stop":
             raise ValueError("Incomplete or incorrectly paired model result")
         if mapping[label]!={"version":p["version"],"case_id":p["case_id"],"repeat":p["repeat"]}:
             raise ValueError("Private blind mapping disagrees with planned job")
@@ -83,8 +85,12 @@ def score(out,repo):
         if correct<0 or correct>len(case["must"]) or severe not in (0,1):raise ValueError("Invalid review value")
         v=result[data["version"]];v["n"]+=1;v["full_pass"]+=int(correct==len(case["must"]) and severe==0)
         v["critical_errors"]+=severe
+    observed_models={x.get("model_meta",{}).get("model") for x in raw}
+    if len(observed_models)!=1 or not all(isinstance(name,str) and name.strip() for name in observed_models):
+        raise ValueError("Model identity changed across A/B runs")
+    result["observed_model"]=next(iter(observed_models))
     for name,ref in (("baseline",m["base_ref"]),("candidate",m["candidate_ref"])):
-        usage=[x.get("usage",{}) for x in raw if x["ref"]==ref]
+        usage=[x.get("usage") or {} for x in raw if x["ref"]==ref]
         for metric in ("prompt_tokens","completion_tokens","total_tokens"):
             result[name]["measured_"+metric]=(sum(u[metric] for u in usage)
                 if len(usage)==result[name]["n"] and all(type(u.get(metric)) is int for u in usage) else None)
@@ -165,14 +171,16 @@ def main():
     if not 1<=arg.repeat<=10 or not 1<=arg.token_limit<=4096 or not 5<=arg.timeout<=600:
         raise ValueError("Invalid repeat/token/timeout limit")
     if arg.base_ref==arg.candidate_ref:raise ValueError("Baseline and candidate commits must differ")
-    rng=random.Random(arg.seed);jobs=[]
+    rng=random.Random(arg.seed);jobs=[];prompt_cache={}
     for test_id in selection:
         case=byid[test_id]
         for rep in range(arg.repeat):
             options=[("baseline",arg.base_ref),("candidate",arg.candidate_ref)]
             rng.shuffle(options)
             for name,ref in options:
-                s=prompt(repo,ref,index[case["prompt_id"]])
+                key=(ref,index[case["prompt_id"]])
+                if key not in prompt_cache: prompt_cache[key]=prompt(repo,*key)
+                s=prompt_cache[key]
                 jobs.append({"case_id":test_id,"repeat":rep+1,"version":name,"ref":ref,
                              "system":s,"task":case["input"],
                              "prompt_sha256":hashlib.sha256(s.encode()).hexdigest()})
@@ -222,8 +230,8 @@ def main():
                 blind.append({"blind_id":label,"case_id":job["case_id"],"response":response,
                               "must_pass_count":"","critical_error_0_or_1":"","notes":""})
                 m["actual_calls"]=i+1;save(out/"manifest.json",m)
-                if model_meta.get("finish_reason") in ("length","max_tokens"):
-                    raise ValueError("Model response truncated: refusing to score incomplete run")
+                if model_meta.get("finish_reason")!="stop":
+                    raise ValueError("Model response not normally completed: refusing to score incomplete run")
         m["status"]="MODEL_OUTPUTS_UNSCORED"
     finally:
         if m["status"]=="RUNNING":m["status"]="FAILED_OR_INCOMPLETE"
