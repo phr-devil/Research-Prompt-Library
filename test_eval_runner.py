@@ -202,6 +202,47 @@ class EvalHarnessTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"No completed"):
             self.call(["--score"])
 
+    def test_abnormal_finish_reason_aborts_live_run(self):
+        with patch.dict(os.environ,{"OPENAI_API_KEY":"DUMMY"}):
+            with patch.object(m,"invoke",return_value=("FILTERED",{"total_tokens":10},
+                     {"model":"mock-model","finish_reason":"content_filter"})):
+                with self.assertRaisesRegex(ValueError,"not normally completed"):
+                    self.call(["--live","--model","mock-model"])
+        self.assertEqual(m.read(self.out/"manifest.json")["status"],"FAILED_OR_INCOMPLETE")
+        self.assertFalse((self.out/"scores.json").exists())
+
+    def test_score_rejects_abnormal_finish_reason(self):
+        rows=self.run_mock()
+        self.set_review(rows)
+        path=self.out/"raw_responses.jsonl"
+        records=[json.loads(s) for s in path.read_text(encoding="utf-8").splitlines()]
+        records[0]["model_meta"]["finish_reason"]="content_filter"
+        path.write_text("".join(json.dumps(v)+"\\n" for v in records),encoding="utf-8")
+        with self.assertRaisesRegex(ValueError,"Incomplete"):
+            self.call(["--score"])
+        self.assertFalse((self.out/"scores.json").exists())
+
+    def test_score_rejects_mixed_observed_models(self):
+        rows=self.run_mock()
+        self.set_review(rows)
+        path=self.out/"raw_responses.jsonl"
+        records=[json.loads(s) for s in path.read_text(encoding="utf-8").splitlines()]
+        records[0]["model_meta"]["model"]="other-backend"
+        path.write_text("".join(json.dumps(v)+"\\n" for v in records),encoding="utf-8")
+        with self.assertRaisesRegex(ValueError,"Model identity changed"):
+            self.call(["--score"])
+        self.assertFalse((self.out/"scores.json").exists())
+
+    def test_invoke_rejects_missing_finish_reason(self):
+        import urllib.request
+        class FakeResponse:
+            def __enter__(self):return self
+            def __exit__(self,*args):return False
+            def read(self):return json.dumps({"choices":[{"message":{"content":"x"},"finish_reason":None}]}).encode()
+        with patch.object(urllib.request.OpenerDirector,"open",return_value=FakeResponse()):
+            with self.assertRaisesRegex(ValueError,"did not finish normally"):
+                m.invoke("https://example.org/v1/chat/completions","dummy","model","system","task",100)
+
     def test_temperature_config_is_recorded(self):
         self.call(["--temperature","0"])
         mfest=m.read(self.out/"manifest.json")
