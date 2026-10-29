@@ -78,16 +78,12 @@
 详见 [SOURCES.md](SOURCES.md)（来源列表与热度快照）和 [00_使用规范.md](00_使用规范.md)。
 
 
-## 当前维护状态（2026-10-28）
+## 当前维护与评测（2026-10-29）
 
-最新维护已修正跨仓库 Pilot 选择、夹具验证、非正常模型输出拒绝评分和文档测试题漂移；CI 同时执行库内相对链接/索引预检。**唯一可执行案例来源：[EVAL_CASES.json](EVAL_CASES.json)**。历史工程测试数字保留为当时快照；真实模型效果测试仍未运行。运行 `python library_check.py` 可在本地检查仓库引用，`python -m unittest -v test_eval_runner.py` 检查评测器。
-
-## 质量评测与已知边界
-
-- 本地 `python library_check.py` 检查索引、内部相对链接和关键工作流契约；`python -m unittest -q test_eval_runner.py test_salvage_gate.py` 运行离线测试。
-- `python eval_runner.py --output-dir .eval_runs/new-plan` 默认只生成离线计划，**不调用模型**；真实推理需要明确 `--live --model MODEL_ID` 以及 API 凭据，可能产生费用。
-- 唯一合成测试定义是 [EVAL_CASES.json](EVAL_CASES.json)。`main` 上旧评测器已有 20 项工程单元测试；真实模型 A/B 及 Token 收益仍为 **NOT_RUN / NOT_MEASURED**。新的第08类 24 场景与独立第09类还需要真实任务测试，不能把 CI PASS 当科学效果验证。
-- 历史测试数字、固定提交 SHA、安全与评分协议全部见 [EVALUATION.md](EVALUATION.md)；这里不再重复其时序日志。
+- `python library_check.py`：库内索引、Markdown 链接与关键结构合同检查。
+- `python -m unittest -q test_eval_runner.py test_salvage_gate.py test_library_check.py`：执行全部离线回归测试。
+- 历史评测：`python eval_runner.py --suite historical --output-dir .eval_runs/historical`；当前版评测：`--suite current` 并明确指定两个不同的提交 SHA，使用 [EVAL_CASES_CURRENT.json](EVAL_CASES_CURRENT.json)。
+- 这些命令默认只测试脚本和生成评测计划，**不调用大模型、也不证明科研方法实际成功**。真实模型成功率、Token 开销和人工工作量仍为 **NOT_RUN / NOT_MEASURED**。具体冻结案例与统计口径见 [EVALUATION.md](EVALUATION.md)。
 
 ## 简明版本记录
 
@@ -100,8 +96,9 @@
 | v1.4.1 | 静态检查 20/20，修复 S01 离线资料使用和 G02 纯文本排版约束 |
 | **v1.5** | 不可信资料中的指令隔离、长对话分段归档、英日互译、可复现实测用例与精简说明 |
 | **v1.6** | 第 8 类新增 V02/V03 跨 AI 独立审查子栏目 |
-| **v1.8** | 独立第09类、三项目人工选择门禁、执行导航和验证改进 |
-| **v1.7** | 第八项建立 v4.1 五阶段高水平计算机论文工作流、24场景 Prompt、按需加载规则及可选 Skill；原 V01–V03 合并为兼容入口 |
+| **v1.7** | 第八项建立 v4.1 五阶段科研工作流与24场景 Prompt；原 V01–V03 合并为兼容入口 |
+| **v1.8** | 独立第09类，三候选项目与人工选择门禁 |
+| **v1.9** | 任务与状态合同、断点恢复、门禁兼容性、当前版评测与24场景提取回归 |
 
 历史完整版本可从 Git 提交记录恢复；上述静态结果不是模型回答准确率。当前仍**没有独立模型 A/B 测试数据**。
 
