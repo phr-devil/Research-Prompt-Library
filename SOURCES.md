@@ -80,3 +80,7 @@
 - [openai/skills](https://github.com/openai/skills)：按需读取、避免与当前环境重复的冗长上下文。
 
 以上是方法参考，并非声称已经在本仓库运行或完成论文级真实模型测试。
+
+## 2026-10-29 第09类 v2.2 科研提炼 Prompt
+
+在用户确认 P1/P2/P3 后，增加 [Step 05-R](09_失败算法项目挽救与转向/WORKFLOW.md)，基于 [ResearchStudio](https://github.com/microsoft/ResearchStudio) 的研究目标对齐、[Superpowers brainstorming](https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md) 的问题/方案核查、[Superpowers writing-plans](https://github.com/obra/superpowers/blob/main/skills/writing-plans/SKILL.md) 的可验证计划和 [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep) 的 Claim/Evidence 关联进行原创改写；不调用其 Skill 也不保证发表。

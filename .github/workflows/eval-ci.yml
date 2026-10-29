@@ -124,4 +124,8 @@ jobs:
                   text=eval_runner.prompt(root,sha,path,key)
                   assert len(text)>100,(key,len(text))
           print("SCENARIO_EXTRACTION_PASS: 24/24; no model calls")
+          refine=eval_runner.prompt(root,sha,"09_失败算法项目挽救与转向/WORKFLOW.md","09-REFINE")
+          assert len(refine)>1000 and "05R_REFINED_PROJECT.md" in refine
+          assert "READY_FOR_STEP06" in refine and "NEEDS_USER_CONFIRMATION" in refine
+          print("SALVAGE_REFINEMENT_EXTRACTION_PASS: 09-REFINE; no model calls")
           PY

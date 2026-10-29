@@ -267,6 +267,6 @@
       "https://github.com/Research-Equality/RE-idea-generation",
       "https://github.com/UCL-ERL/skills"
     ],
-    "source_status": "v2.1：从第08类移为独立第09类；Step 05 提交P1/P2/P3并等待真实用户选定，Step 06不得自动执行；无真实模型A/B效果测试。"
+    "source_status": "v2.2：从第08类移为独立第09类；Step 05 提交P1/P2/P3并等待真实用户选定，Step 06不得自动执行；无真实模型A/B效果测试。 新增 Step 05-R：用户选题后进行科学性、创新性、独立真值与可行性优化，重大改题需再次确认。"
   }
 ]

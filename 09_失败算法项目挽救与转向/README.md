@@ -2,7 +2,7 @@
 
 **独立于 [08 算法检验与优化](../08_算法检验与优化/README.md) 的专项类别**。主流程：失败证据复核 → 可复用成果 → **三个后续项目** → **用户明确选择** → **05-R 科学提炼与可行性优化** → 最小证伪。
 
-- [完整工作流与可复制 Prompt](WORKFLOW.md)（Research Salvage & Pivot v2.1）
+- [完整工作流与可复制 Prompt](WORKFLOW.md)（Research Salvage & Pivot v2.2）
 - [Step 05-R：已选课题科学提炼与优化](WORKFLOW.md)（选定后单独复制该段 Prompt）
 - [结构化人工选择门禁（可选 CLI）](salvage_gate.py)：只读核对三项提案和用户选择文件；返回结果不能代替真实用户消息和实验授权
 

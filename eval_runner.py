@@ -17,6 +17,8 @@ def prompt(repo,sha,path,selector=""):
             heading=r"(?m)^### B ·[^\n]*$"
         elif selector=="09-ONECLICK":
             heading=r"(?m)^## 02｜一键总控 Prompt[^\n]*$"
+        elif selector=="09-REFINE":
+            heading=r"(?m)^### STEP 05-R：[^\n]*$"
         elif re.fullmatch(r"0[1-5]-[A-F]",selector):
             heading=r"(?m)^## "+re.escape(selector)+r"｜[^\n]*$"
         else:
