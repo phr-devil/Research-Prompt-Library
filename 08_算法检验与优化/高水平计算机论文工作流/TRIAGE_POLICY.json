@@ -242,7 +242,7 @@
       "outcome": "可选继续脚本开发，正式优势声明前补公平对照"
     }
   ],
-  "workflow_version": "5.3",
+  "workflow_version": "5.4",
   "action_intents": {
     "READ_ONLY_RESEARCH": "只读资料查证、逻辑梳理和不改变协议的静态设计",
     "SCOPED_EXPLORATION": "仅在已有获批资源范围内的探索性设计、代码/数据分析；不代表已获GPU",
@@ -262,5 +262,13 @@
     "REFRAME",
     "HOLD"
   ],
-  "choice_semantics": "Machine-proposed outcomes cannot authenticate messages or grant resource/confirmatory/publication approvals; actual user choice must appear in subsequent real interaction. Do not carry forward old approval after claim, data, experiment or scope changes."
+  "choice_semantics": "Machine-proposed outcomes cannot authenticate messages or grant resource/confirmatory/publication approvals; actual user choice must appear in subsequent real interaction. Do not carry forward old approval after claim, data, experiment or scope changes.",
+  "unknown_action": "NEEDS_MINIMAL_EVIDENCE_CHECK for safe exploratory intents; independent evidence/authorization gate for FORMAL_RUN, CONFIRMED_CLAIM and SUBMISSION.",
+  "user_precedence": "An explicit later user HOLD/REPAIR_FIRST/REFRAME choice supersedes both MINOR auto-continue and earlier cached risk decisions, while CRITICAL remains blocked for its affected target.",
+  "choice_reuse_checks": [
+    "Verified real user reply after the original menu, not saved content",
+    "Same claim, issue, data, protocol, action intent, allowed scope and prompt-library version",
+    "No overdue review checkpoint, revoked authorization or newer user override",
+    "Read-only advisory can never grant GPU, paid, formal-run or publication permission"
+  ]
 }

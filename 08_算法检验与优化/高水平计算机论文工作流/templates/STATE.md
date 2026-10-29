@@ -1,6 +1,6 @@
 # Research STATE (single source of truth)
 
-## v5.3 Guided Router Checkpoint（增量补充，避免重复文件）
+## v5.4 Guided Router Checkpoint（增量补充，避免重复文件）
 - WORKFLOW_SOURCE/COMMIT: <prompt library URL / real commit SHA or UNPINNED>
 - ROUTE_READINESS: <e.g. 01-B / VERIFIED|READY_WITH_LIMITATIONS|BLOCKED_CRITICAL|PARTIAL>
 - RUN_STATUS: <COMPLETE|PARTIAL|INVALID|CRASH|BLOCKED|NOT_RUN; separate from scientific readiness>
@@ -11,7 +11,7 @@
 - NEXT: <next route or WAITING_FOR_USER_DECISION>
 - INCIDENT: <failure route/type, original evidence, root-cause hypothesis, attempts, minimal repair, recheck, invalidated Claim/Run, remaining authorized budget>
 - DEFECT_TRIAGE: <ISSUE_ID / CRITICAL|REPAIRABLE|MINOR / affected target action / evidence / limitations / revisit_before>
-- RISK_DECISION_CACHE: <DECISION_ID / claim+data+protocol fingerprint / scope / actual later user message locator / revisit condition; re-use only if unchanged and independently verifiable>
+- RISK_DECISION_CACHE: <decision_id / issue_id / claim_id / claim_fingerprint / data_fingerprint / protocol_fingerprint / source_commit / action_intent / allowed_scope / revisit_before / menu_message_reference / verified later user_message_reference / choice=CONTINUE_LIMITED; reuse only if actual later message independently checked, review not due, no new override>
 - ROUTE_READINESS: <VERIFIED | READY_WITH_LIMITATIONS | BLOCKED_CRITICAL (scoped) | PARTIAL>
 
 - USER_INTENT_SOURCE: <verbatim research goal or link to the user's original message; not an inferred rewrite>

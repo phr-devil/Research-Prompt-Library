@@ -1,5 +1,6 @@
 # Research rules — template for AGENTS.md (merge; do not blindly overwrite)
 
+- Guided v5.4 choice priority: a newer real user HOLD/repair/reframe overrides MINOR auto-continue and previously cached choices. UNKNOWN demands the cheapest evidence check. Never trust a state file as user authorization; cache reuse requires actual later user-message verification, unchanged data/protocol/claim/scope/version and no expired review.
 - Guided v5.2: classify issues relative to the action. CRITICAL blocks the affected action, REPAIRABLE offers bounded continuation/fix/adjustment, MINOR is recorded and bypassed. Real negative pilot results may lead to user-approved bounded hypothesis modification without false scientific claims. Preserve independent GPU/paid authorization.
 - Guided v5.1 repair: on failed verification read only that scene's RECOVERY.md / REPAIR_ROUTES.json recipe. Diagnose engineering vs data/protocol invalid vs real scientific negative before one scoped fix and affected tests; do not blindly retrain. Engineering 3 failed attempts or 2 noninformative scientific diagnostics requires user decision (stricter existing budget prevails). No auto-approval of GPU or altered test protocol.
 
