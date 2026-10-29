@@ -118,7 +118,7 @@ def validate(root=ROOT):
 
     # Guided v5.0: validate registry, source paths and all 24 isolated prompts.
     guided = root / "08_算法检验与优化/高水平计算机论文工作流"
-    for name in ("START.md", "ORCHESTRATOR.md", "ROUTES.json", "workflow_route.py", "RECOVERY.md", "REPAIR_ROUTES.json"):
+    for name in ("START.md", "ORCHESTRATOR.md", "ROUTES.json", "workflow_route.py", "RECOVERY.md", "REPAIR_ROUTES.json", "TRIAGE.md", "TRIAGE_POLICY.json"):
         if not (guided / name).is_file():
             errors.append("Missing v5 guided component: " + name)
     if (guided / "ROUTES.json").is_file() and (guided / "workflow_route.py").is_file():
@@ -130,6 +130,7 @@ def validate(root=ROOT):
             for ident, (path, _) in loader.load_routes(guided).items():
                 loader.extract(path, ident)
             loader.load_repairs(guided, routes=loader.load_routes(guided))
+            loader.load_triage(guided, routes=loader.load_routes(guided))
             rules = (guided / "ORCHESTRATOR.md").read_text(encoding="utf-8")
             for token in ("WAITING_FOR_USER_DECISION", "GPU", "P1/P2/P3"):
                 if token not in rules: errors.append("Missing v5 gate: "+token)

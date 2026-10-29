@@ -1,10 +1,12 @@
-# 第八项 v5.1｜科研算法调试、纠错与科学性修复协议
+# 第八项 v5.2｜按缺陷严重度的修复与继续
 
 > 只在**真实异常/验证未通过/结果与证据冲突**时按需调用。本文件和 [REPAIR_ROUTES.json](REPAIR_ROUTES.json) 与原有24条科研 Prompt 并行；不增设一整套必须执行的阶段，不要求每轮读完所有故障。避免“修不完的工程准备”。
 
 ## 核心：不要把每次失败都解释成“模型还不够大”
 
 参考 [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/main/skills/systematic-debugging/SKILL.md) 的先复现再找根因、[test-driven-development](https://github.com/obra/superpowers/blob/main/skills/test-driven-development/SKILL.md) 的最小失败测试、[verification-before-completion](https://github.com/obra/superpowers/blob/main/skills/verification-before-completion/SKILL.md) 的修复后验证；[Karpathy autoresearch](https://github.com/karpathy/autoresearch/blob/master/program.md) 的固定预算/保留负结果；[Cleanlab](https://github.com/cleanlab/cleanlab) 数据标签问题检测；[MLflow](https://github.com/mlflow/mlflow) 的 Run 可追溯性；[Evidently](https://github.com/evidentlyai/evidently) 的数据与模型质量测试。**这些是设计参考，不是已安装或已执行的工具**，也不是科研效果背书。
+
+先按 [TRIAGE.md](TRIAGE.md) 判断本次受影响目标：CRITICAL 禁止受影响的下一步；REPAIRABLE 由用户选择带限制继续/先修/调整；MINOR 自动记录跳过。科研负结果可以继续修改假设，而不是强行追求每层审核PASS。
 
 ## 发生失败时的单次修复循环
 
@@ -13,7 +15,7 @@
 3. **HYPOTHESIS（一个具体根因）**：给一句“因为 X，导致 Y；可用 Z 最小检验证伪”，先验证问题是数据、代码、评价还是科学假设；无法定根因标 UNKNOWN，不靠猜测先改 5 个变量。
 4. **MIN_FIX（单点干预）**：工程问题先复现失败，改最少范围，运行针对性回归测试；数据泄漏或确认性 test 污染时**先冻结/标 INVALID**，只在合法未污染数据上重新评估；科学无增益先比较简单强基线、消融及不确定性，不通过随意换种子或反复 test 调参“修”出正结果。
 5. **VERIFY（闭环）**：同一失败测试应转绿，受影响的回归/统计/科学主张需更新；保留负结果、证据 ID、耗时和当前预算。**工程问题修好了也不代表科学假设成立**，任何 `PASS` 必须按原 route 的验收条件判定。
-6. **ESCALATE（必要时停）**：关键真值/许可无法获得、test 已污染且无新确认数据、核心假设可信失败、正式实验预算/权限不足、重大研究目标变更等，立即 `HOLD/NEEDS_USER_DECISION`。普通工程故障若**连续3次尝试仍无法定位并修复**，先审查架构；同一科学假说建议最多两轮有明确区分力的定向诊断（默认建议值，不能覆盖项目已批准的更低预算），到达界限就报告未决，**不无限调参**。
+6. **ESCALATE（按作用范围停止）**：许可/必要真值不可得、确认性test污染或未授权资源，对相应实验/正式声明标 BLOCKED_CRITICAL，但其余合法工作可继续。科学无增益但仍有可测试修改空间时为REPAIRABLE，交用户有界继续、修复、缩窄或HOLD的选择。普通工程故障若**连续3次尝试仍无法定位并修复**，先审查架构；同一科学假说建议最多两轮有明确区分力的定向诊断（默认建议值，不能覆盖项目已批准的更低预算），到达界限就报告未决，**不无限调参**。
 
 ### 修复类型差异
 
