@@ -76,53 +76,12 @@
 
 最新维护已修正跨仓库 Pilot 选择、夹具验证、非正常模型输出拒绝评分和文档测试题漂移；CI 同时执行库内相对链接/索引预检。**唯一可执行案例来源：[EVAL_CASES.json](EVAL_CASES.json)**。历史工程测试数字保留为当时快照；真实模型效果测试仍未运行。运行 `python library_check.py` 可在本地检查仓库引用，`python -m unittest -v test_eval_runner.py` 检查评测器。
 
-## 模型 A/B 效果验证（2026-10-26）
+## 质量评测与已知边界
 
-### 评测器安全与评分增强（v0.2 · 2026-10-26）
-
-- 默认只生成离线计划；`--live` 需要明确提供模型名称及 API 凭据，且**输出目录必须为空**，防止覆盖已有结果。
-- API 只允许 HTTPS 或本机回环 HTTP，并拒绝重定向，避免凭据跟随跳转；支持 `--token-field max_tokens` 兼容部分 Chat Completions 服务。
-- `--score` 检查盲评编号不重复、不缺失，CSV 中的回答与原始输出一致；固定测试题、各版本 Git SHA 和计划内容也必须匹配。
-- 输出既有版本总计，也有各场景的成对通过情况。真实 Token 计数仅取模型服务返回的 usage，不推测缺失值。
-- GitHub Actions 首次离线执行已完成：**15 项单元测试通过，8 次计划调用、0 次模型请求**（[运行日志](https://github.com/phr-devil/Research-Prompt-Library/actions/runs/40285869513)）。这属于工程验证，**不是模型 A/B 效果测试**。这些都不属于模型效果数据。
-
-建议先执行：
-
-```bash
-python -m unittest -q test_eval_runner.py
-python eval_runner.py --output-dir .eval_runs/new-plan
-```
-
-已运行过的输出目录不可复用。正式推理时请为每次 Pilot 指定全新的 `--output-dir`，勿把 API Key、原始输出或隐藏盲评映射提交到公开仓库。
-
-
-
-已加入根目录 [eval_runner.py](eval_runner.py)、[EVAL_CASES.json](EVAL_CASES.json) 和 [test_eval_runner.py](test_eval_runner.py)，可在**同一个模型和工具配置**下，比较冻结的 v1.3 与 v1.5 Prompt。当前默认 Pilot 由 `EVAL_CASES.json` 中的 `pilot_ids` 决定：T03/T04/T09/T11，共4个场景、2个版本、各1次；如实际运行，最多8次推理调用。T08 为未修改 Prompt 的历史负对照，不纳入默认 Pilot。
-
-默认**只生成计划、不调用模型**：
-
-```bash
-python -m unittest -q test_eval_runner.py
-python eval_runner.py --output-dir .eval_runs/pilot-plan
-```
-
-若已自行配置支持 OpenAI Chat Completions 的 API 服务与 `OPENAI_API_KEY` 环境变量，才可以明确使用 `--live --model MODEL_ID` 开始真实试验。服务可能产生费用；脚本不自动安装模型或下载数据，实际输出与盲评记录保存在已忽略的本地目录。
-
-完成推理后填写 `blind_review.csv` 中的评分字段，再运行 `--score` 得到对照结果。详细评分、原始测试条件与安全注意事项见 [EVALUATION.md](EVALUATION.md)。
-
-**目前状态：独立模型 A/B 仍为 NOT_RUN。** 早期 20/20 属于静态指令检查；本地测试程序的模拟运行也不是模型能力评估。GitHub Models 已于 2026-07-30 退役，不可作为现有的免费模型端点。
-
-
-### 完整工程验收（2026-10-26）
-
-最新 [GitHub Actions 离线验收](https://github.com/phr-devil/Research-Prompt-Library/actions/runs/40288692209) 已在提交 `091b2b5fd2fe4fc6b9bf565c1b9fb64f7771cc14` 上实际完成，且 job 结果为 **SUCCESS**：
-
-- **20/20** 单元测试通过（包括版本配对、篡改检测、截断结果拒绝评分、Token 字段、温度参数和授权边界）；
-- Pilot：4 个存在实质差异的 Prompt × 2 版本 = **8 个计划任务，0 次真实推理**；
-- 全量：13 个合成场景 × 2 版本 = **26 个计划任务，0 次真实推理**；
-- Python 编译检查和 JSON 结构校验均通过。
-
-此结果仅证明评测工具的离线工程门禁通过，**不证明任何 Prompt 的模型表现优于旧版**。真实 A/B、Token 对比、人工盲评均标记 `NOT_RUN` / `NOT_MEASURED`。运行付费模型测试必须显式指定 `--live` 并提供有效模型 API 凭据。
+- 本地 `python library_check.py` 检查索引、内部相对链接和关键工作流契约；`python -m unittest -q test_eval_runner.py test_salvage_gate.py` 运行离线测试。
+- `python eval_runner.py --output-dir .eval_runs/new-plan` 默认只生成离线计划，**不调用模型**；真实推理需要明确 `--live --model MODEL_ID` 以及 API 凭据，可能产生费用。
+- 唯一合成测试定义是 [EVAL_CASES.json](EVAL_CASES.json)。`main` 上旧评测器已有 20 项工程单元测试；真实模型 A/B 及 Token 收益仍为 **NOT_RUN / NOT_MEASURED**。新的第08类 24 场景与独立第09类还需要真实任务测试，不能把 CI PASS 当科学效果验证。
+- 历史测试数字、固定提交 SHA、安全与评分协议全部见 [EVALUATION.md](EVALUATION.md)；这里不再重复其时序日志。
 
 ## 简明版本记录
 
@@ -140,14 +99,3 @@ python eval_runner.py --output-dir .eval_runs/pilot-plan
 
 历史完整版本可从 Git 提交记录恢复；上述静态结果不是模型回答准确率。当前仍**没有独立模型 A/B 测试数据**。
 
-### 自动离线回归（GitHub Actions）
-
-`.github/workflows/eval-ci.yml` 在推送或 PR 时运行标准库单元测试、语法和 JSON 校验，并验证 **4 个已修改 Prompt × 两版本、仅计划 8 次模型调用**。工作流只读、无密钥、无模型 API 请求；这是工程测试，不是模型效果验证。若首次运行失败，请以 Actions 原始日志为准，不把提交成功当作测试通过。
-
-CI 依赖已改为 [actions/checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) 的固定提交 SHA（Node.js 24），避免旧版 v4 的 Node.js 20 过时警告。后续 CI 的通过情况以 GitHub Actions 的实际执行记录为准。
-
-### 配对评分与全量离线门禁（2026-10-26）
-
-评测器现在按**测试题 × 重复轮次**记录真实成对比较，输出 `paired_summary` 和 `per_case`，区分新版单独通过、旧版单独通过、两版都通过及都未通过。分别累计服务实际报告的 `prompt_tokens`、`completion_tokens`、`total_tokens`，缺失字段仍为 `null`。如服务返回完成原因 `length`，立即标记该批次为不完整，禁止评分；可通过 `--temperature 0` 在支持的服务中固定采样温度（默认不传，避免不兼容）。
-
-GitHub Actions 离线 CI 已扩展为 **20 项单元测试**，并分别校验 4 题 Pilot（8 条计划）和 13 题全量夹具（26 条计划，仅供离线检查）。全量预检使用 `--allow-unchanged-controls` 保留未修改 Prompt 作为负对照，但不会执行任何模型推理。以上规则须以新的 CI 运行日志确认，不将代码提交本身视为测试成功。

@@ -1,1 +1,1 @@
-run_id	commit	data_version	split	seed	metric	value	budget	status	evidence_path
+run_id	commit	data_version	split	seed	metric	value	budget	status	evidence_path	protocol_sha	config_sha	n_units	statistical_unit	metric_unit

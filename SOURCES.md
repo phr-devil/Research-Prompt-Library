@@ -66,3 +66,7 @@
 - [openai/skills](https://github.com/openai/skills)：Skill 的按需加载与渐进式资源组织。
 
 **说明**：以上均为概念/结构参考，24条 Prompt 与路由 Skill 是本库独立写作；GitHub Star 不等于方法有效。未运行跨模型独立 A/B，也未实测 Token 降幅。旧 V01/V02/V03 与新版本重复的正文已改为兼容链接，可从旧 Git 历史恢复。
+
+## 2026-10-29 独立第09类（v2.1）
+
+[第09类：失败科研项目挽救与转向](09_失败算法项目挽救与转向/README.md) 已从第08类移出。方法级参考 DVC、ARIS、Superpowers、ResearchStudio、Research-Equality、K-Dense、UCL-ERL 和 Karpathy Autoresearch，具体出处见 [完整工作流各步骤](09_失败算法项目挽救与转向/WORKFLOW.md)。新设 Step 05 **三个项目供用户审查**和 Step 06 **必须有事后明确选择**的执行门禁；并无真实模型 A/B 或 Token 效率实测。

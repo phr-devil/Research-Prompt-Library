@@ -131,7 +131,26 @@
 
 用户看完三项提案后，在新消息中明确选择一个：`P1`、`P2` 或 `P3`。未选择 / 没有新消息 / 只说“继续”但未指明编号 / “全部不选”时，**不得执行 Step 06**，只能保持等待、澄清选项、修改候选或按用户明确要求归档。
 
-Agent 可将**真实用户消息原文**和所选编号写入 `research_salvage/05_USER_SELECTION.json`，并锁定 `05_CANDIDATES.json` 的 SHA-256；不得自己生成或伪造用户同意。不允许仅凭选择文件声称已获人工确认，必须存在可定位的真实用户指令。使用可选 `../09_失败算法项目挽救与转向/salvage_gate.py` 检查结构化门禁；工具校验只是辅助，不代替真实授权。
+Agent 可将**真实用户消息原文**和所选编号写入 `research_salvage/05_USER_SELECTION.json`，并锁定 `05_CANDIDATES.json` 的 SHA-256；不得自己生成或伪造用户同意。不允许仅凭选择文件声称已获人工确认，必须存在可定位的真实用户指令。使用同目录可选 `salvage_gate.py` 检查结构化门禁；工具校验只是辅助，不代替真实授权。
+
+**结构化记录与只读检查（可选，已安装 Python 时）**：
+
+~~~json
+{
+  "selected_id": "P2",
+  "candidate_sha256": "<真实05_CANDIDATES.json的SHA-256>",
+  "user_message": "<用户看完三项方案之后发出的真实消息原文，必须包含P2>",
+  "user_message_reference": "<真实聊天消息ID或可定位来源>"
+}
+~~~
+
+只有收到真实用户选择后才可由 Agent 忠实记录这些字段，不能自行填写假用户消息。先查看候选文件哈希，再进行只读结构核对：
+
+~~~bash
+python 09_失败算法项目挽救与转向/salvage_gate.py --candidates research_salvage/05_CANDIDATES.json --selection research_salvage/05_USER_SELECTION.json
+~~~
+
+未选择时输出 `WAITING_FOR_USER_SELECTION`（退出码2），文件无效时退出码3；结构满足时仅说明 `STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED`（退出码0），**仍需人工对照实际聊天消息确认**。校验器不写文件、不启动第6步，且无法以技术手段证明用户身份。
 
 **选择与实验授权是两个独立门禁**：选择课题只允许制定 Step 06 的验证方案；GPU、外部付费、正式研究运行、协议改动和远程提交需另行批准。
 
