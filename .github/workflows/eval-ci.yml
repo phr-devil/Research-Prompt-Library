@@ -103,3 +103,25 @@ jobs:
           assert m["selected_cases"]==chosen
           print("CURRENT_STRESS_PLAN_PASS",len(chosen),"scenarios")
           PY
+
+      - name: Verify all 24 research scene prompts can be extracted
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+          import eval_runner
+          root=Path(".").resolve()
+          sha=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          folder="08_算法检验与优化/高水平计算机论文工作流"
+          counts={1:4,2:5,3:6,4:4,5:5}
+          for stage,count in counts.items():
+              path=f"{folder}/{stage:02d}_"+{
+                  1:"科学选题与跨AI审核.md",2:"最小科学验证与决策.md",
+                  3:"完整算法研发与正式实验.md",4:"独立科学验证.md",
+                  5:"论文撰写与投稿.md"}[stage]
+              for j in range(count):
+                  key=f"{stage:02d}-{chr(ord('A')+j)}"
+                  text=eval_runner.prompt(root,sha,path,key)
+                  assert len(text)>100,(key,len(text))
+          print("SCENARIO_EXTRACTION_PASS: 24/24; no model calls")
+          PY
