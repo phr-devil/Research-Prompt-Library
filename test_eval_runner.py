@@ -32,6 +32,24 @@ class EvalHarnessTest(unittest.TestCase):
     def call(self,extra):
         with patch.object(sys,"argv",self.args(extra)),contextlib.redirect_stdout(io.StringIO()):
             m.main()
+    def test_selected_s01_b_and_stage_fences(self):
+        fence=chr(96)*3
+        text_a=fence+"text\\n"+"Funding rules. "*12+"\\n"+fence
+        text_b=fence+"text\\n"+"General search. "*12+"\\n"+fence
+        data="## 可直接复制的 Prompt\\n### A · Funding\\n"+text_a+"\\n### B · General\\n"+text_b+"\\n"
+        (self.repo/"docs/R02.md").write_text(data,encoding="utf-8")
+        subprocess.run(["git","-C",str(self.repo),"add","."],check=True)
+        subprocess.run(["git","-C",str(self.repo),"commit","-qm","S01 variants"],check=True)
+        sha=subprocess.check_output(["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
+        self.assertTrue(m.prompt(self.repo,sha,"docs/R02.md","S01-B").startswith("General search."))
+        with self.assertRaises(ValueError):m.prompt(self.repo,sha,"docs/R02.md","not-a-selector")
+
+    def test_current_suite_requires_explicit_refs(self):
+        with patch.object(sys,"argv",["eval_runner.py","--repo",str(self.repo),
+                                      "--suite","current","--output-dir",str(self.out)]):
+            with self.assertRaisesRegex(ValueError,"requires explicit"):
+                m.main()
+
     def test_git_pins(self):
         self.assertTrue(m.prompt(self.repo,self.base,"docs/R02.md").startswith("BASE"))
         self.assertTrue(m.prompt(self.repo,self.candidate,"docs/R02.md").startswith("CANDIDATE"))

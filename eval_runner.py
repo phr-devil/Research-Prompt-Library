@@ -6,15 +6,33 @@ BASE="e205a9a10d5c75641461205032a2aafb9f6b28cc"
 CAND="be351d5cf925507fb84d545b6eb46857ae52a9df"
 def read(p): return json.loads(Path(p).read_text(encoding="utf-8"))
 def save(p,v): Path(p).write_text(json.dumps(v,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-def prompt(repo,sha,path):
+def prompt(repo,sha,path,selector=""):
     if len(sha)!=40 or any(c not in "0123456789abcdef" for c in sha):
         raise ValueError("Require pinned 40-character Git commit")
     r=subprocess.run(["git","-C",str(repo),"show",sha+":"+path],capture_output=True,text=True,encoding="utf-8",timeout=15)
     if r.returncode: raise RuntimeError("Missing Git source/history: "+path)
-    part=r.stdout.split("## 可直接复制的 Prompt")
-    if len(part)!=2: raise ValueError("Missing prompt heading")
-    m=re.search(r"\x60{3}text\s*\n([\s\S]*?)\n\x60{3}",part[1])
-    if not m or len(m.group(1).strip())<100: raise ValueError("Missing prompt text")
+    content=r.stdout
+    if selector:
+        # Explicit subsection only; no silent fallback to the first prompt.
+        if selector=="S01-B":
+            heading=r"(?m)^### B ·[^\\n]*$"
+        elif selector=="09-ONECLICK":
+            heading=r"(?m)^## 02｜一键总控 Prompt[^\\n]*$"
+        elif re.fullmatch(r"0[1-5]-[A-F]",selector):
+            heading=r"(?m)^## "+re.escape(selector)+r"｜[^\\n]*$"
+        else:
+            raise ValueError("Unknown prompt selector: "+selector)
+        match=re.search(heading,content)
+        if not match:raise ValueError("Missing selected prompt heading "+selector)
+        section=content[match.end():]
+        stop=re.search(r"(?m)^#{2,3} ",section)
+        content=section[:stop.start()] if stop else section
+    else:
+        part=content.split("## 可直接复制的 Prompt")
+        if len(part)!=2:raise ValueError("Missing prompt heading")
+        content=part[1]
+    m=re.search(r"(?:`{3}|~{3})text\\s*\\n([\\s\\S]*?)\\n(?:`{3}|~{3})",content)
+    if not m or len(m.group(1).strip())<100:raise ValueError("Missing selected prompt text")
     return m.group(1).strip()
 def endpoint(base):
     u=urllib.parse.urlsplit(base)
@@ -45,7 +63,11 @@ def invoke(url,key,model,sys_prompt,task,limit,token_field="max_completion_token
 def score(out,repo):
     m=read(out/"manifest.json")
     if m["status"]!="MODEL_OUTPUTS_UNSCORED": raise ValueError("No completed independent model run")
-    mapping=read(out/"private_mapping.json");cases={x["id"]:x for x in read(repo/"EVAL_CASES.json")["cases"]}
+    fixture_name=m.get("fixture_file","EVAL_CASES.json")
+    if fixture_name not in ("EVAL_CASES.json","EVAL_CASES_CURRENT.json"):
+        raise ValueError("Unknown pinned evaluation fixture")
+    fixture=read(repo/fixture_name)
+    mapping=read(out/"private_mapping.json");cases={x["id"]:x for x in fixture["cases"]}
     with (out/"blind_review.csv").open(encoding="utf-8-sig",newline="") as f: rows=list(csv.DictReader(f))
     if len(rows)!=len(mapping): raise ValueError("Review missing rows")
     ids=[r.get("blind_id","") for r in rows]
@@ -58,7 +80,7 @@ def score(out,repo):
         raise ValueError("Raw output IDs are missing or duplicated")
     plan=read(out/"plan.json")
     if len(plan)!=len(mapping):raise ValueError("Planned jobs do not match collected outputs")
-    expected_cases={x["id"]:x for x in read(repo/"EVAL_CASES.json")["cases"]}
+    expected_cases={x["id"]:x for x in fixture["cases"]}
     fixture_hash=hashlib.sha256(json.dumps(
         [expected_cases[x] for x in m["selected_cases"]],ensure_ascii=False,sort_keys=True
         ).encode("utf-8")).hexdigest()
@@ -128,7 +150,9 @@ def score(out,repo):
 def main():
     a=argparse.ArgumentParser(description=__doc__)
     a.add_argument("--repo",type=Path,default=Path(__file__).resolve().parent)
-    a.add_argument("--base-ref",default=BASE);a.add_argument("--candidate-ref",default=CAND)
+    a.add_argument("--suite",choices=("historical","current"),default="historical",
+                   help="Historical frozen v1.3/v1.5 benchmark or explicit current-version stress fixture")
+    a.add_argument("--base-ref",default=None);a.add_argument("--candidate-ref",default=None)
     a.add_argument("--cases",default=None);a.add_argument("--all",action="store_true")
     a.add_argument("--repeat",type=int,default=1);a.add_argument("--seed",type=int,default=20261026)
     a.add_argument("--max-calls",type=int,default=8);a.add_argument("--output-dir",type=Path,default=Path(".eval_runs/pilot"))
@@ -141,7 +165,12 @@ def main():
     a.add_argument("--temperature",type=float,default=None,help="Explicit generation temperature; omit if unsupported")
     arg=a.parse_args();repo=arg.repo.resolve();out=arg.output_dir.resolve()
     if arg.score: return score(out,repo)
-    fixture=read(repo/"EVAL_CASES.json")
+    if arg.suite=="current" and (arg.base_ref is None or arg.candidate_ref is None):
+        raise ValueError("--suite current requires explicit pinned --base-ref and --candidate-ref")
+    arg.base_ref=arg.base_ref or BASE
+    arg.candidate_ref=arg.candidate_ref or CAND
+    fixture_file=("EVAL_CASES_CURRENT.json" if arg.suite=="current" else "EVAL_CASES.json")
+    fixture=read(repo/fixture_file)
     cases=fixture["cases"]
     if not isinstance(cases,list) or not cases or any(
         not isinstance(c,dict) or not isinstance(c.get("id"),str) or not c["id"]
@@ -155,8 +184,13 @@ def main():
     byid={x["id"]:x for x in cases}
     index_items=read(repo/"LIBRARY_INDEX.json")
     index={x["id"]:x["file"] for x in index_items}
+    if any(
+        (not isinstance(c.get("prompt_selector",""),str) or
+         (c.get("prompt_path") is not None and not isinstance(c["prompt_path"],str)))
+        for c in cases):
+        raise ValueError("Invalid prompt selector/path in fixture")
     if len(cases)!=len(byid) or len(index_items)!=len(index) or any(
-        c["prompt_id"] not in index for c in cases):
+        c["prompt_id"] not in index and not c.get("prompt_path") for c in cases):
         raise ValueError("Duplicate case/index ID or unknown prompt_id")
     if arg.all and arg.cases is not None:
         raise ValueError("Choose --all or --cases, not both")
@@ -178,8 +212,15 @@ def main():
             options=[("baseline",arg.base_ref),("candidate",arg.candidate_ref)]
             rng.shuffle(options)
             for name,ref in options:
-                key=(ref,index[case["prompt_id"]])
-                if key not in prompt_cache: prompt_cache[key]=prompt(repo,*key)
+                source=case.get("prompt_path") or index[case["prompt_id"]]
+                if (not isinstance(source,str) or not source.endswith(".md") or
+                    source.startswith("/") or "\\\\" in source or
+                    any(p in ("",".","..") for p in source.split("/"))):
+                    raise ValueError("Unsafe prompt_path: "+str(source))
+                selector=case.get("prompt_selector","")
+                if not isinstance(selector,str):raise ValueError("Invalid prompt selector")
+                key=(ref,source,selector)
+                if key not in prompt_cache:prompt_cache[key]=prompt(repo,*key)
                 s=prompt_cache[key]
                 jobs.append({"case_id":test_id,"repeat":rep+1,"version":name,"ref":ref,
                              "system":s,"task":case["input"],
@@ -207,7 +248,8 @@ def main():
     fixture_hash=hashlib.sha256(json.dumps(
         [byid[x] for x in selection],ensure_ascii=False,sort_keys=True
         ).encode("utf-8")).hexdigest()
-    m={"selected_cases":selection,"unchanged_control_cases":unchanged,"fixture_sha256":fixture_hash,
+    m={"suite":arg.suite,"fixture_file":fixture_file,"selected_cases":selection,
+       "unchanged_control_cases":unchanged,"fixture_sha256":fixture_hash,
        "seed":arg.seed,"repeat":arg.repeat,"token_field":arg.token_field,"temperature":arg.temperature,
        "status":"PLAN_ONLY","base_ref":arg.base_ref,"candidate_ref":arg.candidate_ref,
        "model":arg.model if arg.live else None,"planned_calls":len(jobs),"actual_calls":0}
