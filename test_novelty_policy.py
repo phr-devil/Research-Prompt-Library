@@ -29,7 +29,7 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertIn("公平",p)
         self.assertIn("独立真值",p)
         self.assertIn("不声称“首创”",p)
-        self.assertIn("不得自动",p)
+        self.assertIn("不自动执行 Step 06",p)
 
 if __name__=="__main__":
     unittest.main()
