@@ -292,8 +292,8 @@
         {
           "family": "EVIDENCE",
           "signal": "搜索多次只挑最好seed",
-          "local_fix": "报告所有运行与同预算统计",
-          "recheck": "03-D"
+          "local_fix": "记录完整搜索与全seed效应、同预算公平比较；无稳健增益则转03-E有界诊断",
+          "recheck": "03-E"
         }
       ]
     },
