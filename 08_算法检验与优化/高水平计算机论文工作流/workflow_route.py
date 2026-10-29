@@ -24,7 +24,7 @@ def load_routes(root=ROOT):
             key = item["id"]
             if key in found or not re.fullmatch(r"0[1-5]-[A-F]",key) or not key.startswith(stage["id"]+"-"):
                 raise ValueError("Duplicate/invalid route ID")
-            if item["kind"] not in ("required","conditional") or not item["when"]:
+            if item["kind"] not in ("as_needed","required_for_action","conditional") or not item["when"]:
                 raise ValueError("Invalid route trigger")
             found[key] = (path,item)
     if list(found) != EXPECTED:

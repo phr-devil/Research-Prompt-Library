@@ -10,19 +10,19 @@
         {
           "id": "01-A",
           "name": "候选选题",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "新课题或方向重选"
         },
         {
           "id": "01-B",
           "name": "创新性和基线",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "已存在候选"
         },
         {
           "id": "01-C",
           "name": "算法骨架与独立反证",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "可讨论的可证伪增量假设（可保留一般证据缺口）"
         },
         {
@@ -41,25 +41,25 @@
         {
           "id": "02-A",
           "name": "风险与最小判别实验",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "用户选定方向即可设计Pilot，不需全部近邻/基线审查全绿"
         },
         {
           "id": "02-B",
           "name": "数据与评价审计",
-          "kind": "required",
+          "kind": "required_for_action",
           "when": "此次有数据Pilot的关键许可、标签及划分核查"
         },
         {
           "id": "02-C",
           "name": "执行最小实验",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "本次必须数据可用且运行资源已明确获批；无关缺陷可带限制探索"
         },
         {
           "id": "02-D",
           "name": "GO/HOLD/STOP/PIVOT",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "已有有效Pilot结果（含负结果），或遇到需要用户决定的科学阻碍"
         },
         {
@@ -78,25 +78,25 @@
         {
           "id": "03-A",
           "name": "综合研发合同",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "用户在02-D选择有界继续研发或GO；无显著增益也可探索"
         },
         {
           "id": "03-B",
           "name": "正式比较协议",
-          "kind": "required",
+          "kind": "conditional",
           "when": "需要提交正式收益声明前冻结合法评价，探索可记录改动"
         },
         {
           "id": "03-C",
           "name": "算法实现与修复",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "需要实现新算法/修复实际阻断的关键功能（并非仅故障时触发）"
         },
         {
           "id": "03-D",
           "name": "定额探索",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "在合法开发评价及实际获批的预算中开展探索优化"
         },
         {
@@ -108,7 +108,7 @@
         {
           "id": "03-F",
           "name": "正式确认实验",
-          "kind": "required",
+          "kind": "conditional",
           "when": "用户对正式实验单独授权，且有合法确认性数据协议"
         }
       ]
@@ -121,13 +121,13 @@
         {
           "id": "04-A",
           "name": "独立审核任务书",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "具备可审核的探索或正式科学主张时按风险抽样"
         },
         {
           "id": "04-B",
           "name": "独立科学审核",
-          "kind": "required",
+          "kind": "conditional",
           "when": "有原始证据且真实独立审查资源可用，否则诚实标未独立复核"
         },
         {
@@ -139,7 +139,7 @@
         {
           "id": "04-D",
           "name": "论文竞争力决定",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "有独立核查结果，或明确标明未核查并经用户选择先写草稿"
         }
       ]
@@ -152,25 +152,25 @@
         {
           "id": "05-A",
           "name": "论文叙事与定位",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "用户明确选择WRITE_DRAFT或WRITE"
         },
         {
           "id": "05-B",
           "name": "英文论文初稿",
-          "kind": "required",
+          "kind": "as_needed",
           "when": "用户决定起草且能明确区分真实证据与待验证主张"
         },
         {
           "id": "05-C",
           "name": "图表复现检查",
-          "kind": "required",
+          "kind": "required_for_action",
           "when": "正式投稿前核验关键图表，初稿可先制作非最终图"
         },
         {
           "id": "05-D",
           "name": "模拟审稿与批准",
-          "kind": "required",
+          "kind": "conditional",
           "when": "论文接近投稿，必须获取作者对真正外部提交的单独批准"
         },
         {
@@ -182,5 +182,10 @@
       ]
     }
   ],
-  "workflow_version": "5.3"
+  "workflow_version": "5.3",
+  "execution_semantics": {
+    "as_needed": "仅当本次目标缺少有效证据且需要该场景时执行；有可信结果就直接跳过，不强制顺序跑完",
+    "required_for_action": "只针对即将执行的具体受限动作/正式提交所需的最低先决条件，不能因其未完成而阻止无关的只读研究和草稿",
+    "conditional": "只在场景明确条件成立时调用；不以文件中存在就自动执行"
+  }
 }
