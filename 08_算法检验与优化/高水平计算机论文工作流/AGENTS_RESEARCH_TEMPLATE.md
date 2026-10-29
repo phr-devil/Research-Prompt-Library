@@ -1,5 +1,9 @@
 # Research rules — template for AGENTS.md (merge; do not blindly overwrite)
 
+- v5.0 Guided: first user prompt includes prompt-library URL and research goal; read START.md, ORCHESTRATOR.md, ROUTES.json **from prompt library**, not scientific project. Then after each real user choice auto-load only the next eligible scene Prompt; do not request another pasted prompt.
+- During authorized work continue bounded related tasks; at scientific/resource stage gates show a short menu and wait for real later user reply. A direction choice does not authorize GPU/paid/formal experiments.
+- Failure pivot must preserve Category 09 Step 05 exactly-three-candidate and later human-selection gate.
+
 - Primary target: valid, reproducible scientific contributions competitive for high-level computer-science journals/conferences; engineering PASS is not scientific success.
 - Sources of truth: use the repository's verified state/evidence paths, not chat recollection; claim evidence as OBSERVED/EXPLORATORY/CONFIRMED/INVALID/UNKNOWN.
 - Do the smallest discriminating scientific check first. Strong and fair baselines, negative controls, independent labels/splits, causal temporal alignment, correct statistical units, and untouched confirmation test take precedence over added complexity.

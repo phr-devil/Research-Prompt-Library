@@ -116,6 +116,25 @@ def validate(root=ROOT):
         if not all(re.search(rf"^{key}:\s*\S+", frontmatter, re.M) for key in ("name", "description")):
             errors.append("workflow SKILL.md: missing name or description")
 
+    # Guided v5.0: validate registry, source paths and all 24 isolated prompts.
+    guided = root / "08_算法检验与优化/高水平计算机论文工作流"
+    for name in ("START.md", "ORCHESTRATOR.md", "ROUTES.json", "workflow_route.py"):
+        if not (guided / name).is_file():
+            errors.append("Missing v5 guided component: " + name)
+    if (guided / "ROUTES.json").is_file() and (guided / "workflow_route.py").is_file():
+        try:
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("workflow_route", guided / "workflow_route.py")
+            loader = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(loader)
+            for ident, (path, _) in loader.load_routes(guided).items():
+                loader.extract(path, ident)
+            rules = (guided / "ORCHESTRATOR.md").read_text(encoding="utf-8")
+            for token in ("WAITING_FOR_USER_DECISION", "GPU", "P1/P2/P3"):
+                if token not in rules: errors.append("Missing v5 gate: "+token)
+        except (ValueError, KeyError, OSError, ImportError, AttributeError) as e:
+            errors.append("Invalid v5 route configuration: " + str(e))
+
     nine = root / "09_失败算法项目挽救与转向"
     landing, workflow, gate = (nine / "README.md", nine / "WORKFLOW.md", nine / "salvage_gate.py")
     if not all(p.is_file() for p in (landing, workflow, gate)):

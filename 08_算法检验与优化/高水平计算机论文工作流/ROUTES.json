@@ -1,0 +1,185 @@
+{
+  "version": "5.0.0",
+  "description": "Selector registry; never grants authorization or runs a model",
+  "stages": [
+    {
+      "id": "01",
+      "file": "01_科学选题与跨AI审核.md",
+      "exit_gate": "SELECT_TOPIC",
+      "routes": [
+        {
+          "id": "01-A",
+          "name": "候选选题",
+          "kind": "required",
+          "when": "新课题或方向重选"
+        },
+        {
+          "id": "01-B",
+          "name": "创新性和基线",
+          "kind": "required",
+          "when": "已存在候选"
+        },
+        {
+          "id": "01-C",
+          "name": "算法骨架与独立反证",
+          "kind": "required",
+          "when": "已有可证伪增量"
+        },
+        {
+          "id": "01-D",
+          "name": "最小科学转向",
+          "kind": "conditional",
+          "when": "核心贡献完全被覆盖/真值或资源阻断"
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "file": "02_最小科学验证与决策.md",
+      "exit_gate": "PILOT_GO",
+      "routes": [
+        {
+          "id": "02-A",
+          "name": "风险与最小判别实验",
+          "kind": "required",
+          "when": "选题已获用户批准"
+        },
+        {
+          "id": "02-B",
+          "name": "数据与评价审计",
+          "kind": "required",
+          "when": "真实实验前"
+        },
+        {
+          "id": "02-C",
+          "name": "执行最小实验",
+          "kind": "required",
+          "when": "数据审计合格并获实验授权"
+        },
+        {
+          "id": "02-D",
+          "name": "GO/HOLD/STOP/PIVOT",
+          "kind": "required",
+          "when": "最小验证已有可信结果"
+        },
+        {
+          "id": "02-E",
+          "name": "异常定向诊断",
+          "kind": "conditional",
+          "when": "基线更强/负对照异常"
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "file": "03_完整算法研发与正式实验.md",
+      "exit_gate": "FORMAL_RESOURCE",
+      "routes": [
+        {
+          "id": "03-A",
+          "name": "综合研发合同",
+          "kind": "required",
+          "when": "用户批准 GO"
+        },
+        {
+          "id": "03-B",
+          "name": "正式比较协议",
+          "kind": "required",
+          "when": "正式宣称收益前"
+        },
+        {
+          "id": "03-C",
+          "name": "算法实现与修复",
+          "kind": "required",
+          "when": "算法功能不可靠"
+        },
+        {
+          "id": "03-D",
+          "name": "定额探索",
+          "kind": "required",
+          "when": "公平评价及预算可用"
+        },
+        {
+          "id": "03-E",
+          "name": "异常专项分支",
+          "kind": "conditional",
+          "when": "无增益或协议失效"
+        },
+        {
+          "id": "03-F",
+          "name": "正式确认实验",
+          "kind": "required",
+          "when": "研究者单独授权资源"
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "file": "04_独立科学验证.md",
+      "exit_gate": "WRITE_REVIEW",
+      "routes": [
+        {
+          "id": "04-A",
+          "name": "独立审核任务书",
+          "kind": "required",
+          "when": "实验有可审核主张"
+        },
+        {
+          "id": "04-B",
+          "name": "独立科学审核",
+          "kind": "required",
+          "when": "原始材料与真实独立审查者可用"
+        },
+        {
+          "id": "04-C",
+          "name": "审核补救复核",
+          "kind": "conditional",
+          "when": "严重缺陷触发"
+        },
+        {
+          "id": "04-D",
+          "name": "论文竞争力决定",
+          "kind": "required",
+          "when": "有真实审核或诚实标记缺席"
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "file": "05_论文撰写与投稿.md",
+      "exit_gate": "AUTHOR_SUBMISSION",
+      "routes": [
+        {
+          "id": "05-A",
+          "name": "论文叙事与定位",
+          "kind": "required",
+          "when": "获得 WRITE 批准"
+        },
+        {
+          "id": "05-B",
+          "name": "英文论文初稿",
+          "kind": "required",
+          "when": "证据足够"
+        },
+        {
+          "id": "05-C",
+          "name": "图表复现检查",
+          "kind": "required",
+          "when": "投稿前"
+        },
+        {
+          "id": "05-D",
+          "name": "模拟审稿与批准",
+          "kind": "required",
+          "when": "论文准备提交"
+        },
+        {
+          "id": "05-E",
+          "name": "正式审稿返修",
+          "kind": "conditional",
+          "when": "收到真实审稿意见"
+        }
+      ]
+    }
+  ]
+}

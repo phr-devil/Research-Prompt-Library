@@ -33,12 +33,14 @@ jobs:
       - name: Run offline unit tests and syntax checks
         run: |
           python3 --version
-          python3 -m unittest -v test_eval_runner.py test_salvage_gate.py test_library_check.py test_novelty_policy.py
-          python3 -m py_compile eval_runner.py test_eval_runner.py library_check.py test_salvage_gate.py test_library_check.py test_novelty_policy.py 09_失败算法项目挽救与转向/salvage_gate.py
+          python3 -m unittest -v test_eval_runner.py test_salvage_gate.py test_library_check.py test_novelty_policy.py test_workflow_route.py
+          python3 -m py_compile eval_runner.py test_eval_runner.py library_check.py test_salvage_gate.py test_library_check.py test_novelty_policy.py test_workflow_route.py 08_算法检验与优化/高水平计算机论文工作流/workflow_route.py 09_失败算法项目挽救与转向/salvage_gate.py
           python3 library_check.py
           python3 -m json.tool EVAL_CASES.json > /dev/null
           python3 -m json.tool EVAL_CASES_CURRENT.json > /dev/null
           python3 -m json.tool LIBRARY_INDEX.json > /dev/null
+          python3 -m json.tool 08_算法检验与优化/高水平计算机论文工作流/ROUTES.json > /dev/null
+          python3 08_算法检验与优化/高水平计算机论文工作流/workflow_route.py --check
 
       - name: Verify pilot and full fixture plans without model calls
         run: |
