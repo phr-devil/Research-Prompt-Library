@@ -81,6 +81,10 @@
 
 以上是方法参考，并非声称已经在本仓库运行或完成论文级真实模型测试。
 
+## 2026-10-29 第08项 v5.2 轻量门禁与缺陷分流
+
+新 [TRIAGE.md](08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) 与 [TRIAGE_POLICY.json](08_算法检验与优化/高水平计算机论文工作流/TRIAGE_POLICY.json) 明确 CRITICAL/REPAIRABLE/MINOR 的受影响行动分流，允许负的Pilot结果经用户选择继续有限探索、暂缺独立审核时先写受限草稿，禁止以降低流程门槛虚构数据/确认性增益或自动获取GPU授权。本次只是流程规则修订，没有真实性能或论文发表成功率增益实测。
+
 ## 2026-10-29 第08项 v5.1 按阶段验证与有界修复
 
 [RECOVERY.md](08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md) 与 [REPAIR_ROUTES.json](08_算法检验与优化/高水平计算机论文工作流/REPAIR_ROUTES.json) 为24条科研 Prompt 对应48个验证异常提供诊断、最小修复与回退；按需加载，不是新强制阶段。参考 [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/main/skills/systematic-debugging/SKILL.md)、[Test Driven Development](https://github.com/obra/superpowers/blob/main/skills/test-driven-development/SKILL.md)、[Karpathy autoresearch](https://github.com/karpathy/autoresearch/blob/master/program.md)、[Cleanlab](https://github.com/cleanlab/cleanlab)、[MLflow](https://github.com/mlflow/mlflow) 及 [Evidently](https://github.com/evidentlyai/evidently) 的故障归因、可复验、数据标签与实验跟踪模式；未运行外部工具也未证实科研模型性能收益。
