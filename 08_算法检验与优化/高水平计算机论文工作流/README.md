@@ -1,6 +1,14 @@
-# 高水平计算机算法论文科研工作流 v4.1
+# 高水平计算机算法论文科研工作流 v5.0（科研内核 v4.1 保留）
 
-> Research Workflow v4.1 · 2026-10-28 · 为高水平计算机领域论文建立可复现的科学证据，而非追求工程 PASS 数。
+> Research Workflow v5.0 · 2026-10-29 · 为高水平计算机领域论文建立可复现的科学证据，而非追求工程 PASS 数。
+
+## 唯一启动入口（建议）
+
+首次只复制 [START.md](START.md) 的**一段总控 Prompt** 并填写 GitHub URL 与科研目标。后续在同一会话仅需回复 A/B/C 或自然语言决策，由 [ORCHESTRATOR.md](ORCHESTRATOR.md) 判断下一路由、按 [ROUTES.json](ROUTES.json) **自动按需读取原有24条 Prompt**，不再让你逐项复制。
+
+- 本地 Codex/WorkBuddy：克隆提示词库后运行 `python workflow_route.py --id 01-A` 读取指定 Prompt，或 `python workflow_route.py --check` 验证全部24条。它只读文件，**不执行科研实验或替你授权**。
+- ChatGPT：须使用实际可用的 GitHub/文件读取工具。仅给 URL 不能让不支持访问仓库的模型自动读取，不能承诺回复后无触发地后台运行。
+- 仅在科研选题、跨阶段、正式实验、GPU/付费、协议变更或投稿等门禁给出**精简 2–3 个选项**；已授权的普通同阶段工作自动连贯处理。第09章的 P1/P2/P3 人工选择门禁原样保留。
 
 ## 开始使用
 
@@ -13,6 +21,8 @@
 | ③ 完整算法研发与正式实验 | [03 研发](03_完整算法研发与正式实验.md) | Codex/WorkBuddy | 03-A/B/C/D/F（按依赖） | 03-E |
 | ④ 独立科学验证 | [04 审核](04_独立科学验证.md) | 独立审查 Agent + ChatGPT | 04-A/B/D | 04-C |
 | ⑤ 论文撰写、投稿及返修 | [05 论文](05_论文撰写与投稿.md) | ChatGPT + 你 | 05-A/B/C/D | 05-E |
+
+v5.0 只增加控制层，原有 v4.1 五阶段与24个场景 Prompt 全部保持，可继续逐项手动使用。
 
 总计 **24 个场景 Prompt**（4+5+6+4+5）。需要什么就打开哪一条，避免逐条机械执行。
 
@@ -42,6 +52,10 @@
 ## 与旧 V01/V02/V03 的关系
 
 原 [V01](../V01_目标驱动的算法检验任务规划.md)、[V02](../跨AI独立审查/V02_独立审查触发与范围判断.md)、[V03](../跨AI独立审查/V03_算法证据交接与独立复核.md) 已改成兼容入口，详细内容以本模块③/④为唯一主版本，避免两套协议冲突。历史全文仍可从 Git 提交记录找到。
+
+## 自动导航参考
+
+流程设计借鉴 [GSD](https://github.com/gsd-build/get-shit-done) 的进度恢复、[BMad](https://github.com/bmad-code-org/BMAD-METHOD) 的选择式引导、[Superpowers](https://github.com/obra/superpowers) 的审查门禁、[ResearchStudio](https://github.com/microsoft/ResearchStudio) 的科研分工。只是方法参考，未原生调用外部框架，也未进行真实模型 A/B 效果测试。
 
 ## 参考项目
 
