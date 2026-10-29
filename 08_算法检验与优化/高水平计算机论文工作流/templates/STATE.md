@@ -9,6 +9,8 @@
 - AUTH_SCOPE: <specific authorized resource, budget, stop criteria and real user message; none otherwise>
 - NEXT: <next route or WAITING_FOR_USER_DECISION>
 - INCIDENT: <failure route/type, original evidence, root-cause hypothesis, attempts, minimal repair, recheck, invalidated Claim/Run, remaining authorized budget>
+- DEFECT_TRIAGE: <ISSUE_ID / CRITICAL|REPAIRABLE|MINOR / affected target action / evidence / limitations / revisit_before / real user's later choice>
+- ROUTE_READINESS: <VERIFIED | READY_WITH_LIMITATIONS | BLOCKED_CRITICAL (scoped) | PARTIAL>
 
 - USER_INTENT_SOURCE: <verbatim research goal or link to the user's original message; not an inferred rewrite>
 - RESEARCH_CLAIM: <one falsifiable sentence>

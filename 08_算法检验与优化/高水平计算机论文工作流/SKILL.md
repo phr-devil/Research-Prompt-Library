@@ -3,12 +3,13 @@ name: research-paper-workflow
 description: Route high-level computer-science algorithm research through five evidence-gated stages; automatically load the next eligible scientific prompt after human choices while respecting evidence and authorization gates.
 ---
 
-# Research Paper Workflow — v5.1 guided router (v4.1 core)
+# Research Paper Workflow — v5.2 severity-guided router (v4.1 core)
 
 本 Skill 是路由器，不是授权许可；仅当你的 Codex/Agent **实际安装并识别**时才能原生调用，ChatGPT 可在线阅读以下 Markdown 参考。
 
 0. 首次收到用户科研目标 + 提示词库 URL 时，先读 [START.md](START.md)、[ORCHESTRATOR.md](ORCHESTRATOR.md)、[ROUTES.json](ROUTES.json)；后续真实用户选择直接恢复 STATE 并读取下一场景 Prompt。未安装的 Skill 不会在任意平台自动触发。Skill 未实际安装/识别时，只可阅读 Markdown 并用可用工具执行；不得宣称已调用第三方 Skill。一个场景 Prompt 独立复制时仍遵守授权、证据与止损底线。
-1. 首先依据可信 STATE/实验结果判定当前五阶段中的哪一阶段；已有可信证据时直接从相应阶段开始，不强制从①重来。
+1. 按 [TRIAGE.md](TRIAGE.md) / [TRIAGE_POLICY.json](TRIAGE_POLICY.json) 将缺陷依受影响目标分级：CRITICAL 阻断受影响动作，REPAIRABLE 用户选择继续/修复/调整，MINOR 自动记账跳过；无需24步骤全部全绿。不得以放宽为由跳过真实证据或GPU独立授权。
+2. 首先依据可信 STATE/实验结果判定当前五阶段中的哪一阶段；已有可信证据时直接从相应阶段开始，不强制从①重来。
 2. 先读 [共享科研规则](00_统一规则与Skill映射.md)，然后**只加载当前阶段**之一：[①选题](01_科学选题与跨AI审核.md)、[②最小验证](02_最小科学验证与决策.md)、[③算法研发](03_完整算法研发与正式实验.md)、[④独立审查](04_独立科学验证.md)、[⑤论文](05_论文撰写与投稿.md)。
 3. 遵守 ROUTES.json 的 required/conditional 触发；阶段内只执行满足触发条件的一项或一组相关 Prompt；不得机械遍历所有24条。
 4. 当前 route 发生验证失败时，只加载 [RECOVERY.md](RECOVERY.md) 和 [REPAIR_ROUTES.json](REPAIR_ROUTES.json) 中对应条目。先复现/归因，单一假设→最小修复→针对性复验；工程连续3次修复仍失败或科学两轮诊断无新证据则停下来请用户选择，已有更严格预算优先。真值缺失或正式test污染不得靠调参解决。
