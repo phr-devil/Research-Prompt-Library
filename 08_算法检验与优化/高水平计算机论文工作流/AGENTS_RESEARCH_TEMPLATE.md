@@ -1,5 +1,7 @@
 # Research rules — template for AGENTS.md (merge; do not blindly overwrite)
 
+- Guided v5.1 repair: on failed verification read only that scene's RECOVERY.md / REPAIR_ROUTES.json recipe. Diagnose engineering vs data/protocol invalid vs real scientific negative before one scoped fix and affected tests; do not blindly retrain. Engineering 3 failed attempts or 2 noninformative scientific diagnostics requires user decision (stricter existing budget prevails). No auto-approval of GPU or altered test protocol.
+
 - v5.0 Guided: first user prompt includes prompt-library URL and research goal; read START.md, ORCHESTRATOR.md, ROUTES.json **from prompt library**, not scientific project. Then after each real user choice auto-load only the next eligible scene Prompt; do not request another pasted prompt.
 - During authorized work continue bounded related tasks; at scientific/resource stage gates show a short menu and wait for real later user reply. A direction choice does not authorize GPU/paid/formal experiments.
 - Failure pivot must preserve Category 09 Step 05 exactly-three-candidate and later human-selection gate.

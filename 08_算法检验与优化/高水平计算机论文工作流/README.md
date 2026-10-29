@@ -1,11 +1,12 @@
-# 高水平计算机算法论文科研工作流 v5.0（科研内核 v4.1 保留）
+# 高水平计算机算法论文科研工作流 v5.1（科研内核 v4.1 保留）
 
-> Research Workflow v5.0 · 2026-10-29 · 为高水平计算机领域论文建立可复现的科学证据，而非追求工程 PASS 数。
+> Research Workflow v5.1 · 2026-10-29 · 为高水平计算机领域论文建立可复现的科学证据，而非追求工程 PASS 数。
 
 ## 唯一启动入口（建议）
 
 首次只复制 [START.md](START.md) 的**一段总控 Prompt** 并填写 GitHub URL 与科研目标。后续在同一会话仅需回复 A/B/C 或自然语言决策，由 [ORCHESTRATOR.md](ORCHESTRATOR.md) 判断下一路由、按 [ROUTES.json](ROUTES.json) **自动按需读取原有24条 Prompt**，不再让你逐项复制。
 
+- **v5.1 异常修复**：[RECOVERY.md](RECOVERY.md) 规定先定位根因、最小修复、合法复验和止损；[REPAIR_ROUTES.json](REPAIR_ROUTES.json) 为原有24个场景列出48种常见失败与返回目标。本地可 `python workflow_route.py --repair 02-B` 仅查看此步骤的修复建议，不会执行 GPU 或训练。
 - 本地 Codex/WorkBuddy：克隆提示词库后运行 `python workflow_route.py --id 01-A` 读取指定 Prompt，或 `python workflow_route.py --check` 验证全部24条。它只读文件，**不执行科研实验或替你授权**。
 - ChatGPT：须使用实际可用的 GitHub/文件读取工具。仅给 URL 不能让不支持访问仓库的模型自动读取，不能承诺回复后无触发地后台运行。
 - 仅在科研选题、跨阶段、正式实验、GPU/付费、协议变更或投稿等门禁给出**精简 2–3 个选项**；已授权的普通同阶段工作自动连贯处理。第09章的 P1/P2/P3 人工选择门禁原样保留。

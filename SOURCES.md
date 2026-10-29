@@ -81,6 +81,10 @@
 
 以上是方法参考，并非声称已经在本仓库运行或完成论文级真实模型测试。
 
+## 2026-10-29 第08项 v5.1 按阶段验证与有界修复
+
+[RECOVERY.md](08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md) 与 [REPAIR_ROUTES.json](08_算法检验与优化/高水平计算机论文工作流/REPAIR_ROUTES.json) 为24条科研 Prompt 对应48个验证异常提供诊断、最小修复与回退；按需加载，不是新强制阶段。参考 [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/main/skills/systematic-debugging/SKILL.md)、[Test Driven Development](https://github.com/obra/superpowers/blob/main/skills/test-driven-development/SKILL.md)、[Karpathy autoresearch](https://github.com/karpathy/autoresearch/blob/master/program.md)、[Cleanlab](https://github.com/cleanlab/cleanlab)、[MLflow](https://github.com/mlflow/mlflow) 及 [Evidently](https://github.com/evidentlyai/evidently) 的故障归因、可复验、数据标签与实验跟踪模式；未运行外部工具也未证实科研模型性能收益。
+
 ## 2026-10-29 第08项 v5.0 自动引导层
 
 新增 [START.md](08_算法检验与优化/高水平计算机论文工作流/START.md)、[ORCHESTRATOR.md](08_算法检验与优化/高水平计算机论文工作流/ORCHESTRATOR.md)、[ROUTES.json](08_算法检验与优化/高水平计算机论文工作流/ROUTES.json) 和只读路由加载器。借鉴 [GSD](https://github.com/gsd-build/get-shit-done) 状态恢复、[BMad Method](https://github.com/bmad-code-org/BMAD-METHOD) 菜单引导、[Superpowers](https://github.com/obra/superpowers) 执行门禁、[Microsoft ResearchStudio](https://github.com/microsoft/ResearchStudio) 科研分解机制。并未安装这些框架、没有测量真实 Token 节省或模型效果。
