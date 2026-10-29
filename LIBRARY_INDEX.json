@@ -240,7 +240,7 @@
   },
   {
     "id": "WF41",
-    "name": "高水平科研工作流 v5.3（可选场景、风险分流、去重确认）",
+    "name": "高水平科研工作流 v5.4（三级风险、断点选择校验与安全续研）",
     "group": "08_算法检验与优化",
     "file": "08_算法检验与优化/高水平计算机论文工作流/README.md",
     "source_urls": [
@@ -250,7 +250,7 @@
       "https://github.com/Orchestra-Research/AI-Research-SKILLs",
       "https://github.com/anthropics/knowledge-work-plugins"
     ],
-    "source_status": "相容原24条场景与五阶段；现按需执行而非全绿门禁，修复路由触发与阶段Prompt不一致、状态定义混用与重复风险选择，增添只读分支结果检测测试。GPU/正式实验授权和真值约束不变；真实LLM效果/Token节省尚未量化。"
+    "source_status": "在v5.3按需导航基础上修复用户HOLD被自动继续覆盖、UNKNOWN无程序分支、状态缓存选择被错误复用以及Prompt代码块围栏混搭不被发现的问题；添加离线回归测试，保留人工真实授权边界。未测真实大模型工作效率或完成率。"
   },
   {
     "id": "V09",

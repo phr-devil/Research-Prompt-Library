@@ -8,15 +8,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 EXPECTED = [f"{s:02d}-{chr(65+i)}" for s,n in enumerate((4,5,6,4,5),1) for i in range(n)]
-FENCE = re.compile(r"(?:\x60{3}|~{3})text\s*\n([\s\S]*?)\n(?:\x60{3}|~{3})")
+FENCE = re.compile(r"(?m)^(?P<mark>`{3}|~{3})text[ \t]*\r?\n(?P<body>[\s\S]*?)\r?\n(?P=mark)[ \t]*$")
 
 
 def load_routes(root=ROOT):
     catalog = json.loads((root/"ROUTES.json").read_text(encoding="utf-8"))
     if catalog.get("version") != "5.0.0":
         raise ValueError("Unknown route manifest")
+    if len(catalog.get("stages", [])) != 5:
+        raise ValueError("Expected exactly five research stages")
     found = {}
-    for stage in catalog["stages"]:
+    for index, stage in enumerate(catalog["stages"], 1):
+        if stage.get("id") != f"{index:02d}" or not isinstance(stage.get("file"), str):
+            raise ValueError("Stage IDs must match the expected order")
+        if not stage["file"].startswith(stage["id"]+"_"):
+            raise ValueError("Stage file does not match stage ID")
         path = (root/stage["file"]).resolve()
         if not path.is_relative_to(root.resolve()) or not path.is_file() or path.suffix != ".md":
             raise ValueError("Unsafe or absent stage file")
@@ -40,10 +46,10 @@ def extract(path,key):
     tail = doc[m.end():]
     end = re.search(r"(?m)^## ",tail)
     section = tail[:end.start()] if end else tail
-    blocks = FENCE.findall(section)
-    if len(blocks) != 1 or len(blocks[0].strip())<100:
-        raise ValueError("Expected one full text Prompt for "+key)
-    return blocks[0].strip()
+    blocks = list(FENCE.finditer(section))
+    if len(blocks) != 1 or len(blocks[0].group("body").strip()) < 100:
+        raise ValueError("Expected one correctly closed text Prompt for " + key)
+    return blocks[0].group("body").strip()
 
 
 
@@ -141,37 +147,77 @@ def show_triage(key):
         rule=doc["levels"][level]
         out.append(level+": "+rule["default"]+" — "+rule["meaning"])
         if rule["menu"]:out.append("OPTIONS: "+" / ".join(rule["menu"]))
-    out.append("UNKNOWN != automatically CRITICAL; separate user approval still required for GPU/formal/paid actions.")
+    out.append("UNKNOWN -> NEEDS_MINIMAL_EVIDENCE_CHECK (not automatic CRITICAL).")
+    out.append("Actual later user messages must be verified by the host; stored choices alone are not approval.")
+    out.append("No GPU/formal/paid permission is conferred by this read-only tool.")
     return "\n".join(out)
 
 
 def propose_transition(level, intent, choice=None, policy=None):
-    """Advisory only. Never verifies real user approval or the factual severity.
-    Result is a proposed routing status, NOT execution permission.
+    """Offline routing suggestion, NOT evidence validation or user authorization.
+
+    Explicit HOLD/REPAIR/REFRAME requests have precedence over optional auto-continue.
+    UNKNOWN calls for a narrow evidence check, never an automatic positive conclusion.
     """
     if policy is None:
-        policy=load_triage()
-    if level not in policy["levels"] or intent not in policy["action_intents"]:
-        raise ValueError("Unknown level or action intent")
+        policy = load_triage()
+    if level not in (*policy["levels"], "UNKNOWN") or intent not in policy["action_intents"]:
+        raise ValueError("Unknown severity or action intent")
     if choice is not None and choice not in policy["choice_codes"]:
         raise ValueError("Unknown proposed user choice")
-    if level=="CRITICAL":
+    if level == "CRITICAL":
         return "BLOCKED_CRITICAL"
-    if intent in ("FORMAL_RUN","CONFIRMED_CLAIM","SUBMISSION"):
+    if choice == "HOLD":
+        return "HOLD"
+    if choice == "REPAIR_FIRST":
+        return "TARGETED_REPAIR"
+    if choice == "REFRAME":
+        return "NEEDS_USER_RESEARCH_SCOPE_CONFIRMATION"
+    if intent in ("FORMAL_RUN", "CONFIRMED_CLAIM", "SUBMISSION"):
         return "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE"
-    if level=="MINOR":
+    if level == "UNKNOWN":
+        return "NEEDS_MINIMAL_EVIDENCE_CHECK"
+    if level == "MINOR":
         return "DEFERRED_MINOR_CONTINUE"
     if choice is None:
         return "WAITING_FOR_USER_DECISION"
-    if choice=="CONTINUE_LIMITED":
+    if choice == "CONTINUE_LIMITED":
         if intent not in policy["allowed_limited_intents"]:
             return "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE"
         return "PROPOSED_READY_WITH_LIMITATIONS"
-    if choice=="REPAIR_FIRST":
-        return "TARGETED_REPAIR"
-    if choice=="REFRAME":
-        return "NEEDS_USER_RESEARCH_SCOPE_CONFIRMATION"
-    return "HOLD"
+    raise ValueError("Unrecognized choice state")
+
+
+def can_reuse_risk_choice(saved, current, *, user_message_verified=False):
+    """Advisory matching only. Caller must independently verify the *later* real
+    user message, its origin, and its content; a state file is never approval.
+    """
+    if not user_message_verified or not isinstance(saved, dict) or not isinstance(current, dict):
+        return False
+    if saved.get("choice") != "CONTINUE_LIMITED":
+        return False
+    if saved.get("level") != "REPAIRABLE" or current.get("level") != "REPAIRABLE":
+        return False
+    if current.get("review_due") is not False or current.get("permission_revoked") is not False:
+        return False
+    if current.get("new_user_override") is not False:
+        return False
+    required = ("decision_id", "issue_id", "claim_id", "claim_fingerprint",
+                "data_fingerprint", "protocol_fingerprint", "action_intent",
+                "allowed_scope", "revisit_before", "source_commit")
+    if any(not isinstance(saved.get(k), str) or not saved[k].strip()
+           or saved[k] != current.get(k) for k in required):
+        return False
+    if saved["action_intent"] not in ("READ_ONLY_RESEARCH", "SCOPED_EXPLORATION",
+                                     "DRAFT_PREPARATION"):
+        return False
+    menu = saved.get("menu_message_reference")
+    reply = saved.get("user_message_reference")
+    if not isinstance(menu, str) or not isinstance(reply, str):
+        return False
+    if not menu.strip() or not reply.strip() or menu == reply:
+        return False
+    return True
 
 
 def main():

@@ -146,6 +146,74 @@ class V5Tests(unittest.TestCase):
         stage5=(root/"05_论文撰写与投稿.md").read_text(encoding="utf-8")
         self.assertIn("UNVERIFIED",stage5)
 
+    def test_hold_and_repair_override_auto_continue(self):
+        self.assertEqual(router.propose_transition("MINOR", "READ_ONLY_RESEARCH", "HOLD"), "HOLD")
+        self.assertEqual(router.propose_transition("MINOR", "SCOPED_EXPLORATION", "REPAIR_FIRST"),
+                         "TARGETED_REPAIR")
+        self.assertEqual(router.propose_transition("REPAIRABLE", "FORMAL_RUN", "HOLD"), "HOLD")
+        self.assertEqual(router.propose_transition("REPAIRABLE", "SUBMISSION", "REFRAME"),
+                         "NEEDS_USER_RESEARCH_SCOPE_CONFIRMATION")
+        self.assertEqual(router.propose_transition("CRITICAL", "READ_ONLY_RESEARCH", "HOLD"),
+                         "BLOCKED_CRITICAL")
+
+    def test_unknown_requires_evidence_not_automatic_stop_or_progress(self):
+        for intent in ("READ_ONLY_RESEARCH", "SCOPED_EXPLORATION", "DRAFT_PREPARATION"):
+            self.assertEqual(router.propose_transition("UNKNOWN", intent),
+                             "NEEDS_MINIMAL_EVIDENCE_CHECK")
+            self.assertEqual(router.propose_transition("UNKNOWN", intent, "CONTINUE_LIMITED"),
+                             "NEEDS_MINIMAL_EVIDENCE_CHECK")
+        for intent in ("FORMAL_RUN", "CONFIRMED_CLAIM", "SUBMISSION"):
+            self.assertEqual(router.propose_transition("UNKNOWN", intent, "CONTINUE_LIMITED"),
+                             "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE")
+
+    def test_risk_choice_reuse_only_when_all_guards_match(self):
+        base=dict(decision_id="D1", issue_id="I1", claim_id="C1", claim_fingerprint="c123",
+                  data_fingerprint="d123", protocol_fingerprint="p123",
+                  action_intent="SCOPED_EXPLORATION", allowed_scope="fixed-CPU-study",
+                  revisit_before="next-confirmation", source_commit="sha1",
+                  level="REPAIRABLE", choice="CONTINUE_LIMITED",
+                  menu_message_reference="authentic-menu-1",
+                  user_message_reference="authentic-user-reply-2")
+        current=dict(base, review_due=False, permission_revoked=False, new_user_override=False)
+        self.assertFalse(router.can_reuse_risk_choice(base, current))
+        self.assertTrue(router.can_reuse_risk_choice(base, current, user_message_verified=True))
+        for field, value in (("data_fingerprint", "new-data"), ("protocol_fingerprint", "new-protocol"),
+                             ("claim_fingerprint", "new-claim"), ("action_intent", "FORMAL_RUN"),
+                             ("source_commit", "new-source"), ("allowed_scope", "expanded"),
+                             ("issue_id", "new-risk"), ("level", "CRITICAL"),
+                             ("review_due", True), ("permission_revoked", True),
+                             ("new_user_override", True)):
+            new=dict(current, **{field:value})
+            self.assertFalse(router.can_reuse_risk_choice(base,new,user_message_verified=True),field)
+        malicious=dict(base,user_message_reference="authentic-menu-1")
+        self.assertFalse(router.can_reuse_risk_choice(malicious,current,user_message_verified=True))
+        no_approval=dict(base)
+        no_approval.pop("user_message_reference")
+        self.assertFalse(router.can_reuse_risk_choice(no_approval,current,user_message_verified=True))
+        no_fingerprint=dict(base)
+        no_fingerprint.pop("protocol_fingerprint")
+        self.assertFalse(router.can_reuse_risk_choice(no_fingerprint,current,user_message_verified=True))
+        not_decision=dict(base,choice="REPAIR_FIRST")
+        self.assertFalse(router.can_reuse_risk_choice(not_decision,current,user_message_verified=True))
+
+    def test_invalid_stage_mapping_and_mismatched_fences_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d)
+            catalog=json.loads((ROOT/"ROUTES.json").read_text(encoding="utf-8"))
+            catalog["stages"][0]["id"]="02"
+            (p/"ROUTES.json").write_text(json.dumps(catalog),encoding="utf-8")
+            with self.assertRaises(ValueError):
+                router.load_routes(root=p)
+            invalid=p/"bad.md"
+            invalid.write_text("## 01-A｜Broken\n\x60\x60\x60text\n"+"x"*150+"\n~~~\n",
+                               encoding="utf-8")
+            with self.assertRaises(ValueError):
+                router.extract(invalid,"01-A")
+            valid=p/"valid.md"
+            valid.write_text("## 01-A｜OK\n~~~text\n"+"x"*150+"\n~~~\n",
+                             encoding="utf-8")
+            self.assertEqual(router.extract(valid,"01-A"),"x"*150)
+
     def test_human_gates_preserved(self):
         s=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
         for token in ("WAITING_FOR_USER_DECISION","GPU","P1/P2/P3","真实新消息"):
