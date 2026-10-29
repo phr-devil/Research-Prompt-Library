@@ -40,6 +40,33 @@ class V5Tests(unittest.TestCase):
                 "file":"../../README.md","routes":[]}]}),encoding="utf-8")
             with self.assertRaises(ValueError):router.load_routes(p)
 
+    def test_repair_catalog_24_scenes_48_failures(self):
+        families, scenes=router.load_repairs()
+        self.assertEqual(len(scenes),24)
+        self.assertEqual(sum(len(v) for v in scenes.values()),48)
+        for name in ("SCIENTIFIC","LEAKAGE","AUTH"):
+            self.assertIn(name,families)
+        self.assertIn("RECHECK_ROUTE: 03-E",router.render_repair("03-D"))
+
+    def test_cli_repair_is_read_only_and_unknown_fails(self):
+        p=str(ROOT/"workflow_route.py")
+        ok=subprocess.run([sys.executable,p,"--repair","02-B"],capture_output=True,text=True)
+        self.assertEqual(ok.returncode,0)
+        self.assertIn("REPAIR_DIAGNOSTICS: 02-B",ok.stdout)
+        self.assertIn("approval remains separate",ok.stdout)
+        bad=subprocess.run([sys.executable,p,"--repair","../x"],capture_output=True,text=True)
+        self.assertEqual(bad.returncode,2)
+        self.assertIn("Unknown repair route",bad.stderr)
+
+    def test_repair_corrupted_return_route_fails_closed(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d)
+            c=json.loads((ROOT/"REPAIR_ROUTES.json").read_text(encoding="utf-8"))
+            c["scenes"][0]["failures"][0]["recheck"]="99-X"
+            (p/"REPAIR_ROUTES.json").write_text(json.dumps(c),encoding="utf-8")
+            with self.assertRaises(ValueError):
+                router.load_repairs(root=p,routes=router.load_routes())
+
     def test_human_gates_preserved(self):
         s=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
         for token in ("WAITING_FOR_USER_DECISION","GPU","P1/P2/P3","真实新消息"):
