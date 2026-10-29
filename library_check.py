@@ -133,7 +133,7 @@ def validate(root=ROOT):
             errors.append("09 refinement stage must be after user selection and before Step 06")
         for marker in ("05R_REFINED_PROJECT.md", "READY_FOR_STEP06",
                        "NEEDS_USER_CONFIRMATION", "BLOCKED", "独立真值",
-                       "强基线", "不得自动"):
+                       "强基线", "不自动执行 Step 06"):
             if marker not in body:
                 errors.append("Missing 09 refinement contract: "+marker)
         if body.find("### STEP 05") >= body.find("### STEP 06"):
