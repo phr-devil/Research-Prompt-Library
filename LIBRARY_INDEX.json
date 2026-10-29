@@ -254,9 +254,9 @@
   },
   {
     "id": "V09",
-    "name": "第09章：失败算法项目成果挽救与课题转向（六阶段）",
-    "group": "08_算法检验与优化/跨AI独立审查",
-    "file": "08_算法检验与优化/跨AI独立审查/09_失败算法项目成果挽救与课题转向.md",
+    "name": "失败科研项目挽救与课题转向（Step 05 三项目人工选择门禁）",
+    "group": "09_失败算法项目挽救与转向",
+    "file": "09_失败算法项目挽救与转向/README.md",
     "source_urls": [
       "https://github.com/obra/superpowers",
       "https://github.com/treeverse/dvc",
@@ -267,6 +267,6 @@
       "https://github.com/Research-Equality/RE-idea-generation",
       "https://github.com/UCL-ERL/skills"
     ],
-    "source_status": "原创融合改写：针对已确认失败/NO-GO 项目的六阶段证据归档、失败分析、资产复用、研究价值判定、课题转向与最小证伪；参考 GitHub Skill 方法，不复制原文。未开展真实模型 A/B 或 Token 效率测试。"
+    "source_status": "v2.1：从第08类移为独立第09类；Step 05 提交P1/P2/P3并等待真实用户选定，Step 06不得自动执行；无真实模型A/B效果测试。"
   }
 ]

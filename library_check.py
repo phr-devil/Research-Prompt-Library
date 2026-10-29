@@ -11,6 +11,15 @@ PROMPT = re.compile(r"^## 可直接复制的 Prompt\s*$", re.M)
 FENCE = re.compile(r"`{3}text\s*\n([\s\S]*?)\n`{3}")
 
 
+def invalid_markdown_destination(raw):
+    """Bare GFM link destinations cannot contain unescaped spaces."""
+    value = raw.strip()
+    if value.startswith("<"):
+        return False
+    value = re.sub(r'\s+"[^"]*"$', "", value)
+    return bool(re.search(r"\s", value))
+
+
 def local_target(source, raw):
     url = raw.strip().split(" \"", 1)[0].strip("<>")
     if not url or url.startswith("#") or url.startswith("//"):
@@ -80,6 +89,8 @@ def validate(root=ROOT):
         if ".git" in source.parts or ".eval_runs" in source.parts:
             continue
         for lineno, raw in markdown_links(source):
+            if invalid_markdown_destination(raw):
+                errors.append(f"{source.relative_to(root)}:{lineno} unescaped space in GFM destination: {raw}")
             target = local_target(source, raw)
             if target is None:
                 continue
@@ -95,6 +106,22 @@ def validate(root=ROOT):
         frontmatter = data.split("---", 2)[1]
         if not all(re.search(rf"^{key}:\s*\S+", frontmatter, re.M) for key in ("name", "description")):
             errors.append("workflow SKILL.md: missing name or description")
+
+    nine = root / "09_失败算法项目挽救与转向"
+    landing, workflow, gate = (nine / "README.md", nine / "WORKFLOW.md", nine / "salvage_gate.py")
+    if not all(p.is_file() for p in (landing, workflow, gate)):
+        errors.append("Independent 09 workflow or selection gate missing")
+    else:
+        body = workflow.read_text(encoding="utf-8")
+        for token in ("### STEP 05", "### STEP 06", "P1", "P2", "P3",
+                      "WAITING_FOR_USER_SELECTION", "05_USER_SELECTION.json",
+                      "不得执行 Step 06", "真实用户消息"):
+            if token not in body:
+                errors.append("Missing mandatory 09 contract: " + token)
+        if body.find("### STEP 05") >= body.find("### STEP 06"):
+            errors.append("Step 05 must precede Step 06")
+        if entries.get("V09") != landing.resolve():
+            errors.append("V09 must be indexed as standalone 09/README.md")
 
     return errors, len(index), len(fixture["cases"]), checked
 
