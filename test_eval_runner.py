@@ -44,6 +44,25 @@ class EvalHarnessTest(unittest.TestCase):
         self.assertTrue(m.prompt(self.repo,sha,"docs/R02.md","S01-B").startswith("General search."))
         with self.assertRaises(ValueError):m.prompt(self.repo,sha,"docs/R02.md","not-a-selector")
 
+    def test_selected_salvage_and_phase_sections(self):
+        fence="~"*3
+        p="docs/R02.md"
+        (self.repo/p).write_text(
+            "## 02｜一键总控 Prompt（默认只执行到 Step 05）\n"+
+            fence+"text\n"+"WAITING_FOR_USER_SELECTION. "*9+"\n"+fence+"\n"+
+            "## 03｜后续章节\n",encoding="utf-8")
+        subprocess.run(["git","-C",str(self.repo),"add","."],check=True)
+        subprocess.run(["git","-C",str(self.repo),"commit","-qm","salvage selector"],check=True)
+        sha=subprocess.check_output(["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
+        self.assertTrue(m.prompt(self.repo,sha,p,"09-ONECLICK").startswith("WAITING"))
+        (self.repo/p).write_text(
+            "## 03-D｜优化\n"+chr(96)*3+"text\n"+"Bounded verified recovery. "*9+
+            "\n"+chr(96)*3+"\n## 03-E｜诊断\n",encoding="utf-8")
+        subprocess.run(["git","-C",str(self.repo),"add","."],check=True)
+        subprocess.run(["git","-C",str(self.repo),"commit","-qm","stage selector"],check=True)
+        sha=subprocess.check_output(["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
+        self.assertTrue(m.prompt(self.repo,sha,p,"03-D").startswith("Bounded"))
+
     def test_current_suite_requires_explicit_refs(self):
         with patch.object(sys,"argv",["eval_runner.py","--repo",str(self.repo),
                                       "--suite","current","--output-dir",str(self.out)]):
