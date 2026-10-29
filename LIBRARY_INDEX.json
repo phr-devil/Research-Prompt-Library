@@ -251,5 +251,22 @@
       "https://github.com/anthropics/knowledge-work-plugins"
     ],
     "source_status": "方法级独立适配；整合科学选题、最小反证、受控研发、风险驱动复核与论文。24场景提示词、可选 Skill 路由和统一约束；未开展真实模型 A/B 和 Token 效果测试。"
+  },
+  {
+    "id": "V09",
+    "name": "第09章：失败算法项目成果挽救与课题转向（六阶段）",
+    "group": "08_算法检验与优化/跨AI独立审查",
+    "file": "08_算法检验与优化/跨AI独立审查/09_失败算法项目成果挽救与课题转向.md",
+    "source_urls": [
+      "https://github.com/obra/superpowers",
+      "https://github.com/treeverse/dvc",
+      "https://github.com/karpathy/autoresearch",
+      "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "https://github.com/microsoft/ResearchStudio",
+      "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "https://github.com/Research-Equality/RE-idea-generation",
+      "https://github.com/UCL-ERL/skills"
+    ],
+    "source_status": "原创融合改写：针对已确认失败/NO-GO 项目的六阶段证据归档、失败分析、资产复用、研究价值判定、课题转向与最小证伪；参考 GitHub Skill 方法，不复制原文。未开展真实模型 A/B 或 Token 效率测试。"
   }
 ]
