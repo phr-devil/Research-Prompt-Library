@@ -22,7 +22,7 @@ class NoveltyPolicyTests(unittest.TestCase):
         p=read("08_算法检验与优化/高水平计算机论文工作流/01_科学选题与跨AI审核.md")
         self.assertIn("OVERLAP 表示部分重合，不等于 REJECT",p)
         self.assertIn("仅部分重合不触发",p)
-        self.assertIn("增量贡献（允许部分重合）",p)
+        self.assertIn("增量假设即可；证据不完整标 REPAIRABLE",p)
 
     def test_scientific_integrity_still_required(self):
         p=read("09_失败算法项目挽救与转向/WORKFLOW.md")
