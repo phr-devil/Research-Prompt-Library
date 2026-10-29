@@ -99,6 +99,45 @@ def render_repair(key):
     return "\n".join(out)
 
 
+
+def load_triage(root=ROOT, routes=None):
+    """Validate instructions only; never infer true defect severity from CLI arguments."""
+    if routes is None:routes=load_routes(root)
+    doc=json.loads((root/"TRIAGE_POLICY.json").read_text(encoding="utf-8"))
+    if doc.get("version")!="1.0.0" or set(doc.get("levels",{}))!={"CRITICAL","REPAIRABLE","MINOR"}:
+        raise ValueError("Unsupported triage policy")
+    expected={"CRITICAL":"BLOCK_AFFECTED_ACTION","REPAIRABLE":"USER_CHOICE","MINOR":"LOG_AND_CONTINUE"}
+    for level,action in expected.items():
+        rule=doc["levels"][level]
+        if rule.get("default")!=action or not rule.get("meaning"):
+            raise ValueError("Invalid severity contract")
+    if [e.get("id") for e in doc.get("route_focus",[])]!=list(routes):
+        raise ValueError("Triage must cover exactly 24 ordered routes")
+    if any(not e.get("focus") for e in doc["route_focus"]):
+        raise ValueError("Empty route-specific guidance")
+    if [e.get("id") for e in doc.get("stages",[])]!=["01","02","03","04","05"]:
+        raise ValueError("Missing stage-specific rules")
+    for ex in doc.get("examples",[]):
+        if ex.get("severity") not in expected or not ex.get("scope") or not ex.get("signal"):
+            raise ValueError("Bad triage example")
+    return doc
+
+
+def show_triage(key):
+    doc=load_triage()
+    if key not in load_routes():
+        raise ValueError("Unknown triage route: "+str(key))
+    focus=next(e["focus"] for e in doc["route_focus"] if e["id"]==key)
+    out=["TRIAGE: "+key+" — advisory only, severity depends on real evidence and target action",
+         "SCENE: "+focus]
+    for level in ("CRITICAL","REPAIRABLE","MINOR"):
+        rule=doc["levels"][level]
+        out.append(level+": "+rule["default"]+" — "+rule["meaning"])
+        if rule["menu"]:out.append("OPTIONS: "+" / ".join(rule["menu"]))
+    out.append("UNKNOWN != automatically CRITICAL; separate user approval still required for GPU/formal/paid actions.")
+    return "\n".join(out)
+
+
 def main():
     p=argparse.ArgumentParser(description="Load exactly one v5 scene Prompt; read-only")
     g=p.add_mutually_exclusive_group(required=True)
@@ -106,17 +145,21 @@ def main():
     g.add_argument("--list",action="store_true")
     g.add_argument("--check",action="store_true")
     g.add_argument("--repair",help="print this route's two repair scenarios; never execute")
+    g.add_argument("--triage",help="print severity guidance for one scene, read-only")
     args=p.parse_args()
     try:
         routes=load_routes()
         if args.check:
             for key,(path,_) in routes.items():extract(path,key)
             load_repairs(routes=routes)
+            load_triage(routes=routes)
             print("ROUTES_CHECK_PASS: 24/24; no model, GPU or paid calls")
         elif args.list:
             for key,(_,x) in routes.items():print(key,x["kind"],x["name"],x["when"])
         elif args.repair:
             print(render_repair(args.repair))
+        elif args.triage:
+            print(show_triage(args.triage))
         else:
             if args.id not in routes:raise ValueError("Unknown route "+str(args.id))
             print(extract(routes[args.id][0],args.id))

@@ -67,6 +67,34 @@ class V5Tests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 router.load_repairs(root=p,routes=router.load_routes())
 
+    def test_triage_manifest_and_severity(self):
+        x=router.load_triage()
+        self.assertEqual(len(x["route_focus"]),24)
+        self.assertEqual(x["levels"]["CRITICAL"]["default"],"BLOCK_AFFECTED_ACTION")
+        self.assertEqual(x["levels"]["REPAIRABLE"]["default"],"USER_CHOICE")
+        self.assertEqual(x["levels"]["MINOR"]["default"],"LOG_AND_CONTINUE")
+        self.assertTrue(x["levels"]["CRITICAL"]["safe_unaffected_work"])
+        self.assertIn("UNKNOWN",x["uncertainty"])
+
+    def test_cli_triage_read_only_and_bad_selector(self):
+        path=str(ROOT/"workflow_route.py")
+        ok=subprocess.run([sys.executable,path,"--triage","02-B"],capture_output=True,text=True)
+        self.assertEqual(ok.returncode,0)
+        self.assertIn("REPAIRABLE: USER_CHOICE",ok.stdout)
+        self.assertIn("MINOR: LOG_AND_CONTINUE",ok.stdout)
+        bad=subprocess.run([sys.executable,path,"--triage","../x"],capture_output=True,text=True)
+        self.assertEqual(bad.returncode,2)
+        self.assertIn("Unknown triage route",bad.stderr)
+
+    def test_corrupted_critical_rule_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            policy=json.loads((ROOT/"TRIAGE_POLICY.json").read_text(encoding="utf-8"))
+            policy["levels"]["CRITICAL"]["default"]="LOG_AND_CONTINUE"
+            (root/"TRIAGE_POLICY.json").write_text(json.dumps(policy),encoding="utf-8")
+            with self.assertRaises(ValueError):
+                router.load_triage(root=root,routes=router.load_routes())
+
     def test_human_gates_preserved(self):
         s=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
         for token in ("WAITING_FOR_USER_DECISION","GPU","P1/P2/P3","真实新消息"):
