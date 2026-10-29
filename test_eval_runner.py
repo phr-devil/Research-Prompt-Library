@@ -63,6 +63,21 @@ class EvalHarnessTest(unittest.TestCase):
         sha=subprocess.check_output(["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
         self.assertTrue(m.prompt(self.repo,sha,p,"03-D").startswith("Bounded"))
 
+    def test_selected_refinement_extraction_without_step06_leak(self):
+        p="docs/R02.md"
+        fence="~"*3
+        body="Independent scientific critique and actionable feasibility review. "*9
+        (self.repo/p).write_text(
+            "### STEP 05-R：新课题优化\n"+fence+"text\n"+body+"\n"+fence+
+            "\n### STEP 06：下阶段\n"+fence+"text\n"+"Do not auto execute. "*12+
+            "\n"+fence+"\n",encoding="utf-8")
+        subprocess.run(["git","-C",str(self.repo),"add","."],check=True)
+        subprocess.run(["git","-C",str(self.repo),"commit","-qm","refine selection"],check=True)
+        sha=subprocess.check_output(["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
+        extracted=m.prompt(self.repo,sha,p,"09-REFINE")
+        self.assertTrue(extracted.startswith("Independent scientific critique"))
+        self.assertNotIn("Do not auto execute",extracted)
+
     def test_current_suite_requires_explicit_refs(self):
         with patch.object(sys,"argv",["eval_runner.py","--repo",str(self.repo),
                                       "--suite","current","--output-dir",str(self.out)]):

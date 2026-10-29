@@ -127,6 +127,15 @@ def validate(root=ROOT):
                       "不得执行 Step 06", "真实用户消息"):
             if token not in body:
                 errors.append("Missing mandatory 09 contract: " + token)
+        if not (body.find("### STEP 05：") <
+                body.find("### STEP 05-R：") <
+                body.find("### STEP 06：")):
+            errors.append("09 refinement stage must be after user selection and before Step 06")
+        for marker in ("05R_REFINED_PROJECT.md", "READY_FOR_STEP06",
+                       "NEEDS_USER_CONFIRMATION", "BLOCKED", "独立真值",
+                       "强基线", "不自动执行 Step 06"):
+            if marker not in body:
+                errors.append("Missing 09 refinement contract: "+marker)
         if body.find("### STEP 05") >= body.find("### STEP 06"):
             errors.append("Step 05 must precede Step 06")
         if entries.get("V09") != landing.resolve():
