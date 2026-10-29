@@ -10,16 +10,15 @@ def prompt(repo,sha,path,selector=""):
     if len(sha)!=40 or any(c not in "0123456789abcdef" for c in sha):
         raise ValueError("Require pinned 40-character Git commit")
     r=subprocess.run(["git","-C",str(repo),"show",sha+":"+path],capture_output=True,text=True,encoding="utf-8",timeout=15)
-    if r.returncode: raise RuntimeError("Missing Git source/history: "+path)
+    if r.returncode:raise RuntimeError("Missing Git source/history: "+path)
     content=r.stdout
     if selector:
-        # Explicit subsection only; no silent fallback to the first prompt.
         if selector=="S01-B":
-            heading=r"(?m)^### B ·[^\\n]*$"
+            heading=r"(?m)^### B ·[^\n]*$"
         elif selector=="09-ONECLICK":
-            heading=r"(?m)^## 02｜一键总控 Prompt[^\\n]*$"
+            heading=r"(?m)^## 02｜一键总控 Prompt[^\n]*$"
         elif re.fullmatch(r"0[1-5]-[A-F]",selector):
-            heading=r"(?m)^## "+re.escape(selector)+r"｜[^\\n]*$"
+            heading=r"(?m)^## "+re.escape(selector)+r"｜[^\n]*$"
         else:
             raise ValueError("Unknown prompt selector: "+selector)
         match=re.search(heading,content)
@@ -31,7 +30,7 @@ def prompt(repo,sha,path,selector=""):
         part=content.split("## 可直接复制的 Prompt")
         if len(part)!=2:raise ValueError("Missing prompt heading")
         content=part[1]
-    m=re.search(r"(?:`{3}|~{3})text\\s*\\n([\\s\\S]*?)\\n(?:`{3}|~{3})",content)
+    m=re.search(r"(?:\x60{3}|~{3})text\s*\n([\s\S]*?)\n(?:\x60{3}|~{3})",content)
     if not m or len(m.group(1).strip())<100:raise ValueError("Missing selected prompt text")
     return m.group(1).strip()
 def endpoint(base):

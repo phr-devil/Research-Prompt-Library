@@ -53,9 +53,9 @@ def inspect_selection(candidates, selection=None):
     # Accept explicit IDs or a small conservative set of unequivocal Chinese ordinals.
     # This is only a syntactic consistency check, not authentication of a human message.
     aliases = {
-        "P1": r"(?:\\bP1\\b|第[一1]个(?:项目|课题|方案)|第[一1]项|方案一)",
-        "P2": r"(?:\\bP2\\b|第[二2]个(?:项目|课题|方案)|第[二2]项|方案二)",
-        "P3": r"(?:\\bP3\\b|第[三3]个(?:项目|课题|方案)|第[三3]项|方案三)",
+        "P1": r"(?:\bP1\b|第[一1]个(?:项目|课题|方案)|第[一1]项|方案一)",
+        "P2": r"(?:\bP2\b|第[二2]个(?:项目|课题|方案)|第[二2]项|方案二)",
+        "P3": r"(?:\bP3\b|第[三3]个(?:项目|课题|方案)|第[三3]项|方案三)",
     }
     if not re.search(aliases[chosen], message, flags=re.IGNORECASE):
         raise ValueError("Selected ID not clearly expressed by user message")
