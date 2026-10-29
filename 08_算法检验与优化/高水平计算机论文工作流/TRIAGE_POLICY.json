@@ -241,5 +241,26 @@
       "severity": "REPAIRABLE",
       "outcome": "可选继续脚本开发，正式优势声明前补公平对照"
     }
-  ]
+  ],
+  "workflow_version": "5.3",
+  "action_intents": {
+    "READ_ONLY_RESEARCH": "只读资料查证、逻辑梳理和不改变协议的静态设计",
+    "SCOPED_EXPLORATION": "仅在已有获批资源范围内的探索性设计、代码/数据分析；不代表已获GPU",
+    "DRAFT_PREPARATION": "写清楚真实证据和未验证占位的草稿，不能正式投稿",
+    "FORMAL_RUN": "需要独立批准的数据/预算/冻结确认性实验",
+    "CONFIRMED_CLAIM": "对外声称已得到独立确认的科学改进",
+    "SUBMISSION": "对外正式投稿或发布，必须有作者独立批准"
+  },
+  "allowed_limited_intents": [
+    "READ_ONLY_RESEARCH",
+    "SCOPED_EXPLORATION",
+    "DRAFT_PREPARATION"
+  ],
+  "choice_codes": [
+    "CONTINUE_LIMITED",
+    "REPAIR_FIRST",
+    "REFRAME",
+    "HOLD"
+  ],
+  "choice_semantics": "Machine-proposed outcomes cannot authenticate messages or grant resource/confirmatory/publication approvals; actual user choice must appear in subsequent real interaction. Do not carry forward old approval after claim, data, experiment or scope changes."
 }

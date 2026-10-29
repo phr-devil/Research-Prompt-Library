@@ -24,7 +24,7 @@ def load_routes(root=ROOT):
             key = item["id"]
             if key in found or not re.fullmatch(r"0[1-5]-[A-F]",key) or not key.startswith(stage["id"]+"-"):
                 raise ValueError("Duplicate/invalid route ID")
-            if item["kind"] not in ("required","conditional") or not item["when"]:
+            if item["kind"] not in ("as_needed","required_for_action","conditional") or not item["when"]:
                 raise ValueError("Invalid route trigger")
             found[key] = (path,item)
     if list(found) != EXPECTED:
@@ -117,6 +117,13 @@ def load_triage(root=ROOT, routes=None):
         raise ValueError("Empty route-specific guidance")
     if [e.get("id") for e in doc.get("stages",[])]!=["01","02","03","04","05"]:
         raise ValueError("Missing stage-specific rules")
+    expected_intents={"READ_ONLY_RESEARCH","SCOPED_EXPLORATION","DRAFT_PREPARATION","FORMAL_RUN","CONFIRMED_CLAIM","SUBMISSION"}
+    if set(doc.get("action_intents",{}))!=expected_intents:
+        raise ValueError("Invalid or missing action intent mapping")
+    if set(doc.get("allowed_limited_intents",[]))!={"READ_ONLY_RESEARCH","SCOPED_EXPLORATION","DRAFT_PREPARATION"}:
+        raise ValueError("Limited continuation scope must exclude formal and publication operations")
+    if set(doc.get("choice_codes",[]))!={"CONTINUE_LIMITED","REPAIR_FIRST","REFRAME","HOLD"}:
+        raise ValueError("Invalid choice codes")
     for ex in doc.get("examples",[]):
         if ex.get("severity") not in expected or not ex.get("scope") or not ex.get("signal"):
             raise ValueError("Bad triage example")
@@ -136,6 +143,35 @@ def show_triage(key):
         if rule["menu"]:out.append("OPTIONS: "+" / ".join(rule["menu"]))
     out.append("UNKNOWN != automatically CRITICAL; separate user approval still required for GPU/formal/paid actions.")
     return "\n".join(out)
+
+
+def propose_transition(level, intent, choice=None, policy=None):
+    """Advisory only. Never verifies real user approval or the factual severity.
+    Result is a proposed routing status, NOT execution permission.
+    """
+    if policy is None:
+        policy=load_triage()
+    if level not in policy["levels"] or intent not in policy["action_intents"]:
+        raise ValueError("Unknown level or action intent")
+    if choice is not None and choice not in policy["choice_codes"]:
+        raise ValueError("Unknown proposed user choice")
+    if level=="CRITICAL":
+        return "BLOCKED_CRITICAL"
+    if intent in ("FORMAL_RUN","CONFIRMED_CLAIM","SUBMISSION"):
+        return "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE"
+    if level=="MINOR":
+        return "DEFERRED_MINOR_CONTINUE"
+    if choice is None:
+        return "WAITING_FOR_USER_DECISION"
+    if choice=="CONTINUE_LIMITED":
+        if intent not in policy["allowed_limited_intents"]:
+            return "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE"
+        return "PROPOSED_READY_WITH_LIMITATIONS"
+    if choice=="REPAIR_FIRST":
+        return "TARGETED_REPAIR"
+    if choice=="REFRAME":
+        return "NEEDS_USER_RESEARCH_SCOPE_CONFIRMATION"
+    return "HOLD"
 
 
 def main():

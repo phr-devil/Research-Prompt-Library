@@ -3,7 +3,7 @@ name: research-paper-workflow
 description: Route high-level computer-science algorithm research through five evidence-gated stages; automatically load the next eligible scientific prompt after human choices while respecting evidence and authorization gates.
 ---
 
-# Research Paper Workflow — v5.2 severity-guided router (v4.1 core)
+# Research Paper Workflow — v5.3 severity-guided router (v4.1 core)
 
 本 Skill 是路由器，不是授权许可；仅当你的 Codex/Agent **实际安装并识别**时才能原生调用，ChatGPT 可在线阅读以下 Markdown 参考。
 

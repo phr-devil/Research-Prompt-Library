@@ -95,6 +95,57 @@ class V5Tests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 router.load_triage(root=root,routes=router.load_routes())
 
+    def test_scoped_transition_matrix_is_fail_closed(self):
+        intents=("READ_ONLY_RESEARCH","SCOPED_EXPLORATION","DRAFT_PREPARATION",
+                 "FORMAL_RUN","CONFIRMED_CLAIM","SUBMISSION")
+        for intent in intents:
+            for decision in (None,"CONTINUE_LIMITED","REPAIR_FIRST","REFRAME","HOLD"):
+                self.assertEqual(router.propose_transition("CRITICAL",intent,decision),
+                                 "BLOCKED_CRITICAL")
+        for intent in ("FORMAL_RUN","CONFIRMED_CLAIM","SUBMISSION"):
+            for level in ("REPAIRABLE","MINOR"):
+                self.assertEqual(router.propose_transition(level,intent,"CONTINUE_LIMITED"),
+                                 "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE")
+        self.assertEqual(router.propose_transition("REPAIRABLE","SCOPED_EXPLORATION"),
+                         "WAITING_FOR_USER_DECISION")
+        self.assertEqual(router.propose_transition("REPAIRABLE","SCOPED_EXPLORATION","CONTINUE_LIMITED"),
+                         "PROPOSED_READY_WITH_LIMITATIONS")
+        self.assertEqual(router.propose_transition("REPAIRABLE","DRAFT_PREPARATION","REPAIR_FIRST"),
+                         "TARGETED_REPAIR")
+        self.assertEqual(router.propose_transition("MINOR","READ_ONLY_RESEARCH"),
+                         "DEFERRED_MINOR_CONTINUE")
+        with self.assertRaises(ValueError):
+            router.propose_transition("CRITICAL","FREE_GPU","CONTINUE_LIMITED")
+
+    def test_adaptive_routes_and_critical_prerequisites(self):
+        routes=router.load_routes()
+        kinds={key:data["kind"] for key,(_,data) in routes.items()}
+        self.assertEqual(kinds["01-B"],"as_needed")
+        self.assertEqual(kinds["02-D"],"as_needed")
+        self.assertEqual(kinds["02-B"],"required_for_action")
+        self.assertEqual(kinds["05-C"],"required_for_action")
+        self.assertEqual(kinds["03-F"],"conditional")
+        self.assertIn("bounded" if False else "继续",routes["03-A"][1]["when"])
+        self.assertIn("独立审查",routes["04-B"][1]["when"])
+
+    def test_resume_contract_and_short_standalone_prompts(self):
+        root=ROOT
+        state=(root/"templates/STATE.md").read_text(encoding="utf-8")
+        orch=(root/"ORCHESTRATOR.md").read_text(encoding="utf-8")
+        self.assertIn("RUN_STATUS:",state)
+        self.assertIn("ROUTE_READINESS:",state)
+        self.assertIn("RISK_DECISION_CACHE:",state)
+        self.assertIn("DECISION DEDUP",orch)
+        self.assertIn("真实用户",orch)
+        for key,(path,_) in router.load_routes().items():
+            prompt=router.extract(path,key)
+            self.assertIn("缺陷分流：",prompt,key)
+            self.assertNotIn("风险选择输出：",prompt,key)
+        stage1=(root/"01_科学选题与跨AI审核.md").read_text(encoding="utf-8")
+        self.assertIn("用户主动选择缩窄/转向的研究动机",stage1)
+        stage5=(root/"05_论文撰写与投稿.md").read_text(encoding="utf-8")
+        self.assertIn("UNVERIFIED",stage5)
+
     def test_human_gates_preserved(self):
         s=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
         for token in ("WAITING_FOR_USER_DECISION","GPU","P1/P2/P3","真实新消息"):
