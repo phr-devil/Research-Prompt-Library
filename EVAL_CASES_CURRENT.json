@@ -1,6 +1,6 @@
 {
-  "version": "2026-10-29-current-stress-v1",
-  "note": "Synthetic adversarial tasks. NOT real inference, token savings or scientific validation.",
+  "version": "2026-10-29-current-stress-v2",
+  "note": "Synthetic adversarial tasks. NOT real inference, token savings or scientific validation. N09 requires two revisions that both contain 09-REFINE; older main commit lacks it.",
   "pilot_ids": [
     "N02",
     "N04",
