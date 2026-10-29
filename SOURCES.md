@@ -70,3 +70,13 @@
 ## 2026-10-29 独立第09类（v2.1）
 
 [第09类：失败科研项目挽救与转向](09_失败算法项目挽救与转向/README.md) 已从第08类移出。方法级参考 DVC、ARIS、Superpowers、ResearchStudio、Research-Equality、K-Dense、UCL-ERL 和 Karpathy Autoresearch，具体出处见 [完整工作流各步骤](09_失败算法项目挽救与转向/WORKFLOW.md)。新设 Step 05 **三个项目供用户审查**和 Step 06 **必须有事后明确选择**的执行门禁；并无真实模型 A/B 或 Token 效率实测。
+
+## v1.9 工作流可靠性修复参考（2026-10-29）
+
+- [obra/superpowers](https://github.com/obra/superpowers)：任务规划、系统调试和完成前验证；只借鉴有界任务、验证与复核，不复制 Skill 源码。
+- [open-gsd/gsd-core](https://github.com/open-gsd/gsd-core)：按阶段/子任务分离上下文、持久状态、失败恢复；不假定用户安装此工具。
+- [microsoft/ResearchStudio](https://github.com/microsoft/ResearchStudio)：原始研究意图贯穿选题并记录与用户指定路线的偏差。
+- [karpathy/autoresearch](https://github.com/karpathy/autoresearch/blob/master/program.md)：实验隔离、固定评价协议、可追溯结果台账；**没有借用其无限循环规则**，本库仍以人工授权与既定预算硬停止。
+- [openai/skills](https://github.com/openai/skills)：按需读取、避免与当前环境重复的冗长上下文。
+
+以上是方法参考，并非声称已经在本仓库运行或完成论文级真实模型测试。

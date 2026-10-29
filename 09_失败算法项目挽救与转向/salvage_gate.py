@@ -9,6 +9,7 @@ exit 2 = awaiting selection; exit 3 = blocked/invalid.
 import argparse
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -48,8 +49,18 @@ def inspect_selection(candidates, selection=None):
     for key in ("user_message", "user_message_reference"):
         if not isinstance(record.get(key), str) or not record[key].strip():
             raise ValueError("Missing user message and provenance reference")
-    if chosen not in record["user_message"]:
-        raise ValueError("Selected ID absent from user message text")
+    message = record["user_message"].strip()
+    # Accept explicit IDs or a small conservative set of unequivocal Chinese ordinals.
+    # This is only a syntactic consistency check, not authentication of a human message.
+    aliases = {
+        "P1": r"(?:\\bP1\\b|第[一1]个(?:项目|课题|方案)|第[一1]项|方案一)",
+        "P2": r"(?:\\bP2\\b|第[二2]个(?:项目|课题|方案)|第[二2]项|方案二)",
+        "P3": r"(?:\\bP3\\b|第[三3]个(?:项目|课题|方案)|第[三3]项|方案三)",
+    }
+    if not re.search(aliases[chosen], message, flags=re.IGNORECASE):
+        raise ValueError("Selected ID not clearly expressed by user message")
+    if not re.search(r"(?:选择|选了|选定|我选|决定|采用|确定|pick|choose|chosen)", message, flags=re.IGNORECASE):
+        raise ValueError("Selection intent not explicit in user message")
     return "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED", digest
 
 

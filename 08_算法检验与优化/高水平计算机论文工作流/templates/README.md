@@ -10,3 +10,7 @@
 | [REVIEW.md](REVIEW.md) | 独立审查发现及其证据和闭环 | 第④阶段 |
 
 新建项目可以为 RUNS 增加 `protocol_sha`、`config_sha`、`n_units`、`statistical_unit`、`metric_unit`；历史项目沿用已有等价证据索引，不强制迁移。项目负责人审批要引用真实消息而非 Agent 自填状态。
+
+- [单次任务合同](TASK_CONTRACT.md)：用于 Agent 交接；仅复制本轮变化字段。
+- [证据索引](EVIDENCE_INDEX.md)：原始研究意图、文献、Claim/Run/图表链接；可映射旧资料。
+- [任务中断恢复](RECOVERY.md)：PARTIAL/CRASH/INVALID/BLOCKED 区分、重试权限与重算策略。

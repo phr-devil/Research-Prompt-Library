@@ -31,6 +31,8 @@
 4. **④→⑤**：独立复核已处理足以推翻论文的严重问题；结果未验证时如实标记。
 5. **⑤**：由作者审稿与确认，投稿不是 Agent 自动操作。
 
+**可复用合同与恢复**：[任务合同](templates/TASK_CONTRACT.md)、[证据索引](templates/EVIDENCE_INDEX.md)、[中断恢复](templates/RECOVERY.md)，需要时才加载；默认文件前缀 `research/`，已有可信路径不强制迁移。独立跨会话只传当前目标、证据指针与未完成部分。
+
 **默认输出**：`STATUS | CLAIM_DELTA | EVIDENCE | INVALIDATED | COST | BLOCKERS | NEXT_DECISION`；完整日志写文件，日常只交差量。
 
 ## 失败/NO-GO 后独立跳转
