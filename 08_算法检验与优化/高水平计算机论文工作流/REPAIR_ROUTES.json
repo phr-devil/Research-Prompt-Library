@@ -1,0 +1,488 @@
+{
+  "version": "1.0.0",
+  "description": "24 routes × 2 typical failure cases; read-only diagnostics, never executes experiments",
+  "families": {
+    "SCIENTIFIC": {
+      "class": "science",
+      "check": "重建主假设、最相近论文及反证条件；确认是科学前提失败还是证据不足",
+      "fix": "缩窄主张或修改研究问题；不能只换名或堆架构",
+      "verify": "新命题可证伪且有可信真值/基线；重大改题须用户选择"
+    },
+    "SOURCES": {
+      "class": "evidence",
+      "check": "逐条对原文 DOI/代码/原始数据核对事实、年份及近邻贡献",
+      "fix": "更正引文或降级未验证断言；只增量查关键来源",
+      "verify": "关键文献/限制均可定位，未知保留UNKNOWN"
+    },
+    "DATA": {
+      "class": "science",
+      "check": "核对数据许可、来源、标签定义、独立性、时间、身份/分组",
+      "fix": "修复许可/数据/合法分组；若仅代理标签，收窄代理主张",
+      "verify": "新数据/标签/划分经独立检查，旧污染指标标INVALID"
+    },
+    "LEAKAGE": {
+      "class": "invalid",
+      "check": "审计重复对象、未来时间、train-only预处理、val/test选模访问记录",
+      "fix": "暂停所有确认性优势声明；修正划分与因果处理，保留失效证据",
+      "verify": "仅在未污染的合法确认数据上验证；不得反复重冻同一test"
+    },
+    "BASELINE": {
+      "class": "science",
+      "check": "核对强基线/简单基线的输入、horizon、预处理、容量、调参预算",
+      "fix": "补公平对照，取消不公平的获益声明",
+      "verify": "同样数据/预算下可重现全种子效果和不确定性"
+    },
+    "ENGINEERING": {
+      "class": "engineering",
+      "check": "最小复现堆栈、张量/单位/种子/最近diff、回归失败样例",
+      "fix": "先写/运行失败回归测试，再一次只修一个根因；普通工程范围内可继续",
+      "verify": "原错误复现消失且相关回归测试通过；不能以代码PASS替代科学PASS"
+    },
+    "TRAINING": {
+      "class": "engineering",
+      "check": "NaN/OOM/梯度/学习率、标签尺度、可否过拟合极小训练集、资源记录",
+      "fix": "先做静态和小batch诊断，按已获授权调整单一因素，不无限换网络",
+      "verify": "故障根因可解释，原合法val复验并记录全部尝试"
+    },
+    "PROTOCOL": {
+      "class": "invalid",
+      "check": "比较数据/协议/模型/评价脚本 SHA 和正式测试使用史",
+      "fix": "标记受影响结果INVALID；修改冻结需新用户批准；确认测试被用来调参则另寻独立确认数据",
+      "verify": "合法冻结和新结果可追溯；不能沿用失效结论"
+    },
+    "EVIDENCE": {
+      "class": "science",
+      "check": "区分探索/确认、独立样本单位、CI、seed、负对照和真正改进效应",
+      "fix": "科学结论降级为HOLD/INCONCLUSIVE或做一次针对性实验",
+      "verify": "贡献与统计证据一致，否定结果完整保留"
+    },
+    "REVIEW": {
+      "class": "review",
+      "check": "核对独立审查者身份、原始源码/指标/数据访问和结果差异",
+      "fix": "无独立者写INDEPENDENT_REVIEW_UNAVAILABLE；仅对关键问题定向复核",
+      "verify": "独立复核有真实来源或明确NOT_REPRODUCED"
+    },
+    "WRITING": {
+      "class": "claim",
+      "check": "逐项对应论文/图/答复的Claim、Run、指标、数据版本和原始记录",
+      "fix": "修正文稿或图表、限定主张；不得编造训练和外部提交",
+      "verify": "所有结论与证据一致、局限保留"
+    },
+    "AUTH": {
+      "class": "permission",
+      "check": "查真实用户新消息的操作范围、预算/时间上限与停止条件",
+      "fix": "停止受限动作，只继续获批CPU/静态范围；展示清晰授权申请",
+      "verify": "有实际明确批准和剩余预算才执行GPU/付费/正式/发布"
+    }
+  },
+  "scenes": [
+    {
+      "route": "01-A",
+      "failures": [
+        {
+          "family": "SCIENTIFIC",
+          "signal": "问题过宽或无法证伪",
+          "local_fix": "缩为一个主假设+反证条件",
+          "recheck": "01-A"
+        },
+        {
+          "family": "SOURCES",
+          "signal": "近邻文献无法核实",
+          "local_fix": "核查关键论文原文并标UNKNOWN",
+          "recheck": "01-A"
+        }
+      ]
+    },
+    {
+      "route": "01-B",
+      "failures": [
+        {
+          "family": "SCIENTIFIC",
+          "signal": "发现相同论文/模块",
+          "local_fix": "区分合理重合与真正新增贡献",
+          "recheck": "01-B"
+        },
+        {
+          "family": "BASELINE",
+          "signal": "强基线被遗漏",
+          "local_fix": "补同条件简单和最强对照",
+          "recheck": "01-B"
+        }
+      ]
+    },
+    {
+      "route": "01-C",
+      "failures": [
+        {
+          "family": "SCIENTIFIC",
+          "signal": "模块没有可证明作用",
+          "local_fix": "给出可检验机制和消融或删除模块",
+          "recheck": "01-C"
+        },
+        {
+          "family": "REVIEW",
+          "signal": "独立反证不可用",
+          "local_fix": "标记未独立复核并生成任务书",
+          "recheck": "01-C"
+        }
+      ]
+    },
+    {
+      "route": "01-D",
+      "failures": [
+        {
+          "family": "SCIENTIFIC",
+          "signal": "部分重合被误判无创新",
+          "local_fix": "回到贡献对照，不强制换题",
+          "recheck": "01-B"
+        },
+        {
+          "family": "DATA",
+          "signal": "所需真值不可获得",
+          "local_fix": "收窄主张或提交用户决策",
+          "recheck": "01-D"
+        }
+      ]
+    },
+    {
+      "route": "02-A",
+      "failures": [
+        {
+          "family": "SCIENTIFIC",
+          "signal": "Pilot不能排除竞争解释",
+          "local_fix": "加入最小负对照与可否定判据",
+          "recheck": "02-A"
+        },
+        {
+          "family": "AUTH",
+          "signal": "Pilot预算不足或未批准",
+          "local_fix": "只做低成本准备并申请明确预算",
+          "recheck": "02-A"
+        }
+      ]
+    },
+    {
+      "route": "02-B",
+      "failures": [
+        {
+          "family": "DATA",
+          "signal": "标签与输入同源/代理真值",
+          "local_fix": "追溯标签独立性，必要时收窄任务",
+          "recheck": "02-B"
+        },
+        {
+          "family": "LEAKAGE",
+          "signal": "同人跨拆分/未来信息",
+          "local_fix": "修复group split和train-only处理",
+          "recheck": "02-B"
+        }
+      ]
+    },
+    {
+      "route": "02-C",
+      "failures": [
+        {
+          "family": "ENGINEERING",
+          "signal": "shape错误/代码异常",
+          "local_fix": "最小复现和固定测试，修一次根因",
+          "recheck": "02-C"
+        },
+        {
+          "family": "BASELINE",
+          "signal": "模型虚假优于弱基线",
+          "local_fix": "匹配horizon/输入/资源并重新对照",
+          "recheck": "02-B"
+        }
+      ]
+    },
+    {
+      "route": "02-D",
+      "failures": [
+        {
+          "family": "EVIDENCE",
+          "signal": "单seed正结果被宣布GO",
+          "local_fix": "核统计单位、CI、探索与确认区别",
+          "recheck": "02-D"
+        },
+        {
+          "family": "SCIENTIFIC",
+          "signal": "模型并无稳定增益",
+          "local_fix": "一次有界诊断或HOLD，保留负结果",
+          "recheck": "02-E"
+        }
+      ]
+    },
+    {
+      "route": "02-E",
+      "failures": [
+        {
+          "family": "ENGINEERING",
+          "signal": "错误修复反复失败",
+          "local_fix": "回溯diff/根因并重新设计回归测试",
+          "recheck": "02-E"
+        },
+        {
+          "family": "EVIDENCE",
+          "signal": "持续换种子仍无收益",
+          "local_fix": "停止重复尝试，回决策门禁",
+          "recheck": "02-D"
+        }
+      ]
+    },
+    {
+      "route": "03-A",
+      "failures": [
+        {
+          "family": "AUTH",
+          "signal": "跨阶段旧授权被继承",
+          "local_fix": "明确实验种类、GPU上限与新批准",
+          "recheck": "03-A"
+        },
+        {
+          "family": "SCIENTIFIC",
+          "signal": "实现合同与论文主张脱节",
+          "local_fix": "重写可验收输入输出和消融",
+          "recheck": "03-A"
+        }
+      ]
+    },
+    {
+      "route": "03-B",
+      "failures": [
+        {
+          "family": "PROTOCOL",
+          "signal": "冻结后修改切分或指标",
+          "local_fix": "作废受影响结果，需批准新协议",
+          "recheck": "03-B"
+        },
+        {
+          "family": "LEAKAGE",
+          "signal": "test被反复用于调参",
+          "local_fix": "停止确认性宣称，另行独立评估",
+          "recheck": "02-B"
+        }
+      ]
+    },
+    {
+      "route": "03-C",
+      "failures": [
+        {
+          "family": "ENGINEERING",
+          "signal": "单元测试/梯度实现错误",
+          "local_fix": "最小失败样例+一次根因修复",
+          "recheck": "03-C"
+        },
+        {
+          "family": "TRAINING",
+          "signal": "模型不学习/latent collapse",
+          "local_fix": "核尺度/梯度并测试小样本过拟合",
+          "recheck": "03-C"
+        }
+      ]
+    },
+    {
+      "route": "03-D",
+      "failures": [
+        {
+          "family": "TRAINING",
+          "signal": "NaN/OOM/训练震荡",
+          "local_fix": "小batch诊断后单因素调参",
+          "recheck": "03-D"
+        },
+        {
+          "family": "EVIDENCE",
+          "signal": "搜索多次只挑最好seed",
+          "local_fix": "记录完整搜索与全seed效应、同预算公平比较；无稳健增益则转03-E有界诊断",
+          "recheck": "03-E"
+        }
+      ]
+    },
+    {
+      "route": "03-E",
+      "failures": [
+        {
+          "family": "SCIENTIFIC",
+          "signal": "多轮调试仍无新增科学效应",
+          "local_fix": "回退到任务/数据/机制假设",
+          "recheck": "03-E"
+        },
+        {
+          "family": "ENGINEERING",
+          "signal": "连续修复引入新问题",
+          "local_fix": "停止盲修，检查架构耦合",
+          "recheck": "03-C"
+        }
+      ]
+    },
+    {
+      "route": "03-F",
+      "failures": [
+        {
+          "family": "PROTOCOL",
+          "signal": "确认集被用于挑模型",
+          "local_fix": "标记污染，不可调同一test",
+          "recheck": "03-B"
+        },
+        {
+          "family": "EVIDENCE",
+          "signal": "确认性结果推翻探索收益",
+          "local_fix": "如实报告并降级主张或请求新设计",
+          "recheck": "03-E"
+        }
+      ]
+    },
+    {
+      "route": "04-A",
+      "failures": [
+        {
+          "family": "REVIEW",
+          "signal": "复核方无法找到原始证据",
+          "local_fix": "形成Claim/Run/commit的最小审查任务书",
+          "recheck": "04-A"
+        },
+        {
+          "family": "EVIDENCE",
+          "signal": "审查范围过大",
+          "local_fix": "优先1–3项核心可推翻主张",
+          "recheck": "04-A"
+        }
+      ]
+    },
+    {
+      "route": "04-B",
+      "failures": [
+        {
+          "family": "REVIEW",
+          "signal": "开发者自评代替独立复核",
+          "local_fix": "标记未独立审核，找真实审查者",
+          "recheck": "04-B"
+        },
+        {
+          "family": "PROTOCOL",
+          "signal": "重算与原结果不一致",
+          "local_fix": "核数据指纹/seed/评价口径",
+          "recheck": "04-C"
+        }
+      ]
+    },
+    {
+      "route": "04-C",
+      "failures": [
+        {
+          "family": "ENGINEERING",
+          "signal": "补救造成更多回归",
+          "local_fix": "依影响图仅重测受影响Claim/Run",
+          "recheck": "04-C"
+        },
+        {
+          "family": "LEAKAGE",
+          "signal": "测试集污染无法消除",
+          "local_fix": "明确无确认性结论或申请新数据",
+          "recheck": "04-C"
+        }
+      ]
+    },
+    {
+      "route": "04-D",
+      "failures": [
+        {
+          "family": "WRITING",
+          "signal": "论文主张超过真实贡献",
+          "local_fix": "降级为证据支持的贡献与范围",
+          "recheck": "04-D"
+        },
+        {
+          "family": "SCIENTIFIC",
+          "signal": "指标不理想直接判PIVOT",
+          "local_fix": "先评剩余可证伪增量，交用户选择",
+          "recheck": "04-D"
+        }
+      ]
+    },
+    {
+      "route": "05-A",
+      "failures": [
+        {
+          "family": "WRITING",
+          "signal": "叙事脱离已验证主张",
+          "local_fix": "映射每项贡献到Run/Claim",
+          "recheck": "05-A"
+        },
+        {
+          "family": "SOURCES",
+          "signal": "期刊/最近论文来源过时",
+          "local_fix": "增量核对官方资料",
+          "recheck": "05-A"
+        }
+      ]
+    },
+    {
+      "route": "05-B",
+      "failures": [
+        {
+          "family": "WRITING",
+          "signal": "方法正文与训练日志不同",
+          "local_fix": "按真实超参/数据/seed改写",
+          "recheck": "05-B"
+        },
+        {
+          "family": "EVIDENCE",
+          "signal": "缺证据还写成正结果",
+          "local_fix": "删无证据句，申请定向验证或降级",
+          "recheck": "04-D"
+        }
+      ]
+    },
+    {
+      "route": "05-C",
+      "failures": [
+        {
+          "family": "WRITING",
+          "signal": "图与原始统计对不上",
+          "local_fix": "统一脚本和输入版本并复算",
+          "recheck": "05-C"
+        },
+        {
+          "family": "EVIDENCE",
+          "signal": "只展示最好seed/遗漏失败",
+          "local_fix": "报告全seed、CI及失效样本",
+          "recheck": "05-C"
+        }
+      ]
+    },
+    {
+      "route": "05-D",
+      "failures": [
+        {
+          "family": "REVIEW",
+          "signal": "模拟审稿循环没完没了",
+          "local_fix": "仅修影响结论的Critical/Major问题",
+          "recheck": "05-D"
+        },
+        {
+          "family": "AUTH",
+          "signal": "未获作者批准要投稿",
+          "local_fix": "停止外传与正式提交",
+          "recheck": "05-D"
+        }
+      ]
+    },
+    {
+      "route": "05-E",
+      "failures": [
+        {
+          "family": "WRITING",
+          "signal": "回复声称完成不存在的实验",
+          "local_fix": "按实际Run证据修改回复",
+          "recheck": "05-E"
+        },
+        {
+          "family": "AUTH",
+          "signal": "审稿新增GPU/付费任务",
+          "local_fix": "单列有限预算请求批准",
+          "recheck": "05-E"
+        }
+      ]
+    }
+  ]
+}

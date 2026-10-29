@@ -46,20 +46,77 @@ def extract(path,key):
     return blocks[0].strip()
 
 
+
+def load_repairs(root=ROOT, routes=None):
+    """Fail-closed, read-only catalog: all 24 scenes and valid return routes."""
+    if routes is None:
+        routes=load_routes(root)
+    doc=json.loads((root/"REPAIR_ROUTES.json").read_text(encoding="utf-8"))
+    if doc.get("version")!="1.0.0":
+        raise ValueError("Unknown repair catalog")
+    fam=doc.get("families")
+    if not isinstance(fam,dict) or not fam:
+        raise ValueError("Missing repair families")
+    for name,item in fam.items():
+        if not re.fullmatch("[A-Z_]+",name) or not isinstance(item,dict):
+            raise ValueError("Bad failure family")
+        for field in ("class","check","fix","verify"):
+            if not isinstance(item.get(field),str) or not item[field].strip():
+                raise ValueError("Incomplete failure family")
+    scenes={}
+    for entry in doc.get("scenes",[]):
+        key=entry.get("route")
+        if key not in routes or key in scenes:
+            raise ValueError("Unknown or duplicate repair route")
+        cases=entry.get("failures")
+        if not isinstance(cases,list) or not cases:
+            raise ValueError("Empty repair list")
+        for failure in cases:
+            if failure.get("family") not in fam or failure.get("recheck") not in routes:
+                raise ValueError("Unknown failure family or return route")
+            if not failure.get("signal") or not failure.get("local_fix"):
+                raise ValueError("Incomplete repair case")
+        scenes[key]=cases
+    if list(scenes)!=list(routes):
+        raise ValueError("Repair catalog does not exactly cover 24 routes")
+    return fam,scenes
+
+
+def render_repair(key):
+    fam,scenes=load_repairs()
+    if key not in scenes:
+        raise ValueError("Unknown repair route: "+str(key))
+    out=["REPAIR_DIAGNOSTICS: "+key+"; read-only, not an experiment approval"]
+    for i,c in enumerate(scenes[key],1):
+        rule=fam[c["family"]]
+        out.extend([f"{i}. {c['family']}: {c['signal']}",
+                    "CHECK: "+rule["check"],
+                    "REPAIR: "+c["local_fix"],
+                    "GUARD: "+rule["fix"],
+                    "VERIFY: "+rule["verify"],
+                    "RECHECK_ROUTE: "+c["recheck"]])
+    out.append("GPU/paid/formal-experiment approval remains separate.")
+    return "\n".join(out)
+
+
 def main():
     p=argparse.ArgumentParser(description="Load exactly one v5 scene Prompt; read-only")
     g=p.add_mutually_exclusive_group(required=True)
     g.add_argument("--id")
     g.add_argument("--list",action="store_true")
     g.add_argument("--check",action="store_true")
+    g.add_argument("--repair",help="print this route's two repair scenarios; never execute")
     args=p.parse_args()
     try:
         routes=load_routes()
         if args.check:
             for key,(path,_) in routes.items():extract(path,key)
+            load_repairs(routes=routes)
             print("ROUTES_CHECK_PASS: 24/24; no model, GPU or paid calls")
         elif args.list:
             for key,(_,x) in routes.items():print(key,x["kind"],x["name"],x["when"])
+        elif args.repair:
+            print(render_repair(args.repair))
         else:
             if args.id not in routes:raise ValueError("Unknown route "+str(args.id))
             print(extract(routes[args.id][0],args.id))

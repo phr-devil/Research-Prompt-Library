@@ -240,7 +240,7 @@
   },
   {
     "id": "WF41",
-    "name": "高水平计算机论文科研工作流 v5.0（一次启动 + 五阶段24场景）",
+    "name": "科研工作流 v5.1（一次启动、24场景、按需纠错）",
     "group": "08_算法检验与优化",
     "file": "08_算法检验与优化/高水平计算机论文工作流/README.md",
     "source_urls": [
@@ -250,7 +250,7 @@
       "https://github.com/Orchestra-Research/AI-Research-SKILLs",
       "https://github.com/anthropics/knowledge-work-plugins"
     ],
-    "source_status": "v5.0 引入单次 START + 自动导航 ORCHESTRATOR + 24场景 ROUTES + 只读加载器；原 v4.1 科研内核和授权门禁保留。GitHub/本地文件访问需要真实工具权限；尚无真实 LLM A/B 或 Token 节省实测。"
+    "source_status": "保留原五阶段24 Prompt，增加单次启动、自动路由、用户门禁、48种按场景验证故障和有限修复/回退。保留科研真实性与GPU独立授权；无真实模型表现或Token效率实测。"
   },
   {
     "id": "V09",
