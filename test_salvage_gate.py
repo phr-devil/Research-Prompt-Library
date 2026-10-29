@@ -76,6 +76,43 @@ class GateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "P1/P2/P3"):
             gate.inspect_selection(self.candidates, self.selection)
 
+    def test_chinese_ordinal_selection(self):
+        self.select()
+        record = json.loads(self.selection.read_text(encoding="utf-8"))
+        record["user_message"] = "我选第二个项目"
+        self.selection.write_text(json.dumps(record), encoding="utf-8")
+        self.assertEqual(gate.inspect_selection(self.candidates, self.selection)[0],
+                         "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED")
+
+    def test_ambiguous_nonselection_is_rejected(self):
+        self.select()
+        record = json.loads(self.selection.read_text(encoding="utf-8"))
+        record["user_message"] = "继续执行吧"
+        self.selection.write_text(json.dumps(record), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "not clearly expressed"):
+            gate.inspect_selection(self.candidates, self.selection)
+
+    def test_bare_project_id_is_valid_structure_only(self):
+        self.select()
+        record = json.loads(self.selection.read_text(encoding="utf-8"))
+        record["user_message"] = "P2"
+        self.selection.write_text(json.dumps(record), encoding="utf-8")
+        self.assertEqual(gate.inspect_selection(self.candidates, self.selection)[0],
+                         "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED")
+
+    def test_compact_chinese_selection(self):
+        self.select()
+        record = json.loads(self.selection.read_text(encoding="utf-8"))
+        record["user_message"] = "我选P2"
+        self.selection.write_text(json.dumps(record), encoding="utf-8")
+        self.assertEqual(gate.inspect_selection(self.candidates, self.selection)[0],
+                         "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED")
+
+    def test_invalid_json_root_blocks(self):
+        self.candidates.write_text("[]", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "JSON object"):
+            gate.inspect_candidates(self.candidates)
+
     def test_missing_message_reference(self):
         self.select()
         record = json.loads(self.selection.read_text(encoding="utf-8"))

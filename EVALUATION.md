@@ -1,6 +1,16 @@
 # Prompt 可复现测试夹具
 
-> v1.5 · 2026-10-26。所有输入均为**人工编造的测试场景**，不属于真实项目记录或当年官方募集资料。测试夹具不等于模型实测结果。
+> 历史 v1.5 + 当前 v1.9 压力场景 · 2026-10-29。所有输入均为**人工编造的测试场景**，不属于真实项目记录或当年官方募集资料。测试夹具不等于模型实测结果。
+
+## 当前版本的评测与命令（仅生成计划，默认不调用模型）
+
+历史默认仍比较 v1.3 / v1.5 的冻结 SHA；不得把其通过率标成 v1.9 效果。当前版必须显式提供两个 40 位 Git SHA：
+
+~~~bash
+python eval_runner.py --suite current --base-ref 35f2b30f8541285430d7285aa414c236ce6ffc98 --candidate-ref <当前提交的40位SHA> --output-dir .eval_runs/current-v19
+~~~
+
+当前版 8 个情境覆盖 S01-B、第09类用户选择、失败恢复、跨AI审核缺失、代理标签和论文证据一致性。使用 `--cases N02,N04` 定向评估；全部评估用 `--all --max-calls 16 --allow-unchanged-controls`，未变化项只用于控制，不计改进。必须有真实模型推理、盲评和实际 Token 统计才可宣称效果。本次压力题已用于修订 Prompt，不可当独立留出验证。
 
 ## 已有测试与当前状态
 
@@ -17,7 +27,7 @@
 
 ## 唯一测试题来源（Single Source of Truth）
 
-**唯一可执行的测试定义是 [EVAL_CASES.json](EVAL_CASES.json)**：`cases[].input` 为逐字固定输入，`must` 为必需条件，`critical` 为严重错误，`pilot_ids` 为默认 Pilot。不要将本文的说明文字、旧版历史案例或示例作为第二套题目。新增/修改场景应直接修改 JSON，并用 `python library_check.py` 和离线 CI 验证 Prompt 引用。
+**历史版测试题在 [EVAL_CASES.json](EVAL_CASES.json)，当前版测试题在 [EVAL_CASES_CURRENT.json](EVAL_CASES_CURRENT.json)，由 `--suite` 分开调用**：`cases[].input` 为逐字固定输入，`must` 为必需条件，`critical` 为严重错误，`pilot_ids` 为默认 Pilot。不要将本文的说明文字、旧版历史案例或示例作为第二套题目。新增/修改场景应直接修改 JSON，并用 `python library_check.py` 和离线 CI 验证 Prompt 引用。
 
 目前包含13个合成场景，默认 Pilot 为 T03/T04/T09/T11。它们只验证指定行为，不代表整个科研任务分布；真实模型表现仍须按冻结题目运行、人工盲评并报告全部结果。**已用于改进 Prompt 的测试题不可再当作独立确认性测试**。
 

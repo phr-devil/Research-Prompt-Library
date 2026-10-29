@@ -15,10 +15,14 @@
 
 ## 快速检查门禁（可选）
 
-在项目仓库根目录，Step 05 输出 `research_salvage/05_CANDIDATES.json` 后执行：
+**提示词库与科研项目通常是两个不同的 Git 仓库**。脚本路径必须指向真正存放 Prompt Library 的位置，不能假定科研项目下存在 `09_...`。先在终端设置 `PROMPT_LIBRARY` 为本库的绝对路径，或者直接把该绝对路径放进命令；本工具只是可选的结构核查，不是 Step 06 的审批器。
+
+在科研项目仓库根目录，Step 05 输出 `research_salvage/05_CANDIDATES.json` 后执行：
 
 ~~~bash
-python 09_失败算法项目挽救与转向/salvage_gate.py --candidates research_salvage/05_CANDIDATES.json --selection research_salvage/05_USER_SELECTION.json
+python "/absolute/path/to/Research-Prompt-Library/09_失败算法项目挽救与转向/salvage_gate.py" --candidates research_salvage/05_CANDIDATES.json --selection research_salvage/05_USER_SELECTION.json
 ~~~
+
+路径示例为 POSIX 风格占位符，Windows 请替换为真实的盘符绝对路径。未克隆本提示词库且无法运行脚本时，请直接让独立审查者核对三个候选与用户的最新消息，不能因为缺少 CLI 就宣称已批准。
 
 退出码 2 = 等待用户选择，退出码 3 = 候选或选择文件无效，退出码 0 = 文件结构合规但**仍必须确认真实用户消息**，也不代表 GPU/付费/实验已获批准。具体选择文件格式见 [完整流程](WORKFLOW.md)。

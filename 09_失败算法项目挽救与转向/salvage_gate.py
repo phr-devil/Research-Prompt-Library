@@ -9,6 +9,7 @@ exit 2 = awaiting selection; exit 3 = blocked/invalid.
 import argparse
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -19,7 +20,10 @@ NEEDED = ("title", "claim", "dataset_truth", "closest_work",
 
 def inspect_candidates(path):
     raw = Path(path).read_bytes()
-    items = json.loads(raw.decode("utf-8")).get("candidates")
+    data = json.loads(raw.decode("utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("Candidate root must be a JSON object")
+    items = data.get("candidates")
     if not isinstance(items, list) or len(items) != 3:
         raise ValueError("Need exactly three candidate projects")
     if any(not isinstance(x, dict) for x in items) or [x.get("id") for x in items] != list(IDS):
@@ -40,6 +44,8 @@ def inspect_selection(candidates, selection=None):
     if selection is None or not Path(selection).is_file():
         return "WAITING_FOR_USER_SELECTION", digest
     record = json.loads(Path(selection).read_text(encoding="utf-8"))
+    if not isinstance(record, dict):
+        raise ValueError("Selection root must be a JSON object")
     chosen = record.get("selected_id")
     if chosen not in IDS:
         raise ValueError("User must choose exactly one P1/P2/P3")
@@ -48,8 +54,21 @@ def inspect_selection(candidates, selection=None):
     for key in ("user_message", "user_message_reference"):
         if not isinstance(record.get(key), str) or not record[key].strip():
             raise ValueError("Missing user message and provenance reference")
-    if chosen not in record["user_message"]:
-        raise ValueError("Selected ID absent from user message text")
+    message = record["user_message"].strip()
+    # Accept explicit IDs or a small conservative set of unequivocal Chinese ordinals.
+    # This is only a syntactic consistency check, not authentication of a human message.
+    aliases = {
+        "P1": r"(?:(?<![A-Za-z0-9])P1(?![A-Za-z0-9])|第[一1]个(?:项目|课题|方案)|第[一1]项|方案一)",
+        "P2": r"(?:(?<![A-Za-z0-9])P2(?![A-Za-z0-9])|第[二2]个(?:项目|课题|方案)|第[二2]项|方案二)",
+        "P3": r"(?:(?<![A-Za-z0-9])P3(?![A-Za-z0-9])|第[三3]个(?:项目|课题|方案)|第[三3]项|方案三)",
+    }
+    if not re.search(aliases[chosen], message, flags=re.IGNORECASE):
+        raise ValueError("Selected ID not clearly expressed by user message")
+    intent = r"(?:选择|选了|选定|我选|决定|采用|确定|pick|choose|chosen)"
+    bare_choice = r"(?:P[123]|第[一二三123]个(?:项目|课题|方案)?|第[一二三123]项|方案[一二三])"
+    if not re.search(intent, message, flags=re.IGNORECASE) and not re.fullmatch(
+            bare_choice, message, flags=re.IGNORECASE):
+        raise ValueError("Selection intent not explicit in user message")
     return "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED", digest
 
 

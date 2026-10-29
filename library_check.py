@@ -46,6 +46,15 @@ def validate(root=ROOT):
     errors = []
     index = json.loads((root / "LIBRARY_INDEX.json").read_text(encoding="utf-8"))
     fixture = json.loads((root / "EVAL_CASES.json").read_text(encoding="utf-8"))
+    current = json.loads((root / "EVAL_CASES_CURRENT.json").read_text(encoding="utf-8"))
+    for case in current["cases"]:
+        path = case.get("prompt_path")
+        if path is None: continue
+        file = (root / path).resolve()
+        if not file.is_relative_to(root.resolve()) or not file.is_file():
+            errors.append("Invalid current fixture prompt_path: "+str(path))
+        if not case.get("prompt_selector"):
+            errors.append("Current fixture requires explicit prompt_selector: "+case.get("id","?"))
     entries = {}
     for item in index:
         key, relative = item["id"], item["file"]
