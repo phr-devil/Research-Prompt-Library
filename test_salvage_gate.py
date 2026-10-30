@@ -41,10 +41,35 @@ class GateTests(unittest.TestCase):
         self.assertEqual(gate.inspect_selection(self.candidates, self.selection)[0],
                          "WAITING_FOR_USER_SELECTION")
 
-    def test_exactly_three_required(self):
+    def test_partial_shortlist_requires_explanation(self):
         self.cards["candidates"].pop()
         self.save()
-        with self.assertRaisesRegex(ValueError, "exactly three"):
+        with self.assertRaisesRegex(ValueError, "shortfall_reason"):
+            gate.inspect_candidates(self.candidates)
+        self.cards["shortfall_reason"] = "Only two credible options survived evidence screening."
+        self.save()
+        self.assertIsInstance(gate.inspect_candidates(self.candidates), str)
+
+    def test_partial_shortlist_explicit_selection_is_valid_structure(self):
+        self.cards["candidates"] = self.cards["candidates"][:1]
+        self.cards["shortfall_reason"] = "Only one defensible research seed survives the evidence audit."
+        self.save()
+        self.select("P1")
+        self.assertEqual(gate.inspect_selection(self.candidates, self.selection)[0],
+                         "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED")
+
+    def test_cannot_select_option_not_offered(self):
+        self.cards["candidates"] = self.cards["candidates"][:2]
+        self.cards["shortfall_reason"] = "Only two defensible options remain after screening."
+        self.save()
+        self.select("P3")
+        with self.assertRaisesRegex(ValueError, "not offered"):
+            gate.inspect_selection(self.candidates, self.selection)
+
+    def test_empty_shortlist_is_invalid(self):
+        self.cards["candidates"] = []
+        self.save()
+        with self.assertRaisesRegex(ValueError, "one to three"):
             gate.inspect_candidates(self.candidates)
 
     def test_distinct_ids(self):

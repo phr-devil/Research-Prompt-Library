@@ -24,10 +24,14 @@ def inspect_candidates(path):
     if not isinstance(data, dict):
         raise ValueError("Candidate root must be a JSON object")
     items = data.get("candidates")
-    if not isinstance(items, list) or len(items) != 3:
-        raise ValueError("Need exactly three candidate projects")
-    if any(not isinstance(x, dict) for x in items) or [x.get("id") for x in items] != list(IDS):
-        raise ValueError("Require ordered, distinct P1/P2/P3")
+    if not isinstance(items, list) or not 1 <= len(items) <= 3:
+        raise ValueError("Need one to three candidate projects")
+    if len(items) < 3:
+        why = data.get("shortfall_reason")
+        if not isinstance(why, str) or len(why.strip()) < 8:
+            raise ValueError("Partial shortlist needs a substantive shortfall_reason")
+    if any(not isinstance(x, dict) for x in items) or [x.get("id") for x in items] != list(IDS[:len(items)]):
+        raise ValueError("Require ordered, distinct P1/P2/P3 available IDs")
     for item in items:
         if any(not isinstance(item.get(k), str) or not item[k].strip() for k in NEEDED):
             raise ValueError("Missing candidate scientific fields")
@@ -49,6 +53,9 @@ def inspect_selection(candidates, selection=None):
     chosen = record.get("selected_id")
     if chosen not in IDS:
         raise ValueError("User must choose exactly one P1/P2/P3")
+    offered = [item["id"] for item in json.loads(Path(candidates).read_text(encoding="utf-8"))["candidates"]]
+    if chosen not in offered:
+        raise ValueError("Selected project was not offered in the shortlist")
     if record.get("candidate_sha256") != digest:
         raise ValueError("Stale selection: candidate file hash changed")
     for key in ("user_message", "user_message_reference"):
