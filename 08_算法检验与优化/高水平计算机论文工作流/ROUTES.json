@@ -1,6 +1,6 @@
 {
   "version": "5.0.0",
-  "description": "v5.3 guided 24-scene selectors; schema version 5.0.0; advisory only, never grants permissions",
+  "description": "Compatibility-only 24-scene research tools. Not a mandatory sequence or a prerequisite to running a small algorithm prototype.",
   "stages": [
     {
       "id": "01",
@@ -182,10 +182,45 @@
       ]
     }
   ],
-  "workflow_version": "5.3",
+  "workflow_version": "6.0",
   "execution_semantics": {
-    "as_needed": "仅当本次目标缺少有效证据且需要该场景时执行；有可信结果就直接跳过，不强制顺序跑完",
-    "required_for_action": "只针对即将执行的具体受限动作/正式提交所需的最低先决条件，不能因其未完成而阻止无关的只读研究和草稿",
-    "conditional": "只在场景明确条件成立时调用；不以文件中存在就自动执行"
+    "as_needed": "专题工具，按科研问题需要调用，不是默认必做；已有有效证据直接跳过",
+    "required_for_action": "对应真实数据实验/正式投稿的最低合法与科学真实性条件，不构成前期原型开发审批流水线",
+    "conditional": "仅在相应症状/正式结论/投稿或真实审稿出现时调用"
+  },
+  "default_path": {
+    "entry": "ORCHESTRATOR.md",
+    "mode": "PROTOTYPE_FIRST",
+    "mandatory_scenes": [],
+    "behavior": "Restate one testable goal, inspect only essential data restrictions, produce a minimum baseline + running model in existing authorization; loop from results. Do not require prior 01/02/03 scene completion."
+  },
+  "on_demand_examples": {
+    "debug": [
+      "03-C",
+      "03-E"
+    ],
+    "data_and_leakage": [
+      "02-B",
+      "02-E"
+    ],
+    "prior_art": [
+      "01-B"
+    ],
+    "scientific_value": [
+      "02-D",
+      "03-D"
+    ],
+    "confirmation": [
+      "03-B",
+      "03-F",
+      "04-B"
+    ],
+    "manuscript": [
+      "05-A",
+      "05-C"
+    ],
+    "pivot": [
+      "01-D"
+    ]
   }
 }
