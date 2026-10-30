@@ -269,6 +269,12 @@
       "action": "STOP",
       "route": null,
       "why": "新的真实用户HOLD优先于任何自动继续"
+    },
+    "PROXY_ONLY_GAIN": {
+      "action": "CHECK_SCIENTIFIC_VALUE",
+      "route": "03-D",
+      "lesson": "L3",
+      "why": "工程/内部代理指标改善但任务、机制或理论贡献未证；用最便宜的独立价值检验与最近邻比较，避免继续堆工程任务"
     }
   }
 }
