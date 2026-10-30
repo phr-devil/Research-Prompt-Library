@@ -22,7 +22,9 @@
         "缩小目标/转向/HOLD"
       ],
       "auto_continue_affected": false,
-      "safe_unaffected_work": true
+      "safe_unaffected_work": true,
+      "fast_path": "Within independently verified existing permission/scope and unchanged claim/protocol, bounded lowest-cost diagnosis may proceed without another user menu; not confirmation.",
+      "user_choice_required_when": "material claim/scope/protocol/resource change, new unresolved risk, original authorization missing or user HOLD"
     },
     "MINOR": {
       "meaning": "已知影响低且不改变当前科学结论、数据完整性、资源权限或主要验收",
@@ -242,7 +244,7 @@
       "outcome": "可选继续脚本开发，正式优势声明前补公平对照"
     }
   ],
-  "workflow_version": "5.4",
+  "workflow_version": "6.1",
   "action_intents": {
     "READ_ONLY_RESEARCH": "只读资料查证、逻辑梳理和不改变协议的静态设计",
     "SCOPED_EXPLORATION": "仅在已有获批资源范围内的探索性设计、代码/数据分析；不代表已获GPU",
