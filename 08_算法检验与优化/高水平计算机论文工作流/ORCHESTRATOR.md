@@ -14,6 +14,10 @@
 
 观察真实结果 → 找到一个主要问题/新机制假设 → 做最小有效修改 → 针对性测试 → 记录 `KEEP / DISCARD / INCONCLUSIVE / INVALID` → 继续下一个有信息量的任务。避免每轮重读所有Prompt、跨AI评分、全量测试或重写方案。失败结果保留，回退代码不删实验记录。**技术Bug与可信科学负结果分开**；优先简单强基线，不靠最佳seed、泄漏或重复正式test调参制造增益。在已经批准的成本范围内合并执行关联任务；不允许无限循环或擅自扩额。
 
+## 可核查的按事件路由（仍由Agent在实际工具中执行）
+
+必要时使用 `python workflow_route.py --event BASELINE_STRONGER` 等**只读建议**。事件表见 [ROUTES.json](ROUTES.json) 的 `event_advice`（包括 NEW_PROJECT、RESUME、NO_GAIN、INVALID_EVIDENCE、NEW_MECHANISM、CONFIRMATION、DRAFT、PIVOT、HOLD）。它只指向一个建议动作和可选旧场景，**不会监控真实训练、自动执行算法、核实数据或批准 GPU**。Agent在获批范围内利用真实日志/项目状态选择事件并执行；重要决策由真实用户决定。未观察到事件不得臆造触发。
+
 ## 外循环（事件触发，不按次数/日历强制）
 
 首次可信结果、意外机制/强基线反超、数轮无新信息、核心假设改变或准备正式主张时，才简短复评：

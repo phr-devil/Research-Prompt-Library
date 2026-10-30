@@ -1,9 +1,9 @@
-# Research Workflow v6.0｜唯一启动入口
+# Research Workflow v6.1｜唯一启动入口
 
 只需复制下方一次，之后用自然语言交流；无需逐条选择24个场景。
 
 ~~~text
-请使用 https://github.com/phr-devil/Research-Prompt-Library 的第八项 v6.0 规则，协助开发以下科研算法：
+请使用 https://github.com/phr-devil/Research-Prompt-Library 的第八项 v6.1 规则，协助开发以下科研算法：
 目标：【一句话填写】
 已有项目/数据/结果：【可选】
 已批准的资源与预算：【可选；未填写不代表获批 GPU/费用/正式实验】

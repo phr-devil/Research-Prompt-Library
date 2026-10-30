@@ -240,7 +240,7 @@
   },
   {
     "id": "WF41",
-    "name": "Research Workflow v6.0（原型优先、真实迭代、按需科学审查）",
+    "name": "Research Workflow v6.1（自适应原型与按事件科研纠错）",
     "group": "08_算法检验与优化",
     "file": "08_算法检验与优化/高水平计算机论文工作流/README.md",
     "source_urls": [
@@ -253,7 +253,7 @@
       "https://github.com/anthropics/skills",
       "https://github.com/open-gsd/gsd-core"
     ],
-    "source_status": "默认START→MVP→实验内循环→事件驱动科学反思；旧五阶段24场景/48故障保留为按需工具，并新增CARE-Touch/PhysTok/RevGraph/CAR-IMU历史教训索引。保持原始Run/Claim、确认性科学证据与资源授权门禁。未做实际LLM A/B或GPU实验。"
+    "source_status": "已校正v6残留阶段门禁并增加只读事件路由、条件性有界REPAIRABLE诊断与科研断点状态；第09章证据不足时允许1–2项真实短名单（需注明短缺并由真实用户选题），恢复后进入MVP而非v4.1前置门禁。静态/离线CI不代表真实科研Agent A/B结果。"
   },
   {
     "id": "V09",

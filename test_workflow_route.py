@@ -1,4 +1,4 @@
-"""V5 routing regression tests."""
+"""v6 scientific routing, evidence and authorization regression tests."""
 import importlib.util
 import subprocess
 import sys
@@ -13,7 +13,7 @@ router=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(router)
 
 
-class V5Tests(unittest.TestCase):
+class WorkflowTests(unittest.TestCase):
     def test_all_24_prompts(self):
         routes=router.load_routes()
         self.assertEqual(24,len(routes))
@@ -229,7 +229,7 @@ class V5Tests(unittest.TestCase):
     def test_v6_fast_path_is_default_not_24_mandatory_gates(self):
         root=ROOT
         doc=json.loads((root/"ROUTES.json").read_text(encoding="utf-8"))
-        self.assertEqual(doc["workflow_version"],"6.0")
+        self.assertEqual(doc["workflow_version"],"6.1")
         self.assertEqual(doc["default_path"]["mode"],"PROTOTYPE_FIRST")
         self.assertEqual(doc["default_path"]["mandatory_scenes"],[])
         self.assertEqual(doc["default_path"]["entry"],"ORCHESTRATOR.md")
@@ -263,6 +263,65 @@ class V5Tests(unittest.TestCase):
         self.assertEqual(len(scenes),24)
         self.assertEqual(sum(len(v) for v in scenes.values()),48)
         self.assertEqual(len(router.load_routes()),24)
+
+
+    def test_v61_event_advice_covers_decisive_research_scenarios(self):
+        cases = {
+            "NEW_PROJECT": ("MVP", None),
+            "RESUME": ("RECOVER", None),
+            "NO_GAIN": ("ITERATE", "03-D"),
+            "BASELINE_STRONGER": ("DIAGNOSE", "03-E"),
+            "INVALID_EVIDENCE": ("BLOCK_AFFECTED_CLAIM", "02-B"),
+            "NEW_MECHANISM": ("REFLECT", "01-B"),
+            "CONFIRMATION": ("VERIFY_AND_AUTHORIZE", "03-F"),
+            "DRAFT": ("WRITE_UNVERIFIED", "05-A"),
+            "PIVOT": ("REQUEST_REAL_USER_DIRECTION", None),
+            "HOLD": ("STOP", None),
+        }
+        for event, (action, route) in cases.items():
+            advice = router.advise_event(event)
+            self.assertEqual(advice["action"], action)
+            self.assertEqual(advice["route"], route)
+            self.assertEqual(advice["permission"], "ADVISORY_ONLY_NO_EXECUTION")
+        with self.assertRaises(ValueError):
+            router.advise_event("FAKE_USER_APPROVAL")
+
+    def test_v61_cli_event_suggests_one_tool_no_execution(self):
+        r = subprocess.run([sys.executable, str(ROOT/"workflow_route.py"),
+                            "--event", "BASELINE_STRONGER"], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("SUGGESTED_ACTION: DIAGNOSE", r.stdout)
+        self.assertIn("OPTIONAL_ROUTE: 03-E", r.stdout)
+        self.assertIn("Advisory only", r.stdout)
+        self.assertIn("REASON:", r.stdout)
+
+    def test_v61_bounded_repairable_requires_verified_scope(self):
+        self.assertEqual(router.propose_transition("REPAIRABLE", "SCOPED_EXPLORATION"),
+                         "WAITING_FOR_USER_DECISION")
+        self.assertEqual(router.propose_transition("REPAIRABLE", "SCOPED_EXPLORATION",
+                         scoped_work_verified=True), "BOUNDED_DIAGNOSTIC_CONTINUE")
+        self.assertEqual(router.propose_transition("REPAIRABLE", "SCOPED_EXPLORATION",
+                         scoped_work_verified=True, material_change=True), "WAITING_FOR_USER_DECISION")
+        self.assertEqual(router.propose_transition("REPAIRABLE", "FORMAL_RUN",
+                         scoped_work_verified=True), "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE")
+        self.assertEqual(router.propose_transition("CRITICAL", "SCOPED_EXPLORATION",
+                         scoped_work_verified=True), "BLOCKED_CRITICAL")
+        self.assertEqual(router.propose_transition("REPAIRABLE", "SCOPED_EXPLORATION", "HOLD",
+                         scoped_work_verified=True), "HOLD")
+
+    def test_v61_legacy_stage_gates_do_not_reappear(self):
+        routes = json.loads((ROOT/"ROUTES.json").read_text(encoding="utf-8"))
+        self.assertTrue(all("exit_gate" not in item for item in routes["stages"]))
+        for filename in ("01_科学选题与跨AI审核.md",
+                         "02_最小科学验证与决策.md", "03_完整算法研发与正式实验.md",
+                         "04_独立科学验证.md", "05_论文撰写与投稿.md"):
+            doc = (ROOT/filename).read_text(encoding="utf-8")
+            self.assertIn("v6.", doc)
+            self.assertNotIn("**触发**：必做", doc)
+        self.assertIn("不要求先执行04-D", (ROOT/"05_论文撰写与投稿.md").read_text(encoding="utf-8"))
+        state = (ROOT/"templates/STATE.md").read_text(encoding="utf-8")
+        self.assertIn("DECISION_REUSE_KEYS:", state)
+        self.assertIn("user_message_reference", state)
 
     def test_human_gates_preserved(self):
         s=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")

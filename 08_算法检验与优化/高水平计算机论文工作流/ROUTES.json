@@ -1,11 +1,10 @@
 {
   "version": "5.0.0",
-  "description": "Compatibility-only 24-scene research tools. Not a mandatory sequence or a prerequisite to running a small algorithm prototype.",
+  "description": "24 standalone specialist prompts for optional use; no stage completion requirement on prototype-first path.",
   "stages": [
     {
       "id": "01",
       "file": "01_科学选题与跨AI审核.md",
-      "exit_gate": "SELECT_TOPIC",
       "routes": [
         {
           "id": "01-A",
@@ -36,7 +35,6 @@
     {
       "id": "02",
       "file": "02_最小科学验证与决策.md",
-      "exit_gate": "PILOT_GO",
       "routes": [
         {
           "id": "02-A",
@@ -60,7 +58,7 @@
           "id": "02-D",
           "name": "GO/HOLD/STOP/PIVOT",
           "kind": "as_needed",
-          "when": "已有有效Pilot结果（含负结果），或遇到需要用户决定的科学阻碍"
+          "when": "Pilot后有重大方向分叉或用户要求GO/PIVOT/STOP时调用，不是每轮必做"
         },
         {
           "id": "02-E",
@@ -73,7 +71,6 @@
     {
       "id": "03",
       "file": "03_完整算法研发与正式实验.md",
-      "exit_gate": "FORMAL_RESOURCE",
       "routes": [
         {
           "id": "03-A",
@@ -116,7 +113,6 @@
     {
       "id": "04",
       "file": "04_独立科学验证.md",
-      "exit_gate": "WRITE_REVIEW",
       "routes": [
         {
           "id": "04-A",
@@ -147,13 +143,12 @@
     {
       "id": "05",
       "file": "05_论文撰写与投稿.md",
-      "exit_gate": "AUTHOR_SUBMISSION",
       "routes": [
         {
           "id": "05-A",
           "name": "论文叙事与定位",
           "kind": "as_needed",
-          "when": "用户明确选择WRITE_DRAFT或WRITE"
+          "when": "用户需要开始论文结构或探索性初稿，不要求先完成04-D"
         },
         {
           "id": "05-B",
@@ -182,7 +177,7 @@
       ]
     }
   ],
-  "workflow_version": "6.0",
+  "workflow_version": "6.1",
   "execution_semantics": {
     "as_needed": "专题工具，按科研问题需要调用，不是默认必做；已有有效证据直接跳过",
     "required_for_action": "对应真实数据实验/正式投稿的最低合法与科学真实性条件，不构成前期原型开发审批流水线",
@@ -192,7 +187,7 @@
     "entry": "ORCHESTRATOR.md",
     "mode": "PROTOTYPE_FIRST",
     "mandatory_scenes": [],
-    "behavior": "Restate one testable goal, inspect only essential data restrictions, produce a minimum baseline + running model in existing authorization; loop from results. Do not require prior 01/02/03 scene completion."
+    "behavior": "New or existing project: inspect minimum scientific essentials, implement minimal baseline/MVP under verified permitted actions, iterate on evidence; no implicit stage transitions."
   },
   "on_demand_examples": {
     "debug": [
@@ -222,5 +217,58 @@
     "pivot": [
       "01-D"
     ]
+  },
+  "event_advice": {
+    "NEW_PROJECT": {
+      "action": "MVP",
+      "route": null,
+      "why": "最小真值与资源检查后实现基线和原型；不必完成任何选题审核Prompt"
+    },
+    "RESUME": {
+      "action": "RECOVER",
+      "route": null,
+      "why": "仅查最后有效Run/代码/数据指纹和真实授权；不重训已完成证据"
+    },
+    "BASELINE_STRONGER": {
+      "action": "DIAGNOSE",
+      "route": "03-E",
+      "lesson": "L1/L2",
+      "why": "确认输入、公平预算、简单强基线与代理任务；不盲目扩模"
+    },
+    "NO_GAIN": {
+      "action": "ITERATE",
+      "route": "03-D",
+      "why": "有效负结果保存；先做一项有区分力的最小修改，不自动STOP"
+    },
+    "INVALID_EVIDENCE": {
+      "action": "BLOCK_AFFECTED_CLAIM",
+      "route": "02-B",
+      "why": "隔离泄漏/无独立真值的正式声明，允许未受影响的安全工作"
+    },
+    "NEW_MECHANISM": {
+      "action": "REFLECT",
+      "route": "01-B",
+      "why": "核近邻与竞争解释，记录尚需证实的科学贡献"
+    },
+    "CONFIRMATION": {
+      "action": "VERIFY_AND_AUTHORIZE",
+      "route": "03-F",
+      "why": "必要冻结协议/独立数据与独立真实用户授权均需验证"
+    },
+    "DRAFT": {
+      "action": "WRITE_UNVERIFIED",
+      "route": "05-A",
+      "why": "草稿可先行，缺证据位置保持UNVERIFIED"
+    },
+    "PIVOT": {
+      "action": "REQUEST_REAL_USER_DIRECTION",
+      "route": null,
+      "why": "重大主张变化先由真实用户决定；第09章选择另独立执行"
+    },
+    "HOLD": {
+      "action": "STOP",
+      "route": null,
+      "why": "新的真实用户HOLD优先于任何自动继续"
+    }
   }
 }

@@ -1,4 +1,4 @@
-# 第八项 v5.4｜三级缺陷与安全的风险选择复用
+# 第八项 v6.1｜有界自主诊断与安全风险选择复用
 
 > **目标不是所有检查全部PASS，而是用最少必要证据推动有价值的研究。** 适用于原24条 Prompt，每个阶段均按需分流；不增加24个检查步骤、不要求所有项目都完整执行24条。规则清单：[TRIAGE_POLICY.json](TRIAGE_POLICY.json)。
 
@@ -9,7 +9,7 @@
 | 级别 | 什么问题属于它 | Agent 默认动作 | 用户看到的选择 |
 |---|---|---|---|
 | **CRITICAL（致命）** | 经证据确认的许可/权限违规、关键真值循环、确认性测试泄漏、核心结论依赖无效评价，或无法合法实施相应实验 | **禁止执行受影响的下一步**，标 `BLOCKED_CRITICAL`，保存其余合法结果 | 只提供**修复 / 修改受影响主张 / HOLD或STOP**，**不提供“直接继续该动作”** |
-| **REPAIRABLE（一般）** | 文献覆盖不完整、少一个基线/消融、早期结果不稳定、Pilot未增益、独立审核暂未做等（需标局限） | `WAITING_FOR_USER_CHOICE`，给简明风险与推荐 | A 带限制继续探索/准备，B 先修复，C 缩窄目标或暂停；无需每条小问题都重复问 |
+| **REPAIRABLE（一般）** | 文献覆盖不完整、少一个基线/消融、早期结果不稳定、Pilot未增益、独立审核暂未做等（需标局限） | **已有真实授权、无需改变主张/范围/预算时**先执行有界最小诊断并记录局限；否则 `WAITING_FOR_USER_CHOICE` | 仅在实质分叉/新风险/权限变化时询问继续探索、先修复或缩窄目标；同一问题不重复问 |
 | **MINOR（轻微）** | 文案、展示、非关键可选测试、不会影响科学有效性和权限的低风险小缺陷 | **记录 `DEFERRED_MINOR` 后直接继续**；能安全顺手修则修 | 默认**不打断**，仅阶段总结时简短汇报 |
 
 **禁用的错误做法**：因为某项非必要消融缺失就全项目STOP；把部分文献重合直接视作缺乏创新；把“Pilot没提高指标”视为造假或必然终止；反过来把污染测试集降成MINOR以强行出正结果。未知情况先核实关键事实，不无限审查。
@@ -54,7 +54,7 @@ C｜HOLD/停止该主张
 
 ## 4. 路由动作
 
-`TRIAGE`（对**受影响目标**）→ `MINOR: DEFERRED_MINOR + CONTINUE`；`REPAIRABLE: 给一次选择 → 继续探索/先修/调整`；`CRITICAL: BLOCKED_CRITICAL` 且不得放行受影响动作。按 [RECOVERY.md](RECOVERY.md) 及 [REPAIR_ROUTES.json](REPAIR_ROUTES.json) 修根因；修复后重查原证据和严重度，不因换阶段而“自动消失”。
+`TRIAGE`（对**受影响目标**）→ `MINOR: DEFERRED_MINOR + CONTINUE`；`REPAIRABLE: 现有授权内无新风险时有界诊断继续；否则给一次选择 → 继续探索/先修/调整`；`CRITICAL: BLOCKED_CRITICAL` 且不得放行受影响动作。按 [RECOVERY.md](RECOVERY.md) 及 [REPAIR_ROUTES.json](REPAIR_ROUTES.json) 修根因；修复后重查原证据和严重度，不因换阶段而“自动消失”。
 
 完成步骤的定义改为 **`READY_WITH_LIMITATIONS` 也可以成为后续探索的有效入口**，但不能用于正式已验证结论；`VERIFIED` 才能支持对应确认性声明。若只有未知信息而尚无致命证据，不应粗暴STOP：先做最便宜的核查，对高影响的**特定宣称**保持冻结。
 
@@ -64,3 +64,5 @@ C｜HOLD/停止该主张
 **状态分离**：程序运行的 `RUN_STATUS=COMPLETE/PARTIAL/INVALID/CRASH/BLOCKED/NOT_RUN` 与科研步骤的 `ROUTE_READINESS=VERIFIED/READY_WITH_LIMITATIONS/BLOCKED_CRITICAL/PARTIAL` 不可互相替代。引用过期的完成状态不可自动放行实验。
 
 纯 Python `can_reuse_risk_choice()` 属于**静态辅助判定**，不连通聊天身份与权限系统；`user_message_verified=True` 必须由有能力独立核实后续消息的运行环境传入，不能从模型自己生成的 JSON、研究文件或命令行文本获得。无可信验证、用户主动改变选择或证据版本改变即不可复用。
+
+**执行优先级（v6.1）**：从真实会话和原始证据核对授权与影响范围；可控一般缺陷的简单诊断属于日常内循环，不为此要求一轮A/B/C；需要改变论文主张、冻结评价协议、新增算力/成本或真实用户已要求HOLD时才停下选择。静态路由器返回的 `BOUNDED_DIAGNOSTIC_CONTINUE` 仅是**建议**，不能认证权限。
