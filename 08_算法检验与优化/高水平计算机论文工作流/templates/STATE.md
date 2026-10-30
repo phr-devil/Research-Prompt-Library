@@ -13,8 +13,13 @@
 - WORKFLOW_SOURCE/COMMIT: <真实的源仓 SHA 或 UNPINNED>
 
 按需补充（不默认展开）：
+
+- EVENT: <仅当前触发的 NEW_PROJECT / RESUME / BASELINE_STRONGER / NO_GAIN / INVALID_EVIDENCE / NEW_MECHANISM / CONFIRMATION / DRAFT / PIVOT / HOLD>
+- USER_AUTH_PROVENANCE: <实际用户后续消息所在会话ID/时间或可由运行环境核实的定位；状态文本本身不构成授权>
+- DECISION_REUSE_KEYS: <仅当需要复用REPAIRABLE带限制继续时记 decision_id, issue_id, claim_id, claim_fingerprint, data_fingerprint, protocol_fingerprint, action_intent, allowed_scope, revisit_before, source_commit, menu_message_reference, user_message_reference, choice=CONTINUE_LIMITED；另由可信调用者核对 review_due=False, permission_revoked=False, new_user_override=False，不自动推断>
+
 - RUN_STATUS: <COMPLETE|PARTIAL|INVALID|CRASH|BLOCKED|NOT_RUN，指程序运行>
 - ROUTE_READINESS: <VERIFIED|READY_WITH_LIMITATIONS|BLOCKED_CRITICAL|PARTIAL，指科学证据>
-- RISK_DECISION_CACHE: <可信后续用户选择 + 同一主张/数据/协议/许可范围 + 未过期回访节点；无法核实则不可复用>
+- RISK_DECISION_CACHE: <仅按上述真实来源与字段记录；缺失则重新检查，不因此停掉无关的安全工作>
 - INCIDENT: <仅故障出现时的根因、受影响Run/Claim、修复/验证和剩余预算>
 - COMPLETED_ROUTES: <可选历史场景；**不要求凑齐24条**>

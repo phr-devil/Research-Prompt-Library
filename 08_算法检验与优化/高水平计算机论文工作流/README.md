@@ -1,10 +1,12 @@
-# Research Workflow v6.0｜原型优先，按需复杂
+# Research Workflow v6.1｜原型优先，按需复杂
 
 **默认只做：问题 → 最小可信算法/基线 → 实验迭代 → 需要时才做科学深入审核。**
 
 **[从 START.md 启动](START.md)**：一次提供科研目标、已有项目/数据以及实际授权。运行 Agent 平时只需要 [ORCHESTRATOR.md](ORCHESTRATOR.md) 和现有科研项目证据，**不预先加载24条历史Prompt、全部48条故障、全套Skills和多模型审查**。有结果的项目直接恢复继续开发；首次结果没有提升也不自动判STOP。
 
 ## 最短使用路径
+
+**按事件建议（非自动执行）**：`python workflow_route.py --event NEW_PROJECT` / `--event RESUME` / `--event BASELINE_STRONGER`。只读取一个处理建议和可选专题；真正的Agent必须自行核实运行结果与授权，不能把本脚本当作后台科研执行器。
 
 | 何时 | 默认动作 | 需要时才读 |
 |---|---|---|

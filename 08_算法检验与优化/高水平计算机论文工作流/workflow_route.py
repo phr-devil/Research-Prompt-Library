@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only loader. Does not execute model, GPU, git or user approvals."""
+"""Read-only scientific prompt and event adviser; never executes model or grants permissions."""
 import argparse
 import json
 import re
@@ -35,6 +35,17 @@ def load_routes(root=ROOT):
             found[key] = (path,item)
     if list(found) != EXPECTED:
         raise ValueError("Expected 24 unique selectors in original order")
+    if catalog.get("workflow_version") in ("6.0", "6.1"):
+        default = catalog.get("default_path", {})
+        if default.get("mandatory_scenes") != [] or default.get("mode") != "PROTOTYPE_FIRST":
+            raise ValueError("Fast-path must not require legacy scenes")
+        for event, advice in catalog.get("event_advice", {}).items():
+            if not re.fullmatch(r"[A-Z_]{3,48}", event) or not isinstance(advice, dict):
+                raise ValueError("Invalid research event")
+            if advice.get("route") is not None and advice["route"] not in found:
+                raise ValueError("Unknown advisory route")
+            if not advice.get("action") or not advice.get("why"):
+                raise ValueError("Incomplete event advice")
     return found
 
 
@@ -154,9 +165,11 @@ def show_triage(key):
     return "\n".join(out)
 
 
-def propose_transition(level, intent, choice=None, policy=None):
+def propose_transition(level, intent, choice=None, policy=None, *, scoped_work_verified=False, material_change=False):
     """Offline routing suggestion, NOT evidence validation or user authorization.
 
+    scoped_work_verified is supplied ONLY by a caller with independently checked
+    actual permissions and experiment scope; the function cannot verify it.
     Explicit HOLD/REPAIR/REFRAME requests have precedence over optional auto-continue.
     UNKNOWN calls for a narrow evidence check, never an automatic positive conclusion.
     """
@@ -181,6 +194,9 @@ def propose_transition(level, intent, choice=None, policy=None):
     if level == "MINOR":
         return "DEFERRED_MINOR_CONTINUE"
     if choice is None:
+        if (level == "REPAIRABLE" and scoped_work_verified and not material_change
+                and intent in policy["allowed_limited_intents"]):
+            return "BOUNDED_DIAGNOSTIC_CONTINUE"
         return "WAITING_FOR_USER_DECISION"
     if choice == "CONTINUE_LIMITED":
         if intent not in policy["allowed_limited_intents"]:
@@ -221,14 +237,38 @@ def can_reuse_risk_choice(saved, current, *, user_message_verified=False):
     return True
 
 
+
+def advise_event(event, root=ROOT):
+    """Choose ONE narrowly relevant historical tool, without acting on it."""
+    routes = load_routes(root)
+    catalog = json.loads((root / "ROUTES.json").read_text(encoding="utf-8"))
+    advice = catalog.get("event_advice", {}).get(event)
+    if not advice or advice.get("route") not in (None, *routes):
+        raise ValueError("Unknown research event: " + str(event))
+    return dict(advice, event=event, permission="ADVISORY_ONLY_NO_EXECUTION")
+
+
+def render_event(event):
+    item = advise_event(event)
+    lines = ["EVENT: " + event, "SUGGESTED_ACTION: " + item["action"],
+             "REASON: " + item["why"]]
+    if item["route"] is not None:
+        lines.append("OPTIONAL_ROUTE: " + item["route"])
+    if item.get("lesson"):
+        lines.append("OPTIONAL_LESSON: " + item["lesson"])
+    lines.append("Advisory only; it cannot verify message authenticity, data, budgets or permissions.")
+    return "\\n".join(lines)
+
+
 def main():
-    p=argparse.ArgumentParser(description="Load exactly one v5 scene Prompt; read-only")
+    p=argparse.ArgumentParser(description="Read-only v6 research event adviser and legacy scene extractor")
     g=p.add_mutually_exclusive_group(required=True)
     g.add_argument("--id")
     g.add_argument("--list",action="store_true")
     g.add_argument("--check",action="store_true")
     g.add_argument("--repair",help="print this route's two repair scenarios; never execute")
     g.add_argument("--triage",help="print severity guidance for one scene, read-only")
+    g.add_argument("--event",help="show one v6 research event recommendation, without execution")
     args=p.parse_args()
     try:
         routes=load_routes()
@@ -243,6 +283,8 @@ def main():
             print(render_repair(args.repair))
         elif args.triage:
             print(show_triage(args.triage))
+        elif args.event:
+            print(render_event(args.event))
         else:
             if args.id not in routes:raise ValueError("Unknown route "+str(args.id))
             print(extract(routes[args.id][0],args.id))
