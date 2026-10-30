@@ -38,7 +38,7 @@ def inspect_candidates(path):
         refs = item.get("evidence_ids")
         if not isinstance(refs, list) or not refs or any(not isinstance(x, str) or not x.strip() for x in refs):
             raise ValueError("Missing evidence_ids")
-    if len({x["title"].strip().casefold() for x in items}) != 3:
+    if len({x["title"].strip().casefold() for x in items}) != len(items):
         raise ValueError("Candidate titles are duplicated")
     return hashlib.sha256(raw).hexdigest()
 

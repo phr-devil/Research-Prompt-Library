@@ -293,7 +293,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("SUGGESTED_ACTION: DIAGNOSE", r.stdout)
         self.assertIn("OPTIONAL_ROUTE: 03-E", r.stdout)
         self.assertIn("Advisory only", r.stdout)
-        self.assertIn("\\nREASON:", r.stdout)
+        self.assertIn("REASON:", r.stdout)
 
     def test_v61_bounded_repairable_requires_verified_scope(self):
         self.assertEqual(router.propose_transition("REPAIRABLE", "SCOPED_EXPLORATION"),
