@@ -1,3 +1,7 @@
+## 2026-10-31 第08项 v6.1 实际执行一致性修正
+
+去除24条历史Prompt中遗留的自动跨阶段“必做”条件；保留正式科研证据与真实用户授权门禁。旧路由exit_gate改为纯事件型只读建议；REPAIRABLE在**已核验既有许可、无重大科学变化**时可有界自动诊断；第09章优先三候选，证据只支持1–2个时带shortfall_reason并等待真实用户选择，不强制凑数。历史教训明确来源需由对应科研仓库的原始Run/配置验证。本次补充离线行为回归测试，不代表已有真实模型端到端效率或科学成功率实测。
+
 ## 2026-10-31 第08项 v6.0 重构：默认简单、按需复杂
 
 基于原第八项五阶段24条场景、48个失败修复条目和RevGraph/CARE-Touch/PhysTok/CAR-IMU的历史教训，重构默认入口为「最小原型→结果驱动迭代→重要事件科学反思→正式成果验证」。历史场景、修复和科学底线全部保留为按需工具；新增 [LESSONS.md](08_算法检验与优化/高水平计算机论文工作流/LESSONS.md)。原[Autoresearch](https://github.com/karpathy/autoresearch)的实验循环、[Orchestra](https://github.com/Orchestra-Research/AI-Research-SKILLs)的双循环、[Superpowers](https://github.com/obra/superpowers)的根因修复、[BMad](https://github.com/bmad-code-org/BMAD-METHOD)与[Anthropic Skills](https://github.com/anthropics/skills)的自适应/按需加载均只借鉴设计，不安装第三方工具、不复制原文，也不照搬无上限训练。GitHub CI只验证静态/离线兼容，真实研发成功率与token效果尚未测量。

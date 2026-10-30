@@ -257,7 +257,7 @@ def render_event(event):
     if item.get("lesson"):
         lines.append("OPTIONAL_LESSON: " + item["lesson"])
     lines.append("Advisory only; it cannot verify message authenticity, data, budgets or permissions.")
-    return "\\n".join(lines)
+    return "\n".join(lines)
 
 
 def main():

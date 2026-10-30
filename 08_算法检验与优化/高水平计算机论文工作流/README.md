@@ -28,10 +28,14 @@
 
 ## 历史工具库（完全保留，不强制按序）
 
-[24条场景与触发条件](ROUTES.json)：[选题](01_科学选题与跨AI审核.md) · [数据/Pilot](02_最小科学验证与决策.md) · [研发](03_完整算法研发与正式实验.md) · [独立复核](04_独立科学验证.md) · [论文](05_论文撰写与投稿.md)。本地只读工具 `python workflow_route.py --id 03-E` 提取单个场景；`--repair 03-E` 读取该场景的两个故障示例。脚本不执行研究，不认证用户授权。历史场景内带有五阶段描述，只在遇到对应问题时参考其专业任务逻辑，**不得反向强制主流程补齐此前阶段**。
+[24条场景与触发条件](ROUTES.json)：[选题](01_科学选题与跨AI审核.md) · [数据/Pilot](02_最小科学验证与决策.md) · [研发](03_完整算法研发与正式实验.md) · [独立复核](04_独立科学验证.md) · [论文](05_论文撰写与投稿.md)。本地只读工具 `python workflow_route.py --id 03-E` 提取单个场景；`--repair 03-E` 读取该场景的两个故障示例。脚本不执行研究，不认证用户授权。历史场景已移除强制顺序触发，使用时只按对应问题查专业任务逻辑，**不得反向强制主流程补齐此前阶段**。
 
 [共享科研规则与技能来源](00_统一规则与Skill映射.md)、[可选 SKILL.md](SKILL.md)、[AGENTS.md 模板](AGENTS_RESEARCH_TEMPLATE.md) 也是按需参考，不要求预装第三方Skill，也不要求开多个Agent。
 
 **方法参考**：[Karpathy Autoresearch](https://github.com/karpathy/autoresearch) 的简洁实验循环、[Orchestra Research](https://github.com/Orchestra-Research/AI-Research-SKILLs) 的研究内外循环、[Superpowers](https://github.com/obra/superpowers) 的根因诊断、[BMad](https://github.com/bmad-code-org/BMAD-METHOD) 的任务规模自适应、[Anthropic Skills](https://github.com/anthropics/skills) 的按需加载、[GSD Core](https://github.com/open-gsd/gsd-core) 的进度恢复。借鉴方法，不宣称外部工具已安装，也不照搬无限实验循环。
 
 **验证边界**：CI只验证静态指引/脚本与路由，未证明实际科研成功率、Token节省或真实Agent长周期自主性。
+
+## 如何检验是否真的不繁琐
+
+GitHub CI的行为矩阵只验证 `NEW_PROJECT → NO_GAIN → BASELINE_STRONGER → CONFIRMATION` 等事件可获得正确的**只读建议**，以及人工HOLD、无授权正式确认与第09章选题选择仍不能自动放行。它并不能监控真实的工作进程，真实迭代需要有文件/工具能力的Agent执行。真实工作流A/B要记录同一任务的**首次可信结果时间、用户决策次数、实测Token、无效实验次数、最终科学正确性**；没有实际模型输出不报告收益百分比。
