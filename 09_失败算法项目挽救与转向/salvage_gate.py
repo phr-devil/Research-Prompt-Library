@@ -64,11 +64,31 @@ def inspect_selection(candidates, selection=None):
     }
     if not re.search(aliases[chosen], message, flags=re.IGNORECASE):
         raise ValueError("Selected ID not clearly expressed by user message")
-    intent = r"(?:选择|选了|选定|我选|决定|采用|确定|pick|choose|chosen)"
     bare_choice = r"(?:P[123]|第[一二三123]个(?:项目|课题|方案)?|第[一二三123]项|方案[一二三])"
-    if not re.search(intent, message, flags=re.IGNORECASE) and not re.fullmatch(
-            bare_choice, message, flags=re.IGNORECASE):
-        raise ValueError("Selection intent not explicit in user message")
+    if re.fullmatch(bare_choice,message,flags=re.IGNORECASE):
+        return "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED", digest
+
+    # Recognize the explicitly *chosen* option, not just any ID mentioned
+    # near a verb. In particular, "我不选择P2，我选P1" must never pass for P2.
+    choice_prefix = re.compile(
+        r"(?:我(?:最终)?(?:决定)?|最终|现在)?\s*(?:选(?:择|定|了)?|决定(?:选|选择)?|采用|确定(?:选|选择)?|pick|choose|chosen)\s*$",
+        flags=re.IGNORECASE)
+    negated = re.compile(
+        r"(?:不|没|未|别|拒绝|放弃)\s*(?:想)?\s*(?:选(?:择|定|了)?|采用|确定|考虑)\s*$")
+    explicit = []
+    for option, pattern in aliases.items():
+        for mention in re.finditer(pattern,message,flags=re.IGNORECASE):
+            prefix=message[max(0,mention.start()-20):mention.start()]
+            if negated.search(prefix):
+                continue
+            if choice_prefix.search(prefix):
+                explicit.append((option,mention))
+    if not explicit or {option for option,_ in explicit}!={chosen}:
+        raise ValueError("Selection intent is ambiguous or contradicts selected ID")
+    for option,mention in explicit:
+        tail=message[mention.end():]
+        if re.match(r"\s*(?:和|或|与|以及|还是|、|/)\s*(?:P[123]|第[一二三123]个|方案[一二三])",tail,flags=re.IGNORECASE):
+            raise ValueError("Multiple candidate projects in one selection")
     return "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED", digest
 
 

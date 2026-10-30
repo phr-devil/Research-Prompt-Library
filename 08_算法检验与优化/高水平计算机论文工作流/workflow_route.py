@@ -40,9 +40,10 @@ def load_routes(root=ROOT):
 
 def extract(path,key):
     doc = path.read_text(encoding="utf-8")
-    m = re.search(r"(?m)^## "+re.escape(key)+r"｜[^\n]*$",doc)
-    if not m:
-        raise ValueError("Missing route heading "+key)
+    matches = list(re.finditer(r"(?m)^## "+re.escape(key)+r"｜[^\n]*$",doc))
+    if len(matches)!=1:
+        raise ValueError("Missing or duplicate route heading "+key)
+    m = matches[0]
     tail = doc[m.end():]
     end = re.search(r"(?m)^## ",tail)
     section = tail[:end.start()] if end else tail

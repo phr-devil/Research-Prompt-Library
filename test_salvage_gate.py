@@ -92,6 +92,27 @@ class GateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "not clearly expressed"):
             gate.inspect_selection(self.candidates, self.selection)
 
+    def test_negated_choice_cannot_be_used_as_approval(self):
+        self.select("P2")
+        record=json.loads(self.selection.read_text(encoding="utf-8"))
+        record["user_message"]="我不选择P2，我选P1"
+        self.selection.write_text(json.dumps(record),encoding="utf-8")
+        with self.assertRaisesRegex(ValueError,"ambiguous|contradicts"):
+            gate.inspect_selection(self.candidates,self.selection)
+        record["selected_id"]="P1"
+        self.selection.write_text(json.dumps(record),encoding="utf-8")
+        self.assertEqual(gate.inspect_selection(self.candidates,self.selection)[0],
+                         "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED")
+
+    def test_multiple_choices_rejected(self):
+        self.select("P1")
+        record=json.loads(self.selection.read_text(encoding="utf-8"))
+        for msg in ("我选择P1或P2","我选择P1和P2","我选择P1，也选择P2"):
+            record["user_message"]=msg
+            self.selection.write_text(json.dumps(record),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"Multiple|ambiguous"):
+                gate.inspect_selection(self.candidates,self.selection)
+
     def test_bare_project_id_is_valid_structure_only(self):
         self.select()
         record = json.loads(self.selection.read_text(encoding="utf-8"))

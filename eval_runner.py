@@ -32,9 +32,12 @@ def prompt(repo,sha,path,selector=""):
         part=content.split("## 可直接复制的 Prompt")
         if len(part)!=2:raise ValueError("Missing prompt heading")
         content=part[1]
-    m=re.search(r"(?:\x60{3}|~{3})text\s*\n([\s\S]*?)\n(?:\x60{3}|~{3})",content)
-    if not m or len(m.group(1).strip())<100:raise ValueError("Missing selected prompt text")
-    return m.group(1).strip()
+    matches=list(re.finditer(r"(?m)^(?P<fence>`{3}|~{3})text[ \t]*\r?\n(?P<body>[\s\S]*?)\r?\n(?P=fence)[ \t]*$",content))
+    if not matches or (selector and len(matches)!=1):
+        raise ValueError("Missing or ambiguous correctly closed selected prompt text")
+    if len(matches[0].group("body").strip())<100:
+        raise ValueError("Selected prompt text is too short")
+    return matches[0].group("body").strip()
 def endpoint(base):
     u=urllib.parse.urlsplit(base)
     if u.username or u.password or u.query or u.fragment: raise ValueError("Unsafe API URL")
@@ -80,6 +83,9 @@ def score(out,repo):
     if len(raw)!=len(mapping) or len(raw_by_id)!=len(mapping) or set(raw_by_id)!=set(mapping):
         raise ValueError("Raw output IDs are missing or duplicated")
     plan=read(out/"plan.json")
+    plan_hash=hashlib.sha256(json.dumps(plan,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode("utf-8")).hexdigest()
+    if plan_hash!=m.get("plan_sha256"):
+        raise ValueError("Frozen plan changed or lacks a plan seal")
     if len(plan)!=len(mapping):raise ValueError("Planned jobs do not match collected outputs")
     expected_cases={x["id"]:x for x in fixture["cases"]}
     fixture_hash=hashlib.sha256(json.dumps(
@@ -249,13 +255,16 @@ def main():
     fixture_hash=hashlib.sha256(json.dumps(
         [byid[x] for x in selection],ensure_ascii=False,sort_keys=True
         ).encode("utf-8")).hexdigest()
+    public_plan=[{k:v for k,v in x.items() if k not in ("system","task")} for x in jobs]
+    plan_hash=hashlib.sha256(json.dumps(public_plan,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode("utf-8")).hexdigest()
     m={"suite":arg.suite,"fixture_file":fixture_file,"selected_cases":selection,
        "unchanged_control_cases":unchanged,"fixture_sha256":fixture_hash,
        "seed":arg.seed,"repeat":arg.repeat,"token_field":arg.token_field,"temperature":arg.temperature,
        "status":"PLAN_ONLY","base_ref":arg.base_ref,"candidate_ref":arg.candidate_ref,
+       "plan_sha256":plan_hash,
        "model":arg.model if arg.live else None,"planned_calls":len(jobs),"actual_calls":0}
     save(out/"manifest.json",m)
-    save(out/"plan.json",[{k:v for k,v in x.items() if k not in ("system","task")} for x in jobs])
+    save(out/"plan.json",public_plan)
     if not arg.live:
         print("PLAN_ONLY:",len(jobs),"calls planned; no model invoked");return
     key=os.getenv("OPENAI_API_KEY","")

@@ -18,7 +18,7 @@
 
 - 关键科研 Agent 使用 [v4.1 统一合同](08_算法检验与优化/高水平计算机论文工作流/00_统一规则与Skill映射.md)；可选 [中断恢复协议](08_算法检验与优化/高水平计算机论文工作流/templates/RECOVERY.md)。短文件名默认对应 `research/`，旧项目已有等价目录则仅建立映射，不迁移。
 - 第09类的 [人工选择与门禁说明](09_失败算法项目挽救与转向/README.md) 已补充跨仓库绝对脚本路径；选择 P1/P2/P3 **不授予 GPU、付费或实验授权**。
-- 评测器使用 `--suite historical/current` 分离旧版和当前版；新增 [9 个当前版本压力测试](EVAL_CASES_CURRENT.json) 和可精确选择 S01-B、09 总控及 01-A～05-E 单独场景的提取逻辑。CI 只生成计划，不宣称真实模型与 Token 收益。
+- 评测器使用 `--suite historical/current` 分离旧版和当前版；新增 [11 个当前版本压力测试](EVAL_CASES_CURRENT.json) 和可精确选择 S01-B、09 总控及 01-A～05-E 单独场景的提取逻辑。CI 只生成计划，不宣称真实模型与 Token 收益。
 
 ## 使用方法
 
@@ -85,7 +85,7 @@
 ## 当前维护与评测（2026-10-29）
 
 - `python library_check.py`：库内索引、Markdown 链接与关键结构合同检查。
-- `python -m unittest -q test_eval_runner.py test_salvage_gate.py test_library_check.py`：执行全部离线回归测试。
+- `python -m unittest -q test_eval_runner.py test_salvage_gate.py test_library_check.py test_novelty_policy.py test_workflow_route.py`：执行全部离线回归测试。
 - 历史评测：`python eval_runner.py --suite historical --output-dir .eval_runs/historical`；当前版评测：`--suite current` 并明确指定两个不同的提交 SHA，使用 [EVAL_CASES_CURRENT.json](EVAL_CASES_CURRENT.json)。
 - 这些命令默认只测试脚本和生成评测计划，**不调用大模型、也不证明科研方法实际成功**。真实模型成功率、Token 开销和人工工作量仍为 **NOT_RUN / NOT_MEASURED**。具体冻结案例与统计口径见 [EVALUATION.md](EVALUATION.md)。
 

@@ -214,6 +214,16 @@ class V5Tests(unittest.TestCase):
                              encoding="utf-8")
             self.assertEqual(router.extract(valid,"01-A"),"x"*150)
 
+    def test_duplicate_route_heading_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            doc=Path(d)/"duplicate.md"
+            fence=chr(96)*3
+            block=fence+"text\n"+"One bounded scientific action. "*9+"\n"+fence+"\n"
+            doc.write_text("## 01-A｜First\n"+block+"## 01-A｜Second\n"+block,
+                           encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"duplicate route heading"):
+                router.extract(doc,"01-A")
+
     def test_human_gates_preserved(self):
         s=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
         for token in ("WAITING_FOR_USER_DECISION","GPU","P1/P2/P3","真实新消息"):

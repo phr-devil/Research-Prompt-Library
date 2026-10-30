@@ -84,6 +84,29 @@ class EvalHarnessTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"requires explicit"):
                 m.main()
 
+    def test_extractor_rejects_mismatched_fences(self):
+        path="docs/R02.md"
+        (self.repo/path).write_text(
+            "## 可直接复制的 Prompt\n"+chr(96)*3+"text\n"+
+            "This source is not a correctly closed text prompt. "*5+
+            "\n~~~\n",encoding="utf-8")
+        subprocess.run(["git","-C",str(self.repo),"add","."],check=True)
+        subprocess.run(["git","-C",str(self.repo),"commit","-qm","broken fence"],check=True)
+        sha=subprocess.check_output(["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
+        with self.assertRaisesRegex(ValueError,"correctly closed"):
+            m.prompt(self.repo,sha,path)
+
+    def test_extractor_rejects_ambiguous_selected_blocks(self):
+        path="docs/R02.md"
+        fence=chr(96)*3
+        body=fence+"text\n"+"A clear instruction. "*12+"\n"+fence+"\n"
+        (self.repo/path).write_text("## 02-A｜Task\n"+body+body+"## 02-B｜Next\n",encoding="utf-8")
+        subprocess.run(["git","-C",str(self.repo),"add","."],check=True)
+        subprocess.run(["git","-C",str(self.repo),"commit","-qm","duplicate blocks"],check=True)
+        sha=subprocess.check_output(["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
+        with self.assertRaisesRegex(ValueError,"ambiguous"):
+            m.prompt(self.repo,sha,path,"02-A")
+
     def test_git_pins(self):
         self.assertTrue(m.prompt(self.repo,self.base,"docs/R02.md").startswith("BASE"))
         self.assertTrue(m.prompt(self.repo,self.candidate,"docs/R02.md").startswith("CANDIDATE"))
@@ -96,6 +119,7 @@ class EvalHarnessTest(unittest.TestCase):
             self.call([])
         self.assertEqual(m.read(self.out/"manifest.json")["status"],"PLAN_ONLY")
         self.assertEqual(len(m.read(self.out/"plan.json")),2)
+        self.assertEqual(len(m.read(self.out/"manifest.json")["plan_sha256"]),64)
     def test_default_pilot_is_loaded_from_target_repo(self):
         # Regression: --repo must not silently select pilot IDs from the runner's checkout.
         fixture=m.read(self.repo/"EVAL_CASES.json")
@@ -190,6 +214,16 @@ class EvalHarnessTest(unittest.TestCase):
         rows[1]["blind_id"]=rows[0]["blind_id"]
         self.set_review(rows)
         with self.assertRaisesRegex(ValueError,"Duplicate"):
+            self.call(["--score"])
+        self.assertFalse((self.out/"scores.json").exists())
+
+    def test_frozen_plan_tampering_rejected_before_scoring(self):
+        rows=self.run_mock()
+        self.set_review(rows)
+        plan=m.read(self.out/"plan.json")
+        plan[0]["prompt_sha256"]="0"*64
+        m.save(self.out/"plan.json",plan)
+        with self.assertRaisesRegex(ValueError,"Frozen plan"):
             self.call(["--score"])
         self.assertFalse((self.out/"scores.json").exists())
 
