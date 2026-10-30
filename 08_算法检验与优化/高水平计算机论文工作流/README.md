@@ -1,75 +1,35 @@
-# 高水平计算机算法论文科研工作流 v5.4（三级缺陷与灵活选择）（科研内核 v4.1 保留）
+# Research Workflow v6.0｜原型优先，按需复杂
 
-> Research Workflow v5.4 · 2026-10-29 · 为高水平计算机领域论文建立可复现的科学证据，而非追求工程 PASS 数。
+**默认只做：问题 → 最小可信算法/基线 → 实验迭代 → 需要时才做科学深入审核。**
 
-## 唯一启动入口（建议）
+**[从 START.md 启动](START.md)**：一次提供科研目标、已有项目/数据以及实际授权。运行 Agent 平时只需要 [ORCHESTRATOR.md](ORCHESTRATOR.md) 和现有科研项目证据，**不预先加载24条历史Prompt、全部48条故障、全套Skills和多模型审查**。有结果的项目直接恢复继续开发；首次结果没有提升也不自动判STOP。
 
-首次只复制 [START.md](START.md) 的**一段总控 Prompt** 并填写 GitHub URL 与科研目标。后续在同一会话仅需回复 A/B/C 或自然语言决策，由 [ORCHESTRATOR.md](ORCHESTRATOR.md) 判断下一路由、按 [ROUTES.json](ROUTES.json) **自动按需读取原有24条 Prompt**，不再让你逐项复制。
+## 最短使用路径
 
-- **v5.3 分级选项与风险选择去重**：[TRIAGE.md](TRIAGE.md) 与 [TRIAGE_POLICY.json](TRIAGE_POLICY.json) 允许你对一般缺陷选择“带限制继续探索/先修复/调整方向”，致命缺陷只阻断受影响实验/结论，轻微缺陷不打断。可运行 `python workflow_route.py --triage 02-B` 读取对应政策；只是指引，不会凭空判断真实缺陷。
-- **v5.1 异常修复**：[RECOVERY.md](RECOVERY.md) 规定先定位根因、最小修复、合法复验和止损；[REPAIR_ROUTES.json](REPAIR_ROUTES.json) 为原有24个场景列出48种常见失败与返回目标。本地可 `python workflow_route.py --repair 02-B` 仅查看此步骤的修复建议，不会执行 GPU 或训练。
-- 本地 Codex/WorkBuddy：克隆提示词库后运行 `python workflow_route.py --id 01-A` 读取指定 Prompt，或 `python workflow_route.py --check` 验证全部24条。它只读文件，**不执行科研实验或替你授权**。
-- ChatGPT：须使用实际可用的 GitHub/文件读取工具。仅给 URL 不能让不支持访问仓库的模型自动读取，不能承诺回复后无触发地后台运行。
-- 仅在科研选题、跨阶段、正式实验、GPU/付费、协议变更或投稿等门禁给出**精简 2–3 个选项**；已授权的普通同阶段工作自动连贯处理。第09章的 P1/P2/P3 人工选择门禁原样保留。
+| 何时 | 默认动作 | 需要时才读 |
+|---|---|---|
+| 刚开始、目标模糊 | 一句话科学假设 + 成功价值反推；快速看真实数据/最简单对照；能动手则直接做MVP | `01-A/B`、`02-B` |
+| 已有算法或旧实验 | 复用有效代码与Run，在现有预算内修改一个主要机制、测试、记录保留/撤回 | `03-C/D` |
+| 结果反常、科学价值未证 | 最小诊断，按现象检索真实失败教训，必要时用户选择 | [LESSONS.md](LESSONS.md)、[RECOVERY.md](RECOVERY.md)、`02-E/03-E` |
+| 拟正式宣称论文贡献 | 严格核数据/真值、强基线、冻结协议、统计、确认性实验、独立复核 | `03-B/F`、`04-A/B/C` |
+| 写稿与投稿 | 可并行起草未验证的真实内容，正式投稿前核查证据与作者权限 | `05-A/B/C/D/E` |
 
-## v5.4 修复：暂停与断点选择优先级
+**内循环**：假设 → 代码/实验 → 结果 → KEEP/DISCARD/INCONCLUSIVE/INVALID → 下一项信息增量。**外循环**只在首次可信结果、机制异常、反复无信息、科学主张改变或正式确认时触发；不设置机械次数，不反复选题。
 
-**RevGraph 复盘增补（不改变五阶段/24条 Prompt）**：①选题先反推「即使全部实验成功，独立贡献是什么」；②最小 Pilot 尽早把机制/代理指标与真实任务或理论价值联结，优先跑可执行强基线并实测成本；③研发只在关键结果后复评贡献，避免重复扩样但科研价值不增长；④独立审查、⑤论文写作区分工程PASS、机制证据和真实任务/理论贡献。创新未证、Pilot负结果或缺应用不自动NO-GO，仍按三级缺陷规则和用户选择执行。
+## 保留下来的科学底线（没有新强制阶段）
 
+- [TRIAGE.md](TRIAGE.md) / [TRIAGE_POLICY.json](TRIAGE_POLICY.json)：致命阻断受影响行动、一般风险用户选继续或修复、轻微记录自动过；未知先做最小核查。
+- [RECOVERY.md](RECOVERY.md) / [REPAIR_ROUTES.json](REPAIR_ROUTES.json)：原24场景48种典型失败与根因修复、回退，**仅真实故障按需调用**。
+- [LESSONS.md](LESSONS.md)：CARE-Touch、PhysTok、RevGraph、CAR-IMU 的历史科学失败教训，**按相似症状检索，不是必做审核清单**。
+- `research/STATE.md`、`RUNS.tsv`、`CLAIMS.md` 及真实来源的证据关系保留，优先复用项目现有文件；[精简状态模板](templates/STATE.md) 仅供新项目可选使用。
+- 新GPU、付费、数据外传、冻结正式确认性实验与投稿仍需相应独立真实授权；第09章 [失败项目转向](../../09_失败算法项目挽救与转向/README.md) 的 P1/P2/P3 用户门禁不变。
 
-真实用户的最新明确指示（HOLD/先修/改变主张）必须优先于 MINOR 自动继续。UNKNOWN 不是可以随意继续或一律致命，而是触发最小只读核查。旧的带限制继续选择仅当消息来源、研究数据、协议、主张、许可和源仓版本均被独立核实时复用。离线路由器仅作只读建议，不实施授权。Prompt 文件围栏和 stage/路径对应关系另作严格校验。
+## 历史工具库（完全保留，不强制按序）
 
-## v5.3 路由语义
+[24条场景与触发条件](ROUTES.json)：[选题](01_科学选题与跨AI审核.md) · [数据/Pilot](02_最小科学验证与决策.md) · [研发](03_完整算法研发与正式实验.md) · [独立复核](04_独立科学验证.md) · [论文](05_论文撰写与投稿.md)。本地只读工具 `python workflow_route.py --id 03-E` 提取单个场景；`--repair 03-E` 读取该场景的两个故障示例。脚本不执行研究，不认证用户授权。历史场景内带有五阶段描述，只在遇到对应问题时参考其专业任务逻辑，**不得反向强制主流程补齐此前阶段**。
 
-场景属于 `as_needed`（本次目标确实需要才调用）、`required_for_action`（数据实验或正式提交的必要证据门槛）、`conditional`（风险或真实审稿等事件出现才触发）。不再将多达20条场景视作强制依次PASS；用户可明确承担一般研究风险继续合法探索。同一缺陷已作有效选择的，在证据和许可范围不变时不重复询问。
+[共享科研规则与技能来源](00_统一规则与Skill映射.md)、[可选 SKILL.md](SKILL.md)、[AGENTS.md 模板](AGENTS_RESEARCH_TEMPLATE.md) 也是按需参考，不要求预装第三方Skill，也不要求开多个Agent。
 
-## 开始使用
+**方法参考**：[Karpathy Autoresearch](https://github.com/karpathy/autoresearch) 的简洁实验循环、[Orchestra Research](https://github.com/Orchestra-Research/AI-Research-SKILLs) 的研究内外循环、[Superpowers](https://github.com/obra/superpowers) 的根因诊断、[BMad](https://github.com/bmad-code-org/BMAD-METHOD) 的任务规模自适应、[Anthropic Skills](https://github.com/anthropics/skills) 的按需加载、[GSD Core](https://github.com/open-gsd/gsd-core) 的进度恢复。借鉴方法，不宣称外部工具已安装，也不照搬无限实验循环。
 
-**只打开当前阶段的 Prompt，不要一次性给 Agent 全部文件。** 已有可信证据的项目直接从当前阶段开始；ChatGPT 负责科研规划与结果解读，Codex/WorkBuddy 负责真实代码和已授权实验，你负责方向与资源审批；独立审查要求独立会话/模型、原始证据和实际复核。
-
-| 阶段 | 文件 | 主责 | 按需加载场景 | 仅条件触发 |
-|---|---|---|---|---|
-| ① 科学选题与跨 AI 审核 | [01 选题](01_科学选题与跨AI审核.md) | ChatGPT + 独立 AI | 01-A/B/C | 01-D |
-| ② 最小科学验证与决策 | [02 可行性](02_最小科学验证与决策.md) | ChatGPT 设计、Codex 执行、你决策 | 02-A/B/C/D | 02-E |
-| ③ 完整算法研发与正式实验 | [03 研发](03_完整算法研发与正式实验.md) | Codex/WorkBuddy | 03-A/B/C/D/F（按依赖） | 03-E |
-| ④ 独立科学验证 | [04 审核](04_独立科学验证.md) | 独立审查 Agent + ChatGPT | 04-A/B/D | 04-C |
-| ⑤ 论文撰写、投稿及返修 | [05 论文](05_论文撰写与投稿.md) | ChatGPT + 你 | 05-A/B/C/D | 05-E |
-
-v5.x 控制层不增加强制研究步骤，原有 v4.1 五阶段与24个场景 Prompt 全部保持，可继续逐项手动使用。
-
-总计 **24 个场景 Prompt**（4+5+6+4+5）。需要什么就打开哪一条，避免逐条机械执行。
-
-## 先读一次的规则 / 安装选项
-
-- [统一科研合同、Skill 来源、授权、状态与 Token 规则](00_统一规则与Skill映射.md)：所有项目共享，只需首次读/发生变化时重读。
-- [可选路由 SKILL.md](SKILL.md)：仅在本地已安装且工具识别时原生调用；从 GitHub 阅读不等于安装或执行脚本。
-- [AGENTS.md 规则模板](AGENTS_RESEARCH_TEMPLATE.md)：合并到项目现有 AGENTS.md，不要直接覆盖。
-- [状态与证据模板](templates/README.md)：只在需要时使用，不强制迁移旧项目。
-
-## 阶段间的科学门槛
-
-1. **①→②**：用户选定可证伪方向后即可开始最小验证设计，非关键近邻论文与基线不必此时全部核完。
-2. **②→③**：合法Pilot即便是负结果，用户可选择有界继续优化或修正目标；没有结果增益不自动STOP，实验资源仍须单独授权。
-3. **③→④**：可提前启动科学重点复核/草稿，正式确认性声明才必须有有效冻结评价、原始证据和公平对照。
-4. **④→⑤**：独立审核未完成时可由用户选择先写带限制的草稿，不能将内部自查伪称为独立PASS。
-5. **⑤**：由作者审稿与确认，投稿不是 Agent 自动操作。
-
-**可复用合同与恢复**：[任务合同](templates/TASK_CONTRACT.md)、[证据索引](templates/EVIDENCE_INDEX.md)、[中断恢复](templates/RECOVERY.md)，需要时才加载；默认文件前缀 `research/`，已有可信路径不强制迁移。独立跨会话只传当前目标、证据指针与未完成部分。
-
-**默认输出**：`STATUS | CLAIM_DELTA | EVIDENCE | INVALIDATED | COST | BLOCKERS | NEXT_DECISION`；完整日志写文件，日常只交差量。
-
-## 失败/NO-GO 后独立跳转
-
-项目取得可信 NO-GO/STOP 或核心论文主张已失败时，可跳至**独立第09类 [失败项目挽救与转向](../../09_失败算法项目挽救与转向/README.md)**。第09类不属于本五阶段的第六阶段；它在 Step 05 产生三个后续课题，并要求用户另行选择后才能启动 Step 06。不得用 v4.1 的自动延续规则绕过人工选择。
-
-## 与旧 V01/V02/V03 的关系
-
-原 [V01](../V01_目标驱动的算法检验任务规划.md)、[V02](../跨AI独立审查/V02_独立审查触发与范围判断.md)、[V03](../跨AI独立审查/V03_算法证据交接与独立复核.md) 已改成兼容入口，详细内容以本模块③/④为唯一主版本，避免两套协议冲突。历史全文仍可从 Git 提交记录找到。
-
-## 自动导航参考
-
-流程设计借鉴 [GSD](https://github.com/gsd-build/get-shit-done) 的进度恢复、[BMad](https://github.com/bmad-code-org/BMAD-METHOD) 的选择式引导、[Superpowers](https://github.com/obra/superpowers) 的审查门禁、[ResearchStudio](https://github.com/microsoft/ResearchStudio) 的科研分工。只是方法参考，未原生调用外部框架，也未进行真实模型 A/B 效果测试。
-
-## 参考项目
-
-主要借鉴 [ResearchStudio](https://github.com/microsoft/ResearchStudio)、[Scientific Problem Selection](https://github.com/anthropics/knowledge-work-plugins)、[Superpowers](https://github.com/obra/superpowers)、[Karpathy Autoresearch](https://github.com/karpathy/autoresearch)、[AI Research Skills](https://github.com/Orchestra-Research/AI-Research-SKILLs) 和 [OpenAI Skill Creator](https://github.com/openai/skills)。借鉴流程而非复制其 Skill 原文；**目前未开展真实模型 A/B 或 Token 效果验证**。
+**验证边界**：CI只验证静态指引/脚本与路由，未证明实际科研成功率、Token节省或真实Agent长周期自主性。
