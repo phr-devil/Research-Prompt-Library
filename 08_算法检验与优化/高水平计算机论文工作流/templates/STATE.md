@@ -1,26 +1,20 @@
-# Research STATE (single source of truth)
+# Research STATE｜简明研究断点（v6.0，可选模板）
 
-## v5.4 Guided Router Checkpoint（增量补充，避免重复文件）
-- WORKFLOW_SOURCE/COMMIT: <prompt library URL / real commit SHA or UNPINNED>
-- ROUTE_READINESS: <e.g. 01-B / VERIFIED|READY_WITH_LIMITATIONS|BLOCKED_CRITICAL|PARTIAL>
-- RUN_STATUS: <COMPLETE|PARTIAL|INVALID|CRASH|BLOCKED|NOT_RUN; separate from scientific readiness>
-- COMPLETED_ROUTES: <route IDs with evidence IDs, not merely read>
-- PENDING_DECISION: <DECISION_ID + displayed options + message locator + target scope; none otherwise>
-- USER_DECISION: <real user reply AFTER menu and applicable scope; none otherwise>
-- AUTH_SCOPE: <specific authorized resource, budget, stop criteria and real user message; none otherwise>
-- NEXT: <next route or WAITING_FOR_USER_DECISION>
-- INCIDENT: <failure route/type, original evidence, root-cause hypothesis, attempts, minimal repair, recheck, invalidated Claim/Run, remaining authorized budget>
-- DEFECT_TRIAGE: <ISSUE_ID / CRITICAL|REPAIRABLE|MINOR / affected target action / evidence / limitations / revisit_before>
-- RISK_DECISION_CACHE: <decision_id / issue_id / claim_id / claim_fingerprint / data_fingerprint / protocol_fingerprint / source_commit / action_intent / allowed_scope / revisit_before / menu_message_reference / verified later user_message_reference / choice=CONTINUE_LIMITED; reuse only if actual later message independently checked, review not due, no new override>
-- ROUTE_READINESS: <VERIFIED | READY_WITH_LIMITATIONS | BLOCKED_CRITICAL (scoped) | PARTIAL>
+> **复用现有可信项目状态，不强制新建或迁移**。此处只写持续研究所需的差量证据。
 
-- USER_INTENT_SOURCE: <verbatim research goal or link to the user's original message; not an inferred rewrite>
-- RESEARCH_CLAIM: <one falsifiable sentence>
-- STAGE/DECISION: <stage, GO/PIVOT/STOP/HOLD, approver/date>
-- NOVELTY_VS_CLOSEST: <nearest paper + exact difference>
-- EVIDENCE: <run IDs and raw paths; separate exploratory and confirmatory>
-- DATA/SPLIT: <identity, groups, frozen set, leakage controls>
-- AUTHORIZED: <explicit user approval reference, CPU/GPU budget, permitted and forbidden operations; blank means no approval>
-- PATH_MAP: <existing STATE/RUNS/CLAIMS/REVIEW locations; default research/>
-- LAST_VERIFIED_PROGRESS: <latest valid run IDs and checkpoint; pending/blocked IDs>
-- RISKS/NEXT: <highest-value next test / blocker>
+- USER_GOAL: <原始目标或真实用户消息指针>
+- CLAIM/HYPOTHESIS: <一个可证伪问题；当前相对近邻的潜在学术价值>
+- BEST_VALID_RUN: <run_id / commit / 数据分组版本 / 指标 / 原始证据位置；没有就 NONE>
+- CURRENT_FINDING: <本轮真实发现、可信负结果、未验证的科学解释>
+- NEXT_HYPOTHESIS/TASK: <下一项最有信息量且在授权范围内的工作>
+- AUTH/BUDGET: <单独真实用户授权的动作、上限、剩余额度、停止条件及来源；无则 UNAUTHORIZED>
+- BLOCKER/USER_DECISION: <仅重大分叉/真实权限问题需要询问，记录真实用户后续选择；没有则 NONE>
+- PATH_MAP: <已有RUNS/CLAIMS/REVIEW/数据的路径，不重复建账>
+- WORKFLOW_SOURCE/COMMIT: <真实的源仓 SHA 或 UNPINNED>
+
+按需补充（不默认展开）：
+- RUN_STATUS: <COMPLETE|PARTIAL|INVALID|CRASH|BLOCKED|NOT_RUN，指程序运行>
+- ROUTE_READINESS: <VERIFIED|READY_WITH_LIMITATIONS|BLOCKED_CRITICAL|PARTIAL，指科学证据>
+- RISK_DECISION_CACHE: <可信后续用户选择 + 同一主张/数据/协议/许可范围 + 未过期回访节点；无法核实则不可复用>
+- INCIDENT: <仅故障出现时的根因、受影响Run/Claim、修复/验证和剩余预算>
+- COMPLETED_ROUTES: <可选历史场景；**不要求凑齐24条**>

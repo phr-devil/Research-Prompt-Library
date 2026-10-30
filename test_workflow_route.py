@@ -125,7 +125,8 @@ class V5Tests(unittest.TestCase):
         self.assertEqual(kinds["02-B"],"required_for_action")
         self.assertEqual(kinds["05-C"],"required_for_action")
         self.assertEqual(kinds["03-F"],"conditional")
-        self.assertIn("bounded" if False else "继续",routes["03-A"][1]["when"])
+        self.assertIn("继续",routes["03-A"][1]["when"])
+        self.assertIn("无需先完成02-D",routes["03-A"][1]["when"])
         self.assertIn("独立审查",routes["04-B"][1]["when"])
 
     def test_resume_contract_and_short_standalone_prompts(self):
@@ -223,6 +224,45 @@ class V5Tests(unittest.TestCase):
                            encoding="utf-8")
             with self.assertRaisesRegex(ValueError,"duplicate route heading"):
                 router.extract(doc,"01-A")
+
+
+    def test_v6_fast_path_is_default_not_24_mandatory_gates(self):
+        root=ROOT
+        doc=json.loads((root/"ROUTES.json").read_text(encoding="utf-8"))
+        self.assertEqual(doc["workflow_version"],"6.0")
+        self.assertEqual(doc["default_path"]["mode"],"PROTOTYPE_FIRST")
+        self.assertEqual(doc["default_path"]["mandatory_scenes"],[])
+        self.assertEqual(doc["default_path"]["entry"],"ORCHESTRATOR.md")
+        self.assertEqual(sum(len(s["routes"]) for s in doc["stages"]),24)
+        guide=(root/"ORCHESTRATOR.md").read_text(encoding="utf-8")
+        self.assertIn("最小原型",guide)
+        self.assertIn("内循环",guide)
+        self.assertIn("外循环",guide)
+        self.assertIn("DECISION DEDUP",guide)
+        self.assertIn("24个历史场景是工具库",guide)
+
+    def test_v6_slim_start_does_not_preload_all_skills(self):
+        root=ROOT
+        start=(root/"START.md").read_text(encoding="utf-8")
+        orch=(root/"ORCHESTRATOR.md").read_text(encoding="utf-8")
+        self.assertLess(len(start),950)
+        self.assertLess(len(orch),2800)
+        self.assertIn("ORCHESTRATOR.md",start)
+        self.assertIn("不要默认读取其余24条 Prompt",start)
+        self.assertIn("未经",orch)
+        self.assertIn("GPU",orch)
+        self.assertIn("P1/P2/P3",orch)
+
+    def test_v6_real_research_lessons_and_legacy_failure_preserved(self):
+        root=ROOT
+        lessons=(root/"LESSONS.md").read_text(encoding="utf-8")
+        for value in ("CARE-Touch","PhysTok","RevGraph","CAR-IMU",
+                      "train-only","Residual-Ridge","价值反推","真值"):
+            self.assertIn(value,lessons)
+        families,scenes=router.load_repairs()
+        self.assertEqual(len(scenes),24)
+        self.assertEqual(sum(len(v) for v in scenes.values()),48)
+        self.assertEqual(len(router.load_routes()),24)
 
     def test_human_gates_preserved(self):
         s=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
