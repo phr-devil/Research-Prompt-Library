@@ -323,6 +323,22 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("DECISION_REUSE_KEYS:", state)
         self.assertIn("user_message_reference", state)
 
+    def test_revgraph_value_lesson_is_integrated_without_new_gate(self):
+        lesson = (ROOT/"LESSONS.md").read_text(encoding="utf-8")
+        guide = (ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
+        pilot = (ROOT/"02_最小科学验证与决策.md").read_text(encoding="utf-8")
+        for token in ("成功价值反推", "代理指标", "最近邻", "VALUE_UNVERIFIED"):
+            self.assertIn(token, lesson)
+        self.assertIn("VALUE_UNVERIFIED", guide)
+        self.assertIn("VALUE_UNVERIFIED", pilot)
+        self.assertIn("PROXY_ONLY_GAIN", (ROOT/"ROUTES.json").read_text(encoding="utf-8"))
+        advice = router.advise_event("PROXY_ONLY_GAIN")
+        self.assertEqual(advice["action"], "CHECK_SCIENTIFIC_VALUE")
+        self.assertEqual(advice["route"], "03-D")
+        self.assertEqual(advice["permission"], "ADVISORY_ONLY_NO_EXECUTION")
+        self.assertEqual(json.loads((ROOT/"ROUTES.json").read_text(encoding="utf-8"))["default_path"]["mandatory_scenes"], [])
+        self.assertEqual(len(router.load_routes()), 24)
+
     def test_human_gates_preserved(self):
         s=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
         for token in ("WAITING_FOR_USER_DECISION","GPU","P1/P2/P3","真实新消息"):
