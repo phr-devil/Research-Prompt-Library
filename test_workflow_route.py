@@ -125,7 +125,8 @@ class V5Tests(unittest.TestCase):
         self.assertEqual(kinds["02-B"],"required_for_action")
         self.assertEqual(kinds["05-C"],"required_for_action")
         self.assertEqual(kinds["03-F"],"conditional")
-        self.assertIn("bounded" if False else "继续",routes["03-A"][1]["when"])
+        self.assertIn("继续",routes["03-A"][1]["when"])
+        self.assertIn("无需先完成02-D",routes["03-A"][1]["when"])
         self.assertIn("独立审查",routes["04-B"][1]["when"])
 
     def test_resume_contract_and_short_standalone_prompts(self):
