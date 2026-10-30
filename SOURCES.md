@@ -1,3 +1,7 @@
+## 2026-10-31 第08项 v6.0 重构：默认简单、按需复杂
+
+基于原第八项五阶段24条场景、48个失败修复条目和RevGraph/CARE-Touch/PhysTok/CAR-IMU的历史教训，重构默认入口为「最小原型→结果驱动迭代→重要事件科学反思→正式成果验证」。历史场景、修复和科学底线全部保留为按需工具；新增 [LESSONS.md](08_算法检验与优化/高水平计算机论文工作流/LESSONS.md)。原[Autoresearch](https://github.com/karpathy/autoresearch)的实验循环、[Orchestra](https://github.com/Orchestra-Research/AI-Research-SKILLs)的双循环、[Superpowers](https://github.com/obra/superpowers)的根因修复、[BMad](https://github.com/bmad-code-org/BMAD-METHOD)与[Anthropic Skills](https://github.com/anthropics/skills)的自适应/按需加载均只借鉴设计，不安装第三方工具、不复制原文，也不照搬无上限训练。GitHub CI只验证静态/离线兼容，真实研发成功率与token效果尚未测量。
+
 ## 2026-10-30 第08项 v5.4 决策恢复与代码围栏审查
 
 修复真实用户明确 HOLD/先修/改题被默认路由忽略、UNKNOWN严重度缺少安全分支、旧风险决策在数据/协议/主张变化后错误复用；并对24条场景的标题文件归属和Markdown text代码块闭合完整性进行严格检查。纯Python辅助决策只能提供建议，不读取真实聊天身份、不授权GPU或正式投稿。本轮为离线逻辑审计，没有真实模型对比或完成率实测。

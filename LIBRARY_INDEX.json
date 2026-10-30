@@ -240,7 +240,7 @@
   },
   {
     "id": "WF41",
-    "name": "高水平科研工作流 v5.4（三级风险、断点选择校验与安全续研）",
+    "name": "Research Workflow v6.0（原型优先、真实迭代、按需科学审查）",
     "group": "08_算法检验与优化",
     "file": "08_算法检验与优化/高水平计算机论文工作流/README.md",
     "source_urls": [
@@ -248,9 +248,12 @@
       "https://github.com/obra/superpowers",
       "https://github.com/karpathy/autoresearch",
       "https://github.com/Orchestra-Research/AI-Research-SKILLs",
-      "https://github.com/anthropics/knowledge-work-plugins"
+      "https://github.com/anthropics/knowledge-work-plugins",
+      "https://github.com/bmad-code-org/BMAD-METHOD",
+      "https://github.com/anthropics/skills",
+      "https://github.com/open-gsd/gsd-core"
     ],
-    "source_status": "在v5.3按需导航基础上修复用户HOLD被自动继续覆盖、UNKNOWN无程序分支、状态缓存选择被错误复用以及Prompt代码块围栏混搭不被发现的问题；添加离线回归测试，保留人工真实授权边界。未测真实大模型工作效率或完成率。"
+    "source_status": "默认START→MVP→实验内循环→事件驱动科学反思；旧五阶段24场景/48故障保留为按需工具，并新增CARE-Touch/PhysTok/RevGraph/CAR-IMU历史教训索引。保持原始Run/Claim、确认性科学证据与资源授权门禁。未做实际LLM A/B或GPU实验。"
   },
   {
     "id": "V09",
