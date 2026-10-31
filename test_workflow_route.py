@@ -129,6 +129,23 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("无需先完成02-D",routes["03-A"][1]["when"])
         self.assertIn("独立审查",routes["04-B"][1]["when"])
 
+    def test_optional_idea_funnel_contract(self):
+        funnel=(ROOT/"IDEA_FUNNEL.md").read_text(encoding="utf-8")
+        stage=(ROOT/"01_科学选题与跨AI审核.md").read_text(encoding="utf-8")
+        orch=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
+        start=(ROOT/"START.md").read_text(encoding="utf-8")
+        catalog=json.loads((ROOT/"ROUTES.json").read_text(encoding="utf-8"))
+        for token in ("F1", "F2", "F3", "F4", "F5", "ChatGPT", "独立真值",
+                      "COVERED", "UNCERTAIN", "第09章", "不训练", "WAITING_FOR_USER_SELECTION"):
+            self.assertIn(token,funnel,token)
+        self.assertIn("IDEA_FUNNEL.md",stage)
+        self.assertIn("IDEA_FUNNEL.md",orch)
+        self.assertIn("IDEA_FUNNEL.md",start)
+        self.assertIn("TOPIC_EXPLORATION",catalog["event_advice"])
+        self.assertEqual("01-A",catalog["event_advice"]["TOPIC_EXPLORATION"]["route"])
+        self.assertEqual(24,len(router.load_routes()))
+        self.assertEqual("as_needed",router.load_routes()["01-A"][1]["kind"])
+
     def test_resume_contract_and_short_standalone_prompts(self):
         root=ROOT
         state=(root/"templates/STATE.md").read_text(encoding="utf-8")

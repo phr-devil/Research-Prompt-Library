@@ -8,9 +8,9 @@
       "routes": [
         {
           "id": "01-A",
-          "name": "候选选题",
+          "name": "候选选题（可选F1–F5机会漏斗）",
           "kind": "as_needed",
-          "when": "新课题或方向重选"
+          "when": "用户仍在宽泛选题时按需使用F1–F4与F5用户选择；已有明确命题可直接MVP"
         },
         {
           "id": "01-B",
@@ -228,7 +228,7 @@
     "TOPIC_EXPLORATION": {
       "action": "CHATGPT_TOPIC_RESEARCH",
       "route": "01-A",
-      "why": "仍在探索新课题时先由ChatGPT完成文献查新、创新命题与方向选择；不默认训练"
+      "why": "宽泛新题按需由ChatGPT用IDEA_FUNNEL.md执行F1–F4，F5等待真实用户选择；已有明确命题不重复选题、不默认训练"
     },
     "RESUME": {
       "action": "RECOVER",
