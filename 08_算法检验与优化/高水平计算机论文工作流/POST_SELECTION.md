@@ -58,15 +58,11 @@
 
 **任务粒度**：以“可以给出独立证据的研发结果”为单位，而不是以文件或每条终端命令为单位；分支有意义时可同次连续处理 2–3 项互相关联的问题，但在测试集污染、关键真值错误、GPU/费用超预算或确认性协议变更时停受影响操作。不要自动无限运行，也不要无价值的多 Agent 轮审。
 
-## 精简技术手册的使用约定（非新阶段）
+## 四份精简技术手册的执行约定（非新阶段）
 
-**只读当前需要的一份**，它都采用「何时使用 → 具体操作 → 失败分支 → 交付/判据」结构；原有 `TASK_CONTRACT / STATE / RUNS / CLAIMS` 继续复用，不强制创建新的科研台账。
-- [01](playbooks/01_DATA_BASELINE.md)：**锁真实任务/独立真值/共同评价器**，用 `sample_id` 对齐最简单与最近邻强基线；不可比时如实报告。
-- [02](playbooks/02_BUILD_DEBUG.md)：把科学差额变成**模块接口、表征、Loss、推理时可见信息、移除消融**；按最小功能、不变性、方向性、梯度进行行为测试；出现训练问题先看曲线与根因。
-- [03](playbooks/03_EXPERIMENT_LOOP.md)：按**竞争解释**选最有信息价值的实验；区分 scientific/nuisance/fixed 超参，合理调优对照；用独立单位评估效应/成本，而非刷验证集。
-- [04](playbooks/04_EVIDENCE_CONFIRM.md)：检查 Claim–Run 来源，再独立审核真值、混杂与最近邻；污染的 holdout 不得作正式确认，离线代理收益不冒充真实控制。
+**按问题只读一份**，不重复加载所有手册：01 核真实数据/强基线与共同评价；02 从科学差额设计模块/损失并测试行为、梯度与异常；03 用竞争解释与 scientific/nuisance/fixed 超参设计有界实验；04 对照 Claim–Run–真值与确认集隔离审查论文主张。每份都写明「触发→操作→验收/失败分支」，复用已有 `STATE/RUNS/CLAIMS`。
 
-**工具边界**：数字核验使用 [audit_evidence.py](../../research_tools/audit_evidence.py)（[说明](../../research_tools/README.md)）；`SOURCE_MATCH` 只说明机器可读来源与数值一致，完整身份需要 `--require-identity`，两者都**不等于科学主张已证实**。所有 GPU、费用、正式确认实验及外传仍需真实用户单独授权。
+数字审查可用 [audit_evidence.py](../../research_tools/audit_evidence.py)（[用法](../../research_tools/README.md)）。`SOURCE_MATCH` 不等于科学成立，`--require-identity` 用于要求来源包含已记录的版本字段；GPU、付费、正式确认和外传仍需单独授权。
 
 ## 一次综合任务如何验收
 
