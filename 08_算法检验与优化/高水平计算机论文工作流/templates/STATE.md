@@ -8,6 +8,7 @@
 - CURRENT_FINDING: <本轮真实发现、可信负结果、未验证的科学解释>
 - RESEARCH_VALUE: <可选：成功后独立贡献、下一实验能否改变决策；低投入价值不等于假设被证伪>
 - NEXT_HYPOTHESIS/TASK: <下一项最有信息量且在授权范围内的工作>
+- CANDIDATE_LINEAGE: <仅有竞争分支时记录 branch/parent_run/protocol_id/changed_scope/恢复点；详见POST_SELECTION，复用现有RUNS不新建账>
 - AUTH/BUDGET: <实际用户授权、上限、余额和来源；明确禁止训练时CPU/GPU均不训练；无则 UNAUTHORIZED>
 - BLOCKER/USER_DECISION: <仅重大分叉/真实权限问题需要询问，记录真实用户后续选择；没有则 NONE>
 - PATH_MAP: <已有RUNS/CLAIMS/REVIEW/数据的路径，不重复建账>
