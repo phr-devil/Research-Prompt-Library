@@ -241,6 +241,20 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("DECISION DEDUP",guide)
         self.assertIn("24个历史场景是工具库",guide)
 
+    def test_stage_one_chatgpt_priority_in_extracted_prompts_and_router(self):
+        manifest = json.loads((ROOT/"ROUTES.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["stages"][0]["default_platform"], "ChatGPT")
+        routes = router.load_routes()
+        for key in ("01-A", "01-B", "01-C", "01-D"):
+            self.assertIn("ChatGPT", router.extract(routes[key][0], key))
+        advice = router.advise_event("TOPIC_EXPLORATION")
+        self.assertEqual((advice["action"], advice["route"], advice["recommended_platform"]),
+                         ("CHATGPT_TOPIC_RESEARCH", "01-A", "ChatGPT"))
+        self.assertIsNone(router.advise_event("NEW_PROJECT")["route"])
+        self.assertIn("RECOMMENDED_PLATFORM: ChatGPT", router.render_event("TOPIC_EXPLORATION"))
+        self.assertIn("ChatGPT", (ROOT/"START.md").read_text(encoding="utf-8"))
+        self.assertIn("①选题", (ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8"))
+
     def test_v6_slim_start_does_not_preload_all_skills(self):
         root=ROOT
         start=(root/"START.md").read_text(encoding="utf-8")
