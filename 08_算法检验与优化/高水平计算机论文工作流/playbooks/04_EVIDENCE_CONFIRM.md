@@ -50,7 +50,7 @@
 
 ## F. 可运行的证据预审与主张审计（P0-7）
 
-当项目有可复算的数字结果时，推荐使用仓库自带、**零第三方 Python 依赖**的 [audit_evidence.py](../../../research_tools/audit_evidence.py) 与对应 [使用约定](../../../research_tools/README.md)。审计器不会训练、不修改实验数据、不向外网传输。项目已有等价验证器时优先复用，不要求迁移。
+当项目有可复算的数字结果时，推荐使用仓库自带、**零第三方 Python 依赖**的 [audit_evidence.py](../../../research_tools/audit_evidence.py) 与对应 [使用约定](../../../research_tools/README.md)。审计器不会训练、不修改实验数据、不向外网传输。 当关键主张要求完整代码/数据/协议身份时使用 `--require-identity`：已在 RUNS 填写但未由原始结构化指标来源记录的版本字段将使该数字的完整谱系检查为 UNVERIFIED。默认模式仅核数字来源、并显示未嵌入的身份字段。项目已有等价验证器时优先复用，不要求迁移。
 
 审计在两个不同层次进行：
 

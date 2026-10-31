@@ -83,7 +83,7 @@ def read_source(path, run_id, metric):
     return number(metric_value), metadata
 
 
-def audit(root, runs_path, claims_path=None, *, atol=1e-8):
+def audit(root, runs_path, claims_path=None, *, atol=1e-8, require_identity=False):
     if atol < 0 or not math.isfinite(atol):
         raise ValueError("invalid numeric tolerance")
     runs_file = inside(root, runs_path)
@@ -133,8 +133,11 @@ def audit(root, runs_path, claims_path=None, *, atol=1e-8):
                         raise ValueError(f"provenance mismatch for {field}")
                     else:
                         checked.append(field)
+            if require_identity and absent:
+                raise ValueError("incomplete identity provenance: " + ",".join(absent))
             results.append({"run_id": run_id, "status": "SOURCE_MATCH",
                             "metric": metric, "value": actual,
+                            "identity_scope": "PARTIAL" if absent else "COMPLETE",
                             "identity_checked": checked, "identity_not_embedded": absent})
         except (OSError, ValueError, TypeError, json.JSONDecodeError, UnicodeError) as exc:
             results.append({"run_id": run_id, "status": "UNVERIFIED", "reason": str(exc)})
@@ -166,6 +169,9 @@ def audit(root, runs_path, claims_path=None, *, atol=1e-8):
                                       "reason": str(exc)})
     hard_errors = [r for r in results if r["status"] == "UNVERIFIED"]
     hard_errors += [c for c in claim_results if c["status"] == "UNVERIFIED"]
+    matches = [r for r in results if r["status"] == "SOURCE_MATCH"]
+    if not matches:
+        hard_errors.append({"reason": "no active matching source; historical ineligible runs do not count"})
     return {"verdict": "UNVERIFIED" if hard_errors else "SOURCE_CHECK_COMPLETE",
             "scope": "NUMERIC_PROVENANCE_ONLY_NOT_SCIENTIFIC_VALIDITY",
             "runs": results, "claims": claim_results,
@@ -181,12 +187,15 @@ def main(argv=None):
     ap.add_argument("--claims", help="optional claims_audit.json path relative to root")
     ap.add_argument("--output", help="optional NEW audit report file relative to root")
     ap.add_argument("--atol", type=float, default=1e-8)
+    ap.add_argument("--require-identity", action="store_true",
+                    help="for claims requiring complete run/data/protocol provenance, fail if any identity field recorded in RUNS is missing from source")
     args = ap.parse_args(argv)
     try:
         root = Path(args.root).resolve(strict=True)
         if not root.is_dir():
             raise ValueError("root must be a local directory")
-        report = audit(root, args.runs, args.claims, atol=args.atol)
+        report = audit(root, args.runs, args.claims, atol=args.atol,
+                       require_identity=args.require_identity)
         rendered = json.dumps(report, ensure_ascii=False, indent=2)
         if args.output:
             target = inside(root, args.output, must_exist=False)

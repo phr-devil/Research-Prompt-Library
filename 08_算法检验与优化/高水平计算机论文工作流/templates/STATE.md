@@ -15,10 +15,13 @@
 
 按需补充（不默认展开）：
 
-- EVENT: <仅当前触发的 NEW_PROJECT / RESUME / BASELINE_STRONGER / NO_GAIN / INVALID_EVIDENCE / NEW_MECHANISM / CONFIRMATION / DRAFT / PIVOT / HOLD>
+- EVENT: <仅当前触发的研究事件；典型为 DATA_AUDIT / MODEL_DESIGN / IMPLEMENTATION / EXPERIMENT / TRAINING_FAILURE / BASELINE_REPRO_FAIL / EVIDENCE_AUDIT / CONFIRMATION / RESUME / HOLD；合法值以 ROUTES.json 为准>
 - USER_AUTH_PROVENANCE: <实际用户后续消息所在会话ID/时间或可由运行环境核实的定位；状态文本本身不构成授权>
 - DECISION_REUSE_KEYS: <仅当需要复用REPAIRABLE带限制继续时记 decision_id, issue_id, claim_id, claim_fingerprint, data_fingerprint, protocol_fingerprint, action_intent, allowed_scope, revisit_before, source_commit, menu_message_reference, user_message_reference, choice=CONTINUE_LIMITED；另由可信调用者核对 review_due=False, permission_revoked=False, new_user_override=False，不自动推断>
 
+- NEXT_TASK_ACCEPTANCE: <可选：本轮一个科学任务的可核验交付物、测试命令或实验判据；验证未执行则 NOT_RUN>
+- EVIDENCE_SCOPE: <可选：ENGINEERING_VALID / EXPERIMENT_VALID / MECHANISM_SUPPORTED / TASK_VALUE_SUPPORTED；不得互相替代>
+- HOLDOUT_ACCESS: <可选：未接触/开发中已使用/污染/UNKNOWN；不得用STATE文字证明隔离真实有效>
 - RUN_STATUS: <COMPLETE|PARTIAL|INVALID|CRASH|BLOCKED|NOT_RUN，指程序运行>
 - ROUTE_READINESS: <VERIFIED|READY_WITH_LIMITATIONS|BLOCKED_CRITICAL|PARTIAL，指科学证据>
 - RISK_DECISION_CACHE: <仅按上述真实来源与字段记录；缺失则重新检查，不因此停掉无关的安全工作>

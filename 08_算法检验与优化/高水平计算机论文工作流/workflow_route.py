@@ -63,6 +63,9 @@ def load_routes(root=ROOT):
                 raise ValueError("Incomplete event advice")
             if "playbook" in advice:
                 resolve_playbook(advice["playbook"], root)
+            for field in ("deliverable", "verify", "boundary"):
+                if field in advice and (not isinstance(advice[field], str) or not advice[field].strip()):
+                    raise ValueError("Invalid research event operation: " + field)
     return found
 
 
@@ -280,6 +283,9 @@ def render_event(event):
         lines.append("RECOMMENDED_PLATFORM: " + item["recommended_platform"])
     if item.get("playbook"):
         lines.append("OPTIONAL_PLAYBOOK: " + item["playbook"] + " (read one on demand)")
+    for field, label in (("deliverable", "DELIVERABLE"), ("verify", "VERIFY"), ("boundary", "BOUNDARY")):
+        if item.get(field):
+            lines.append(label + ": " + item[field])
     if item.get("lesson"):
         lines.append("OPTIONAL_LESSON: " + item["lesson"])
     lines.append("Advisory only; it cannot verify message authenticity, data, budgets or permissions.")

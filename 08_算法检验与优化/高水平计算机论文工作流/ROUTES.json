@@ -224,7 +224,10 @@
       "action": "MVP",
       "route": null,
       "why": "已明确科研目标可直接做最小真值核查、基线与MVP；仍在选题时改用TOPIC_EXPLORATION",
-      "playbook": "playbooks/01_DATA_BASELINE.md"
+      "playbook": "playbooks/01_DATA_BASELINE.md",
+      "deliverable": "可信数据/目标合同和最简单公平基线或阻断",
+      "verify": "真实字段/真值/分组/评估入口可复查",
+      "boundary": "不得仅选题就授权训练"
     },
     "TOPIC_EXPLORATION": {
       "action": "CHATGPT_TOPIC_RESEARCH",
@@ -235,7 +238,10 @@
       "action": "RECOVER",
       "route": null,
       "why": "仅查最后有效Run/代码/数据指纹和真实授权；不重训已完成证据",
-      "playbook": "POST_SELECTION.md"
+      "playbook": "POST_SELECTION.md",
+      "deliverable": "复用的有效Run与一个当前任务/假设",
+      "verify": "代码、数据、协议、Run指纹仍匹配",
+      "boundary": "不重跑无影响结果，不重复旧门禁"
     },
     "BASELINE_STRONGER": {
       "action": "DIAGNOSE",
@@ -321,25 +327,100 @@
       "action": "VALIDATE_DATA_AND_BASELINE",
       "route": "02-B",
       "playbook": "playbooks/01_DATA_BASELINE.md",
-      "why": "核真实字段、时钟、标签与独立统计单位，再实施最小公平基线；非必要复杂审查后移"
+      "why": "核真实字段、时钟、标签与独立统计单位，再实施最小公平基线；非必要复杂审查后移",
+      "deliverable": "输入/目标/时钟/标签/组划分审计与可比简单基线",
+      "verify": "数据泄漏、train-only预处理、物理单位及真实batch证据",
+      "boundary": "无数据/GPU权限只执行合法检查"
     },
     "IMPLEMENTATION": {
       "action": "BUILD_AND_VERIFY_MVP",
       "route": "03-C",
       "playbook": "playbooks/02_BUILD_DEBUG.md",
-      "why": "从科研主张生成输入/输出/损失与测试合同，按合法授权实现、复现与最小排错"
+      "why": "从科研主张生成输入/输出/损失与测试合同，按合法授权实现、复现与最小排错",
+      "deliverable": "最小模型、关键模块接口与相关行为/回归测试",
+      "verify": "真实batch、时序、梯度、Loss数值与最小集成输出",
+      "boundary": "工程通过不代表新机制/论文贡献"
     },
     "EXPERIMENT": {
       "action": "BOUNDED_SCIENTIFIC_ITERATION",
       "route": "03-D",
       "playbook": "playbooks/03_EXPERIMENT_LOOP.md",
-      "why": "先写竞争解释及区分预测，再以获批预算进行固定评价、保留全结果与科学止损"
+      "why": "先写竞争解释及区分预测，再以获批预算进行固定评价、保留全结果与科学止损",
+      "deliverable": "能区分竞争假设的受控比较、全种子Run与下一科学决定",
+      "verify": "共同评价器/有效单位/置信区间与固定预算",
+      "boundary": "没有获批资源不运行；无限循环禁止"
     },
     "EVIDENCE_AUDIT": {
       "action": "CLAIM_EVIDENCE_REVIEW",
       "route": "04-A",
       "playbook": "playbooks/04_EVIDENCE_CONFIRM.md",
-      "why": "核实验效应、独立单位、机制替代解释与论文主张；正式确认和外传需另外授权"
+      "why": "核实验效应、独立单位、机制替代解释与论文主张；正式确认和外传需另外授权",
+      "deliverable": "Claim-Run映射、实际数值来源、效应与未验证边界",
+      "verify": "必要时先audit_evidence再由独立审查判断科学支持",
+      "boundary": "数字核验不等于独立科学复核"
+    },
+    "MODEL_DESIGN": {
+      "action": "WRITE_TESTABLE_METHOD_CONTRACT",
+      "route": "03-A",
+      "playbook": "playbooks/02_BUILD_DEBUG.md",
+      "why": "新增模块前先明确输入/输出、表征、Loss、测试时可得信息、简单替代与消融；避免装饰性复杂度",
+      "deliverable": "一份映射到现有代码的模块/损失/推理接口合同与对应行为测试",
+      "verify": "接口与公式可手算/可复现；新机制具有区别于简单替代的可证伪预测",
+      "boundary": "无授权GPU不训练；旧协议与正式holdout不可被静默修改"
+    },
+    "BASELINE_REPRO_FAIL": {
+      "action": "DIAGNOSE_REFERENCE_DELTA",
+      "route": "02-B",
+      "playbook": "playbooks/01_DATA_BASELINE.md",
+      "why": "对齐官方来源、样本、时域、输入、评价及数值环境，找最早不一致点；不能将复现失败的强基线算作被超越",
+      "deliverable": "复现差异表、最小定向测试与可比结果/STRONG_BASELINE_NOT_REPRODUCED",
+      "verify": "对照与新法在共同评价器上逐sample ID比对，并记录无法对齐的原因",
+      "boundary": "禁止为了提高新法相对值而削弱基线、改变评估分母或接触确认集"
+    },
+    "TRAINING_FAILURE": {
+      "action": "DIAGNOSE_TRAINING_ROOT_CAUSE",
+      "route": "03-E",
+      "playbook": "playbooks/02_BUILD_DEBUG.md",
+      "why": "先区分数据/优化/算子/实现与科学无增益；复现根因再做一项有意义的修复",
+      "deliverable": "可重复失败输入或真实日志、根因竞争解释、最小修复及回归测试",
+      "verify": "原失败路径及受影响路径的新运行证据；无修复证据保留BLOCKED",
+      "boundary": "没有GPU许可不复跑训练，不把工程PASS称为科学有效"
+    },
+    "ABLATION_CONFOUND": {
+      "action": "DESIGN_DISCRIMINATING_CONTROL",
+      "route": "03-D",
+      "playbook": "playbooks/03_EXPERIMENT_LOOP.md",
+      "why": "消融下降仍可能是参数量、历史输入、预算或阶段捷径；先设计区别机制与替代解释的负对照",
+      "deliverable": "竞争解释A/B、预期结果模式、容量/信息匹配对照与最小受控评估",
+      "verify": "对照预先可证伪，原始Run与公平信息/预算可比；不直接做因果宣称",
+      "boundary": "授权范围内有界执行；正式test不参与选择"
+    },
+    "STATISTICAL_INCONCLUSIVE": {
+      "action": "CHECK_EFFECT_AND_INDEPENDENCE",
+      "route": "03-D",
+      "playbook": "playbooks/03_EXPERIMENT_LOOP.md",
+      "why": "区分缺少独立样本、效应接近零与训练随机性，估最小有意义效应和当前精度",
+      "deliverable": "独立单位n、主要配对差额与不确定性、SESOI或MDE依据及是否需补证",
+      "verify": "按合法独立单位估计区间，解释增加seed或新增独立样本各自能解决什么",
+      "boundary": "无独立证据不能把不显著写成已证无效；不自动追加GPU/数据采集"
+    },
+    "CLAIM_EVIDENCE_MISMATCH": {
+      "action": "RUN_NUMERIC_PROVENANCE_AUDIT",
+      "route": "04-A",
+      "playbook": "playbooks/04_EVIDENCE_CONFIRM.md",
+      "why": "出现数字、版本或原始Run来源不符时先机械核证据，再做独立科学解释",
+      "deliverable": "audit_evidence源检查报告、受影响Claim/Run及差异处理建议",
+      "verify": "结构化指标数值、Run及元数据版本一致；关键完整谱系使用--require-identity",
+      "boundary": "SOURCE_MATCH仅代表来源数值，不代表机制/论文主张成立或用户批准正式实验"
+    },
+    "CONFIRMATION_LEAK": {
+      "action": "QUARANTINE_CONTAMINATED_HOLDOUT",
+      "route": "03-F",
+      "playbook": "playbooks/04_EVIDENCE_CONFIRM.md",
+      "why": "正式holdout参与选择或反复优化时不得继续当未见独立确认，先隔离相关宣称",
+      "deliverable": "污染范围与受影响模型选择、Run/Claim降级记录、新独立确认数据可行性",
+      "verify": "历史test访问与选择过程可追溯；若缺合法新holdout则记CONFIRMATION_UNAVAILABLE",
+      "boundary": "禁止更名重跑原test冒充新确认；新正式实验需单独授权"
     }
   }
 }

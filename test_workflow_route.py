@@ -273,6 +273,45 @@ class WorkflowTests(unittest.TestCase):
             router.resolve_playbook("playbooks/nonexistent.md")
         self.assertEqual(len(router.load_routes()), 24)
 
+    def test_operational_event_contracts_are_safe_and_specific(self):
+        mapping = {
+            "MODEL_DESIGN": ("playbooks/02_BUILD_DEBUG.md", "03-A"),
+            "BASELINE_REPRO_FAIL": ("playbooks/01_DATA_BASELINE.md", "02-B"),
+            "TRAINING_FAILURE": ("playbooks/02_BUILD_DEBUG.md", "03-E"),
+            "ABLATION_CONFOUND": ("playbooks/03_EXPERIMENT_LOOP.md", "03-D"),
+            "STATISTICAL_INCONCLUSIVE": ("playbooks/03_EXPERIMENT_LOOP.md", "03-D"),
+            "CLAIM_EVIDENCE_MISMATCH": ("playbooks/04_EVIDENCE_CONFIRM.md", "04-A"),
+            "CONFIRMATION_LEAK": ("playbooks/04_EVIDENCE_CONFIRM.md", "03-F"),
+        }
+        for event, (book, route) in mapping.items():
+            advice = router.advise_event(event)
+            self.assertEqual((advice["playbook"], advice["route"]), (book, route))
+            self.assertEqual(advice["permission"], "ADVISORY_ONLY_NO_EXECUTION")
+            for key, label in (("deliverable", "DELIVERABLE"), ("verify", "VERIFY"),
+                               ("boundary", "BOUNDARY")):
+                self.assertTrue(advice[key].strip())
+                self.assertIn(label + ":", router.render_event(event))
+            self.assertTrue(router.resolve_playbook(book).is_file())
+        for event in ("DATA_AUDIT", "IMPLEMENTATION", "EXPERIMENT", "EVIDENCE_AUDIT", "RESUME"):
+            self.assertIn("DELIVERABLE:", router.render_event(event))
+        self.assertEqual(len(router.load_routes()), 24)
+        guide=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
+        post=(ROOT/"POST_SELECTION.md").read_text(encoding="utf-8")
+        self.assertLess(len(guide), 2800)
+        self.assertIn("自主执行规则", guide)
+        self.assertIn("TRAINING_FAILURE", post)
+        self.assertIn("CONFIRMATION_LEAK", post)
+        self.assertIn("不是新阶段", post)
+
+    def test_operational_event_cli_is_advisory_not_executor(self):
+        p = subprocess.run([sys.executable, str(ROOT/"workflow_route.py"), "--event",
+                            "CLAIM_EVIDENCE_MISMATCH"], capture_output=True, text=True)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertIn("DELIVERABLE:", p.stdout)
+        self.assertIn("VERIFY:", p.stdout)
+        self.assertIn("BOUNDARY:", p.stdout)
+        self.assertIn("Advisory only", p.stdout)
+
     def test_v6_fast_path_is_default_not_24_mandatory_gates(self):
         root=ROOT
         doc=json.loads((root/"ROUTES.json").read_text(encoding="utf-8"))
@@ -529,6 +568,28 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0)
         self.assertEqual(out["runs"][0]["status"], "SOURCE_MATCH")
         self.assertIn("protocol_sha", out["runs"][0]["identity_not_embedded"])
+
+    def test_strict_identity_rejects_partially_grounded_source(self):
+        self.save_source({"run_id": "R1", "metrics": {"ap": 0.812}})
+        loose, out = self.invoke()
+        self.assertEqual(loose.returncode, 0)
+        self.assertEqual(out["runs"][0]["identity_scope"], "PARTIAL")
+        strict, out = self.invoke("--require-identity")
+        self.assertEqual(strict.returncode, 1)
+        self.assertEqual(out["runs"][0]["status"], "UNVERIFIED")
+        self.assertIn("incomplete identity provenance", out["runs"][0]["reason"])
+        self.save_source(self.result)
+        strict, out = self.invoke("--require-identity")
+        self.assertEqual(strict.returncode, 0)
+        self.assertEqual(out["runs"][0]["identity_scope"], "COMPLETE")
+
+    def test_all_historical_invalid_runs_do_not_produce_empty_success(self):
+        self.save_rows([dict(self.row, status="INVALID")])
+        self.save_claims([])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(out["verdict"], "UNVERIFIED")
+        self.assertEqual(out["summary"]["run_source_matches"], 0)
 
     def test_invalid_history_cannot_support_claim(self):
         self.save_rows([dict(self.row, status="INVALID")])
