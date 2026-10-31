@@ -28,7 +28,7 @@ Agent 从真实数据和部署条件写 6 项**具体值**，不填泛泛原则�
 
 **最小测试**（按真实字段实现，不把示例当现成测试）：train/val/test 分组无交集；只改未来时刻输入不得改变当前预测（适用在线模型时）；train-only 拟合；新法与对照按相同 `sample_id,group_id,target,prediction,valid_mask` 对齐；全部失败样本也计入覆盖率报告。时序/标签或 metric 代码改变时，标注哪些旧 Run 不再可比，只重算受影响下游（可参照 [DVC](https://github.com/treeverse/dvc)）。
 
-## 2.5 机制可利用性与性能空间（按需，不加门禁）
+## 2.5 性能空间诊断与机制可利用性（按需）
 
 先把论文Claim对应至`observable→independent truth/proxy→合法group/time/metric`；离线数据无反事实识别条件时不承诺闭环收益。先复用合法Run取得`B_simple / B_strong / O_reference(可选) / P_feasible(待核)`及独立单位、成本、误差条件和不确定性。
 
