@@ -312,6 +312,29 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("BOUNDARY:", p.stdout)
         self.assertIn("Advisory only", p.stdout)
 
+    def test_compact_playbooks_have_actionable_scientific_recipes(self):
+        """Compact guidance must still cover design, validation, diagnosis, and paper claims."""
+        required = {
+            "01_DATA_BASELINE.md": ("强基线复现合同", "train-only", "sample_id",
+                                     "STRONG_BASELINE_NOT_REPRODUCED", "REFORMS"),
+            "02_BUILD_DEBUG.md": ("模块级实现合同", "关键行为测试矩阵", "训练症状",
+                                   "Loss", "tiny-set", "ENGINEERING_VALID"),
+            "03_EXPERIMENT_LOOP.md": ("实验选择与计算预算", "scientific", "nuisance",
+                                      "fixed", "SESOI/MDE", "INCONCLUSIVE"),
+            "04_EVIDENCE_CONFIRM.md": ("证据预审", "封闭确认评价",
+                                       "SCIENTIFICALLY_SUPPORTED", "CONFIRMATION_UNAVAILABLE")
+        }
+        playbooks = ROOT/"playbooks"
+        for filename, terms in required.items():
+            document=(playbooks/filename).read_text(encoding="utf-8")
+            self.assertLess(len(document), 2700, filename)
+            for term in terms:
+                self.assertIn(term, document, (filename, term))
+            self.assertIn("何时读", document)
+        self.assertEqual(len(router.load_routes()), 24)
+        self.assertIn("按问题只读一份",
+                      (ROOT/"POST_SELECTION.md").read_text(encoding="utf-8"))
+
     def test_v6_fast_path_is_default_not_24_mandatory_gates(self):
         root=ROOT
         doc=json.loads((root/"ROUTES.json").read_text(encoding="utf-8"))
