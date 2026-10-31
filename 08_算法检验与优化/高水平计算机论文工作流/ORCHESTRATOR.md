@@ -5,6 +5,8 @@
 
 **平台分工**：①选题（01-A～D）默认由ChatGPT完成。宽泛新题可选[机会漏斗F1–F5](IDEA_FUNNEL.md)：F1–F4同一会话，F5用户选择；已有项目跳过。仅真实数据/本地代码实测转WorkBuddy/Codex，关键独立复核另启隔离审查者；自查不算独立审核。非MVP前置门禁。
 
+**跨阶段一致性**：新题F4和第09章Step05先完成可只读核实的近邻创新、真值评价、强基线与关键依赖，并按`RECOMMEND/EXPLORE/NOT_READY`展示；无可信正式推荐可如实报0项，不为了凑候选而放宽门槛。用户可选择高风险EXPLORE但须说明未知。后续05-R/POST_SELECTION不因相同已知证据无解释地翻转结论。用`LESSONS.md`按失败模式做轻量前置匹配；保留原用户选题、GPU、费用及正式实验授权门禁。
+
 ## 启动（一次，尽量直接动手）
 
 1. 区分**科研项目**与**提示词库**；有项目才读取已有 STATE/有效 Run、代码/数据入口并直接续做。纯选题不要求先创建项目或状态文件。
@@ -19,6 +21,8 @@
 ## 可核查的按事件路由（仍由Agent在实际工具中执行）
 
 读取 [POST_SELECTION.md](POST_SELECTION.md) 的**自主执行规则**，按当前事件从 [ROUTES.json](ROUTES.json) 获取 action/交付/验证/边界；可用 `workflow_route.py --event TRAINING_FAILURE` 只读查看。不自动训练、授权或判断科学成立。
+
+**判决范围**：实验状态`KEEP/DISCARD/INCONCLUSIVE/INVALID`须另注明`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`与具体重启条件。仅对有效证据支持的范围止损；不把工程/数据阻断说成科学假设被证伪，也不让旧失败命题仅换名重复推荐。
 
 ## 外循环（事件触发，不按次数/日历强制）
 
