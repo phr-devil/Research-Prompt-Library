@@ -223,7 +223,8 @@
     "NEW_PROJECT": {
       "action": "MVP",
       "route": null,
-      "why": "已明确科研目标可直接做最小真值核查、基线与MVP；仍在选题时改用TOPIC_EXPLORATION"
+      "why": "已明确科研目标可直接做最小真值核查、基线与MVP；仍在选题时改用TOPIC_EXPLORATION",
+      "playbook": "playbooks/01_DATA_BASELINE.md"
     },
     "TOPIC_EXPLORATION": {
       "action": "CHATGPT_TOPIC_RESEARCH",
@@ -233,33 +234,39 @@
     "RESUME": {
       "action": "RECOVER",
       "route": null,
-      "why": "仅查最后有效Run/代码/数据指纹和真实授权；不重训已完成证据"
+      "why": "仅查最后有效Run/代码/数据指纹和真实授权；不重训已完成证据",
+      "playbook": "POST_SELECTION.md"
     },
     "BASELINE_STRONGER": {
       "action": "DIAGNOSE",
       "route": "03-E",
       "lesson": "L1/L2",
-      "why": "确认输入、公平预算、简单强基线与代理任务；不盲目扩模"
+      "why": "确认输入、公平预算、简单强基线与代理任务；不盲目扩模",
+      "playbook": "playbooks/03_EXPERIMENT_LOOP.md"
     },
     "NO_GAIN": {
       "action": "ITERATE",
       "route": "03-D",
-      "why": "有效负结果保存；先做一项有区分力的最小修改，不自动STOP"
+      "why": "有效负结果保存；先做一项有区分力的最小修改，不自动STOP",
+      "playbook": "playbooks/03_EXPERIMENT_LOOP.md"
     },
     "INVALID_EVIDENCE": {
       "action": "BLOCK_AFFECTED_CLAIM",
       "route": "02-B",
-      "why": "隔离泄漏/无独立真值的正式声明，允许未受影响的安全工作"
+      "why": "隔离泄漏/无独立真值的正式声明，允许未受影响的安全工作",
+      "playbook": "playbooks/01_DATA_BASELINE.md"
     },
     "NEW_MECHANISM": {
       "action": "REFLECT",
       "route": "01-B",
-      "why": "核近邻与竞争解释，记录尚需证实的科学贡献"
+      "why": "核近邻与竞争解释，记录尚需证实的科学贡献",
+      "playbook": "playbooks/04_EVIDENCE_CONFIRM.md"
     },
     "CONFIRMATION": {
       "action": "VERIFY_AND_AUTHORIZE",
       "route": "03-F",
-      "why": "必要冻结协议/独立数据与独立真实用户授权均需验证"
+      "why": "必要冻结协议/独立数据与独立真实用户授权均需验证",
+      "playbook": "playbooks/04_EVIDENCE_CONFIRM.md"
     },
     "DRAFT": {
       "action": "WRITE_UNVERIFIED",
@@ -280,7 +287,8 @@
       "action": "CHECK_SCIENTIFIC_VALUE",
       "route": "03-D",
       "lesson": "L3",
-      "why": "工程/内部代理指标改善但任务、机制或理论贡献未证；用最便宜的独立价值检验与最近邻比较，避免继续堆工程任务"
+      "why": "工程/内部代理指标改善但任务、机制或理论贡献未证；用最便宜的独立价值检验与最近邻比较，避免继续堆工程任务",
+      "playbook": "playbooks/04_EVIDENCE_CONFIRM.md"
     },
     "CLAIM_NO_NOVEL_DELTA": {
       "action": "REASSESS_CLAIM_VALUE",
@@ -292,19 +300,22 @@
       "action": "REQUEST_DATA_ONCE",
       "route": "02-B",
       "lesson": "L5",
-      "why": "缺决定性真实数据时停止重复合成替代准备，一次提出明确授权请求"
+      "why": "缺决定性真实数据时停止重复合成替代准备，一次提出明确授权请求",
+      "playbook": "playbooks/01_DATA_BASELINE.md"
     },
     "REPAIR_LOW_VALUE": {
       "action": "STOP_REPAIR_SCOPE",
       "route": "03-E",
       "lesson": "L5",
-      "why": "修复不改变科学主张或GO/STOP判断时停止该项修复；普通必要Bug除外"
+      "why": "修复不改变科学主张或GO/STOP判断时停止该项修复；普通必要Bug除外",
+      "playbook": "playbooks/02_BUILD_DEBUG.md"
     },
     "INCONCLUSIVE_LOW_VALUE": {
       "action": "ADVISE_HOLD_OR_STOP",
       "route": "02-D",
       "lesson": "L5",
-      "why": "证据不足不等于无效；可单独基于贡献缺口和后续成本建议止损"
+      "why": "证据不足不等于无效；可单独基于贡献缺口和后续成本建议止损",
+      "playbook": "playbooks/03_EXPERIMENT_LOOP.md"
     }
   }
 }
