@@ -35,7 +35,7 @@
 
 在提示词库目录中执行 `python workflow_route.py --event DATA_AUDIT`、`--event IMPLEMENTATION`、`--event EXPERIMENT`、`--event EVIDENCE_AUDIT` 可读取一项操作建议与 `OPTIONAL_PLAYBOOK` 路径；恢复项目用 `RESUME`，强基线反超用 `BASELINE_STRONGER`，正式确认用 `CONFIRMATION`。路由只提供建议，不读取科研项目真值、不自动调用Agent、GPU或批准任何操作。直接访问 GitHub 的 AI 不必运行 CLI，按表选择对应文件即可。
 
-## AI 自主执行规则（选题后默认启用，非新阶段）
+## AI 自主执行规则（选题后默认启用，不是新阶段）
 
 **任务选择不是等待用户逐项发 Prompt**。从当前项目最可信的 `STATE / Run / 原始代码 / 数据 / 实际用户授权` 出发，判断**此时最可能改变科研决定**的一个事件。通过 [ROUTES.json](ROUTES.json) 的 `event_advice` 读取 `action / playbook / deliverable / verify / boundary`，或直接从下表选相同动作。用户未要求每步审查时，**在已授权范围内连续完成有依赖的一组研发任务**，只在关键资源、科学主张或冻结方案变化时请求决定。
 
