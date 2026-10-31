@@ -31,6 +31,10 @@
 
 优先使用项目既有 `research/STATE.md`、`RUNS.tsv`、`CLAIMS.md`、`REVIEW.md`（或映射路径）。记录**差量**即可，不建立一套竞争性的日志系统。只有实际结果才能支持模型增益、科研机制和资源消耗等陈述。
 
+## 事件路由（可选 CLI，不需要安装额外依赖）
+
+在提示词库目录中执行 `python workflow_route.py --event DATA_AUDIT`、`--event IMPLEMENTATION`、`--event EXPERIMENT`、`--event EVIDENCE_AUDIT` 可读取一项操作建议与 `OPTIONAL_PLAYBOOK` 路径；恢复项目用 `RESUME`，强基线反超用 `BASELINE_STRONGER`，正式确认用 `CONFIRMATION`。路由只提供建议，不读取科研项目真值、不自动调用Agent、GPU或批准任何操作。直接访问 GitHub 的 AI 不必运行 CLI，按表选择对应文件即可。
+
 ## 一次综合任务如何验收
 
 **工程**：必要接口、数值/梯度、不变量和可用输入真实通过；**实验**：真值、split、时间因果、train-only 预处理和公平评价合法；**科学**：排除至少一个关键竞争解释，并说明是否有可信增量；**论文**：独立价值、效应/不确定性、强基线和确认性证据对应主张。四层分别记录，不要求早期一次全通过。
