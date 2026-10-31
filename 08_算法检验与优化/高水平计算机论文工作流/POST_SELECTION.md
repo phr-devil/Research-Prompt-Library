@@ -14,6 +14,8 @@
 |---|---|---|---|
 | 新课题可行性、数据/标签/评价不确定 | [01 数据与可信基线](playbooks/01_DATA_BASELINE.md) | 数据契约 + 评价入口 + 公平基线结果或明确阻断 | 先造大网络；将代理标签当真值 |
 | 首次开发、修复梯度/数值/接口问题 | [02 算法实现与验证](playbooks/02_BUILD_DEBUG.md) | 真实输入输出运行链路 + 相关自动化测试 + 变更证据 | 对所有代码强制重构、无因调参 |
+
+**技术参考按需加载**：算法骨架不明确时读 [结构选择卡](playbooks/ALGORITHM_DESIGN_REFERENCE.md)；实现/审查新算子时将 [正确性测试模板](templates/test_algorithm_contract.py) 按 [接入说明](templates/ALGORITHM_TEST_USAGE.md) 适配目标算法；存在时间戳/异步多模态/动态传感器风险时读 [专项诊断](playbooks/SENSOR_DIAGNOSTICS.md)。这些都不是新的强制阶段；模板未适配不能生成算法 PASS。
 | 有有效基线，准备提升/诊断无增益 | [03 科学实验迭代](playbooks/03_EXPERIMENT_LOOP.md) | 预期有区分力的实验、全结果与下一假设 | 无限实验；最好 seed；多次调确认集 |
 | 有可信初步结果，准备正式论文主张 | [04 机制证据与确认](playbooks/04_EVIDENCE_CONFIRM.md) | Claim→Run→独立效应/统计→图表的证据矩阵 | 工程 PASS 冒充任务/机制贡献 |
 | 传感器何时启动等多模态控制题 | [完整实例：触觉门控](playbooks/EXAMPLE_SENSOR_GATE.md) | 可映射到实际数据的实验合同示例 | 直接宣称离线代理指标等于控制收益 |
