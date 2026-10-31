@@ -16,7 +16,7 @@ def resolve_playbook(relative_path, root=ROOT):
     if (not isinstance(relative_path, str) or not relative_path
             or not (relative_path == "POST_SELECTION.md"
                     or relative_path.startswith("playbooks/"))
-            or "\\\\" in relative_path):
+            or "\\" in relative_path):
         raise ValueError("Invalid playbook path")
     path = (root / relative_path).resolve()
     if not path.is_relative_to(root.resolve()) or not path.is_file() or path.suffix != ".md":
