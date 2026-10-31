@@ -60,6 +60,16 @@
 
 **保护**：HFD官方train/val 438条完成数据准入，但真实模态互补性`INCONCLUSIVE`，Toyota划分漂移原因`UNKNOWN`；`STOP_APPROVED`基于创新空间、验证混杂和投入价值，不代表多模态融合已被证伪。工程PASS与论文贡献分开。
 
+## L6｜P1 ContactWorld：接口全绿，但闭环仿真平台不可用
+
+**证据定位要求**：本库不含 P1 原始运行文件；在 P1 仓库 `exp/p1_sensor_gate/artifacts/` 核对 `cem_evidence.txt`、`stage2_platform.md` / `stage2_platform.txt` 及对应检查点/测试记录。以下为项目阶段报告总结，未在本库独立复现。
+
+**适用症状**：真实数据和权重已能加载、89项 CPU 测试通过、完整 CEM 动作响应可测，但论文核心价值依赖 Isaac Gym 闭环；直到后期才发现现有 WSL2 (Ubuntu 26.04/Python 3.14) 不在 Isaac Gym Preview 4 支持范围，且预检没有 NVIDIA Vulkan ICD。**未实际运行 `create_sim`，因此这是高风险平台阻断/无已获批可用平台，不是实测证明任何 Linux 环境都不能运行。** 本项目没有闭环 episode，不能据离线动作差异声称控制收益，也不能认定科学假设被推翻。
+
+**最短处理**：①选题/MVP前反推论文主指标依赖的最难替代环节，仅挑1–2个；②先核实际必需的仿真器/渲染/驱动、算法库/API与编译 ABI、自定义算子、权重与组件、数据标签/时序、评价环境及使用许可；③优先只读证据，获授权才运行一次最小端到端真实冒烟（例如 `create_sim`→传感器→控制→评价），不要用 CPU 结构测试或模型 forward 替代；④若必须换系统/租服务器/重写模拟器，先算成本与价值，再决定 `GREEN/YELLOW/RED`，勿继续扩大外围工程。
+
+**保护**：关键平台 `RED` 只阻断依赖该平台的实验；已验证的接口/模型机制资产保留。`ENGINEERING_BLOCKED / VALUE_UNVERIFIED / PROJECT_STOPPED` 与 `SCIENTIFIC_REFUTED` 严格分开；不因失败新增所有项目必过的环境检查表。
+
 ## 共同纠错原则
 
 - 不拿代理指标当任务收益、预测相关性当因果、内部自评当独立核查。
