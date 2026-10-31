@@ -35,6 +35,12 @@
 
 在提示词库目录中执行 `python workflow_route.py --event DATA_AUDIT`、`--event IMPLEMENTATION`、`--event EXPERIMENT`、`--event EVIDENCE_AUDIT` 可读取一项操作建议与 `OPTIONAL_PLAYBOOK` 路径；恢复项目用 `RESUME`，强基线反超用 `BASELINE_STRONGER`，正式确认用 `CONFIRMATION`。路由只提供建议，不读取科研项目真值、不自动调用Agent、GPU或批准任何操作。直接访问 GitHub 的 AI 不必运行 CLI，按表选择对应文件即可。
 
+## P0 技术执行规则（按触发条件加载，而非新的阶段）
+
+四份手册已增加明确的**模块接口/Loss/复杂度合同、强基线复现、训练诊断树、信息价值实验选择、独立样本统计与封闭确认评价**。发生这些实际任务时，直接读相应手册的新增章节，不要求重新按顺序走完四份；已有等价验证只需引用证据。
+
+报告关键论文数字或发现 Run 指标可疑时，按 [轻量数字证据核验说明](../../research_tools/README.md) 使用零额外依赖的 [audit_evidence.py](../../research_tools/audit_evidence.py)。它只检查来源数值与身份，不取代科学独立判断。确认集一旦参与开发选择，只能降为探索性证据。
+
 ## 一次综合任务如何验收
 
 **工程**：必要接口、数值/梯度、不变量和可用输入真实通过；**实验**：真值、split、时间因果、train-only 预处理和公平评价合法；**科学**：排除至少一个关键竞争解释，并说明是否有可信增量；**论文**：独立价值、效应/不确定性、强基线和确认性证据对应主张。四层分别记录，不要求早期一次全通过。
