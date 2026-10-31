@@ -4,14 +4,14 @@
 
 ## 1. 实验选择与计算预算（P0-4）
 
-每轮先选**一项可改变科学决定**的问题：`Claim/最近有效Run | 竞争解释A/B | 若A或B成立各出现什么结果 | 最小数据/对照 | 预计代价与已获授权 | 通过/无结论判据`。
+每轮选**一项可改变论文Claim的实验**：`Claim/新知识 | 最近有效Run/公平强基线 | 机制解释A/B及不同预测 | 真值/独立单位 | 对照与成本 | 授权及停止判据`；不能改变科学判断的试验不优先。
 
 将超参数明确分为：
 - **scientific**：本轮要研究其科学效果的变量（例如传感器门控机制）；
 - **nuisance**：为公平比较需分别给予合理调优机会的变量（如两种结构各自适合的学习率）；
 - **fixed**：本轮保持一致、但结论仅适用于该设定的条件（如 horizon、对象组、评价协议）。
 
-这是 [Google Tuning Playbook](https://github.com/google-research/tuning_playbook) 的重要区分：**只变一个模块、却让其中一种方法用明显失配的超参，也不公平**。可分组更改耦合配置，但不能把联合改动解释成单模块因果作用。
+参考 [Google Tuning Playbook](https://github.com/google-research/tuning_playbook)：**只改模块而失衡调参不公平**；联合改动不能冒充单模块因果作用。
 
 比较候选时优先“**排除替代解释的能力 / 真实可取得性 / 成本**”，而非预计提升幅度；单卡先测合法小规模真实吞吐、显存，预算由用户已批准的 `max_trials/max_gpu_time` 等决定。已有好 Run/ckpt 复用，保持一条 `BEST_VALID_RUN` 和少量互异科学分支。
 
@@ -44,6 +44,6 @@
 
 先定义最小有实际科学意义的效应 **SESOI**，再依据实际**独立组数**及组内相关性讨论可检测效应 **MDE**。同一对象/episode 内的数万帧不等于数万独立样本；几十个训练 seed 主要反映训练稳定性，不代替新对象。配对比较优先用配对差额/按合法组聚类的区间；组数太少时承认不确定性，不做虚假精确的功效承诺。大量候选/子群筛选后不能把同一验证集的最好点当未偏的正式估计。
 
-**报告只留一行/实验**（复用 RUNS/STATE）：`Run & commit/data/config/eval版本 | A/B解释与预测 | 改动 | 共同对照 | 主指标+成本+独立n+CI | 全seed/失败源路径 | KEEP/DISCARD/INCONCLUSIVE/INVALID → NEXT`。正式确认转 [04](04_EVIDENCE_CONFIRM.md)。
+**报告只留一行/实验**（复用 RUNS/STATE；同步标识支持哪条论文Claim/主图、是否仅代理收益）：`Run & commit/data/config/eval版本 | A/B解释与预测 | 改动 | 共同对照 | 主指标+成本+独立n+CI | 全seed/失败源路径 | KEEP/DISCARD/INCONCLUSIVE/INVALID → NEXT`。正式确认转 [04](04_EVIDENCE_CONFIRM.md)。
 
 参考：[Autoresearch](https://github.com/karpathy/autoresearch) · [Google Tuning Playbook](https://github.com/google-research/tuning_playbook) · [K-Dense Experimental Design](https://github.com/K-Dense-AI/scientific-agent-skills/blob/main/skills/experimental-design/SKILL.md)。
