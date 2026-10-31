@@ -336,6 +336,42 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("按问题只读一份",
                       (ROOT/"POST_SELECTION.md").read_text(encoding="utf-8"))
 
+    def test_evidence_first_research_decision_contract_is_actionable(self):
+        funnel=(ROOT/"IDEA_FUNNEL.md").read_text(encoding="utf-8")
+        data=(ROOT/"playbooks"/"01_DATA_BASELINE.md").read_text(encoding="utf-8")
+        design=(ROOT/"playbooks"/"ALGORITHM_DESIGN_REFERENCE.md").read_text(encoding="utf-8")
+        experiment=(ROOT/"playbooks"/"03_EXPERIMENT_LOOP.md").read_text(encoding="utf-8")
+        post=(ROOT/"POST_SELECTION.md").read_text(encoding="utf-8")
+        for phrase in ("F4 反向论文审查", "最近邻反驳", "可检验性反驳",
+                       "最致命实验", "F5 仍由用户决定"):
+            self.assertIn(phrase, funnel)
+        for phrase in ("性能空间诊断", "B_strong", "O_reference", "O_UNKNOWN",
+                       "没有最优性证明的 Oracle 不是数学上界", "离线遮蔽",
+                       "同一开发协议"):
+            self.assertIn(phrase, data)
+        for phrase in ("有限机制竞争", "M0", "M1", "M2", "决策前可见信息相同",
+                       "删除条件"):
+            self.assertIn(phrase, design)
+        for phrase in ("自适应 GPU 验证", "最佳开发 checkpoint", "nuisance",
+                       "缺授权不启动", "GPU 利用率不是科学 KPI", "超范围需重新获批"):
+            self.assertIn(phrase, experiment)
+        self.assertIn("选题后的证据优先决策", post)
+        self.assertIn("一轮只交付一条决策记录", post)
+        self.assertLess(len(data), 2700)
+        self.assertLess(len(design), 3000)
+        self.assertLess(len(experiment), 2700)
+        self.assertEqual(len(router.load_routes()), 24)
+
+    def test_post_selection_tool_table_is_not_split_by_prose(self):
+        post=(ROOT/"POST_SELECTION.md").read_text(encoding="utf-8")
+        table=post.split("## 按“下一项需要解决什么”加载一份技术手册",1)[1]
+        table=table.split("**技术参考按需加载**",1)[0]
+        nonempty=[line.strip() for line in table.splitlines() if line.strip()]
+        self.assertEqual(len(nonempty), 7)  # header, separator, five actual rows
+        self.assertTrue(all(line.startswith("|") and line.endswith("|")
+                            for line in nonempty))
+        self.assertEqual(len([line for line in nonempty if "playbooks/" in line]), 5)
+
     def test_algorithm_contract_template_requires_real_adapter_and_compiles(self):
         """A prompt-library CI pass must not masquerade as a real-model correctness pass."""
         tpl = ROOT/"templates"/"test_algorithm_contract.py"
