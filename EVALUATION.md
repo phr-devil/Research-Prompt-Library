@@ -158,7 +158,7 @@ python eval_runner.py --score --output-dir .eval_runs/pilot-live
 
 ### B. 前瞻性连续案例（真正衡量工作流效果）
 
-下一批**连续**新选题在提出推荐时冻结候选清单、具名来源和证据等级；预先固定评判标准，跟踪直至首次可信任务/机制证据或有理据的停止。双盲难以在真实项目全过程完全实现时，至少盲评匿名的推荐文本与可核证据。记录：`post-recommendation major-defect rate | time-to-first-valid-evidence | distinct supported scientific increments | false rejections/restarts | total human time/tokens/GPU cost | unresolved/invalid evidence`。同时报告推荐量与EXPlORE/NOT_READY比例，防止只减少推荐数量虚增“成功率”。`UNKNOWN`和跟踪未完成的样本不得删除。
+下一批**连续**新选题在提出推荐时冻结候选清单、具名来源和证据等级；预先固定评判标准，跟踪直至首次可信任务/机制证据或有理据的停止。双盲难以在真实项目全过程完全实现时，至少盲评匿名的推荐文本与可核证据。记录：`post-recommendation major-defect rate | time-to-first-valid-evidence | distinct supported scientific increments | false rejections/restarts | total human time/tokens/GPU cost | unresolved/invalid evidence`。同时报告推荐量与EXPLORE/NOT_READY比例，防止只减少推荐数量虚增“成功率”。`UNKNOWN`和跟踪未完成的样本不得删除。
 
 ### C. 判断标准及防止自我循环
 
