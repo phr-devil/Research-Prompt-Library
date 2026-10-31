@@ -6,6 +6,7 @@
 - CLAIM/HYPOTHESIS: <一个可证伪问题；当前相对近邻的潜在学术价值>
 - BEST_VALID_RUN: <run_id / commit / 数据分组版本 / 指标 / 原始证据位置；没有就 NONE>
 - CURRENT_FINDING: <本轮真实发现、可信负结果、未验证的科学解释>
+- RESEARCH_VALUE: <可选：成功后独立贡献、下一实验能否改变决策；低投入价值不等于假设被证伪>
 - NEXT_HYPOTHESIS/TASK: <下一项最有信息量且在授权范围内的工作>
 - AUTH/BUDGET: <单独真实用户授权的动作、上限、剩余额度、停止条件及来源；无则 UNAUTHORIZED>
 - BLOCKER/USER_DECISION: <仅重大分叉/真实权限问题需要询问，记录真实用户后续选择；没有则 NONE>

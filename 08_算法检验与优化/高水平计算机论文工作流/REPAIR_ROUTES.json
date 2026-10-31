@@ -484,5 +484,6 @@
         }
       ]
     }
-  ]
+  ],
+  "repair_value_guard": "Before an expensive non-mandatory repair, identify which claim/evidence/GO decision its success changes; if none, stop that repair. Do not block ordinary authorized bug fixes or scientific-integrity fixes."
 }

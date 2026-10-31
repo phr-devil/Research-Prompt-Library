@@ -345,6 +345,39 @@ class WorkflowTests(unittest.TestCase):
             self.assertIn(token,s)
         self.assertIn("GitHub", (ROOT/"START.md").read_text(encoding="utf-8"))
 
+    def test_hfd_value_first_regression_without_new_mandatory_gates(self):
+        root=ROOT
+        guide=(root/"ORCHESTRATOR.md").read_text(encoding="utf-8")
+        lesson=(root/"LESSONS.md").read_text(encoding="utf-8")
+        pilot=(root/"02_最小科学验证与决策.md").read_text(encoding="utf-8")
+        repair=(root/"RECOVERY.md").read_text(encoding="utf-8")
+        triage=(root/"TRIAGE.md").read_text(encoding="utf-8")
+        self.assertIn("修好后",guide)
+        self.assertIn("真实数据",guide)
+        self.assertIn("INCONCLUSIVE",guide)
+        self.assertIn("HFD",lesson)
+        self.assertIn("分辨率≠MDD",lesson)
+        self.assertIn("INCONCLUSIVE",pilot)
+        self.assertIn("RESEARCH_VALUE_LOW",pilot)
+        self.assertIn("VALUE_CHECK",repair)
+        self.assertIn("不是第四级缺陷",triage)
+        self.assertLess(len(guide),2800)
+        self.assertEqual(len(router.load_routes()),24)
+        self.assertEqual(sum(len(v) for v in router.load_repairs()[1].values()),48)
+        self.assertEqual(set(router.load_triage()["levels"]),{"CRITICAL","REPAIRABLE","MINOR"})
+        for event,action,route in (
+            ("CLAIM_NO_NOVEL_DELTA","REASSESS_CLAIM_VALUE","01-B"),
+            ("DATA_WAITING_AUTH","REQUEST_DATA_ONCE","02-B"),
+            ("REPAIR_LOW_VALUE","STOP_REPAIR_SCOPE","03-E"),
+            ("INCONCLUSIVE_LOW_VALUE","ADVISE_HOLD_OR_STOP","02-D")):
+            advice=router.advise_event(event)
+            self.assertEqual((advice["action"],advice["route"]),(action,route))
+            self.assertEqual(advice["permission"],"ADVISORY_ONLY_NO_EXECUTION")
+        self.assertEqual(router.propose_transition("REPAIRABLE","FORMAL_RUN",
+                         scoped_work_verified=True),"INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE")
+        self.assertEqual(router.propose_transition("UNKNOWN","SCOPED_EXPLORATION"),
+                         "NEEDS_MINIMAL_EVIDENCE_CHECK")
+
 
 if __name__=="__main__":
     unittest.main()
