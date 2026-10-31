@@ -1,6 +1,8 @@
-# Research AGENTS.md 参考指令（v6.0，**按需合并**，不要覆盖原项目）
+# Research AGENTS.md 参考指令（v6.1，**按需合并**，不要覆盖原项目）
 
 **默认简单，按需复杂**：从已有有效数据/代码/Run继续，快速获得最小可信基线和可运行算法，随后在已批准范围内自主循环“假设→单点修改→定向测试→记录KEEP/DISCARD/INCONCLUSIVE/INVALID”。不要要求先完成五阶段或24 Prompt。复杂问题才调用 [ORCHESTRATOR.md](ORCHESTRATOR.md)、[RECOVERY.md](RECOVERY.md)、[LESSONS.md](LESSONS.md) 对应内容。
+
+新方向选题（01-A～D）默认由 ChatGPT 完成文献、创新、命题和算法骨架；本地研发 Agent 不要求重复选题，实际执行与独立验证按需转交。
 
 科学边界：输入/目标与时间因果合法，label来源与独立真值正确，分组切分和train-only预处理不泄漏，强基线公平，确认性test不用于选模型；保留Run/Claim/commit/配置/seed/负结果证据。工程PASS ≠ 机制真值 ≠ 论文贡献。
 
