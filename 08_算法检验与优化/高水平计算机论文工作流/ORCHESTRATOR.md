@@ -1,7 +1,7 @@
 # Research Workflow v6.1｜默认简单，按需复杂
 
 **唯一默认路线：新知识/任务价值 → 论文Claim → 最小原型（MVP）/强基线 → 区分性实验 → 论文证据。**
-24个历史场景仅作工具；GitHub Agent按本文件自主路由，选题后读[POST_SELECTION.md](POST_SELECTION.md)，不设新门禁。不要把“先读完文档/多AI评审/所有检查PASS”当作开发前提。
+24个历史场景是工具库；GitHub Agent按本文件自主路由，选题后读[POST_SELECTION.md](POST_SELECTION.md)，不设新门禁。不要把“先读完文档/多AI评审/所有检查PASS”当作开发前提。
 
 **平台分工**：①选题（01-A～D）默认由ChatGPT完成。宽泛新题可选[机会漏斗F1–F5](IDEA_FUNNEL.md)：F1–F4同一会话，F5用户选择；F4按RECOMMEND/EXPLORE/NOT_READY分级（可0项推荐）；已有项目跳过。仅真实数据/本地代码实测转WorkBuddy/Codex，关键独立复核另启隔离审查者；自查不算独立审核。非MVP前置门禁。
 
