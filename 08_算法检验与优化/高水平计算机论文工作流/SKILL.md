@@ -7,7 +7,7 @@ description: Prototype-first algorithm research agent: minimum viable baseline a
 
 **只加载 [ORCHESTRATOR.md](ORCHESTRATOR.md) 与本次项目现有证据开始。** 有明确科研目标就直接在授权范围内设计最小基线/实现可运行原型；不把24场景当作预先全过的审批链，不强制安装额外Skill或打开多Agent。
 
-- 第一类科学选题（01-A～D）优先在 ChatGPT 完成；真实本地执行才转 WorkBuddy/Codex，独立审查仅在关键风险时另行触发。
+- 第一类科学选题（01-A～D）优先在 ChatGPT 完成；宽泛探索时按需参考[科研机会漏斗 F1–F5](IDEA_FUNNEL.md)，F1–F4连续发现与收敛，F5用户选题；已有明确命题直接走MVP。真实本地执行才转 WorkBuddy/Codex，独立审查仅在关键风险时另行触发。
 - 正常：最低必要数据核查 → 原型 + 简单对照 → 修改/实验/记录 → 下一个有信息量的行动。
 - 意外、无增益、假增益：按现象选一条 [LESSONS.md](LESSONS.md) 与 [RECOVERY.md](RECOVERY.md)，需要具体场景时查看 [ROUTES.json](ROUTES.json) 或 `workflow_route.py --id 03-E`。
 - 核心主张有变化/正式确认：才读近邻研究、正式实验、独立审核及论文相关旧Prompt；不重复无关审查。
