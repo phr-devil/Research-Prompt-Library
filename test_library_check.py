@@ -20,5 +20,52 @@ class MarkdownLinkTests(unittest.TestCase):
         self.assertTrue(invalid_markdown_destination('path/bad file.md "descriptive title"'))
 
 
+
+class ResearchDecisionContractTests(unittest.TestCase):
+    """Guard URL-first research contract regressions, not actual model quality."""
+
+    def setUp(self):
+        from pathlib import Path
+        self.root = Path(__file__).resolve().parent
+        self.ch8 = self.root / "08_算法检验与优化" / "高水平计算机论文工作流"
+
+    def read8(self, path):
+        return (self.ch8 / path).read_text(encoding="utf-8")
+
+    def test_current_user_intent_over_old_project_presence(self):
+        import json
+        self.assertIn("用户要求找新课题", self.read8("START.md"))
+        self.assertIn("用户当前意图", (self.root / "AGENTS.md").read_text(encoding="utf-8"))
+        routes = json.loads(self.read8("ROUTES.json"))
+        self.assertIn("即使存在旧Run", routes["stages"][0]["routes"][0]["when"])
+        self.assertEqual([], routes["default_path"]["mandatory_scenes"])
+
+    def test_mechanism_and_negative_result_scope(self):
+        funnel = self.read8("IDEA_FUNNEL.md")
+        design = self.read8("playbooks/ALGORITHM_DESIGN_REFERENCE.md")
+        self.assertIn("归纳偏置", funnel)
+        self.assertIn("同输入", design)
+        self.assertIn("不能硬造分类真值", funnel)
+        self.assertIn("不得为预设故事挑选结果", funnel)
+        self.assertIn("没有最优性证明的 Oracle 不是数学上界",
+                      self.read8("playbooks/01_DATA_BASELINE.md"))
+
+    def test_separate_decisions_and_training_permission(self):
+        post = self.read8("POST_SELECTION.md")
+        for marker in ("四个判决轴", "实验证据", "论文成熟度",
+                       "用户选题≠可执行正式实验", "CPU/GPU训练均不运行"):
+            self.assertIn(marker, post)
+        self.assertIn("PAPER_READINESS", self.read8("templates/STATE.md"))
+        self.assertIn("明确禁止训练", (self.root / "AGENTS.md").read_text(encoding="utf-8"))
+
+    def test_zero_candidate_does_not_impersonate_selection(self):
+        nine = (self.root / "09_失败算法项目挽救与转向" / "WORKFLOW.md").read_text(encoding="utf-8")
+        self.assertIn("0–3个", nine)
+        self.assertIn("INSUFFICIENT_EVIDENCE", nine)
+        self.assertNotIn("INSUFFICIENT_CANDIDATES", nine)
+        self.assertIn("WAITING_FOR_USER_SELECTION", nine)
+        self.assertIn("不得执行 Step 06", nine)
+
+
 if __name__ == "__main__":
     unittest.main()
