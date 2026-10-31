@@ -8,7 +8,7 @@
 
 ## 一次性使用
 
-直接打开 [WORKFLOW.md](WORKFLOW.md) 复制「一键总控 Prompt」。默认只执行到 Step 05，最多展示**P1/P2/P3 三项证据分级候选**（区分RECOMMEND/EXPLORE，若无可信推荐如实报告；0项候选则停止）、对比和推荐理由后停止，状态为 `WAITING_FOR_USER_SELECTION`。
+直接打开 [WORKFLOW.md](WORKFLOW.md) 复制「一键总控 Prompt」。默认只执行到 Step 05，仅展示**0–3项有据候选（最多P1/P2/P3）**（区分RECOMMEND/EXPLORE，若无可信推荐如实报告；0项候选则停止）、对比和推荐理由后停止，状态为 `WAITING_FOR_USER_SELECTION`。
 
 用户审查后从实际展示的项目中选择一项并在**新消息**中明确指定项目编号，然后优先使用 **Step 05-R** 收敛主张、核验近邻创新、独立真值、强基线和最小可行实验，输出 `05R_REFINED_PROJECT.md`。如果优化改变核心科研问题，须再次取得用户明确确认，不能跳过用户选择直接启动 Step 06。用户没有选择、要求重新推荐或拒绝所有项目时，**不能继续 Step 06**。选择和课题优化都不是 GPU、收费或正式训练授权。
 
