@@ -1,12 +1,12 @@
-# Research Workflow v6.1｜原型优先，按需复杂
+# Research Workflow v6.1｜科学机会驱动，最简算法，可信实验
 
-**默认只做：问题 → 最小可信算法/基线 → 实验迭代 → 需要时才做科学深入审核。**
+**默认路线：可信科学问题/独立贡献 → 最简可证伪算法与强基线 → 有区分力的真实实验 → 论文证据。** 先证明研究值得做，再控制模型复杂度；不保证论文接收或性能提升。
 
 **面向 AI 自主读取的选题后技术入口**：[POST_SELECTION.md](POST_SELECTION.md)。 已选课题研发的细化版增加模块/Loss 合同、基线复现、训练诊断、统计设计和 [数值来源核验工具](../../research_tools/README.md)（只读、不等于独立科学验收）。其按需手册覆盖 [数据/强基线](playbooks/01_DATA_BASELINE.md)、[算法实现/排错](playbooks/02_BUILD_DEBUG.md)、[有界实验迭代](playbooks/03_EXPERIMENT_LOOP.md)、[正式科学证据](playbooks/04_EVIDENCE_CONFIRM.md)，并有 [传感器门控实例](playbooks/EXAMPLE_SENSOR_GATE.md)。已选题或续做科研项目时，AI 在读完总控后只读所需手册；这些文件提供**操作方法与具体验收**，不要求用户粘贴完整 Prompt。
 
 **第①类「科学选题」默认全程在 ChatGPT 完成**（01-A～01-D：候选题、文献/创新性碰撞、可证伪命题、算法骨架、方向判断）。未明确命题可按需使用[科研机会漏斗F1–F5](IDEA_FUNNEL.md)，优先具名强基线的真实失败与可验证增量，F4推荐前核创新、独立真值、关键依赖并分RECOMMEND/EXPLORE/NOT_READY，允许0项正式推荐；F5等用户选题；不为分工而切换到 WorkBuddy/Codex。需要实际读取/运行本地代码或数据才按授权移交执行平台；关键独立反证才另用隔离模型/审查者。五类仍按需使用，不新增选题门禁。详见 [①科学选题](01_科学选题与跨AI审核.md)。
 
-**[从 START.md 启动](START.md)**：一次提供科研目标、已有项目/数据以及实际授权。运行 Agent 平时只需要 [ORCHESTRATOR.md](ORCHESTRATOR.md) 和现有科研项目证据，**不预先加载24条历史Prompt、全部48条故障、全套Skills和多模型审查**。有结果的项目直接恢复继续开发；首次结果没有提升也不自动判STOP。
+**直接发送 GitHub URL 也可启动**：仓库根目录[AGENTS.md](../../AGENTS.md)供AI读取并按科研目标自主路由；[START.md](START.md)给出第08章最短说明。一次提供科研目标、已有项目/数据以及实际授权。运行 Agent 平时只需要 [ORCHESTRATOR.md](ORCHESTRATOR.md) 和现有科研项目证据，**不预先加载24条历史Prompt、全部48条故障、全套Skills和多模型审查**。有结果的项目直接恢复继续开发；首次结果没有提升也不自动判STOP。
 
 ## 最短使用路径
 
@@ -14,8 +14,8 @@
 
 | 何时 | 默认动作 | 需要时才读 |
 |---|---|---|
-| 仍在探索选题 | **ChatGPT** 使用可选F1–F4漏斗（机会→多命题→轻筛→定向收敛），F5交用户选择；不强制跨AI审核 | [IDEA_FUNNEL.md](IDEA_FUNNEL.md)、`01-A/B/C/D` |
-| 已有明确目标、准备开发 | 一句话科学假设 + 成功价值反推；最小数据核查后在授权内直接做基线/MVP | [POST_SELECTION.md](POST_SELECTION.md) → 只选一份 playbook；必要时 `02-B/03-A` |
+| 仍在探索选题 | **ChatGPT** 依据真实问题提出可发表的新知识→核机制机会与独立真值→最近邻/论文反证，F5交用户选择；不强制跨AI审核 | [IDEA_FUNNEL.md](IDEA_FUNNEL.md)、`01-A/B/C/D` |
+| 已有明确目标、准备开发 | 先确认独立论文Claim、强基线剩余误差与新机制所需信息，再在授权内做最简基线/MVP | [POST_SELECTION.md](POST_SELECTION.md) → 只选一份 playbook；必要时 `02-B/03-A` |
 | 已有算法或旧实验 | 复用有效代码与Run，在现有预算内修改一个主要机制、测试、记录保留/撤回 | `03-C/D` |
 | 结果反常、科学价值未证 | 最小诊断，按现象检索真实失败教训，必要时用户选择 | [LESSONS.md](LESSONS.md)、[RECOVERY.md](RECOVERY.md)、`02-E/03-E` |
 | 拟正式宣称论文贡献 | 严格核数据/真值、强基线、冻结协议、统计、确认性实验、独立复核 | `03-B/F`、`04-A/B/C` |
