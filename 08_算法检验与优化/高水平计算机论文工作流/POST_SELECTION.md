@@ -29,6 +29,10 @@
 
 异常先按 [TRIAGE.md](TRIAGE.md) 判断影响范围，再按需读 [RECOVERY.md](RECOVERY.md) 的对应症状；关键科研风险出现时才启动 [04_独立科学验证.md](04_独立科学验证.md)。旧24个 Prompt 和 ROUTES.json 保留兼容，非阶段通关表。
 
+### 候选推荐与研究结论分账
+
+继承F4/第09章Step05的`RECOMMEND/EXPLORE/NOT_READY`及尚未核实前提；这是**研发准入判断**，绝非模型性能证据。选题后首先解决剩余未知、复用已核近邻与数据资料，不在05-R重复从头查新。实验结果按`KEEP/DISCARD/INCONCLUSIVE/INVALID`另行定级，并显式给出`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`。例如融合模块不如简单基线通常先是MECHANISM级负结果，不自动视为整个研究问题失败。只有证据范围和预期继续成本支持时才建议项目级HOLD/STOP。
+
 ## 最小“实验—证据”工作合同（已有等价文件只引用，不复制）
 
 - **QUESTION / VALUE**：一句可证伪的中心主张；即使内部指标全部提高，仍新增什么可验证的任务、机制或理论价值？
