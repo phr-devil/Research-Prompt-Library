@@ -3,9 +3,7 @@
 **唯一默认路线：目标 → 最小原型（MVP）→ 有证据的迭代 → 按需科学反思 → 正式确认/论文。**
 24个历史场景是工具库；选题后读 [POST_SELECTION.md](POST_SELECTION.md)，按需用手册，不设新门禁。不要把“先读完文档/多AI评审/所有检查PASS”当作开发前提。
 
-**平台分工**：①选题（01-A～D）默认由ChatGPT完成。宽泛新题可选[机会漏斗F1–F5](IDEA_FUNNEL.md)：F1–F4同一会话，F5用户选择；已有项目跳过。仅真实数据/本地代码实测转WorkBuddy/Codex，关键独立复核另启隔离审查者；自查不算独立审核。非MVP前置门禁。
-
-**跨阶段一致性**：新题F4和第09章Step05先完成可只读核实的近邻创新、真值评价、强基线与关键依赖，并按`RECOMMEND/EXPLORE/NOT_READY`展示；无可信正式推荐可如实报0项，不为了凑候选而放宽门槛。用户可选择高风险EXPLORE但须说明未知。后续05-R/POST_SELECTION不因相同已知证据无解释地翻转结论。用`LESSONS.md`按失败模式做轻量前置匹配；保留原用户选题、GPU、费用及正式实验授权门禁。
+**平台分工**：①选题（01-A～D）默认由ChatGPT完成。宽泛新题可选[机会漏斗F1–F5](IDEA_FUNNEL.md)：F1–F4同一会话，F5用户选择；F4按RECOMMEND/EXPLORE/NOT_READY分级（可0项推荐）；已有项目跳过。仅真实数据/本地代码实测转WorkBuddy/Codex，关键独立复核另启隔离审查者；自查不算独立审核。非MVP前置门禁。
 
 ## 启动（一次，尽量直接动手）
 
@@ -16,13 +14,11 @@
 
 ## 内循环（默认，自动连续）
 
-观察真实结果 → 提炼主要问题/新机制 → 最小修改与针对测试 → 记录`KEEP/DISCARD/INCONCLUSIVE/INVALID` → 继续有信息量的工作。重要修复先问：**修好后**改变哪个科研决定？不能改变就停该修复。普通Bug直接修；不反复加载所有Prompt/测试。保留失败原始证据，工程Bug与科学负结果分开；公平强基线、禁止泄漏、最佳seed或重复正式test调参。已授权预算内合并任务，不得擅自扩额。
+观察真实结果 → 提炼主要问题/新机制 → 最小修改与针对测试 → 记录`KEEP/DISCARD/INCONCLUSIVE/INVALID` → 继续有信息量的工作。重要修复先问：**修好后**改变哪个科研决定？不能改变就停该修复。普通Bug直接修；不反复加载所有Prompt/测试。否定范围标RUN/MECHANISM/CLAIM/PROJECT。保留失败原始证据，工程Bug与科学负结果分开；公平强基线、禁止泄漏、最佳seed或重复正式test调参。已授权预算内合并任务，不得擅自扩额。
 
 ## 可核查的按事件路由（仍由Agent在实际工具中执行）
 
 读取 [POST_SELECTION.md](POST_SELECTION.md) 的**自主执行规则**，按当前事件从 [ROUTES.json](ROUTES.json) 获取 action/交付/验证/边界；可用 `workflow_route.py --event TRAINING_FAILURE` 只读查看。不自动训练、授权或判断科学成立。
-
-**判决范围**：实验状态`KEEP/DISCARD/INCONCLUSIVE/INVALID`须另注明`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`与具体重启条件。仅对有效证据支持的范围止损；不把工程/数据阻断说成科学假设被证伪，也不让旧失败命题仅换名重复推荐。
 
 ## 外循环（事件触发，不按次数/日历强制）
 
