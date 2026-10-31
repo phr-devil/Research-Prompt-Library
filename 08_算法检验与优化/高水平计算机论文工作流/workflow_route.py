@@ -11,6 +11,19 @@ EXPECTED = [f"{s:02d}-{chr(65+i)}" for s,n in enumerate((4,5,6,4,5),1) for i in 
 FENCE = re.compile(r"(?m)^(?P<mark>`{3}|~{3})text[ \t]*\r?\n(?P<body>[\s\S]*?)\r?\n(?P=mark)[ \t]*$")
 
 
+def resolve_playbook(relative_path, root=ROOT):
+    """Read-only resolver for explicitly allowlisted in-repository playbook links."""
+    if (not isinstance(relative_path, str) or not relative_path
+            or not (relative_path == "POST_SELECTION.md"
+                    or relative_path.startswith("playbooks/"))
+            or "\\" in relative_path or ".." in relative_path.split("/")):
+        raise ValueError("Invalid playbook path")
+    path = (root / relative_path).resolve()
+    if not path.is_relative_to(root.resolve()) or not path.is_file() or path.suffix != ".md":
+        raise ValueError("Unsafe or absent playbook")
+    return path
+
+
 def load_routes(root=ROOT):
     catalog = json.loads((root/"ROUTES.json").read_text(encoding="utf-8"))
     if catalog.get("version") != "5.0.0":
@@ -48,6 +61,8 @@ def load_routes(root=ROOT):
                 raise ValueError("Unknown advisory route")
             if not advice.get("action") or not advice.get("why"):
                 raise ValueError("Incomplete event advice")
+            if "playbook" in advice:
+                resolve_playbook(advice["playbook"], root)
     return found
 
 
@@ -241,7 +256,7 @@ def can_reuse_risk_choice(saved, current, *, user_message_verified=False):
 
 
 def advise_event(event, root=ROOT):
-    """Choose ONE narrowly relevant historical tool, without acting on it."""
+    """Choose ONE narrowly relevant legacy route and optional practical playbook; no execution."""
     routes = load_routes(root)
     catalog = json.loads((root / "ROUTES.json").read_text(encoding="utf-8"))
     advice = catalog.get("event_advice", {}).get(event)
@@ -263,6 +278,8 @@ def render_event(event):
         lines.append("OPTIONAL_ROUTE: " + item["route"])
     if item.get("recommended_platform"):
         lines.append("RECOMMENDED_PLATFORM: " + item["recommended_platform"])
+    if item.get("playbook"):
+        lines.append("OPTIONAL_PLAYBOOK: " + item["playbook"] + " (read one on demand)")
     if item.get("lesson"):
         lines.append("OPTIONAL_LESSON: " + item["lesson"])
     lines.append("Advisory only; it cannot verify message authenticity, data, budgets or permissions.")

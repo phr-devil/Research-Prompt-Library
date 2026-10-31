@@ -243,6 +243,36 @@ class WorkflowTests(unittest.TestCase):
                 router.extract(doc,"01-A")
 
 
+    def test_post_selection_operational_playbooks_are_demand_loaded(self):
+        self.assertTrue((ROOT/"POST_SELECTION.md").is_file())
+        for event, expected in {
+            "NEW_PROJECT": "playbooks/01_DATA_BASELINE.md",
+            "DATA_AUDIT": "playbooks/01_DATA_BASELINE.md",
+            "IMPLEMENTATION": "playbooks/02_BUILD_DEBUG.md",
+            "EXPERIMENT": "playbooks/03_EXPERIMENT_LOOP.md",
+            "EVIDENCE_AUDIT": "playbooks/04_EVIDENCE_CONFIRM.md",
+            "RESUME": "POST_SELECTION.md",
+            "BASELINE_STRONGER": "playbooks/03_EXPERIMENT_LOOP.md",
+            "NO_GAIN": "playbooks/03_EXPERIMENT_LOOP.md",
+            "INVALID_EVIDENCE": "playbooks/01_DATA_BASELINE.md",
+            "CONFIRMATION": "playbooks/04_EVIDENCE_CONFIRM.md",
+        }.items():
+            advice = router.advise_event(event)
+            self.assertEqual(advice["playbook"], expected)
+            self.assertTrue(router.resolve_playbook(expected).is_file())
+            self.assertIn("OPTIONAL_PLAYBOOK: "+expected, router.render_event(event))
+            self.assertEqual(advice["permission"], "ADVISORY_ONLY_NO_EXECUTION")
+        self.assertNotIn("playbook", router.advise_event("TOPIC_EXPLORATION"))
+        with self.assertRaises(ValueError):
+            router.resolve_playbook("../ROUTES.json")
+        with self.assertRaises(ValueError):
+            router.resolve_playbook("playbooks/../../README.md")
+        with self.assertRaises(ValueError):
+            router.resolve_playbook("playbooks/../ORCHESTRATOR.md")
+        with self.assertRaises(ValueError):
+            router.resolve_playbook("playbooks/nonexistent.md")
+        self.assertEqual(len(router.load_routes()), 24)
+
     def test_v6_fast_path_is_default_not_24_mandatory_gates(self):
         root=ROOT
         doc=json.loads((root/"ROUTES.json").read_text(encoding="utf-8"))
