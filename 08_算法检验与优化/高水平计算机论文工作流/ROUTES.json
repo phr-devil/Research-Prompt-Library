@@ -30,7 +30,8 @@
           "kind": "conditional",
           "when": "已核实原主张覆盖/关键资源阻断，或用户主动选择缩窄与转向"
         }
-      ]
+      ],
+      "default_platform": "ChatGPT"
     },
     {
       "id": "02",
@@ -222,7 +223,12 @@
     "NEW_PROJECT": {
       "action": "MVP",
       "route": null,
-      "why": "最小真值与资源检查后实现基线和原型；不必完成任何选题审核Prompt"
+      "why": "已明确科研目标可直接做最小真值核查、基线与MVP；仍在选题时改用TOPIC_EXPLORATION"
+    },
+    "TOPIC_EXPLORATION": {
+      "action": "CHATGPT_TOPIC_RESEARCH",
+      "route": "01-A",
+      "why": "仍在探索新课题时先由ChatGPT完成文献查新、创新命题与方向选择；不默认训练"
     },
     "RESUME": {
       "action": "RECOVER",
