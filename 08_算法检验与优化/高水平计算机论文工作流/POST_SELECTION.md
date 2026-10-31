@@ -20,6 +20,8 @@
 
 **技术参考按需加载**：算法骨架不明确时读 [结构选择卡](playbooks/ALGORITHM_DESIGN_REFERENCE.md)；实现/审查新算子时将 [正确性测试模板](templates/test_algorithm_contract.py) 按 [接入说明](templates/ALGORITHM_TEST_USAGE.md) 适配目标算法；存在时间戳/异步多模态/动态传感器风险时读 [专项诊断](playbooks/SENSOR_DIAGNOSTICS.md)。这些都不是新的强制阶段；模板未适配不能生成算法 PASS。
 
+**科学贡献导向（已有课题直接执行）**：以「具体新知识/实际任务收益 → 必需论文证据 → 最简公平基线 → 必要创新机制 → 判别实验」决定研发路线，而不是先堆Backbone/Loss。先在已有Run/只读信息中查最强剩余误差与机制所需的部署可见信号；若仅特权Oracle或自生成代理能获益，缩窄主张，不声称可部署增益。取得合法证据后再扩展复杂结构；无可靠支持时仍可在有界许可内探索。
+
 **选题后的证据优先决策（不是第五阶段之外的新流程）**：只有宽泛方向时用 [IDEA_FUNNEL.md](IDEA_FUNNEL.md) 的 F4 反向论文审查；用户选题后先在 [01 数据手册](playbooks/01_DATA_BASELINE.md) 复用强基线、检查诊断 Oracle 的信息边界和分条件误差，得到 `B_strong/O_reference/gap/UNKNOWN` 与一个最便宜的判别实验。有科研空间时按 [架构参考](playbooks/ALGORITHM_DESIGN_REFERENCE.md) 竞争少量机制；按 [03 实验迭代](playbooks/03_EXPERIMENT_LOOP.md) 在真实用户已批预算内依据收敛曲线和科学不确定性调整 GPU 训练；最后用 [04 科学审查](playbooks/04_EVIDENCE_CONFIRM.md) 将结果映射至论文 Claim。缺真值、离线不可识别或无法比较时缩窄主张/记录 HOLD，不以追加 GPU 掩盖。
 
 **一轮只交付一条决策记录**（复用 `STATE/RUNS/CLAIMS`）：`Claim | B_strong及诊断参考的证据等级 | 最大未解的竞争解释 | 下一有区分力的实验 | 已批准的预算/停止条件 | KEEP/DISCARD/INCONCLUSIVE/INVALID`。原始指标、失败和代码/数据版本仍保存在旧 Run 中；空缺填 UNKNOWN，不编数字。
