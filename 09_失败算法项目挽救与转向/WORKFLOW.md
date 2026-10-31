@@ -207,7 +207,7 @@ python "/absolute/path/to/Research-Prompt-Library/09_失败算法项目挽救与
 2. 先复用旧证据和 CPU/静态检查；需要 GPU/付费/正式新实验时仅提出命令、预算、停止条件并请求独立资源授权，不能因选择项目就直接运行。
 3. 有授权才做最小试验；保存正负结果和数据/代码/配置身份，按 KEEP/DISCARD/INVALID/CRASH 分类；不可污染确认性 test。
 4. 交付 CONTINUE/PIVOT/ARCHIVE/CONDITIONAL 建议，明确是提案、试验结果还是可信证实，并标注剩余科学与授权门槛。
-输出 research_salvage/06_DECISION_AND_HANDOFF.md、INDEX.md，记录真实用户选择证据的定位与所选 P 编号。新项目按v6.1直接进入已授权范围的最小原型/合法开发评价，不必重复原选题门禁；GPU与正式训练仍必须真实单独批准。
+输出 research_salvage/06_DECISION_AND_HANDOFF.md、INDEX.md，记录真实用户选择证据的定位与所选 P 编号。**交接的下一步不是再写一套空泛计划**：引用第08项 [POST_SELECTION.md](../08_算法检验与优化/高水平计算机论文工作流/POST_SELECTION.md)，明确当前需要的唯一 playbook、真正的 Input/Output、数据与强基线、关键行为测试、最小可证伪实验、验收与失败分支；已有可信结果直接复用。新项目按v6.1直接进入已授权范围的最小原型/合法开发评价，不必重复原选题门禁；GPU与正式训练仍必须真实单独批准。
 ~~~
 
 ## 04｜结果交接格式
