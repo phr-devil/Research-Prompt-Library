@@ -23,6 +23,8 @@ def load_routes(root=ROOT):
             raise ValueError("Stage IDs must match the expected order")
         if not stage["file"].startswith(stage["id"]+"_"):
             raise ValueError("Stage file does not match stage ID")
+        if index == 1 and stage.get("default_platform") != "ChatGPT":
+            raise ValueError("Stage 01 must default to ChatGPT")
         path = (root/stage["file"]).resolve()
         if not path.is_relative_to(root.resolve()) or not path.is_file() or path.suffix != ".md":
             raise ValueError("Unsafe or absent stage file")
@@ -245,7 +247,12 @@ def advise_event(event, root=ROOT):
     advice = catalog.get("event_advice", {}).get(event)
     if not advice or advice.get("route") not in (None, *routes):
         raise ValueError("Unknown research event: " + str(event))
-    return dict(advice, event=event, permission="ADVISORY_ONLY_NO_EXECUTION")
+    result = dict(advice, event=event, permission="ADVISORY_ONLY_NO_EXECUTION")
+    if result["route"] is not None:
+        stage = next(s for s in catalog["stages"] if s["id"] == result["route"][:2])
+        if stage.get("default_platform"):
+            result["recommended_platform"] = stage["default_platform"]
+    return result
 
 
 def render_event(event):
@@ -254,6 +261,8 @@ def render_event(event):
              "REASON: " + item["why"]]
     if item["route"] is not None:
         lines.append("OPTIONAL_ROUTE: " + item["route"])
+    if item.get("recommended_platform"):
+        lines.append("RECOMMENDED_PLATFORM: " + item["recommended_platform"])
     if item.get("lesson"):
         lines.append("OPTIONAL_LESSON: " + item["lesson"])
     lines.append("Advisory only; it cannot verify message authenticity, data, budgets or permissions.")
