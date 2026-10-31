@@ -6,5 +6,6 @@
 - CLOSEST_WORK_CACHE: 论文 DOI/链接、被核对的具体断言、检索日期、未证实处
 - KEY_EVIDENCE: Claim ID | Run ID | 版本 | 独立性 | 状态 | 原始路径
 - HANDOFF: 只传本轮变动的 Claim/Run/证据文件和 blocker
+- NUMERIC_SOURCE_AUDIT (按需): 指向 research_tools/audit_evidence.py 的 JSON 检查产物；SOURCE_MATCH 只能证明数字来源，不能证明科研有效
 
 文献/实验证据只在明确过期、出现新问题或源材料变更时重新检查。每次获取按最小充分范围读取，不用抄录论文全文。

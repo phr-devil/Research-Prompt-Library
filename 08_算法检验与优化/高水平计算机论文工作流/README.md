@@ -2,7 +2,7 @@
 
 **默认只做：问题 → 最小可信算法/基线 → 实验迭代 → 需要时才做科学深入审核。**
 
-**面向 AI 自主读取的选题后技术入口**：[POST_SELECTION.md](POST_SELECTION.md)。其按需手册覆盖 [数据/强基线](playbooks/01_DATA_BASELINE.md)、[算法实现/排错](playbooks/02_BUILD_DEBUG.md)、[有界实验迭代](playbooks/03_EXPERIMENT_LOOP.md)、[正式科学证据](playbooks/04_EVIDENCE_CONFIRM.md)，并有 [传感器门控实例](playbooks/EXAMPLE_SENSOR_GATE.md)。已选题或续做科研项目时，AI 在读完总控后只读所需手册；这些文件提供**操作方法与具体验收**，不要求用户粘贴完整 Prompt。
+**面向 AI 自主读取的选题后技术入口**：[POST_SELECTION.md](POST_SELECTION.md)。 已选课题研发的细化版增加模块/Loss 合同、基线复现、训练诊断、统计设计和 [数值来源核验工具](../../research_tools/README.md)（只读、不等于独立科学验收）。其按需手册覆盖 [数据/强基线](playbooks/01_DATA_BASELINE.md)、[算法实现/排错](playbooks/02_BUILD_DEBUG.md)、[有界实验迭代](playbooks/03_EXPERIMENT_LOOP.md)、[正式科学证据](playbooks/04_EVIDENCE_CONFIRM.md)，并有 [传感器门控实例](playbooks/EXAMPLE_SENSOR_GATE.md)。已选题或续做科研项目时，AI 在读完总控后只读所需手册；这些文件提供**操作方法与具体验收**，不要求用户粘贴完整 Prompt。
 
 **第①类「科学选题」默认全程在 ChatGPT 完成**（01-A～01-D：候选题、文献/创新性碰撞、可证伪命题、算法骨架、方向判断）。未明确命题可按需使用[科研机会漏斗F1–F5](IDEA_FUNNEL.md)，内部广泛探索与渐进收敛后等用户选题；不为分工而切换到 WorkBuddy/Codex。需要实际读取/运行本地代码或数据才按授权移交执行平台；关键独立反证才另用隔离模型/审查者。五类仍按需使用，不新增选题门禁。详见 [①科学选题](01_科学选题与跨AI审核.md)。
 

@@ -440,5 +440,157 @@ class WorkflowTests(unittest.TestCase):
                          "NEEDS_MINIMAL_EVIDENCE_CHECK")
 
 
+
+class EvidenceSourceAuditTests(unittest.TestCase):
+    """No GPU, no network, only synthetic local fixtures to catch phantom evidence."""
+
+    def setUp(self):
+        self._temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._temp.cleanup)
+        self.root = Path(self._temp.name)
+        (self.root / "research").mkdir()
+        (self.root / "results").mkdir()
+        self.script = ROOT.parent.parent / "research_tools" / "audit_evidence.py"
+        self.fields = ["run_id", "metric", "value", "status", "evidence_path",
+                       "data_version", "split", "seed", "protocol_sha", "config_sha",
+                       "n_units", "statistical_unit", "metric_unit"]
+        self.row = dict(run_id="R1", metric="ap", value="0.812", status="KEEP",
+                        evidence_path="results/eval.json", data_version="d1",
+                        split="val", seed="0", protocol_sha="p1", config_sha="c1",
+                        n_units="10", statistical_unit="episode", metric_unit="AP")
+        self.result = dict(run_id="R1", metrics={"ap": 0.812},
+                           data_version="d1", split="val", seed="0",
+                           protocol_sha="p1", config_sha="c1",
+                           n_units="10", statistical_unit="episode",
+                           metric_unit="AP")
+        self.save_rows([self.row])
+        self.save_source(self.result)
+        self.save_claims([{"claim_id": "C1", "run_id": "R1", "metric": "ap",
+                           "reported_value": 0.812}])
+
+    def save_rows(self, rows):
+        import csv
+        with (self.root / "research/RUNS.tsv").open("w", encoding="utf-8", newline="") as out:
+            writer = csv.DictWriter(out, fieldnames=self.fields, delimiter="\t")
+            writer.writeheader()
+            writer.writerows(rows)
+
+    def save_source(self, value):
+        (self.root / "results/eval.json").write_text(json.dumps(value), encoding="utf-8")
+
+    def save_claims(self, claims):
+        (self.root / "research/claims_audit.json").write_text(
+            json.dumps({"claims": claims}), encoding="utf-8")
+
+    def invoke(self, *args):
+        proc = subprocess.run([sys.executable, str(self.script), "--root",
+                               str(self.root), "--runs", "research/RUNS.tsv",
+                               "--claims", "research/claims_audit.json", *args],
+                              capture_output=True, text=True)
+        return proc, json.loads(proc.stdout if proc.stdout else proc.stderr)
+
+    def test_real_source_and_claim_number_match_without_science_acquittal(self):
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(out["verdict"], "SOURCE_CHECK_COMPLETE")
+        self.assertEqual(out["runs"][0]["status"], "SOURCE_MATCH")
+        self.assertEqual(out["claims"][0]["status"], "SOURCE_MATCH_NOT_SCIENCE_REVIEW")
+        self.assertEqual(len(out["runs"][0]["identity_checked"]), 8)
+        self.assertIn("NOT_SCIENTIFIC_VALIDITY", out["scope"])
+
+    def test_false_run_number_is_not_found_in_unrelated_value(self):
+        self.save_source(dict(run_id="R1", metrics={"other": 0.812}, note="ap 0.812"))
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(out["runs"][0]["status"], "UNVERIFIED")
+        self.assertIn("named metric absent", out["runs"][0]["reason"])
+
+    def test_tampered_number_and_fabricated_claim_fail(self):
+        self.save_source(dict(self.result, metrics={"ap": 0.7}))
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("mismatch", out["runs"][0]["reason"])
+        self.save_source(self.result)
+        self.save_claims([{"claim_id": "C1", "run_id": "R1", "metric": "ap",
+                           "reported_value": 0.99}])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("differs", out["claims"][0]["reason"])
+
+    def test_protocol_data_identity_mismatch_is_not_source_verified(self):
+        self.save_source(dict(self.result, protocol_sha="different"))
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("protocol_sha", out["runs"][0]["reason"])
+
+    def test_missing_embedded_metadata_is_reported_not_invented(self):
+        self.save_source({"run_id": "R1", "metrics": {"ap": 0.812}})
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(out["runs"][0]["status"], "SOURCE_MATCH")
+        self.assertIn("protocol_sha", out["runs"][0]["identity_not_embedded"])
+
+    def test_invalid_history_cannot_support_claim(self):
+        self.save_rows([dict(self.row, status="INVALID")])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(out["runs"][0]["status"], "HISTORICAL_NOT_ELIGIBLE")
+        self.assertEqual(out["claims"][0]["status"], "UNVERIFIED")
+
+    def test_unknown_status_and_duplicate_run_id_fail_closed(self):
+        self.save_rows([dict(self.row, status="UNKNOWN")])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("unknown", out["runs"][0]["reason"])
+        self.save_rows([self.row, self.row])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("duplicate", out["runs"][1]["reason"])
+
+    def test_source_must_be_inside_project(self):
+        self.save_rows([dict(self.row, evidence_path="../../secret.json")])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("traversing", out["runs"][0]["reason"])
+        self.save_rows([dict(self.row, evidence_path="/etc/passwd")])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("absolute", out["runs"][0]["reason"])
+
+    def test_empty_runs_and_ambiguous_tabular_source_are_not_verified(self):
+        self.save_rows([])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("no experiment records", out["error"])
+        self.save_rows([dict(self.row, evidence_path="results/table.csv")])
+        (self.root / "results/table.csv").write_text("metric,value\nap,0.812\nap,0.812\n", encoding="utf-8")
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("exactly one run", out["runs"][0]["reason"])
+
+    def test_new_report_only_and_no_external_mutation(self):
+        proc, out = self.invoke("--output", "research/audit.json")
+        self.assertEqual(proc.returncode, 0)
+        written = (self.root / "research/audit.json").read_text(encoding="utf-8")
+        self.assertIn("SOURCE_CHECK_COMPLETE", written)
+        proc, out = self.invoke("--output", "research/audit.json")
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("File exists", out["error"])
+
+    def test_p0_playbook_contracts_and_legacy_fast_path(self):
+        play = ROOT / "playbooks"
+        specs = [
+            ("01_DATA_BASELINE.md", ["强基线复现合同", "STRONG_BASELINE_NOT_REPRODUCED"]),
+            ("02_BUILD_DEBUG.md", ["模块级实现合同", "关键行为测试矩阵", "训练症状"]),
+            ("03_EXPERIMENT_LOOP.md", ["实验选择与计算预算", "SESOI/MDE", "INCONCLUSIVE"]),
+            ("04_EVIDENCE_CONFIRM.md", ["证据预审", "封闭确认评价", "SCIENTIFICALLY_SUPPORTED"])
+        ]
+        for file, tokens in specs:
+            doc = (play / file).read_text(encoding="utf-8")
+            for token in tokens:
+                self.assertIn(token, doc, (file, token))
+        self.assertEqual(len(router.load_routes()), 24)
+
+
 if __name__=="__main__":
     unittest.main()
