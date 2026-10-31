@@ -13,6 +13,7 @@ from pathlib import Path
 
 REQUIRED = {"run_id", "metric", "value", "status", "evidence_path"}
 NON_EVIDENCE = {"INVALID", "CRASH", "PENDING", "NOT_RUN", "HOLD", "INCONCLUSIVE"}
+ACCEPTED_SOURCE_STATES = {"KEEP", "DISCARD", "VALID", "PASS", "COMPLETE", "EXPLORATORY"}
 IDENTITY = ("data_version", "split", "seed", "protocol_sha", "config_sha",
             "n_units", "statistical_unit", "metric_unit")
 
@@ -93,6 +94,8 @@ def audit(root, runs_path, claims_path=None, *, atol=1e-8):
         if not reader.fieldnames or not REQUIRED.issubset(reader.fieldnames):
             raise ValueError("RUNS missing required columns")
         rows = list(reader)
+    if not rows:
+        raise ValueError("RUNS has no experiment records; no evidence to audit")
     results = []
     by_id = {}
     for row_index, row in enumerate(rows, 2):
@@ -106,6 +109,10 @@ def audit(root, runs_path, claims_path=None, *, atol=1e-8):
         if status in NON_EVIDENCE:
             results.append({"run_id": run_id, "status": "HISTORICAL_NOT_ELIGIBLE",
                             "reason": "recorded as " + status})
+            continue
+        if status not in ACCEPTED_SOURCE_STATES:
+            results.append({"run_id": run_id, "status": "UNVERIFIED",
+                            "reason": "unknown or missing run status"})
             continue
         try:
             metric = (row.get("metric") or "").strip()
