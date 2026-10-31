@@ -247,6 +247,10 @@ class WorkflowTests(unittest.TestCase):
         self.assertTrue((ROOT/"POST_SELECTION.md").is_file())
         for event, expected in {
             "NEW_PROJECT": "playbooks/01_DATA_BASELINE.md",
+            "DATA_AUDIT": "playbooks/01_DATA_BASELINE.md",
+            "IMPLEMENTATION": "playbooks/02_BUILD_DEBUG.md",
+            "EXPERIMENT": "playbooks/03_EXPERIMENT_LOOP.md",
+            "EVIDENCE_AUDIT": "playbooks/04_EVIDENCE_CONFIRM.md",
             "RESUME": "POST_SELECTION.md",
             "BASELINE_STRONGER": "playbooks/03_EXPERIMENT_LOOP.md",
             "NO_GAIN": "playbooks/03_EXPERIMENT_LOOP.md",
@@ -263,6 +267,8 @@ class WorkflowTests(unittest.TestCase):
             router.resolve_playbook("../ROUTES.json")
         with self.assertRaises(ValueError):
             router.resolve_playbook("playbooks/../../README.md")
+        with self.assertRaises(ValueError):
+            router.resolve_playbook("playbooks/../ORCHESTRATOR.md")
         with self.assertRaises(ValueError):
             router.resolve_playbook("playbooks/nonexistent.md")
         self.assertEqual(len(router.load_routes()), 24)
