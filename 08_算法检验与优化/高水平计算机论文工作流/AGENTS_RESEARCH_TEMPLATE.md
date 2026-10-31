@@ -4,7 +4,7 @@
 
 新方向选题（01-A～D）默认由 ChatGPT 完成文献、创新、命题和算法骨架；本地研发 Agent 不要求重复选题，实际执行与独立验证按需转交。
 
-**选题已确定时的研发知识入口**：[POST_SELECTION.md](POST_SELECTION.md)。由当前事件选择且仅阅读相关的一份 [数据/强基线](playbooks/01_DATA_BASELINE.md)、[实现/排错](playbooks/02_BUILD_DEBUG.md)、[实验迭代](playbooks/03_EXPERIMENT_LOOP.md) 或 [科学证据](playbooks/04_EVIDENCE_CONFIRM.md) 手册；不预加载全部文本。Agent 必须对实际数据生成具体 Input/Output、基线、行为测试和实验判据，而非只报告已执行步骤。
+**选题已确定时的研发知识入口**：[POST_SELECTION.md](POST_SELECTION.md)。由当前事件选择且仅阅读相关的一份 [数据/强基线](playbooks/01_DATA_BASELINE.md)、[实现/排错](playbooks/02_BUILD_DEBUG.md)、[实验迭代](playbooks/03_EXPERIMENT_LOOP.md) 或 [科学证据](playbooks/04_EVIDENCE_CONFIRM.md) 手册；不预加载全部文本。Agent 必须对实际数据生成具体 Input/Output、基线、行为测试和实验判据，而非只报告已执行步骤。 核心模块设计不明确时按需读 [架构选择参考](playbooks/ALGORITHM_DESIGN_REFERENCE.md)；测试方法按 [接入说明](templates/ALGORITHM_TEST_USAGE.md) 接入真实 PyTorch 项目，传感器问题用 [专项诊断](playbooks/SENSOR_DIAGNOSTICS.md)，未适配/未运行不得汇报通过。
 
 **默认真实执行**：已选题/续做时按 [POST_SELECTION.md](POST_SELECTION.md) 的“AI 自主执行规则”判断当前事件；读取 ROUTES.json 对应的 `deliverable/verify/boundary`，在已授权范围连续完成相关任务。若出现基线复现失败、训练异常、消融混杂、统计无结论、证据数字失配或确认集污染，直接切换相应事件和一份对应手册，更新原始Run/Claim证据；不要求用户再次输入长Prompt。对于同一问题复用已核实诊断，不重复全量审计。
 

@@ -4,6 +4,7 @@ import subprocess
 import sys
 import tempfile
 import json
+import os
 import unittest
 from pathlib import Path
 
@@ -334,6 +335,57 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(len(router.load_routes()), 24)
         self.assertIn("按问题只读一份",
                       (ROOT/"POST_SELECTION.md").read_text(encoding="utf-8"))
+
+    def test_algorithm_contract_template_requires_real_adapter_and_compiles(self):
+        """A prompt-library CI pass must not masquerade as a real-model correctness pass."""
+        tpl = ROOT/"templates"/"test_algorithm_contract.py"
+        content=tpl.read_text(encoding="utf-8")
+        compile(content, str(tpl), "exec")
+        self.assertIn("test_l2_reference_parity", content)
+        self.assertIn("test_l2_gradcheck_custom_differentiable_op", content)
+        self.assertIn("test_l3_backward_and_optimizer_update", content)
+        self.assertIn("test_l4_eval_checkpoint_roundtrip", content)
+        self.assertIn("test_sensor_temporal_and_mask_invariance", content)
+        self.assertNotIn("cuda()", content)
+        env=os.environ.copy()
+        env.pop("ALGORITHM_CONTRACT_ADAPTER", None)
+        proc=subprocess.run([sys.executable, str(tpl)], capture_output=True, text=True, env=env)
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("CONTRACT_NOT_CONFIGURED", proc.stderr)
+        self.assertIn("ALGORITHM_CONTRACT_ADAPTER", proc.stderr)
+
+    def test_algorithm_contract_rejects_incomplete_adapter(self):
+        tpl=ROOT/"templates"/"test_algorithm_contract.py"
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, "incomplete_adapter.py").write_text("def make_case(): pass\n", encoding="utf-8")
+            env=os.environ.copy()
+            env["ALGORITHM_CONTRACT_ADAPTER"]="incomplete_adapter"
+            env["PYTHONPATH"]=tmp+os.pathsep+env.get("PYTHONPATH", "")
+            proc=subprocess.run([sys.executable, str(tpl)], capture_output=True, text=True, env=env)
+            self.assertEqual(proc.returncode, 2)
+            self.assertIn("Adapter missing:", proc.stderr)
+
+    def test_algorithm_reference_routes_are_opt_in_and_sensor_specific(self):
+        play=ROOT/"playbooks"
+        design=(play/"ALGORITHM_DESIGN_REFERENCE.md").read_text(encoding="utf-8")
+        sensor=(play/"SENSOR_DIAGNOSTICS.md").read_text(encoding="utf-8")
+        runner=(ROOT/"templates"/"ALGORITHM_TEST_USAGE.md").read_text(encoding="utf-8")
+        build=(play/"02_BUILD_DEBUG.md").read_text(encoding="utf-8")
+        post=(ROOT/"POST_SELECTION.md").read_text(encoding="utf-8")
+        self.assertLess(len(build), 2700)
+        self.assertLess(len(design), 3000)
+        self.assertLess(len(sensor), 2300)
+        for term in ("Ridge", "TCN", "GRU", "Transformer", "Loss", "关键反证", "成本与删除"):
+            self.assertIn(term, design)
+        for term in ("时间戳", "异步", "缺失模态", "动态启用", "训练诊断", "INCONCLUSIVE"):
+            self.assertIn(term, sensor)
+        for term in ("make_case", "assert_contract", "ALGORITHM_CONTRACT_ADAPTER",
+                     "SKIP", "真实", "CPU"):
+            self.assertIn(term, runner)
+        for filename in ("ALGORITHM_DESIGN_REFERENCE.md", "SENSOR_DIAGNOSTICS.md",
+                         "test_algorithm_contract.py", "ALGORITHM_TEST_USAGE.md"):
+            self.assertIn(filename, build+post)
+        self.assertEqual(len(router.load_routes()), 24)
 
     def test_v6_fast_path_is_default_not_24_mandatory_gates(self):
         root=ROOT
