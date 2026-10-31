@@ -18,7 +18,7 @@
 
 ## 可核查的按事件路由（仍由Agent在实际工具中执行）
 
-按需使用 `workflow_route.py --event BASELINE_STRONGER` 获取只读建议；[ROUTES.json](ROUTES.json) 按 NEW_PROJECT / TOPIC_EXPLORATION / RESUME / NO_GAIN / CONFIRMATION / PIVOT / HOLD 等事件指向一项动作及可选场景。不监控真实训练、不自动执行或批准GPU；以真实日志及用户决策为准。
+读取 [POST_SELECTION.md](POST_SELECTION.md) 的**自主执行规则**，按当前事件从 [ROUTES.json](ROUTES.json) 获取 action/交付/验证/边界；可用 `workflow_route.py --event TRAINING_FAILURE` 只读查看。不自动训练、授权或判断科学成立。
 
 ## 外循环（事件触发，不按次数/日历强制）
 
