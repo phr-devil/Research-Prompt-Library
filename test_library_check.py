@@ -58,6 +58,30 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertIn("PAPER_READINESS", self.read8("templates/STATE.md"))
         self.assertIn("明确禁止训练", (self.root / "AGENTS.md").read_text(encoding="utf-8"))
 
+    def test_scientific_branch_lineage_is_recoverable_not_unbounded(self):
+        post = self.read8("POST_SELECTION.md")
+        experiment = self.read8("playbooks/03_EXPERIMENT_LOOP.md")
+        for key in ("branch_id", "parent_run", "protocol_id", "changed_scope",
+                    "PROTECTED", "EDITABLE", "BEST_VALID_RUN",
+                    "INCONCLUSIVE", "恢复"):
+            self.assertIn(key, post)
+        for key in ("parent_run/protocol_id/changed_scope", "PROTECTED",
+                    "EDITABLE", "INCONCLUSIVE非DISCARD"):
+            self.assertIn(key, experiment)
+        self.assertIn("同分更简", experiment)
+        self.assertIn("不擅自破坏性重置", post)
+
+    def test_experiment_feedback_to_new_hypothesis_has_evidence_and_scope(self):
+        lessons = self.read8("LESSONS.md")
+        funnel = self.read8("IDEA_FUNNEL.md")
+        self.assertIn("原Claim/Run", lessons)
+        self.assertIn("竞争解释", lessons)
+        self.assertIn("不同的检查", lessons)
+        self.assertIn("UNVERIFIED", lessons)
+        self.assertIn("可复用的公开基线/仓库", funnel)
+        state = self.read8("templates/STATE.md")
+        self.assertIn("CANDIDATE_LINEAGE", state)
+
     def test_zero_candidate_does_not_impersonate_selection(self):
         nine = (self.root / "09_失败算法项目挽救与转向" / "WORKFLOW.md").read_text(encoding="utf-8")
         self.assertIn("0–3个", nine)
