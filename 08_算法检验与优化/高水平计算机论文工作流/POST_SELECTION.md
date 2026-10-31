@@ -6,7 +6,7 @@
 
 用户已选定课题（或项目已有结果）时：**先读 ORCHESTRATOR.md + 本文件 + 当前项目的最新有效状态；按当前任务仅加载下面一份最相关的 playbook**。ChatGPT 负责研究主张/实验设计/重要决策，WorkBuddy/Codex 负责可访问的代码、真实数据和获授权实验。已有证据直接复用，不为“流程齐全”重跑。
 
-**默认内循环**：科学问题/关键风险 → 真实数据与最简单可信对照 → 最小可运行算法 → 区分竞争解释的实验 → 有界修改 → KEEP/DISCARD/INCONCLUSIVE/INVALID → 在足够证据下确认论文主张。顺序可按项目状态跳跃、合并；可将一次综合任务连续完成，不逐文件征询。
+**默认内循环**：科学问题与反向论文审查 → 真实数据/强基线及性能空间诊断 → 少量竞争机制与最小实现 → 有界且必要时充分的 GPU/CPU 实验 → KEEP/DISCARD/INCONCLUSIVE/INVALID → 在足够证据下确认论文主张。顺序可按项目状态跳跃、合并；可将一次综合任务连续完成，不逐文件征询。
 
 ## 按“下一项需要解决什么”加载一份技术手册
 
@@ -14,11 +14,16 @@
 |---|---|---|---|
 | 新课题可行性、数据/标签/评价不确定 | [01 数据与可信基线](playbooks/01_DATA_BASELINE.md) | 数据契约 + 评价入口 + 公平基线结果或明确阻断 | 先造大网络；将代理标签当真值 |
 | 首次开发、修复梯度/数值/接口问题 | [02 算法实现与验证](playbooks/02_BUILD_DEBUG.md) | 真实输入输出运行链路 + 相关自动化测试 + 变更证据 | 对所有代码强制重构、无因调参 |
-
-**技术参考按需加载**：算法骨架不明确时读 [结构选择卡](playbooks/ALGORITHM_DESIGN_REFERENCE.md)；实现/审查新算子时将 [正确性测试模板](templates/test_algorithm_contract.py) 按 [接入说明](templates/ALGORITHM_TEST_USAGE.md) 适配目标算法；存在时间戳/异步多模态/动态传感器风险时读 [专项诊断](playbooks/SENSOR_DIAGNOSTICS.md)。这些都不是新的强制阶段；模板未适配不能生成算法 PASS。
 | 有有效基线，准备提升/诊断无增益 | [03 科学实验迭代](playbooks/03_EXPERIMENT_LOOP.md) | 预期有区分力的实验、全结果与下一假设 | 无限实验；最好 seed；多次调确认集 |
 | 有可信初步结果，准备正式论文主张 | [04 机制证据与确认](playbooks/04_EVIDENCE_CONFIRM.md) | Claim→Run→独立效应/统计→图表的证据矩阵 | 工程 PASS 冒充任务/机制贡献 |
 | 传感器何时启动等多模态控制题 | [完整实例：触觉门控](playbooks/EXAMPLE_SENSOR_GATE.md) | 可映射到实际数据的实验合同示例 | 直接宣称离线代理指标等于控制收益 |
+
+**技术参考按需加载**：算法骨架不明确时读 [结构选择卡](playbooks/ALGORITHM_DESIGN_REFERENCE.md)；实现/审查新算子时将 [正确性测试模板](templates/test_algorithm_contract.py) 按 [接入说明](templates/ALGORITHM_TEST_USAGE.md) 适配目标算法；存在时间戳/异步多模态/动态传感器风险时读 [专项诊断](playbooks/SENSOR_DIAGNOSTICS.md)。这些都不是新的强制阶段；模板未适配不能生成算法 PASS。
+
+**选题后的证据优先决策（不是第五阶段之外的新流程）**：只有宽泛方向时用 [IDEA_FUNNEL.md](IDEA_FUNNEL.md) 的 F4 反向论文审查；用户选题后先在 [01 数据手册](playbooks/01_DATA_BASELINE.md) 复用强基线、检查诊断 Oracle 的信息边界和分条件误差，得到 `B_strong/O_reference/gap/UNKNOWN` 与一个最便宜的判别实验。有科研空间时按 [架构参考](playbooks/ALGORITHM_DESIGN_REFERENCE.md) 竞争少量机制；按 [03 实验迭代](playbooks/03_EXPERIMENT_LOOP.md) 在真实用户已批预算内依据收敛曲线和科学不确定性调整 GPU 训练；最后用 [04 科学审查](playbooks/04_EVIDENCE_CONFIRM.md) 将结果映射至论文 Claim。缺真值、离线不可识别或无法比较时缩窄主张/记录 HOLD，不以追加 GPU 掩盖。
+
+**一轮只交付一条决策记录**（复用 `STATE/RUNS/CLAIMS`）：`Claim | B_strong及诊断参考的证据等级 | 最大未解的竞争解释 | 下一有区分力的实验 | 已批准的预算/停止条件 | KEEP/DISCARD/INCONCLUSIVE/INVALID`。原始指标、失败和代码/数据版本仍保存在旧 Run 中；空缺填 UNKNOWN，不编数字。
+
 
 异常先按 [TRIAGE.md](TRIAGE.md) 判断影响范围，再按需读 [RECOVERY.md](RECOVERY.md) 的对应症状；关键科研风险出现时才启动 [04_独立科学验证.md](04_独立科学验证.md)。旧24个 Prompt 和 ROUTES.json 保留兼容，非阶段通关表。
 
