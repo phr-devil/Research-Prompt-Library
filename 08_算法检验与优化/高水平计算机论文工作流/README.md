@@ -35,6 +35,15 @@
 - `research/STATE.md`、`RUNS.tsv`、`CLAIMS.md` 及真实来源的证据关系保留，优先复用项目现有文件；[精简状态模板](templates/STATE.md) 仅供新项目可选使用。
 - 新GPU、付费、数据外传、冻结正式确认性实验与投稿仍需相应独立真实授权；第09章 [失败项目转向](../../09_失败算法项目挽救与转向/README.md) 的 P1/P2/P3 用户门禁不变。
 
+## 与成熟开源项目的有选择对齐（不是安装依赖）
+
+- [AutoResearch](https://github.com/karpathy/autoresearch)：借鉴可修改模型与受保护评价分离、保留简单性、记录成本和恢复点；**不**照搬单一指标/固定5分钟/无限循环。
+- [AIDE](https://github.com/WecoAI/aideml) 与 [AI Scientist v2](https://github.com/SakanaAI/AI-Scientist-v2)：借鉴多种机制的可恢复实验分支及证据淘汰；**不**默认部署树搜索、并行Agent或自动执行任意生成代码。
+- [R&D-Agent](https://github.com/microsoft/RD-Agent)：借鉴从真实反馈生成下一条可区分假设；**不**把Kaggle性能等同于科学创新。
+- [Google Tuning Playbook](https://github.com/google-research/tuning_playbook)、[DVC](https://github.com/treeverse/dvc)、[MLE-Bench](https://github.com/openai/mle-bench)：维持公平调参、版本和独立评价；不要求安装额外平台或将榜单当发表概率。
+
+改动落在[选题](IDEA_FUNNEL.md)→[选题后执行](POST_SELECTION.md)→[实验](playbooks/03_EXPERIMENT_LOOP.md)→[经验](LESSONS.md)，只为**当前任务的未解决关键问题**按需读取；仍由真实授权决定是否训练/支付/外传。
+
 ## 历史工具库（完全保留，不强制按序）
 
 [24条场景与触发条件](ROUTES.json)：[选题](01_科学选题与跨AI审核.md) · [数据/Pilot](02_最小科学验证与决策.md) · [研发](03_完整算法研发与正式实验.md) · [独立复核](04_独立科学验证.md) · [论文](05_论文撰写与投稿.md)。本地只读工具 `python workflow_route.py --id 03-E` 提取单个场景；`--repair 03-E` 读取该场景的两个故障示例。脚本不执行研究，不认证用户授权。历史场景已移除强制顺序触发，使用时只按对应问题查专业任务逻辑，**不得反向强制主流程补齐此前阶段**。

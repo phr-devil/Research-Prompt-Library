@@ -100,6 +100,10 @@
 
 **复用规则**：从风险线索找到原始证据 → 标`OBSERVED/HYPOTHESIZED/UNVERIFIED` → 判断新项目是否仍依赖同一失效前提 → 设计一个廉价分辨检查；不要每次加载全部失败案例或凭旧失败排斥新知识方向。
 
+## 从一次真实负结果更新科研假设（按需，避免循环失败）
+
+在已有`RUNS/STATE`差量记录：`原Claim/Run → 负结果或反例（证据+适用组）→ 已排除/未排除的竞争解释 → 下一条与旧解释预测不同的检查 → KEEP/INCONCLUSIVE/HOLD及恢复条件`。只有**新检查可以改变科学判断**且已获相应授权，才继续研发分支；否则停在当前证据边界。不以失效Run产生的总结反向污染确认集、未来课题真值或具名文献查新。跨项目复用须指向真实原始Run；否则保持`UNVERIFIED`，不把一次失败升级为领域定律。
+
 ## L7｜止损后的论文价值与资产回收（仅在项目 HOLD/STOP 时）
 
 从原始 Run/Claim 和最近邻证据做**一次** `VALID_ASSETS → INDEPENDENT_FINDING → EVIDENCE_GAP → PAPER_ROUTE/REUSE_ONLY` 判断：
