@@ -336,6 +336,30 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("按问题只读一份",
                       (ROOT/"POST_SELECTION.md").read_text(encoding="utf-8"))
 
+    def test_lightweight_paper_feedback_keeps_existing_workflow(self):
+        funnel=(ROOT/"IDEA_FUNNEL.md").read_text(encoding="utf-8")
+        post=(ROOT/"POST_SELECTION.md").read_text(encoding="utf-8")
+        lessons=(ROOT/"LESSONS.md").read_text(encoding="utf-8")
+        writing=(ROOT/"05_论文撰写与投稿.md").read_text(encoding="utf-8")
+        state=(ROOT/"templates"/"STATE.md").read_text(encoding="utf-8")
+        self.assertIn("论文组合适配（轻量判断，非配额）", funnel)
+        self.assertIn("相关失败风险", funnel)
+        self.assertIn("F5仍由用户选题", funnel)
+        self.assertIn("论文证据草图（按事件触发，不是新阶段）", post)
+        self.assertIn("首次取得可核实的有效科学结果", post)
+        self.assertIn("只有用户要求写稿时才进入", post)
+        self.assertIn("PAPER_ROUTE/REUSE_ONLY", lessons)
+        self.assertIn("不把同一份结果拆成", lessons)
+        self.assertIn("论文证据随研同步", writing)
+        self.assertIn("贡献类型与目标读者", writing)
+        for status in ("NO_INDEPENDENT_CLAIM", "CLAIM_WITH_EVIDENCE_GAPS",
+                       "DRAFTABLE", "SUBMISSION_CANDIDATE"):
+            self.assertIn(status, state)
+        self.assertIn("不等于已独立审核", state)
+        self.assertEqual(len(router.load_routes()), 24)
+        doc=json.loads((ROOT/"ROUTES.json").read_text(encoding="utf-8"))
+        self.assertEqual(doc["default_path"]["mandatory_scenes"], [])
+
     def test_evidence_first_research_decision_contract_is_actionable(self):
         funnel=(ROOT/"IDEA_FUNNEL.md").read_text(encoding="utf-8")
         data=(ROOT/"playbooks"/"01_DATA_BASELINE.md").read_text(encoding="utf-8")
