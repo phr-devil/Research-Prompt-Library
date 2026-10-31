@@ -357,7 +357,7 @@ class WorkflowTests(unittest.TestCase):
     def test_algorithm_contract_rejects_incomplete_adapter(self):
         tpl=ROOT/"templates"/"test_algorithm_contract.py"
         with tempfile.TemporaryDirectory() as tmp:
-            Path(tmp, "incomplete_adapter.py").write_text("def make_case(): pass\\n", encoding="utf-8")
+            Path(tmp, "incomplete_adapter.py").write_text("def make_case(): pass\n", encoding="utf-8")
             env=os.environ.copy()
             env["ALGORITHM_CONTRACT_ADAPTER"]="incomplete_adapter"
             env["PYTHONPATH"]=tmp+os.pathsep+env.get("PYTHONPATH", "")
