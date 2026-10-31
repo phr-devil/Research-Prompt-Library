@@ -10,7 +10,7 @@
           "id": "01-A",
           "name": "候选选题（可选F1–F5机会漏斗）",
           "kind": "as_needed",
-          "when": "用户仍在宽泛选题时按需使用F1–F4与F5用户选择；已有明确命题可直接MVP"
+          "when": "用户明确要求探索新方向（即使存在旧Run）或当前没有可证伪命题时用F1–F4，F5用户选择；明确续做时直接MVP"
         },
         {
           "id": "01-B",
@@ -188,7 +188,7 @@
     "entry": "ORCHESTRATOR.md",
     "mode": "PROTOTYPE_FIRST",
     "mandatory_scenes": [],
-    "behavior": "New or existing project: inspect minimum scientific essentials, implement minimal baseline/MVP under verified permitted actions, iterate on evidence; no implicit stage transitions."
+    "behavior": "Route by current user intent: explore a new scientific claim or resume an existing one. Verify action-specific truth/permission and scientific value; no implicit stage transition."
   },
   "on_demand_examples": {
     "debug": [
@@ -223,7 +223,7 @@
     "NEW_PROJECT": {
       "action": "MVP",
       "route": null,
-      "why": "已明确科研目标可直接做最小真值核查、基线与MVP；仍在选题时改用TOPIC_EXPLORATION",
+      "why": "用户明确已选定课题才进入MVP；无用户选题且尚属探索须改TOPIC_EXPLORATION，不自动训练",
       "playbook": "playbooks/01_DATA_BASELINE.md",
       "deliverable": "可信数据/目标合同和最简单公平基线或阻断",
       "verify": "真实字段/真值/分组/评估入口可复查",
@@ -232,7 +232,7 @@
     "TOPIC_EXPLORATION": {
       "action": "CHATGPT_TOPIC_RESEARCH",
       "route": "01-A",
-      "why": "宽泛新题按需由ChatGPT用IDEA_FUNNEL.md执行F1–F4，F5等待真实用户选择；已有明确命题不重复选题、不默认训练"
+      "why": "用户明确寻新题时用IDEA_FUNNEL F1–F4，F5真实选择；有旧项目不应擅自跳过选题；不授权训练"
     },
     "RESUME": {
       "action": "RECOVER",
@@ -253,7 +253,7 @@
     "NO_GAIN": {
       "action": "ITERATE",
       "route": "03-D",
-      "why": "有效负结果保存；先做一项有区分力的最小修改，不自动STOP",
+      "why": "有效无增益仅影响该Run/机制；先作可区分解释的有界诊断，不自动宣告整个PROJECT失败",
       "playbook": "playbooks/03_EXPERIMENT_LOOP.md"
     },
     "INVALID_EVIDENCE": {
@@ -271,7 +271,7 @@
     "CONFIRMATION": {
       "action": "VERIFY_AND_AUTHORIZE",
       "route": "03-F",
-      "why": "必要冻结协议/独立数据与独立真实用户授权均需验证",
+      "why": "必须核冻结方案、未接触确认集、正负及无结论的界限与用户明确授权，不能以计划完成代替证据",
       "playbook": "playbooks/04_EVIDENCE_CONFIRM.md"
     },
     "DRAFT": {
