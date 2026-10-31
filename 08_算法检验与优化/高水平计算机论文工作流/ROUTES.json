@@ -316,6 +316,30 @@
       "lesson": "L5",
       "why": "证据不足不等于无效；可单独基于贡献缺口和后续成本建议止损",
       "playbook": "playbooks/03_EXPERIMENT_LOOP.md"
+    },
+    "DATA_AUDIT": {
+      "action": "VALIDATE_DATA_AND_BASELINE",
+      "route": "02-B",
+      "playbook": "playbooks/01_DATA_BASELINE.md",
+      "why": "核真实字段、时钟、标签与独立统计单位，再实施最小公平基线；非必要复杂审查后移"
+    },
+    "IMPLEMENTATION": {
+      "action": "BUILD_AND_VERIFY_MVP",
+      "route": "03-C",
+      "playbook": "playbooks/02_BUILD_DEBUG.md",
+      "why": "从科研主张生成输入/输出/损失与测试合同，按合法授权实现、复现与最小排错"
+    },
+    "EXPERIMENT": {
+      "action": "BOUNDED_SCIENTIFIC_ITERATION",
+      "route": "03-D",
+      "playbook": "playbooks/03_EXPERIMENT_LOOP.md",
+      "why": "先写竞争解释及区分预测，再以获批预算进行固定评价、保留全结果与科学止损"
+    },
+    "EVIDENCE_AUDIT": {
+      "action": "CLAIM_EVIDENCE_REVIEW",
+      "route": "04-A",
+      "playbook": "playbooks/04_EVIDENCE_CONFIRM.md",
+      "why": "核实验效应、独立单位、机制替代解释与论文主张；正式确认和外传需另外授权"
     }
   }
 }
