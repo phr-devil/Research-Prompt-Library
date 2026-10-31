@@ -101,17 +101,21 @@ class AlgorithmContractTests(unittest.TestCase):
         loss.backward()
         named = {n: p for n, p in model.named_parameters() if p.requires_grad}
         self.assertTrue(named, "no trainable parameters")
-        key_names = getattr(self.adapter, "key_parameter_names", list(named))
+        key_names = list(getattr(self.adapter, "key_parameter_names", named))
+        self.assertTrue(key_names, "declare new-module parameters for a mechanism check")
+        opt_ids = {id(p) for group in optimizer.param_groups for p in group["params"]}
         for name in key_names:
             self.assertIn(name, named)
+            self.assertIn(id(named[name]), opt_ids, "optimizer omits " + name)
             grad = named[name].grad
             self.assertIsNotNone(grad, name)
             self.assertTrue(self.torch.isfinite(grad).all().item(), name)
-        original = {n: p.detach().clone() for n, p in named.items()}
+            self.assertTrue(self.torch.count_nonzero(grad).item() > 0, name)
+        original = {n: named[n].detach().clone() for n in key_names}
         optimizer.step()
         self.assertTrue(any(
-            not self.torch.equal(original[n], p.detach()) for n, p in named.items()
-        ), "optimizer did not update a trainable parameter")
+            not self.torch.equal(original[n], named[n].detach()) for n in key_names
+        ), "optimizer did not update a key new-module parameter")
 
     def test_l4_eval_checkpoint_roundtrip(self):
         model, batch = self.case()
