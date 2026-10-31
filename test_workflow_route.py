@@ -375,7 +375,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertLess(len(build), 2700)
         self.assertLess(len(design), 3000)
         self.assertLess(len(sensor), 2300)
-        for term in ("Ridge", "TCN", "GRU", "Transformer", "Loss", "关键反证", "复杂度"):
+        for term in ("Ridge", "TCN", "GRU", "Transformer", "Loss", "关键反证", "成本与删除"):
             self.assertIn(term, design)
         for term in ("时间戳", "异步", "缺失模态", "动态启用", "训练诊断", "INCONCLUSIVE"):
             self.assertIn(term, sensor)
