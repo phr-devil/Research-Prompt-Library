@@ -275,6 +275,30 @@
       "route": "03-D",
       "lesson": "L3",
       "why": "工程/内部代理指标改善但任务、机制或理论贡献未证；用最便宜的独立价值检验与最近邻比较，避免继续堆工程任务"
+    },
+    "CLAIM_NO_NOVEL_DELTA": {
+      "action": "REASSESS_CLAIM_VALUE",
+      "route": "01-B",
+      "lesson": "L5",
+      "why": "核心机制被覆盖且新增贡献模糊时，先缩窄/调整主张；部分重合不自动STOP"
+    },
+    "DATA_WAITING_AUTH": {
+      "action": "REQUEST_DATA_ONCE",
+      "route": "02-B",
+      "lesson": "L5",
+      "why": "缺决定性真实数据时停止重复合成替代准备，一次提出明确授权请求"
+    },
+    "REPAIR_LOW_VALUE": {
+      "action": "STOP_REPAIR_SCOPE",
+      "route": "03-E",
+      "lesson": "L5",
+      "why": "修复不改变科学主张或GO/STOP判断时停止该项修复；普通必要Bug除外"
+    },
+    "INCONCLUSIVE_LOW_VALUE": {
+      "action": "ADVISE_HOLD_OR_STOP",
+      "route": "02-D",
+      "lesson": "L5",
+      "why": "证据不足不等于无效；可单独基于贡献缺口和后续成本建议止损"
     }
   }
 }

@@ -242,6 +242,20 @@
       "scope": "03-C代码开发",
       "severity": "REPAIRABLE",
       "outcome": "可选继续脚本开发，正式优势声明前补公平对照"
+    },
+    {
+      "id": "EX11",
+      "signal": "核心门控机制已被最近邻覆盖，数据只含任务失败而不含独立传感器健康真值",
+      "scope": "01-C原始强主张",
+      "severity": "REPAIRABLE",
+      "outcome": "暂停扩大该机制研发；用户选择缩窄为可验证的受控退化问题或转向；不把部分重合当自动CRITICAL"
+    },
+    {
+      "id": "EX12",
+      "signal": "真实Pilot INCONCLUSIVE，下一项增益验证成本高且即使成功也缺独立贡献",
+      "scope": "02-D科研投入决策",
+      "severity": "REPAIRABLE",
+      "outcome": "可建议RESEARCH_VALUE_LOW和HOLD/STOP，保留INCONCLUSIVE，不伪称科学反证或撤销既有安全授权"
     }
   ],
   "workflow_version": "6.1",
@@ -272,5 +286,6 @@
     "Same claim, issue, data, protocol, action intent, allowed scope and prompt-library version",
     "No overdue review checkpoint, revoked authorization or newer user override",
     "Read-only advisory can never grant GPU, paid, formal-run or publication permission"
-  ]
+  ],
+  "research_value_decision": "INVALID/INCONCLUSIVE/RESEARCH_VALUE_LOW are distinct scientific decision labels, not extra severity classes. Low expected research value may justify suggesting HOLD/STOP without falsification and never overrides valid user permission."
 }
