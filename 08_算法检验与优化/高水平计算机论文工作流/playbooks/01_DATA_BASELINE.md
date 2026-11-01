@@ -32,7 +32,7 @@ Agent 从真实数据和部署条件写 6 项**具体值**，不填泛泛原则�
 
 ## 2.5 性能空间诊断与机制可利用性（按需）
 
-按Claim核`observable→真值/外部检验/证明义务→group/time/metric`；无反事实识别时不声称闭环收益。复用同协议合法Run取得`B_simple / B_strong / O_reference(可选) / P_feasible(待核)`及成本、组级不确定性。
+按Claim核`observable→真值/外部检验/证明义务→group/time/metric`；无反事实识别时不声称闭环收益。复用同一开发协议合法Run取得`B_simple / B_strong / O_reference(可选) / P_feasible(待核)`及成本、组级不确定性。
 
 - **配对残差→机制线索**：`B_strong`须公平调参；有同组预测时按`sample_id/group_id`分析简单/强基线的错误交集、分歧和条件残差（阶段、时域、模态/扰动）；记录独立组数与估计不确定性。切片由开发集发现须在未参与选片的组复核；无真实预测标UNKNOWN。互补错误≠可部署融合。
 - **Oracle不等于可学增益**：`O_reference`若见未来信息、实际决策不可得信号或另一成本/策略集合，只作特权诊断；没有最优性证明的 Oracle 不是数学上界；不同目标/成本不得直接计算gap。缺参照记`O_UNKNOWN`。
