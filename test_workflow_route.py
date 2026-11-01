@@ -890,5 +890,29 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         self.assertEqual(router.propose_transition("CRITICAL", "SCOPED_EXPLORATION",
                                                   "CONTINUE_LIMITED"), "BLOCKED_CRITICAL")
 
+
+    def test_balanced_decision_pilot_uncertainty_and_same_premise_pivots(self):
+        # Static guidance regression, NOT a claim of real Agent decision accuracy.
+        policy = (ROOT / "RESEARCH_DECISIONS.md").read_text(encoding="utf-8")
+        audit = (ROOT / "SELECTION_AUDIT.md").read_text(encoding="utf-8")
+        for key in ("欠训练", "检出能力", "SESOI", "INCONCLUSIVE", "INVALID",
+                    "减少关键不确定性", "共享前提", "机会成本", "真实授权",
+                    "重大改题继续由用户选择"):
+            self.assertIn(key, policy, key)
+        for key in ("D1 欠训练负Pilot", "D2 信息增量但不立即提分",
+                    "D3 重复同一失败前提", "D4 真实转向",
+                    "D5 数据或平台缺关键条件", "D6 不确定但补证昂贵",
+                    "过早", "无限"):
+            self.assertIn(key, audit, key)
+        advice = router.advise_event("RESEARCH_DECISION")
+        self.assertEqual("ASSESS_SCOPED_CONTINUATION", advice["action"])
+        self.assertIn("INCONCLUSIVE", advice["verify"])
+        self.assertIn("不确定性", advice["why"])
+        self.assertIn("真实AUTH", advice["deliverable"])
+        self.assertEqual(24, len(router.load_routes()))
+        self.assertEqual("HOLD", router.propose_transition("MINOR", "SCOPED_EXPLORATION", "HOLD"))
+        self.assertEqual("BLOCKED_CRITICAL", router.propose_transition(
+            "CRITICAL", "SCOPED_EXPLORATION", "CONTINUE_LIMITED"))
+
 if __name__=="__main__":
     unittest.main()
