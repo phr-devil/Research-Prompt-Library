@@ -31,7 +31,7 @@ class NoveltyPolicyTests(unittest.TestCase):
         baseline=read(root+"playbooks/01_DATA_BASELINE.md")
         lessons=read(root+"LESSONS.md")
         salvage=read("09_失败算法项目挽救与转向/WORKFLOW.md")
-        for token in ("可纠正性", "可辨识性", "EXPLORE", "不提前训练"):
+        for token in ("可纠正性", "可辨识性", "EXPLORE", "不运行训练"):
             self.assertIn(token,funnel)
         for token in ("问题存在 ≠ 干预能纠正", "能纠正 ≠ 能提前选择", "同信息", "真实用户相应授权"):
             self.assertIn(token,post)
