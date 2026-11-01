@@ -82,6 +82,41 @@ class ResearchDecisionContractTests(unittest.TestCase):
         state = self.read8("templates/STATE.md")
         self.assertIn("CANDIDATE_LINEAGE", state)
 
+    def test_f4_recommendation_requires_verifiable_mechanism_and_resource_scope(self):
+        funnel = self.read8("IDEA_FUNNEL.md")
+        data = self.read8("playbooks/01_DATA_BASELINE.md")
+        for key in ("NEIGHBOR_UNVERIFIED", "RESOURCE_UNKNOWN", "WITHIN_BUDGET",
+                    "EXTERNAL_DEPENDENCY", "具名近邻", "机制差额"):
+            self.assertIn(key, funnel)
+        for key in ("资源预筛", "最小配置", "STRONG_BASELINE_NOT_REPRODUCED",
+                    "P_feasible", "Oracle", "UNKNOWN"):
+            self.assertIn(key, data)
+
+    def test_action_permissions_distinguish_gradient_check_from_training(self):
+        root = (self.root / "AGENTS.md").read_text(encoding="utf-8")
+        post = self.read8("POST_SELECTION.md")
+        build = self.read8("playbooks/02_BUILD_DEBUG.md")
+        for key in ("单次梯度", "tiny-set", "Ridge", "CPU"):
+            self.assertIn(key, root + "\n" + post + "\n" + build)
+        for key in ("NON_TRAINING_CHECK", "FIT_TRAIN", "GPU_TRAIN",
+                    "CONFIRM", "EXTERNAL", "一次批准"):
+            self.assertIn(key, post)
+        self.assertIn("用户明确禁止训练时", root)
+        self.assertIn("禁训时不得运行", build)
+
+    def test_pilot_inference_limits_and_public_holdout_qualification(self):
+        post = self.read8("POST_SELECTION.md")
+        exp = self.read8("playbooks/03_EXPERIMENT_LOOP.md")
+        confirm = self.read8("playbooks/04_EVIDENCE_CONFIRM.md")
+        state = self.read8("templates/STATE.md")
+        for key in ("CHECK_ONLY", "MECHANISM_PILOT", "DEVELOPMENT_COMPARE", "CONFIRMATORY"):
+            self.assertIn(key, post)
+            self.assertIn(key, state)
+        self.assertIn("搜索范围", exp)
+        self.assertIn("INCONCLUSIVE", exp)
+        for key in ("公开数据确认", "fresh seed", "探索性", "独立"):
+            self.assertIn(key, confirm)
+
     def test_zero_candidate_does_not_impersonate_selection(self):
         nine = (self.root / "09_失败算法项目挽救与转向" / "WORKFLOW.md").read_text(encoding="utf-8")
         self.assertIn("0–3个", nine)
