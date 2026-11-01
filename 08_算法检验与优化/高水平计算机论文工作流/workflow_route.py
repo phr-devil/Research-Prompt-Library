@@ -179,19 +179,21 @@ def show_triage(key):
         rule=doc["levels"][level]
         out.append(level+": "+rule["default"]+" — "+rule["meaning"])
         if rule["menu"]:out.append("OPTIONS: "+" / ".join(rule["menu"]))
-    out.append("UNKNOWN -> NEEDS_MINIMAL_EVIDENCE_CHECK (not automatic CRITICAL).")
+    out.append("UNKNOWN -> classify CURRENT_ACTION_IMPACT only: UNRELATED=DEFER_UNKNOWN; MATERIAL=NEEDS_MINIMAL_EVIDENCE_CHECK; UNASSESSED=classify only (not STOP/PASS).")
     out.append("Actual later user messages must be verified by the host; stored choices alone are not approval.")
     out.append("No GPU/formal/paid permission is conferred by this read-only tool.")
     return "\n".join(out)
 
 
-def propose_transition(level, intent, choice=None, policy=None, *, scoped_work_verified=False, material_change=False):
+def propose_transition(level, intent, choice=None, policy=None, *, scoped_work_verified=False, material_change=False, unknown_impact="UNASSESSED"):
     """Offline routing suggestion, NOT evidence validation or user authorization.
 
     scoped_work_verified is supplied ONLY by a caller with independently checked
     actual permissions and experiment scope; the function cannot verify it.
     Explicit HOLD/REPAIR/REFRAME requests have precedence over optional auto-continue.
-    UNKNOWN calls for a narrow evidence check, never an automatic positive conclusion.
+    UNKNOWN first needs only CURRENT-ACTION impact classification, not a blanket evidence audit.
+    unknown_impact: UNASSESSED (classify only), UNRELATED (defer), MATERIAL
+    (targeted check). Return values are advice only; none grant training/approval.
     """
     if policy is None:
         policy = load_triage()
@@ -199,6 +201,8 @@ def propose_transition(level, intent, choice=None, policy=None, *, scoped_work_v
         raise ValueError("Unknown severity or action intent")
     if choice is not None and choice not in policy["choice_codes"]:
         raise ValueError("Unknown proposed user choice")
+    if unknown_impact not in ("UNASSESSED", "UNRELATED", "MATERIAL"):
+        raise ValueError("Unknown impact classification")
     if level == "CRITICAL":
         return "BLOCKED_CRITICAL"
     if choice == "HOLD":
@@ -210,7 +214,11 @@ def propose_transition(level, intent, choice=None, policy=None, *, scoped_work_v
     if intent in ("FORMAL_RUN", "CONFIRMED_CLAIM", "SUBMISSION"):
         return "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE"
     if level == "UNKNOWN":
-        return "NEEDS_MINIMAL_EVIDENCE_CHECK"
+        if unknown_impact == "MATERIAL":
+            return "NEEDS_MINIMAL_EVIDENCE_CHECK"
+        if unknown_impact == "UNRELATED":
+            return "DEFER_UNKNOWN"
+        return "CLASSIFY_CURRENT_ACTION_IMPACT"
     if level == "MINOR":
         return "DEFERRED_MINOR_CONTINUE"
     if choice is None:
