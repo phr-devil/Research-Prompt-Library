@@ -206,6 +206,30 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertIn("INCONCLUSIVE + MECHANISM_SIGNAL_UNCONFIRMED", post)
         self.assertIn("不新建SIGNAL_KEEP", post)
 
+    def test_latest_f4_feasibility_reaches_all_user_facing_entries(self):
+        from pathlib import Path
+        import json
+        top = (self.root / "README.md").read_text(encoding="utf-8")
+        post = self.read8("POST_SELECTION.md")
+        funnel = self.read8("IDEA_FUNNEL.md")
+        salvage = (self.root / "09_失败算法项目挽救与转向" /
+                   "WORKFLOW.md").read_text(encoding="utf-8")
+        self.assertIn("F5等待真实用户选定", top)
+        self.assertIn("只有明确续做已选课题", top)
+        self.assertIn("明确找新题仍走F1–F5", post)
+        self.assertIn("关键平台GREEN/YELLOW/RED", funnel)
+        self.assertIn("决定性实验在预算内可否完成", funnel)
+        self.assertIn("完整预算与最低成本反证/替代路径", salvage)
+        self.assertIn("官方OS/驱动/ABI/权重许可", salvage)
+        fixture = json.loads((self.root/"EVAL_CASES_CURRENT.json").read_text(encoding="utf-8"))
+        cases = {x["id"]: x for x in fixture["cases"]}
+        self.assertEqual(len(cases), 17)
+        for case_id in ("N16", "N17"):
+            self.assertEqual(cases[case_id]["prompt_selector"], "F1-F4-DOCUMENT")
+            self.assertEqual(cases[case_id]["prompt_path"],
+                             "08_算法检验与优化/高水平计算机论文工作流/IDEA_FUNNEL.md")
+            self.assertTrue(cases[case_id]["must"] and cases[case_id]["critical"])
+
     def test_zero_candidate_does_not_impersonate_selection(self):
         nine = (self.root / "09_失败算法项目挽救与转向" / "WORKFLOW.md").read_text(encoding="utf-8")
         self.assertIn("0–3个", nine)
