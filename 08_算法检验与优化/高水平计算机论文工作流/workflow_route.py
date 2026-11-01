@@ -52,22 +52,21 @@ def load_routes(root=ROOT):
             found[key] = (path,item)
     if list(found) != EXPECTED:
         raise ValueError("Expected 24 unique selectors in original order")
-    if True:  # supported workflow versions were checked above
-        default = catalog.get("default_path", {})
-        if default.get("mandatory_scenes") != [] or default.get("mode") != "PROTOTYPE_FIRST":
-            raise ValueError("Fast-path must not require legacy scenes")
-        for event, advice in catalog.get("event_advice", {}).items():
-            if not re.fullmatch(r"[A-Z_]{3,48}", event) or not isinstance(advice, dict):
-                raise ValueError("Invalid research event")
-            if advice.get("route") is not None and advice["route"] not in found:
-                raise ValueError("Unknown advisory route")
-            if not advice.get("action") or not advice.get("why"):
-                raise ValueError("Incomplete event advice")
-            if "playbook" in advice:
-                resolve_playbook(advice["playbook"], root)
-            for field in ("deliverable", "verify", "boundary"):
-                if field in advice and (not isinstance(advice[field], str) or not advice[field].strip()):
-                    raise ValueError("Invalid research event operation: " + field)
+    default = catalog.get("default_path", {})
+    if default.get("mandatory_scenes") != [] or default.get("mode") != "PROTOTYPE_FIRST":
+        raise ValueError("Fast-path must not require legacy scenes")
+    for event, advice in catalog.get("event_advice", {}).items():
+        if not re.fullmatch(r"[A-Z_]{3,48}", event) or not isinstance(advice, dict):
+            raise ValueError("Invalid research event")
+        if advice.get("route") is not None and advice["route"] not in found:
+            raise ValueError("Unknown advisory route")
+        if not advice.get("action") or not advice.get("why"):
+            raise ValueError("Incomplete event advice")
+        if "playbook" in advice:
+            resolve_playbook(advice["playbook"], root)
+        for field in ("deliverable", "verify", "boundary"):
+            if field in advice and (not isinstance(advice[field], str) or not advice[field].strip()):
+                raise ValueError("Invalid research event operation: " + field)
     return found
 
 
