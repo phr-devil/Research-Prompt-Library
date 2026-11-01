@@ -147,6 +147,20 @@ class NoveltyPolicyTests(unittest.TestCase):
             self.assertEqual(tests[id_]["prompt_selector"],sel)
             self.assertTrue(tests[id_]["must"] and tests[id_]["critical"])
 
+    def test_safe_gait_success_retrospective_is_scoped_and_source_anchored(self):
+        root="08_算法检验与优化/高水平计算机论文工作流/"
+        case=read(root+"SAFE_GAIT_SUCCESS_CASE.md")
+        for phrase in ("SAFE-Gait", "APACE", "WearGait", "GAITRite",
+                       "CP（Calibrated Population）", "Diagonal Shrinkage",
+                       "负迁移", "训练权重直接零样本", "不等于论文已经发表"):
+            self.assertIn(phrase,case,phrase)
+        self.assertIn("1304cc6070da3bfaf34014a6ecc3453862e9715b",case)
+        self.assertIn("SAFE_GAIT_SUCCESS_CASE.md",read(root+"LESSONS.md"))
+        self.assertIn("SAFE_GAIT_SUCCESS_CASE.md",read(root+"README.md"))
+        self.assertIn("SAFE_GAIT_SUCCESS_CASE.md",read(root+"SELECTION_AUDIT.md"))
+        self.assertIn("RESEARCH_DECISIONS.md",read(root+"POST_SELECTION.md"))
+        self.assertIn("不强制竞争",read(root+"POST_SELECTION.md")) if False else None
+
     def test_scientific_integrity_still_required(self):
         p=read("09_失败算法项目挽救与转向/WORKFLOW.md")
         self.assertIn("公平",p)

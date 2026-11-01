@@ -83,6 +83,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(ok.returncode,0)
         self.assertIn("REPAIRABLE: USER_CHOICE",ok.stdout)
         self.assertIn("MINOR: LOG_AND_CONTINUE",ok.stdout)
+        self.assertIn("UNRELATED=DEFER_UNKNOWN",ok.stdout)
         bad=subprocess.run([sys.executable,path,"--triage","../x"],capture_output=True,text=True)
         self.assertEqual(bad.returncode,2)
         self.assertIn("Unknown triage route",bad.stderr)
@@ -175,15 +176,25 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(router.propose_transition("CRITICAL", "READ_ONLY_RESEARCH", "HOLD"),
                          "BLOCKED_CRITICAL")
 
-    def test_unknown_requires_evidence_not_automatic_stop_or_progress(self):
+    def test_unknown_impacts_action_not_unrelated_research(self):
         for intent in ("READ_ONLY_RESEARCH", "SCOPED_EXPLORATION", "DRAFT_PREPARATION"):
             self.assertEqual(router.propose_transition("UNKNOWN", intent),
-                             "NEEDS_MINIMAL_EVIDENCE_CHECK")
-            self.assertEqual(router.propose_transition("UNKNOWN", intent, "CONTINUE_LIMITED"),
-                             "NEEDS_MINIMAL_EVIDENCE_CHECK")
+                             "CLASSIFY_CURRENT_ACTION_IMPACT")
+            self.assertEqual(router.propose_transition("UNKNOWN", intent, "CONTINUE_LIMITED",
+                             unknown_impact="UNRELATED"), "DEFER_UNKNOWN")
+            self.assertEqual(router.propose_transition("UNKNOWN", intent,
+                             unknown_impact="MATERIAL"), "NEEDS_MINIMAL_EVIDENCE_CHECK")
         for intent in ("FORMAL_RUN", "CONFIRMED_CLAIM", "SUBMISSION"):
-            self.assertEqual(router.propose_transition("UNKNOWN", intent, "CONTINUE_LIMITED"),
-                             "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE")
+            for impact in ("UNASSESSED", "UNRELATED", "MATERIAL"):
+                self.assertEqual(router.propose_transition("UNKNOWN", intent, "CONTINUE_LIMITED",
+                                 unknown_impact=impact),
+                                 "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE")
+        self.assertEqual(router.propose_transition("CRITICAL", "SCOPED_EXPLORATION",
+                         "CONTINUE_LIMITED", unknown_impact="UNRELATED"), "BLOCKED_CRITICAL")
+        self.assertEqual(router.propose_transition("UNKNOWN", "SCOPED_EXPLORATION", "HOLD",
+                         unknown_impact="UNRELATED"), "HOLD")
+        with self.assertRaises(ValueError):
+            router.propose_transition("UNKNOWN", "READ_ONLY_RESEARCH", unknown_impact="UNCHECKED")
 
     def test_risk_choice_reuse_only_when_all_guards_match(self):
         base=dict(decision_id="D1", issue_id="I1", claim_id="C1", claim_fingerprint="c123",
@@ -625,7 +636,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(router.propose_transition("REPAIRABLE","FORMAL_RUN",
                          scoped_work_verified=True),"INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE")
         self.assertEqual(router.propose_transition("UNKNOWN","SCOPED_EXPLORATION"),
-                         "NEEDS_MINIMAL_EVIDENCE_CHECK")
+                         "CLASSIFY_CURRENT_ACTION_IMPACT")
 
 
 
@@ -859,6 +870,23 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         self.assertEqual(len(router.load_routes()), 24)
 
 
+
+    def test_discovery_enablement_routes_do_not_reinstate_mechanism_gate(self):
+        discovery=router.advise_event("DISCOVERY")
+        enablement=router.advise_event("ENABLEMENT")
+        experiment=router.advise_event("EXPERIMENT")
+        design=router.advise_event("MODEL_DESIGN")
+        self.assertEqual(discovery["action"], "BOUNDED_OBSERVATION")
+        self.assertIsNone(discovery["route"])
+        self.assertEqual(enablement["route"],"03-C")
+        self.assertIn("必要实验能力", enablement["why"])
+        self.assertIn("只有机制因果归因",experiment["why"])
+        self.assertIn("初始模型",design["why"])
+        self.assertIn("只阻断该训练结果/动作",
+                      router.advise_event("TRAINING_FAILURE")["verify"])
+        self.assertIn("能力",router.advise_event("REPAIR_LOW_VALUE")["why"])
+        self.assertEqual(discovery["permission"],"ADVISORY_ONLY_NO_EXECUTION")
+        self.assertEqual(enablement["permission"],"ADVISORY_ONLY_NO_EXECUTION")
 
     def test_exploration_decisions_repair_pivot_stop_contract(self):
         # This is an offline contract test; it does not claim the policy predicts paper success.

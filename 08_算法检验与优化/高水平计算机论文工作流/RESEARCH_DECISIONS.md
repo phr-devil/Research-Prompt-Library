@@ -50,6 +50,8 @@
 
 ## 4. 从开源项目借鉴的最小机制
 
+跨鞋垫个体化课题的正向参照见[SAFE-Gait成功复盘](SAFE_GAIT_SUCCESS_CASE.md)：APACE特定机制失败后真实转向一次监督校准残差研究，证明的是允许探索且及时停错机制的价值；不意味着所有机制都该无限尝试。
+
 - [AIDE](https://github.com/wecoai/aideml)：保留有父子关系的实验分支及最佳有效Run；**不强制装树搜索**。
 - [RD-Agent](https://github.com/microsoft/RD-Agent)：失败反馈应生成不同预测的研究假设；**不要等价换名字或Backbone**。
 - [autoresearch](https://github.com/karpathy/autoresearch/blob/master/program.md)：固定共同评价器、记录尝试、保留/回退；**不采纳无限循环或仅凭单一训练指标评定科研价值**。
