@@ -162,6 +162,9 @@ python eval_runner.py --score --output-dir .eval_runs/pilot-live
 
 ## 科研选题决策质量回测（2026-11-01新增，需真实执行）
 
+**真实世界评估的最小Token记录**：不新增强制表格，在现有项目`STATE/RUNS`差量记录`initial_claim | initial_source_evidence | F4_tier | first_critical_risk | first_valid_real_evidence | proxy_only? | false_stop_or_overclaim | cumulative_token/GPU/human_cost | decision_scope`。连续新选题在首次推荐时冻结来源与风险；对旧版/新版需固定可见资料时间点、模型/工具/预算及盲评口径，防止用未来结局回填选题。证据缺失记UNKNOWN；历史案例仅用于诊断。**真实模型胜率与Token节省当前仍NOT_MEASURED**，静态CI不能替代实测。
+
+
 **目标**：评估工作流是否减少了错误推荐及不合理否决，而不只是通过路由/结构测试。不得把N12–N15合成案例、静态检查PASS或过往项目已知的结论记成模型成功率。
 
 ### A. 历史案例诊断（开发集，非独立效果证明）
