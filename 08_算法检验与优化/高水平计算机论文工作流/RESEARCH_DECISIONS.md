@@ -7,7 +7,7 @@
 | 当下目标 | 准入/继续依据 | 此时不必已经证明 |
 |---|---|---|
 | **EXPLORE/原型探索** | 有价值的可证伪科学机会；合法且合理的真实验证路径；未证实存在不可替代的致命障碍；用户已选题，执行动作另有真实授权 | 新网络超过强基线、多seed显著、全面文献覆盖、外部确认、可投稿 |
-| **CONTINUE/追加研发** | 有真实新发现或明确未解竞争解释；**下一项实验的正负结果都可能改变科研决定**；相对替代实验成本合理，且未超授权预算 | 每一次必须性能提升、模型一定能发表、固定次数/固定GPU小时门槛 |
+| **CONTINUE/追加研发** | 有真实新发现或明确未解竞争解释；下一项实验**能够减少重要不确定性或改变决定**（须预写可观察结果的不同解释）；相对替代实验成本合理，且未超授权预算 | 每一次必须性能提升、模型一定能发表、固定次数/固定GPU小时门槛 |
 | **CONFIRM/正式论文主张** | 合法独立真值/证明义务、充分调优的强基线、公平统计、冻结未污染确认集、具名近邻独立贡献及所需真实授权 | 不能以探索性收益、工程通过、代理指标代替 |
 
 关键依赖**已证实不可替代且阻断当前动作**→只阻断该动作；仅未知→保留EXPLORE/UNKNOWN并查最廉价关键事实，不能假称已PASS。明确禁训练时CPU Ridge拟合、tiny-set训练和GPU训练均不执行；付费、正式确认、投稿与外传单独核授权。
@@ -49,6 +49,7 @@
 - [AIDE](https://github.com/wecoai/aideml)：保留有父子关系的实验分支及最佳有效Run；**不强制装树搜索**。
 - [RD-Agent](https://github.com/microsoft/RD-Agent)：失败反馈应生成不同预测的研究假设；**不要等价换名字或Backbone**。
 - [autoresearch](https://github.com/karpathy/autoresearch/blob/master/program.md)：固定共同评价器、记录尝试、保留/回退；**不采纳无限循环或仅凭单一训练指标评定科研价值**。
+- [Google Deep Learning Tuning Playbook](https://github.com/google-research/tuning_playbook)：探索期优先积累对数据/训练机制的认识，性能利用阶段再集中追逐主指标；区分scientific/nuisance/fixed超参数，不能以欠调优负结果草率淘汰机制。
 - [AI-Scientist-v2](https://github.com/SakanaAI/AI-Scientist-v2)及[Ray Tune/ASHA](https://docs.ray.io/en/latest/tune/api/schedulers.html)：按实测信息逐步分配资源，而非一开始证明所有机制；**ASHA早期Loss排名仅适于可比训练任务，不足以推断假设被科学证伪**。
 
 **回溯案例，不是事前预测**：
