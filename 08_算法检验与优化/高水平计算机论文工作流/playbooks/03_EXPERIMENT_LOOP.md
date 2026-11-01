@@ -24,13 +24,7 @@ nuisance需记搜索范围、试验数、选择准则与可比调参机会；联
 3. **分支竞争**：预算内比较互异预测，记`parent_run/protocol_id/changed_scope`；看同协议增益/成本，同分更简可KEEP；保留负结果，INCONCLUSIVE非DISCARD。
 4. **空结果校准**：先核曲线/搜索边界；关键无增益且检测能力不明时，正控须预指已知信号、SESOI、独立n/噪声、检出判据及失败解释；按需参考[02-C](../02_最小科学验证与决策.md)。正控PASS不证明真实任务功效或收益。留全trial。
 5. **独立单位比较**：配对效应、CI、覆盖、成本与失效域；区分seed/调参与采样方差。
-6. **决策**：负结果先区分数据/评价、优化/容量、信息不足和机制预测，明确实际排除了什么；无新依据不盲目换模型。`KEEP`有效开发增量；`DISCARD`有效无增量；`INCONCLUSIVE`证据不足（主指标未增益但机制签名初现，注明`MECHANISM_SIGNAL_UNCONFIRMED`与最廉价复验，不新增状态）；`INVALID`证据无效。无新信息时建议HOLD，不按次数自动STOP。记录`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`；改题由用户决定。
-
-## 2.2 负结果后的实际续投分流（无需新增阶段）
-
-按 [统一决策](../RESEARCH_DECISIONS.md)与原Run判断，**不依赖预估成功概率或固定失败次数**：①证据INVALID/无法解释→REPAIR受影响评价/实现；②负结果有效但只否定一项结构/损失/门控→DISCARD该MECHANISM、保留最佳有效Run；③残差、失效组或独立反例支持不同预测的新假设→提出PIVOT供用户确认；④再做的正负结果都不会改变科研决定、或所需成本相对其他项目不值→建议HOLD/STOP（范围明确，PROJECT级用户决定）；⑤有低成本判别实验且在获批范围内→CONTINUE。**没有新信息并非“再调一点超参”自动续命**，但普通必要Bug修复不因未增加论文贡献被拒。保留原始失败、父子分支与恢复点，开发性发现不得偷偷升级为确认。
-
-**新增计算预算只随证据价值逐步增长**；允许对有收敛迹象的机制在已批准范围内增加足够算力，避免早期欠训练导致假阴性；同样不因GPU空闲或已经投入过多而扩大预算。
+6. **决策**：先核结果有效性、原Run与适用范围；科学证据仍为KEEP/DISCARD/INCONCLUSIVE（机制信号未确认）/INVALID，机制负结果不自动PROJECT STOP。下个正反结果能改变判断且有已批预算→CONTINUE；实现/评价错误→REPAIR；不同预测的新Claim→提PIVOT给用户；无新信息或成本失衡→建议HOLD/STOP。记录DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT与恢复条件，详见[续投规则](../RESEARCH_DECISIONS.md)。
 
 ## 2.5 自适应 GPU 验证：最小充分证据，不追求利用率
 
