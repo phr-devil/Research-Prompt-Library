@@ -132,7 +132,7 @@ def audit(root, runs_path, claims_path=None, *, atol=1e-8, require_identity=Fals
             expected = number(row.get("value"))
             source = inside(root, row.get("evidence_path"))
             actual, metadata = read_source(source, run_id, metric)
-            if not math.isclose(actual, expected, rel_tol=1e-9, abs_tol=atol):
+            if not math.isclose(actual, expected, rel_tol=0.0, abs_tol=atol):
                 raise ValueError(f"metric value mismatch: TSV={expected}, source={actual}")
             checked = []
             absent = []
@@ -179,7 +179,7 @@ def audit(root, runs_path, claims_path=None, *, atol=1e-8, require_identity=Fals
                 source_result = by_result[run_id]
                 if metric != source_result["metric"]:
                     raise ValueError("claim metric differs from run metric")
-                if not math.isclose(expected, source_result["value"], rel_tol=1e-9, abs_tol=atol):
+                if not math.isclose(expected, source_result["value"], rel_tol=0.0, abs_tol=atol):
                     raise ValueError("claim value differs from verified source")
                 claim_results.append({"claim_id": claim_id, "run_id": run_id,
                                       "status": "SOURCE_MATCH_NOT_SCIENCE_REVIEW",
