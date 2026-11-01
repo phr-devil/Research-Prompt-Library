@@ -28,6 +28,8 @@ def load_routes(root=ROOT):
     catalog = json.loads((root/"ROUTES.json").read_text(encoding="utf-8"))
     if catalog.get("version") != "5.0.0":
         raise ValueError("Unknown route manifest")
+    if catalog.get("workflow_version") not in ("6.0", "6.1"):
+        raise ValueError("Unknown workflow version")
     if len(catalog.get("stages", [])) != 5:
         raise ValueError("Expected exactly five research stages")
     found = {}
@@ -50,7 +52,7 @@ def load_routes(root=ROOT):
             found[key] = (path,item)
     if list(found) != EXPECTED:
         raise ValueError("Expected 24 unique selectors in original order")
-    if catalog.get("workflow_version") in ("6.0", "6.1"):
+    if True:  # supported workflow versions were checked above
         default = catalog.get("default_path", {})
         if default.get("mandatory_scenes") != [] or default.get("mode") != "PROTOTYPE_FIRST":
             raise ValueError("Fast-path must not require legacy scenes")
