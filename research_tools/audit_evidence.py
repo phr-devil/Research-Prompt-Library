@@ -9,7 +9,7 @@ import csv
 import json
 import math
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 REQUIRED = {"run_id", "metric", "value", "status", "evidence_path"}
 NON_EVIDENCE = {"INVALID", "CRASH", "PENDING", "NOT_RUN", "HOLD"}
@@ -27,7 +27,12 @@ def inside(root, candidate, *, must_exist=True):
     if not isinstance(candidate, str) or not candidate.strip():
         raise ValueError("empty or non-string path")
     relative = Path(candidate)
-    if relative.is_absolute() or ".." in relative.parts or "\\" in candidate:
+    # Reject either OS syntax regardless of the interpreter host (POSIX path on Windows,
+    # Windows drive/UNC path on Linux, including drive-relative C:foo).
+    foreign_windows = PureWindowsPath(candidate)
+    if (PurePosixPath(candidate).is_absolute() or foreign_windows.drive
+            or foreign_windows.is_absolute() or ".." in relative.parts
+            or "\\" in candidate):
         raise ValueError("absolute or traversing path")
     dest = (root / relative).resolve()
     if not dest.is_relative_to(root):
