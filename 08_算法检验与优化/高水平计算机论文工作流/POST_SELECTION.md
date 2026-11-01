@@ -114,7 +114,7 @@
 ## 研究分支与可比性（借鉴 AutoResearch / AIDE / RD-Agent；不增加Agent或审批）
 
 已有项目按需在原`RUNS.tsv / STATE.md`维护**一条候选谱系**，而非为每轮新建报告或树搜索平台：
-`branch_id | parent_run/来源 | op=DISCOVER/ENABLE/PROPOSE/IMPROVE/DEBUG/SCALE(可选) | 本轮观察/验收或机制预测 | protocol_id | changed_scope | full_cost | evidence_ptr | 工程验收或KEEP/DISCARD/INCONCLUSIVE/INVALID（适用时） | next_action`。`branch_id`可以是 Git 分支/commit+Run ID；没有版本系统则记录真实文件和内容指纹，不杜撰git SHA。只在存在本质不同的机制解释且现有预算容许时保留少量并行候选，默认沿最有可证伪价值的一个继续；失败但有信息量的分支保留证据，不靠排行榜单次胜出替代科学判断。
+`branch_id | parent_run/来源 | op=DISCOVER/ENABLE/PROPOSE/IMPROVE/DEBUG/SCALE(可选) | 本轮观察/验收或机制预测 | protocol_id | changed_scope | full_cost | evidence_ptr | 工程验收或KEEP/DISCARD/INCONCLUSIVE/INVALID（适用时） | next_action`。`branch_id`可以是 Git 分支/commit+Run ID；没有版本系统则记录真实文件和内容指纹，不杜撰git SHA。只在存在本质不同的机制解释且现有预算容许时保留少量并行候选，默认沿最有可证伪价值的一个继续；失败但有信息量的分支保留证据，不靠排行榜单次胜出替代科学判断。**兼容旧机制分支字段**：mechanism_op=PROPOSE/IMPROVE/DEBUG/SCALE；非机制观察不强迫填写竞争预测。
 
 **可修改边界**：每组可比开发实验事先指明 `PROTECTED`（样本/组划分、真值定义、评价器及主指标、成本计量、未见确认集）和 `EDITABLE`（已授权的模型、Loss、超参及必要实现）。`PROTECTED`并非永不修改：发现错误可修，但必须记录新`protocol_id`、说明受影响的旧Run何处不可比，必要时重算对照；确认集绝不用于指导修复/选择。正式冻结后改协议需要独立用户授权；不得将修改评价规则伪装成模型增益。
 
