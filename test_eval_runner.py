@@ -78,6 +78,29 @@ class EvalHarnessTest(unittest.TestCase):
         self.assertTrue(extracted.startswith("Independent scientific critique"))
         self.assertNotIn("Do not auto execute",extracted)
 
+    def test_funnel_document_selector_is_opt_in_and_source_pinned(self):
+        funnel="08_算法检验与优化/高水平计算机论文工作流/IDEA_FUNNEL.md"
+        (self.repo/Path(funnel).parent).mkdir(parents=True,exist_ok=True)
+        (self.repo/funnel).write_text(
+            "# Funnel\n## F1 科学机会发现\n## F4 可信推荐最低证据\n"
+            "## F5 用户选题\nOnly discuss evidence; do not train.\n",
+            encoding="utf-8")
+        subprocess.run(["git","-C",str(self.repo),"add","."],check=True)
+        subprocess.run(["git","-C",str(self.repo),"commit","-qm","funnel eval fixture"],check=True)
+        sha=subprocess.check_output(
+            ["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
+        self.assertIn("F4 可信推荐最低证据",
+                      m.prompt(self.repo,sha,funnel,"F1-F4-DOCUMENT"))
+        with self.assertRaisesRegex(ValueError,"restricted"):
+            m.prompt(self.repo,sha,"docs/R02.md","F1-F4-DOCUMENT")
+        (self.repo/funnel).write_text("F4 only; no selection contract",encoding="utf-8")
+        subprocess.run(["git","-C",str(self.repo),"add","."],check=True)
+        subprocess.run(["git","-C",str(self.repo),"commit","-qm","malformed funnel"],check=True)
+        bad=subprocess.check_output(
+            ["git","-C",str(self.repo),"rev-parse","HEAD"],text=True).strip()
+        with self.assertRaisesRegex(ValueError,"contract missing"):
+            m.prompt(self.repo,bad,funnel,"F1-F4-DOCUMENT")
+
     def test_current_suite_requires_explicit_refs(self):
         with patch.object(sys,"argv",["eval_runner.py","--repo",str(self.repo),
                                       "--suite","current","--output-dir",str(self.out)]):

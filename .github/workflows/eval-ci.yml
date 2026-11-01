@@ -106,6 +106,25 @@ jobs:
           print("CURRENT_STRESS_PLAN_PASS",len(chosen),"scenarios")
           PY
 
+      - name: Verify actual F4 feasibility stress plan without model calls
+        run: |
+          python3 - <<'PY'
+          import json,subprocess,sys
+          from pathlib import Path
+          base="52e6ac8db257fee13f859db2229ba242cf10f458"
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          subprocess.run([sys.executable,"eval_runner.py","--suite","current",
+                          "--cases","N16,N17","--base-ref",base,
+                          "--candidate-ref",head,"--max-calls","4",
+                          "--output-dir",".eval_runs/ci-f4-feasibility"],check=True)
+          manifest=json.loads(Path(".eval_runs/ci-f4-feasibility/manifest.json").read_text(encoding="utf-8"))
+          plan=json.loads(Path(".eval_runs/ci-f4-feasibility/plan.json").read_text(encoding="utf-8"))
+          assert manifest["status"]=="PLAN_ONLY" and manifest["actual_calls"]==0
+          assert manifest["selected_cases"]==["N16","N17"] and len(plan)==4
+          assert not manifest["unchanged_control_cases"]
+          print("F4_FEASIBILITY_PLAN_PASS: 2 scenarios, 4 planned, 0 model calls")
+          PY
+
       - name: Verify all 24 research scene prompts can be extracted
         run: |
           python3 - <<'PY'
