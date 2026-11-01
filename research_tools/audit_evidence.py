@@ -209,7 +209,7 @@ def main(argv=None):
     ap.add_argument("--output", help="optional NEW audit report file relative to root")
     ap.add_argument("--atol", type=float, default=1e-8)
     ap.add_argument("--require-identity", action="store_true",
-                    help="for claims requiring complete run/data/protocol provenance, fail if any identity field recorded in RUNS is missing from source")
+                    help="require nonblank core run/data/split/protocol/config/statistical-unit identity in RUNS and source; other recorded fields must match")
     args = ap.parse_args(argv)
     try:
         root = Path(args.root).resolve(strict=True)
