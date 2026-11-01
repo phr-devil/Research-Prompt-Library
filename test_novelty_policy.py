@@ -58,7 +58,7 @@ class NoveltyPolicyTests(unittest.TestCase):
         for case_id in ('A1 REALDISP','A2 RASS','A3 SafeSelect','A4 ContactWorld',
                         'A5 OpenPack','A6 CAR-IMU','P1 保护性正例','P2 保护性正例','P3 保护性正例'):
             self.assertIn(case_id,audit)
-        for token in ('历史项目的初次选题完整时点资料不齐', '不是历史预测命中率',
+        for token in ('历史项目的初次选题完整时点资料不齐', '并非历史预测命中率',
                       '错误排除率', '不应误杀', 'NOT_MEASURED'):
             self.assertTrue(token in audit or token in evaluation)
         self.assertIn('NOT_MEASURED',evaluation)
