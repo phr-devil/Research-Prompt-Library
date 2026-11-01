@@ -24,7 +24,7 @@ nuisance需记搜索范围、试验数、选择准则与可比调参机会；联
 3. **分支竞争**：预算内比较互异预测，记`parent_run/protocol_id/changed_scope`；看同协议增益/成本，同分更简可KEEP；保留负结果，INCONCLUSIVE非DISCARD。
 4. **空结果校准**：先核曲线/搜索边界；关键无增益且检测能力不明时，正控须预指已知信号、SESOI、独立n/噪声、检出判据及失败解释；按需参考[02-C](../02_最小科学验证与决策.md)。正控PASS不证明真实任务功效或收益。留全trial。
 5. **独立单位比较**：配对效应、CI、覆盖、成本与失效域；区分seed/调参与采样方差。
-6. **决策**：负结果先区分无效Run与机制负证据。证据为KEEP/DISCARD/INCONCLUSIVE（MECHANISM_SIGNAL_UNCONFIRMED须复验）/INVALID；机制FAIL不等于PROJECT STOP。有区分实验且获批→CONTINUE；无效Run→REPAIR；不同预测新Claim→用户选PIVOT；无增量/高成本→HOLD/STOP。留DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT；见[续投规则](../RESEARCH_DECISIONS.md)。
+6. **决策**：负结果先区分无效Run与机制负证据。证据为KEEP/DISCARD/INCONCLUSIVE（MECHANISM_SIGNAL_UNCONFIRMED须复验）/INVALID；不盲目换模型；机制FAIL不等于PROJECT STOP。有判别且获批→CONTINUE；无效Run→REPAIR；新Claim→用户选PIVOT；无信息/高成本→HOLD/STOP。留DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT；见[续投规则](../RESEARCH_DECISIONS.md)。
 
 ## 2.5 自适应 GPU 验证：最小充分证据，不追求利用率
 
