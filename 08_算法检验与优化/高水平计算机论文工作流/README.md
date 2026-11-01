@@ -36,8 +36,8 @@
 
 ## 保留下来的科学底线（没有新强制阶段）
 
-- [TRIAGE.md](TRIAGE.md) / [TRIAGE_POLICY.json](TRIAGE_POLICY.json)：致命阻断受影响行动、一般风险用户选继续或修复、轻微记录自动过；未知先做最小核查。
-- [RECOVERY.md](RECOVERY.md) / [REPAIR_ROUTES.json](REPAIR_ROUTES.json)：原24场景48种典型失败与根因修复、回退，**仅真实故障按需调用**。
+- [TRIAGE.md](TRIAGE.md) / [TRIAGE_POLICY.json](TRIAGE_POLICY.json)：致命仅阻断受影响行动、一般问题在已授权范围自主有界修复、实质分叉再问用户、轻微问题记录或顺手处理。
+- [RECOVERY.md](RECOVERY.md) / [REPAIR_ROUTES.json](REPAIR_ROUTES.json)：故障触发的定位→修复→定向验证→原任务恢复；原24场景48例只按需检索，**新型问题直接走通用诊断**，不新增必做步骤。
 - [LESSONS.md](LESSONS.md)：CARE-Touch、PhysTok、RevGraph、CAR-IMU 的历史科学失败教训，**按相似症状检索，不是必做审核清单**。
 - `research/STATE.md`、`RUNS.tsv`、`CLAIMS.md` 及真实来源的证据关系保留，优先复用项目现有文件；[精简状态模板](templates/STATE.md) 仅供新项目可选使用。
 - 新GPU、付费、数据外传、冻结正式确认性实验与投稿仍需相应独立真实授权；第09章 [失败项目转向](../../09_失败算法项目挽救与转向/README.md) 的 P1/P2/P3 用户门禁不变。
