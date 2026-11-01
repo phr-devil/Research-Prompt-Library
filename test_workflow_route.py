@@ -728,6 +728,46 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         self.assertEqual(strict.returncode, 0)
         self.assertEqual(out["runs"][0]["identity_scope"], "COMPLETE")
 
+    def test_valid_inconclusive_run_keeps_numeric_source_but_not_positive_claim(self):
+        self.save_rows([dict(self.row, status="INCONCLUSIVE")])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(out["runs"][0]["status"], "SOURCE_MATCH")
+        self.assertEqual(out["runs"][0]["scientific_run_status"], "INCONCLUSIVE")
+        self.assertEqual(out["claims"][0]["status"], "SOURCE_MATCH_NOT_SCIENCE_REVIEW")
+        self.assertFalse(out["claims"][0]["positive_claim_supported"])
+
+    def test_source_without_run_identity_fails_even_with_matching_metric(self):
+        self.save_source({"metrics": {"ap": 0.812}})
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(out["runs"][0]["status"], "UNVERIFIED")
+        self.assertIn("source run_id missing", out["runs"][0]["reason"])
+        self.assertEqual(out["claims"][0]["status"], "UNVERIFIED")
+
+    def test_missing_core_run_identity_cannot_appear_complete(self):
+        missing = dict(self.row)
+        for field in ("data_version", "split", "protocol_sha", "config_sha",
+                      "n_units", "statistical_unit"):
+            missing[field] = ""
+        self.save_rows([missing])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(out["runs"][0]["identity_scope"], "PARTIAL")
+        self.assertIn("data_version", out["runs"][0]["identity_not_recorded"])
+        strict, out = self.invoke("--require-identity")
+        self.assertEqual(strict.returncode, 1)
+        self.assertIn("incomplete identity provenance", out["runs"][0]["reason"])
+
+    def test_complete_identity_requires_core_fields_on_both_sides(self):
+        self.save_source({"run_id": "R1", "metrics": {"ap": 0.812}})
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(out["runs"][0]["identity_scope"], "PARTIAL")
+        strict, out = self.invoke("--require-identity")
+        self.assertEqual(strict.returncode, 1)
+        self.assertIn("protocol_sha", out["runs"][0]["reason"])
+
     def test_all_historical_invalid_runs_do_not_produce_empty_success(self):
         self.save_rows([dict(self.row, status="INVALID")])
         self.save_claims([])
