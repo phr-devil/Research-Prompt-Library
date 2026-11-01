@@ -2,7 +2,7 @@
 
 **何时读**：有可信基线后探索新机制、调参、诊断负结果、设计消融/统计。对应 `02-C/E`、`03-D/E`。禁止自动无限试验及测试集调参。
 
-**探索宽松但证据分账**：早期允许真实数据上的代理、自监督或合成正控及低成本同步/标定/工程能力诊断，标`PROXY_ONLY`或`INCONCLUSIVE`；只核最危险未知，粗预算足以安排小Pilot。科学机制比较才需A/B预测；必要能力建设只需可核验的能力验收、成本与后续真实判别实验。正式任务Claim须补公平强基线、独立统计组、可信真值与未污染确认集；禁训和GPU/费用授权不变。
+**宽松探索**：代理/自监督/正控和必要标定可先做，标`PROXY_ONLY`；能力修复写验收，机制比较才写A/B。粗估预算，正式Claim仍需独立真值、公平基线、统计与未污染test；训练需授权。
 
 ## 1. 实验选择与计算预算（P0-4）
 
@@ -15,18 +15,18 @@
 
 nuisance需记搜索范围、试验数、选择准则与可比调参机会；联合改动不冒充单模块因果（[Tuning Playbook](https://github.com/google-research/tuning_playbook)）。
 
-首次获批训练前先复用证据，优先廉价、高判别力的负对照/签名探针，再考虑昂贵机制训练；不强制训练。吞吐/显存仅获批实测，预算限`max_trials/max_gpu_time`，复用`BEST_VALID_RUN`。
+训练前复用证据与廉价探针，不强制训练；获批后测吞吐/显存，限`max_trials/max_gpu_time`，复用`BEST_VALID_RUN`。
 
 机制竞争参照[算法设计](ALGORITHM_DESIGN_REFERENCE.md)；时钟/启用/缺模态有疑点才查[专项诊断](SENSOR_DIAGNOSTICS.md)。
 
 ## 2. 最小探索循环
 
-1. **保护评价链**：`PROTECTED`（真值、split、评价器、主指标、确认集）与`EDITABLE`（获批模型/Loss/超参）分开；修评价错误须新`protocol_id`并重算受影响Run，不用确认集选模。
-2. **签名与探索范围**：预测先记录；事后发现的切片/签名仅属探索，须在独立开发组复验，冻结确认集不用于选片。触觉捷径用匹配/打乱检验，未读触觉不参与启用决策。
+1. **保护评价链**：`PROTECTED`（真值/split/评价器/指标/确认集）和`EDITABLE`（获批模型/Loss/超参）分开；修错误记新`protocol_id`并重算受影响Run；确认集不选模。
+2. **签名与探索范围**：预测先记录，事后切片仅属探索，需独立开发组复验；确认集不选片。触觉捷径用匹配/打乱，未读触觉不参与启用决策。
 3. **分支竞争**：预算内比较互异预测，记`parent_run/protocol_id/changed_scope`；看同协议增益/成本，同分更简可KEEP；保留负结果，INCONCLUSIVE非DISCARD。
-4. **空结果校准**：先核曲线/搜索边界；关键无增益且检测能力不明时，正控须预指已知信号、SESOI、独立n/噪声、检出判据及失败解释；按需参考[02-C](../02_最小科学验证与决策.md)。正控PASS不证明真实任务功效或收益。留全trial。
-5. **独立单位比较**：配对效应、CI、覆盖、成本与失效域；区分seed/调参与采样方差。
-6. **决策**：负结果先区分无效Run与机制负证据。证据为KEEP/DISCARD/INCONCLUSIVE（MECHANISM_SIGNAL_UNCONFIRMED须复验）/INVALID；不盲目换模型；机制FAIL不等于PROJECT STOP。有判别且获批→CONTINUE；无效Run→REPAIR；新Claim→用户选PIVOT；无信息/高成本→HOLD/STOP。留DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT；见[续投规则](../RESEARCH_DECISIONS.md)。
+4. **空结果校准**：核曲线/搜索边界；正控预写已知信号、SESOI、独立n/噪声、检出与失败解释；参考[02-C](../02_最小科学验证与决策.md)。正控PASS不证明真实收益；留全trial。
+5. **独立单位比较**：配对效应/CI/成本/失效域；区分seed与数据方差。
+6. **决策**：`KEEP/DISCARD/INCONCLUSIVE/INVALID`区分可信负证与无效Run，机制FAIL≠PROJECT STOP；获批且有判别力→CONTINUE，无效→REPAIR，改Claim→用户选PIVOT，无信息/高成本→HOLD/STOP。记`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`，见[续投规则](../RESEARCH_DECISIONS.md)。
 
 ## 2.5 自适应 GPU 验证：最小充分证据，不追求利用率
 
@@ -41,7 +41,7 @@ nuisance需记搜索范围、试验数、选择准则与可比调参机会；联
 | 短Pilot拟淘汰机制而欠收敛 | 获授权且值得时才做同协议成对长/短锚点；排序反转/不确定→INCONCLUSIVE；两点一致也不保证更长预算稳定 |
 | 已过拟合、机制负对照失败、真实评价不可识别 | 转诊断/缩窄/HOLD，不因显卡空闲扩大训练 |
 
-获批后核吞吐/VRAM及`实验→决策→成本→停止`；大batch不保证改善，GPU 利用率不是科学 KPI；保留失败Run，超范围需重新获批。
+获批后核吞吐/VRAM和停止；GPU利用率非科学KPI，保留失败Run，超限重批。
 
 ## 3. 统计设计：SESOI/MDE（P0-6）
 
