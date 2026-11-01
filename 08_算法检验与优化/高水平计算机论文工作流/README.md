@@ -15,12 +15,12 @@
 
 ## 最短使用路径
 
-**按事件建议（非自动执行）**：选题用 `python workflow_route.py --event TOPIC_EXPLORATION`；已明确目标才用 `--event NEW_PROJECT`，其他如 `RESUME` / `BASELINE_STRONGER`。只读取一个处理建议和可选专题；真正的Agent必须自行核实运行结果与授权，不能把本脚本当作后台科研执行器。
+**按事件建议（非自动执行）**：`DISCOVERY`用于先观察，`ENABLEMENT`用于数据/测量/训练能力修复；只有机制归因才要求A/B预测。选题用 `python workflow_route.py --event TOPIC_EXPLORATION`；已明确目标才用 `--event NEW_PROJECT`，其他如 `RESUME` / `BASELINE_STRONGER`。只读取一个处理建议和可选专题；真正的Agent必须自行核实运行结果与授权，不能把本脚本当作后台科研执行器。
 
 | 何时 | 默认动作 | 需要时才读 |
 |---|---|---|
 | 用户要求探索新题（含已有旧项目） | **ChatGPT** 依据真实问题提出可发表的新知识→核机制机会与独立真值→最近邻/论文反证，F5交用户选择；不强制跨AI审核 | [IDEA_FUNNEL.md](IDEA_FUNNEL.md)、`01-A/B/C/D` |
-| 已有明确目标、准备开发 | 先确认独立论文Claim、强基线剩余误差与新机制所需信息，再在授权内做最简基线/MVP | [POST_SELECTION.md](POST_SELECTION.md) → 只选一份 playbook；必要时 `02-B/03-A` |
+| 已有明确目标、准备开发 | 先核合法数据/推理信息，观察真实现象或构建最简MVP；要比较收益时再补公平强基线/机制差额 | [POST_SELECTION.md](POST_SELECTION.md) → 只选一份 playbook；必要时 `02-B/03-A` |
 | 已有算法或旧实验 | 复用有效代码与Run，在现有预算内修改一个主要机制、测试、记录保留/撤回 | `03-C/D` |
 | 结果反常、科学价值未证 | 最小诊断，按现象检索真实失败教训，必要时用户选择 | [LESSONS.md](LESSONS.md)、[RECOVERY.md](RECOVERY.md)、`02-E/03-E` |
 | 拟正式宣称论文贡献 | 严格核数据/真值、强基线、冻结协议、统计、确认性实验、独立复核 | `03-B/F`、`04-A/B/C` |
