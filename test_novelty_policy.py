@@ -84,7 +84,7 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertNotIn("按 KEEP/DISCARD/INVALID/CRASH 分类", salvage)
         self.assertIn("不得执行 Step 06", salvage)
         self.assertIn("不授权 GPU", salvage)
-        self.assertIn("未污染", salvage)
+        self.assertIn("不可污染确认性 test", salvage)
         self.assertIn("正式", salvage)
 
     def test_scientific_integrity_still_required(self):
