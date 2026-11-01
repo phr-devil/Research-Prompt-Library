@@ -263,10 +263,13 @@
       "playbook": "playbooks/01_DATA_BASELINE.md"
     },
     "NEW_MECHANISM": {
-      "action": "REFLECT",
-      "route": "01-B",
-      "why": "核近邻与竞争解释，记录尚需证实的科学贡献",
-      "playbook": "playbooks/04_EVIDENCE_CONFIRM.md"
+      "action": "GENERATE_TESTABLE_MECHANISM",
+      "route": "03-A",
+      "why": "尚未实现的新机制先从配对残差和合法信息/归纳偏置生成竞争假说，写不同结果签名与最低成本判别；近邻仍须核证，不将构思当科学证据",
+      "playbook": "playbooks/ALGORITHM_DESIGN_REFERENCE.md",
+      "deliverable": "少量有不同科学解释的机制候选、来源Run/数据或文献及公平替代、下一项有界测试",
+      "verify": "所需推理信息真实可见，科学差额与可区分预测明确；无数据仅列待核假说",
+      "boundary": "只读生成不授权实现/训练；F5与09人工选题门禁、CPU/GPU禁训和确认集隔离不改变"
     },
     "CONFIRMATION": {
       "action": "VERIFY_AND_AUTHORIZE",

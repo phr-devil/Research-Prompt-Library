@@ -117,6 +117,36 @@ class ResearchDecisionContractTests(unittest.TestCase):
         for key in ("公开数据确认", "fresh seed", "探索性", "独立"):
             self.assertIn(key, confirm)
 
+    def test_constructive_funnel_uses_multiple_evidence_grounded_sources(self):
+        funnel = self.read8("IDEA_FUNNEL.md")
+        for key in ("失效驱动", "机制迁移", "资产/未用信息驱动",
+                    "原领域有效前提", "查询词", "引文", "HYPOTHESIZED"):
+            self.assertIn(key, funnel)
+        self.assertIn("缺GPU/真实数据授权只设计实验", funnel)
+        self.assertIn("WAITING_FOR_USER_SELECTION", funnel)
+
+    def test_paired_residuals_support_distinct_mechanism_tests(self):
+        data = self.read8("playbooks/01_DATA_BASELINE.md")
+        design = self.read8("playbooks/ALGORITHM_DESIGN_REFERENCE.md")
+        for key in ("配对残差", "sample_id/group_id", "错误交集", "切片",
+                    "独立组数", "互补错误≠可部署融合", "P_feasible"):
+            self.assertIn(key, data)
+        for key in ("机制生成配方", "额外信息", "归纳偏置", "优化机制",
+                    "容量机制", "不同结果签名", "HYPOTHESIZED"):
+            self.assertIn(key, design)
+        self.assertIn("非固定凑三", design)
+
+    def test_inconclusive_signal_and_sensitivity_do_not_add_verdicts(self):
+        experiment = self.read8("playbooks/03_EXPERIMENT_LOOP.md")
+        post = self.read8("POST_SELECTION.md")
+        for key in ("正控", "02-C", "成对长/短", "INCONCLUSIVE",
+                    "MECHANISM_SIGNAL_UNCONFIRMED", "SESOI/MDE"):
+            self.assertIn(key, experiment)
+        self.assertIn("总成本（GPU、Token、人工、数据）", post)
+        self.assertIn("mechanism_op=PROPOSE/IMPROVE/DEBUG/SCALE", post)
+        self.assertIn("不新建SIGNAL_KEEP状态", post)
+        self.assertIn("明确禁止训练时所有CPU/GPU拟合与更新均不得执行", post)
+
     def test_zero_candidate_does_not_impersonate_selection(self):
         nine = (self.root / "09_失败算法项目挽救与转向" / "WORKFLOW.md").read_text(encoding="utf-8")
         self.assertIn("0–3个", nine)

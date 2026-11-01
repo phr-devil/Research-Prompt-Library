@@ -4,7 +4,7 @@
 
 ## 1. 实验选择与计算预算（P0-4）
 
-每轮选**可改变Claim判断的实验**（标`CHECK_ONLY/MECHANISM_PILOT/DEVELOPMENT_COMPARE/CONFIRMATORY`及推断范围）：`Claim/新知识 | 最近有效Run/公平强基线 | 机制解释A/B及不同预测 | 真值/独立单位 | 对照与成本 | 授权及停止判据`；不能改变科学判断的试验不优先。
+每轮选可改变Claim判断的实验，标`CHECK_ONLY/MECHANISM_PILOT/DEVELOPMENT_COMPARE/CONFIRMATORY`及推断范围：`Claim | 有效Run/强基线 | A/B与不同预测 | 真值/独立单位 | 成本/授权/停止`。
 
 超参数分为：
 - **scientific**：本轮要研究其科学效果的变量（例如传感器门控机制）；
@@ -15,16 +15,16 @@ nuisance需记搜索范围、试验数、选择准则与可比调参机会；联
 
 优先区分解释/可得性/成本；获批才测真实吞吐/显存；预算限`max_trials/max_gpu_time`。复用有效Run和`BEST_VALID_RUN`。
 
-结构选型出现实质竞争解释时参考 [算法架构与机制选择](ALGORITHM_DESIGN_REFERENCE.md)；涉及不同采样时钟、传感器启用及缺失模态时，仅追加 [专项诊断](SENSOR_DIAGNOSTICS.md) 中能改变当前研究决定的测试。
+机制竞争参照[算法设计](ALGORITHM_DESIGN_REFERENCE.md)；时钟/启用/缺模态有疑点才查[专项诊断](SENSOR_DIAGNOSTICS.md)。
 
 ## 2. 最小探索循环
 
 1. **保护评价链**：`PROTECTED`（真值、split、评价器、主指标、确认集）与`EDITABLE`（获批模型/Loss/超参）分开；修评价错误须新`protocol_id`并重算受影响Run，不用确认集选模。
-2. **预写结果签名**：触觉信息与阶段捷径在内容打乱/阶段匹配中预测不同；未读取的触觉不能参与开关决策。
-3. **分支竞争**：只比较预算内互异预测；记`parent_run/protocol_id/changed_scope`；同协议看增益、复杂度、成本；同分更简可KEEP。负结果保留，INCONCLUSIVE非DISCARD。
-4. **检查完整曲线**：至少看候选 train/val loss 与主指标随步数变化，标发散、过拟合、欠收敛、早停/选 checkpoint 的规则；搜索最优值卡在边界时先怀疑搜索空间。记录无效 trial，不只记胜者。
-5. **按独立单位比较**：配对效应、CI、覆盖率、成本及失效域；区分seed、搜索和采样方差。
-6. **决策**：持续`INCONCLUSIVE`且无新可区分预测时先复评投入价值，不按固定次数STOP。`KEEP` 有效且相对复杂度值得的开发增量；`DISCARD` 有效无增量；`INCONCLUSIVE` 无法区分竞争解释；`INVALID` 协议/实现/泄漏等使证据失效。无高价值下轮实验则建议 HOLD/收窄，实质转向由用户决定。 判决补`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`、最强反证和重启条件；当前机制负结果不自动否定整个方向。
+2. **签名与探索范围**：已知机制预测先记录；未知机理允许有界探索性扫描以发现条件，事后签名只能算探索结果，须在未参与发现的合法组上复验。触觉内容与阶段捷径用匹配/打乱区分；未读触觉不可参与启用决策。
+3. **分支竞争**：预算内比较互异预测，记`parent_run/protocol_id/changed_scope`；看同协议增益/成本，同分更简可KEEP；保留负结果，INCONCLUSIVE非DISCARD。
+4. **空结果先校准**：检查train/val曲线、checkpoint与搜索边界；关键空结果且灵敏度不明时，按需用已知有效正控或[02-C](../02_最小科学验证与决策.md)合成正控检查能否检出目标效应；正控不证明真实任务增益。保留无效trial。
+5. **独立单位比较**：配对效应、CI、覆盖、成本与失效域；区分seed/调参与采样方差。
+6. **决策**：`KEEP`有效开发增量；`DISCARD`有效无增量；`INCONCLUSIVE`证据不足（主指标未增益但机制签名初现，注明`MECHANISM_SIGNAL_UNCONFIRMED`与最廉价复验，不新增状态）；`INVALID`证据无效。无新信息时建议HOLD，不按次数自动STOP。记录`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`；改题由用户决定。
 
 ## 2.5 自适应 GPU 验证：最小充分证据，不追求利用率
 
@@ -36,9 +36,10 @@ nuisance需记搜索范围、试验数、选择准则与可比调参机会；联
 | 最佳开发 checkpoint 位于末尾且曲线仍改善 | 在已批预算内有界延长；用验证曲线而非固定步数判断 |
 | 基线训练不足或调参机会失衡 | 给基线与候选合理的 nuisance 调优机会，版本化比较 |
 | 候选已有可信但不确定的增量 | 在合法独立数据/seed/消融之间分配预算，按证据缺口选择；seed 不代替新对象 |
+| 短Pilot准备淘汰复杂机制且曲线尚未稳定 | 仅在有真实授权及决策收益时用少量同协议成对长/短规模锚点校准；排序不稳标INCONCLUSIVE，不强制所有项目双规模 |
 | 已过拟合、机制负对照失败、真实评价不可识别 | 转诊断/缩窄/HOLD，不因显卡空闲扩大训练 |
 
-获授权后按真实数据测吞吐/VRAM并记录`实验→科学决定→成本→停止`；batch变大**不保证模型变好**，需复核优化超参；GPU 利用率不是科学 KPI。保留失败Run及预算，超范围需重新获批。
+获批后测吞吐/VRAM，记`实验→决策→成本→停止`；batch大不保证变好，须复核超参；GPU 利用率不是科学 KPI；留失败Run，超范围需重新获批。
 
 ## 3. 统计设计：SESOI/MDE（P0-6）
 

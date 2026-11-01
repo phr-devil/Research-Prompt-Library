@@ -500,6 +500,16 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(len(router.load_routes()),24)
 
 
+    def test_new_mechanism_advice_is_constructive_not_evidence_confirm(self):
+        advice = router.advise_event("NEW_MECHANISM")
+        self.assertEqual("GENERATE_TESTABLE_MECHANISM", advice["action"])
+        self.assertEqual("03-A", advice["route"])
+        self.assertEqual("playbooks/ALGORITHM_DESIGN_REFERENCE.md", advice["playbook"])
+        self.assertEqual("ADVISORY_ONLY_NO_EXECUTION", advice["permission"])
+        design = router.resolve_playbook(advice["playbook"])
+        self.assertTrue(design.is_file())
+        self.assertNotEqual("playbooks/04_EVIDENCE_CONFIRM.md", advice["playbook"])
+
     def test_v61_event_advice_covers_decisive_research_scenarios(self):
         cases = {
             "NEW_PROJECT": ("MVP", None),
@@ -507,7 +517,7 @@ class WorkflowTests(unittest.TestCase):
             "NO_GAIN": ("ITERATE", "03-D"),
             "BASELINE_STRONGER": ("DIAGNOSE", "03-E"),
             "INVALID_EVIDENCE": ("BLOCK_AFFECTED_CLAIM", "02-B"),
-            "NEW_MECHANISM": ("REFLECT", "01-B"),
+            "NEW_MECHANISM": ("GENERATE_TESTABLE_MECHANISM", "03-A"),
             "CONFIRMATION": ("VERIFY_AND_AUTHORIZE", "03-F"),
             "DRAFT": ("WRITE_UNVERIFIED", "05-A"),
             "PIVOT": ("REQUEST_REAL_USER_DIRECTION", None),
