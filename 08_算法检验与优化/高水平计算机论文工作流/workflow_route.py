@@ -14,7 +14,7 @@ FENCE = re.compile(r"(?m)^(?P<mark>`{3}|~{3})text[ \t]*\r?\n(?P<body>[\s\S]*?)\r
 def resolve_playbook(relative_path, root=ROOT):
     """Read-only resolver for explicitly allowlisted in-repository playbook links."""
     if (not isinstance(relative_path, str) or not relative_path
-            or not (relative_path == "POST_SELECTION.md"
+            or not (relative_path in ("POST_SELECTION.md", "RESEARCH_DECISIONS.md")
                     or relative_path.startswith("playbooks/"))
             or "\\" in relative_path or ".." in relative_path.split("/")):
         raise ValueError("Invalid playbook path")
