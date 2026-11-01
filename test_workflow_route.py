@@ -807,6 +807,23 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 1)
         self.assertIn("absolute", out["runs"][0]["reason"])
 
+    def test_foreign_os_absolute_and_drive_paths_fail_closed(self):
+        # Both POSIX and Windows spellings must be rejected on either host OS.
+        for invalid in ("/etc/passwd", "C:/Windows/win.ini",
+                        "C:relative.csv", "//server/share/metrics.csv",
+                        "\\\\server\\share\\metrics.csv"):
+            with self.subTest(path=invalid):
+                self.save_rows([dict(self.row, evidence_path=invalid)])
+                proc, out = self.invoke()
+                self.assertEqual(proc.returncode, 1, out)
+                self.assertEqual(out["runs"][0]["status"], "UNVERIFIED")
+                self.assertIn("absolute", out["runs"][0]["reason"])
+        # A legitimate local, relative path remains valid.
+        self.save_rows([self.row])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0, out)
+        self.assertEqual(out["runs"][0]["status"], "SOURCE_MATCH")
+
     def test_empty_runs_and_ambiguous_tabular_source_are_not_verified(self):
         self.save_rows([])
         proc, out = self.invoke()
