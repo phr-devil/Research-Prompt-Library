@@ -8,6 +8,8 @@
 
 **能读取仓库的AI接收 GitHub URL 后可按入口自主启动**：仓库根目录[AGENTS.md](../../AGENTS.md)供AI读取并按科研目标自主路由；[START.md](START.md)给出第08章最短说明。一次提供科研目标、已有项目/数据以及实际授权。运行 Agent 平时只需要 [ORCHESTRATOR.md](ORCHESTRATOR.md) 和现有科研项目证据，**不预先加载24条历史Prompt、全部48条故障、全套Skills和多模型审查**。有结果的项目直接恢复继续开发；首次结果没有提升也不自动判STOP。
 
+**终止机制已经调整为“宽松探索、按信息价值续投、严格论文确认”**：参见[统一决策](RESEARCH_DECISIONS.md)。一次负Pilot仅约束对应Run/机制；可在有新判别实验和真实授权时继续，或修复失效证据、向用户提出新科学命题转向；只有资源阻断或缺信息价值等条件才建议项目级HOLD/STOP。与[TRIAGE](TRIAGE.md)的安全/正确性阻断分开，不增加强制阶段。
+
 ## 最短使用路径
 
 **按事件建议（非自动执行）**：选题用 `python workflow_route.py --event TOPIC_EXPLORATION`；已明确目标才用 `--event NEW_PROJECT`，其他如 `RESUME` / `BASELINE_STRONGER`。只读取一个处理建议和可选专题；真正的Agent必须自行核实运行结果与授权，不能把本脚本当作后台科研执行器。

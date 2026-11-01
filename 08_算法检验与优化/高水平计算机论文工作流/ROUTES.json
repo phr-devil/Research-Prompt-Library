@@ -253,7 +253,7 @@
     "NO_GAIN": {
       "action": "ITERATE",
       "route": "03-D",
-      "why": "有效无增益仅影响该Run/机制；先作可区分解释的有界诊断，不自动宣告整个PROJECT失败",
+      "why": "当前Run没有有效增益只影响对应机制；先核是否实现/评价错误，再判断可区分实验、修复或实质转向，当前项目不自动STOP",
       "playbook": "playbooks/03_EXPERIMENT_LOOP.md"
     },
     "INVALID_EVIDENCE": {
@@ -285,7 +285,7 @@
     "PIVOT": {
       "action": "REQUEST_REAL_USER_DIRECTION",
       "route": null,
-      "why": "重大主张变化先由真实用户决定；第09章选择另独立执行"
+      "why": "原机制有可信负证据且发现不同预测的新科学命题才建议实质PIVOT；重大方向或第09章Step05选择仍由真实用户决定，旧预算不自动迁移"
     },
     "HOLD": {
       "action": "STOP",
@@ -316,14 +316,14 @@
       "action": "STOP_REPAIR_SCOPE",
       "route": "03-E",
       "lesson": "L5",
-      "why": "修复不改变科学主张或GO/STOP判断时停止该项修复；普通必要Bug除外",
+      "why": "若修复不能恢复科研正确性且不会影响实验可判断性或研究决定，停止无价值修复；必要Bug和使Run有效的定向修复可继续",
       "playbook": "playbooks/02_BUILD_DEBUG.md"
     },
     "INCONCLUSIVE_LOW_VALUE": {
       "action": "ADVISE_HOLD_OR_STOP",
       "route": "02-D",
       "lesson": "L5",
-      "why": "证据不足不等于无效；可单独基于贡献缺口和后续成本建议止损",
+      "why": "INCONCLUSIVE不是REFUTED；有低成本不同预测可在已批准范围继续，若正负结果都无法改变判断或投入不值才建议HOLD/STOP，必须写明停止范围",
       "playbook": "playbooks/03_EXPERIMENT_LOOP.md"
     },
     "DATA_AUDIT": {
@@ -424,6 +424,15 @@
       "deliverable": "污染范围与受影响模型选择、Run/Claim降级记录、新独立确认数据可行性",
       "verify": "历史test访问与选择过程可追溯；若缺合法新holdout则记CONFIRMATION_UNAVAILABLE",
       "boundary": "禁止更名重跑原test冒充新确认；新正式实验需单独授权"
+    },
+    "RESEARCH_DECISION": {
+      "action": "ASSESS_SCOPED_CONTINUATION",
+      "route": null,
+      "why": "负Pilot或追加预算时按信息价值与成本选CONTINUE/REPAIR/PIVOT/HOLD或STOP；先核原始Run的有效性与DECISION_SCOPE，不用单机制FAIL自动结束项目；无不同结果预测或成本不值才建议停止当前分支",
+      "playbook": "RESEARCH_DECISIONS.md",
+      "deliverable": "原Run及受影响范围 | 新科学信息/竞争解释 | 下一实验正反结果对决定的影响 | 真实成本与授权 | 单一投入决定及恢复条件",
+      "verify": "结果有效性、实验判别力、对照与可执行资源条件均可核；PIVOT不得仅换Backbone或重复失败前提",
+      "boundary": "只读建议而非训练批准；重大改题或项目级HOLD/STOP需要真实用户决定，CRITICAL只阻断受影响动作；确认集和CPU/GPU禁训规则不变"
     }
   }
 }

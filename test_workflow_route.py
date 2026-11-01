@@ -859,5 +859,36 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         self.assertEqual(len(router.load_routes()), 24)
 
 
+
+    def test_exploration_decisions_repair_pivot_stop_contract(self):
+        # This is an offline contract test; it does not claim the policy predicts paper success.
+        policy = (ROOT / "RESEARCH_DECISIONS.md").read_text(encoding="utf-8")
+        for token in ("EXPLORE", "CONTINUE", "REPAIR", "PIVOT", "HOLD / STOP",
+                      "DECISION_SCOPE", "SAFE-Gait", "APACE", "不同结果",
+                      "正式论文", "真实授权"):
+            self.assertIn(token, policy, token)
+        for relative in ("ORCHESTRATOR.md", "IDEA_FUNNEL.md", "POST_SELECTION.md",
+                         "TRIAGE.md", "README.md"):
+            content = (ROOT / relative).read_text(encoding="utf-8")
+            self.assertIn("RESEARCH_DECISIONS.md", content, relative)
+        self.assertIn("RESEARCH_DECISIONS.md",
+                      (ROOT / "playbooks/03_EXPERIMENT_LOOP.md").read_text(encoding="utf-8"))
+        self.assertIn("SAFE-Gait", (ROOT / "SELECTION_AUDIT.md").read_text(encoding="utf-8"))
+        advice = router.advise_event("RESEARCH_DECISION")
+        self.assertEqual(advice["action"], "ASSESS_SCOPED_CONTINUATION")
+        self.assertIsNone(advice["route"])
+        self.assertEqual(advice["playbook"], "RESEARCH_DECISIONS.md")
+        self.assertIn("用户", advice["boundary"])
+        self.assertEqual(len(router.load_routes()), 24)
+        cli = subprocess.run([sys.executable, str(ROOT / "workflow_route.py"),
+                              "--event", "RESEARCH_DECISION"], capture_output=True, text=True)
+        self.assertEqual(0, cli.returncode, cli.stderr)
+        self.assertIn("ASSESS_SCOPED_CONTINUATION", cli.stdout)
+        # New continuation advice cannot override explicit user HOLD or critical blocking.
+        self.assertEqual(router.propose_transition("MINOR", "SCOPED_EXPLORATION", "HOLD"),
+                         "HOLD")
+        self.assertEqual(router.propose_transition("CRITICAL", "SCOPED_EXPLORATION",
+                                                  "CONTINUE_LIMITED"), "BLOCKED_CRITICAL")
+
 if __name__=="__main__":
     unittest.main()
