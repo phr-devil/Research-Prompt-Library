@@ -87,6 +87,39 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertIn("不可污染确认性 test", salvage)
         self.assertIn("正式", salvage)
 
+    def test_risk_triggered_review_is_not_paper_level_preflight(self):
+        root="08_算法检验与优化/高水平计算机论文工作流/"
+        funnel=read(root+"IDEA_FUNNEL.md")
+        pilot=read(root+"02_最小科学验证与决策.md")
+        design=read(root+"playbooks/ALGORITHM_DESIGN_REFERENCE.md")
+        baseline=read(root+"playbooks/01_DATA_BASELINE.md")
+        triage=read(root+"TRIAGE.md")
+        post=read(root+"POST_SELECTION.md")
+        contract=read(root+"templates/TASK_CONTRACT.md")
+        salvage=read("09_失败算法项目挽救与转向/WORKFLOW.md")
+        for token in ("F4 默认四项轻量合同", "完整科研合同按事件触发",
+                      "五问是", "UNKNOWN不自动触发逐项核查"):
+            self.assertIn(token,funnel)
+        default_prompt=funnel.split("## 一次性可复制 Prompt",1)[1].split("~~~text",1)[1].split("~~~",1)[0]
+        self.assertIn("给每个候选四项",default_prompt)
+        self.assertIn("不训练",default_prompt)
+        self.assertNotIn("先完整复现强基线",default_prompt)
+        self.assertIn("探索发现",pilot)
+        self.assertIn("能力建设",pilot)
+        self.assertIn("仅机制比较",pilot)
+        self.assertIn("先一个最简合理架构",design)
+        self.assertIn("初探仅需简单可信参照",baseline)
+        self.assertIn("不逐项核查",triage)
+        self.assertIn("DISCOVERY/ENABLEMENT/MECHANISM_TEST",post)
+        self.assertIn("不强制虚构科学假说",contract)
+        self.assertIn("探索性Step06",salvage)
+        self.assertIn("正式确认性实验",salvage)
+        self.assertIn("当前拟执行动作",salvage)
+        self.assertIn("Token",read("AGENTS.md"))
+        for path,limit in ((root+"playbooks/01_DATA_BASELINE.md",2700),
+                           (root+"playbooks/ALGORITHM_DESIGN_REFERENCE.md",3000)):
+            self.assertLess(len(read(path)),limit)
+
     def test_scientific_integrity_still_required(self):
         p=read("09_失败算法项目挽救与转向/WORKFLOW.md")
         self.assertIn("公平",p)
