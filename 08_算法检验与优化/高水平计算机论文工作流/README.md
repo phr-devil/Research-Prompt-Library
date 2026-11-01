@@ -1,6 +1,6 @@
 # Research Workflow v6.1｜科学机会驱动，最简算法，可信实验
 
-**默认路线：可信科学问题/独立贡献 → 最简可证伪算法与强基线 → 有区分力的真实实验 → 论文证据。** 先证明研究值得做，再控制模型复杂度；不保证论文接收或性能提升。
+**默认路线：可信科学问题/独立贡献 → 可执行基线与最小机制证据 → 有区分力的研发实验 → 独立确认 → 论文证据。** 优先获得能改变科研决定的真实信息，再投入复杂开发；不保证论文接收或性能提升。
 
 **面向 AI 自主读取的选题后技术入口**：[POST_SELECTION.md](POST_SELECTION.md)。 已选课题研发的细化版增加模块/Loss 合同、基线复现、训练诊断、统计设计和 [数值来源核验工具](../../research_tools/README.md)（只读、不等于独立科学验收）。其按需手册覆盖 [数据/强基线](playbooks/01_DATA_BASELINE.md)、[算法实现/排错](playbooks/02_BUILD_DEBUG.md)、[有界实验迭代](playbooks/03_EXPERIMENT_LOOP.md)、[正式科学证据](playbooks/04_EVIDENCE_CONFIRM.md)，并有 [传感器门控实例](playbooks/EXAMPLE_SENSOR_GATE.md)。已选题或续做科研项目时，AI 在读完总控后只读所需手册；这些文件提供**操作方法与具体验收**，不要求用户粘贴完整 Prompt。
 
