@@ -80,15 +80,16 @@ def inspect_selection(candidates, selection=None):
     choice_prefix = re.compile(
         r"(?:我(?:最终)?(?:决定)?|最终|现在)?\s*(?:选(?:择|定|了)?|决定(?:选|选择)?|采用|确定(?:选|选择)?|pick|choose|chosen)\s*$",
         flags=re.IGNORECASE)
-    negated = re.compile(
-        r"(?:不|没|未|别|拒绝|放弃)\s*(?:想)?\s*(?:选(?:择|定|了)?|采用|确定|考虑)\s*$")
+    # Only a positive choice in the current clause qualifies. A trailing
+    # "选P1" in "不建议选P1" must not count as approval.
     explicit = []
     for option, pattern in aliases.items():
         for mention in re.finditer(pattern,message,flags=re.IGNORECASE):
-            prefix=message[max(0,mention.start()-20):mention.start()]
-            if negated.search(prefix):
-                continue
-            if choice_prefix.search(prefix):
+            prefix=message[max(0,mention.start()-80):mention.start()]
+            clause=re.split(r"[，,。;；！!？?\\n]|但是|而是|不过|但|而(?=选)", prefix)[-1]
+            action=choice_prefix.search(clause)
+            if action and not re.search(r"不|没|未|别|拒绝|放弃|禁止|反对",
+                                        clause[:action.start()]):
                 explicit.append((option,mention))
     if not explicit or {option for option,_ in explicit}!={chosen}:
         raise ValueError("Selection intent is ambiguous or contradicts selected ID")
