@@ -4,7 +4,7 @@
 
 ## 1. 实验选择与计算预算（P0-4）
 
-每轮选影响Claim的实验，标`CHECK_ONLY/MECHANISM_PILOT/DEVELOPMENT_COMPARE/CONFIRMATORY`及推断范围：`Claim | 有效Run/强基线 | A/B预测 | 真值/独立单位 | 成本/授权/停止`。
+实验标`CHECK_ONLY/MECHANISM_PILOT/DEVELOPMENT_COMPARE/CONFIRMATORY`和推断范围：`Claim | Run/基线 | A/B预测 | 真值/独立组 | 成本/授权/停止`。
 
 超参数分为：
 - **scientific**：本轮要研究其科学效果的变量（例如传感器门控机制）；
@@ -13,7 +13,7 @@
 
 nuisance需记搜索范围、试验数、选择准则与可比调参机会；联合改动不冒充单模块因果（[Tuning Playbook](https://github.com/google-research/tuning_playbook)）。
 
-优先区分解释/可得性/成本；获批才测真实吞吐/显存；预算限`max_trials/max_gpu_time`。复用有效Run和`BEST_VALID_RUN`。
+首次获批训练前先复用证据，优先廉价、高判别力的负对照/签名探针，再考虑昂贵机制训练；不强制训练。吞吐/显存仅获批实测，预算限`max_trials/max_gpu_time`，复用`BEST_VALID_RUN`。
 
 机制竞争参照[算法设计](ALGORITHM_DESIGN_REFERENCE.md)；时钟/启用/缺模态有疑点才查[专项诊断](SENSOR_DIAGNOSTICS.md)。
 
@@ -24,7 +24,7 @@ nuisance需记搜索范围、试验数、选择准则与可比调参机会；联
 3. **分支竞争**：预算内比较互异预测，记`parent_run/protocol_id/changed_scope`；看同协议增益/成本，同分更简可KEEP；保留负结果，INCONCLUSIVE非DISCARD。
 4. **空结果校准**：先核曲线/搜索边界；关键无增益且检测能力不明时，正控须预指已知信号、SESOI、独立n/噪声、检出判据及失败解释；按需参考[02-C](../02_最小科学验证与决策.md)。正控PASS不证明真实任务功效或收益。留全trial。
 5. **独立单位比较**：配对效应、CI、覆盖、成本与失效域；区分seed/调参与采样方差。
-6. **决策**：`KEEP`有效开发增量；`DISCARD`有效无增量；`INCONCLUSIVE`证据不足（主指标未增益但机制签名初现，注明`MECHANISM_SIGNAL_UNCONFIRMED`与最廉价复验，不新增状态）；`INVALID`证据无效。无新信息时建议HOLD，不按次数自动STOP。记录`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`；改题由用户决定。
+6. **决策**：负结果先区分数据/评价、优化/容量、信息不足和机制预测，明确实际排除了什么；无新依据不盲目换模型。`KEEP`有效开发增量；`DISCARD`有效无增量；`INCONCLUSIVE`证据不足（主指标未增益但机制签名初现，注明`MECHANISM_SIGNAL_UNCONFIRMED`与最廉价复验，不新增状态）；`INVALID`证据无效。无新信息时建议HOLD，不按次数自动STOP。记录`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`；改题由用户决定。
 
 ## 2.5 自适应 GPU 验证：最小充分证据，不追求利用率
 
@@ -39,7 +39,7 @@ nuisance需记搜索范围、试验数、选择准则与可比调参机会；联
 | 短Pilot拟淘汰机制而欠收敛 | 获授权且值得时才做同协议成对长/短锚点；排序反转/不确定→INCONCLUSIVE；两点一致也不保证更长预算稳定 |
 | 已过拟合、机制负对照失败、真实评价不可识别 | 转诊断/缩窄/HOLD，不因显卡空闲扩大训练 |
 
-获批后测吞吐/VRAM，记`实验→决策→成本→停止`；batch大不保证变好，须复核超参；GPU 利用率不是科学 KPI；留失败Run，超范围需重新获批。
+获批后核吞吐/VRAM及`实验→决策→成本→停止`；大batch不保证改善，GPU利用率非科学KPI；保留失败Run，超范围重获授权。
 
 ## 3. 统计设计：SESOI/MDE（P0-6）
 
