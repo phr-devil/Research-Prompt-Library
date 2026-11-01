@@ -64,6 +64,29 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertIn('NOT_MEASURED',evaluation)
         self.assertIn('不运行训练',funnel)
         self.assertIn('真实用户选题',funnel)
+    def test_liberal_exploration_token_saving_and_consistent_verdicts(self):
+        root="08_算法检验与优化/高水平计算机论文工作流/"
+        agents=read("AGENTS.md")
+        funnel=read(root+"IDEA_FUNNEL.md")
+        post=read(root+"POST_SELECTION.md")
+        policy=read(root+"RESEARCH_DECISIONS.md")
+        experiments=read(root+"playbooks/03_EXPERIMENT_LOOP.md")
+        salvage=read("09_失败算法项目挽救与转向/WORKFLOW.md")
+        for phrase in ("Token/审查成本默认规则", "HYPOTHESIZED", "不重复全读"):
+            self.assertIn(phrase, agents)
+        for phrase in ("探索准入与分层核验", "PROXY_ONLY", "1–2项最直接", "三问不是全部PASS"):
+            self.assertIn(phrase, funnel)
+        self.assertIn("选题后优先获取一项真实证据", post)
+        self.assertIn("必要实验能力", policy)
+        self.assertIn("能力验收", experiments)
+        self.assertIn("RUN_STATUS=COMPLETE/PARTIAL/CRASH/BLOCKED/NOT_RUN", salvage)
+        self.assertIn("KEEP/DISCARD/INCONCLUSIVE/INVALID", salvage)
+        self.assertNotIn("按 KEEP/DISCARD/INVALID/CRASH 分类", salvage)
+        self.assertIn("不得执行 Step 06", salvage)
+        self.assertIn("不授权 GPU", salvage)
+        self.assertIn("不可污染确认性 test", salvage)
+        self.assertIn("正式", salvage)
+
     def test_scientific_integrity_still_required(self):
         p=read("09_失败算法项目挽救与转向/WORKFLOW.md")
         self.assertIn("公平",p)
