@@ -74,7 +74,7 @@ class NoveltyPolicyTests(unittest.TestCase):
         salvage=read("09_失败算法项目挽救与转向/WORKFLOW.md")
         for phrase in ("Token/审查成本默认规则", "HYPOTHESIZED", "不重复全读"):
             self.assertIn(phrase, agents)
-        for phrase in ("宽进、分层核验", "PROXY_ONLY", "1–2项最直接", "三问不是全部PASS"):
+        for phrase in ("探索准入与分层核验", "PROXY_ONLY", "1–2项最直接", "三问不是全部PASS"):
             self.assertIn(phrase, funnel)
         self.assertIn("选题后优先获取一项真实证据", post)
         self.assertIn("必要实验能力", policy)
