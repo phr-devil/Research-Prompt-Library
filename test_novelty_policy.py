@@ -120,6 +120,33 @@ class NoveltyPolicyTests(unittest.TestCase):
                            (root+"playbooks/ALGORITHM_DESIGN_REFERENCE.md",3000)):
             self.assertLess(len(read(path)),limit)
 
+    def test_premature_gates_removed_from_machine_and_agent_prompts(self):
+        import json
+        root="08_算法检验与优化/高水平计算机论文工作流/"
+        policy=json.loads(read(root+"TRIAGE_POLICY.json"))
+        self.assertIn("DEFER_UNKNOWN", policy["unknown_action"])
+        self.assertIn("irreversible cost", policy["uncertainty"])
+        self.assertEqual(policy["levels"]["CRITICAL"]["default"],"BLOCK_AFFECTED_ACTION")
+        repair=json.loads(read(root+"REPAIR_ROUTES.json"))
+        self.assertIn("measurement/data/training/evaluation capability",repair["repair_value_guard"])
+        self.assertIn("探索性观察/能力建设不强制先获得独立统计单位与强基线",
+                      read(root+"00_统一规则与Skill映射.md"))
+        build=read(root+"playbooks/02_BUILD_DEBUG.md")
+        self.assertIn("初始MVP只需回答",build)
+        self.assertIn("机制比较",build)
+        self.assertIn("必要实验能力",read(root+"RECOVERY.md"))
+        develop=read(root+"03_完整算法研发与正式实验.md")
+        for key in ("合理优化探索", "若继续做**机制归因实验**", "不能无限换配置"):
+            self.assertIn(key,develop)
+        salvage=read("09_失败算法项目挽救与转向/WORKFLOW.md")
+        self.assertIn("第08章F1",salvage)
+        self.assertIn("不得提前执行 Step 06",salvage)
+        tests={x["id"]:x for x in json.loads(read("EVAL_CASES_CURRENT.json"))["cases"]}
+        self.assertEqual(len(tests),21)
+        for id_,sel in (("N18","02-B"),("N19","03-C"),("N20","03-E"),("N21","03-D")):
+            self.assertEqual(tests[id_]["prompt_selector"],sel)
+            self.assertTrue(tests[id_]["must"] and tests[id_]["critical"])
+
     def test_scientific_integrity_still_required(self):
         p=read("09_失败算法项目挽救与转向/WORKFLOW.md")
         self.assertIn("公平",p)

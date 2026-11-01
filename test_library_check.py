@@ -223,7 +223,7 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertIn("官方OS/驱动/ABI/权重许可", salvage)
         fixture = json.loads((self.root/"EVAL_CASES_CURRENT.json").read_text(encoding="utf-8"))
         cases = {x["id"]: x for x in fixture["cases"]}
-        self.assertEqual(len(cases), 17)
+        self.assertEqual(len(cases), 21)
         for case_id in ("N16", "N17"):
             self.assertEqual(cases[case_id]["prompt_selector"], "F1-F4-DOCUMENT")
             self.assertEqual(cases[case_id]["prompt_path"],

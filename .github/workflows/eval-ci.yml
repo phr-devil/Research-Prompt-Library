@@ -125,6 +125,27 @@ jobs:
           print("F4_FEASIBILITY_PLAN_PASS: 2 scenarios, 4 planned, 0 model calls")
           PY
 
+      - name: Verify anti-overcaution scenario prompt extraction without model calls
+        run: |
+          python3 - <<'PY'
+          import json,subprocess,sys
+          from pathlib import Path
+          base="52e6ac8db257fee13f859db2229ba242cf10f458"
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          selected=["N18","N19","N20","N21"]
+          subprocess.run([sys.executable,"eval_runner.py","--suite","current",
+                          "--cases",",".join(selected),"--base-ref",base,
+                          "--candidate-ref",head,"--max-calls","8",
+                          "--allow-unchanged-controls",
+                          "--output-dir",".eval_runs/ci-anti-overcaution"],check=True)
+          m=json.loads(Path(".eval_runs/ci-anti-overcaution/manifest.json").read_text(encoding="utf-8"))
+          p=json.loads(Path(".eval_runs/ci-anti-overcaution/plan.json").read_text(encoding="utf-8"))
+          assert m["status"]=="PLAN_ONLY" and m["actual_calls"]==0
+          assert m["selected_cases"]==selected and len(p)==8
+          assert set(x["case_id"] for x in p)==set(selected)
+          print("ANTI_OVERCAUTION_PLAN_PASS: 4 scenarios, 8 planned, 0 model calls")
+          PY
+
       - name: Verify all 24 research scene prompts can be extracted
         run: |
           python3 - <<'PY'
