@@ -12,6 +12,15 @@ def prompt(repo,sha,path,selector=""):
     r=subprocess.run(["git","-C",str(repo),"show",sha+":"+path],capture_output=True,text=True,encoding="utf-8",timeout=15)
     if r.returncode:raise RuntimeError("Missing Git source/history: "+path)
     content=r.stdout
+    # Explicit opt-in for the real F1–F4 default entry. This document has no
+    # historical fenced Prompt; never generalize this bypass to arbitrary files.
+    if selector=="F1-F4-DOCUMENT":
+        if path!="08_算法检验与优化/高水平计算机论文工作流/IDEA_FUNNEL.md":
+            raise ValueError("F1-F4-DOCUMENT is restricted to the research funnel")
+        if any(needle not in content for needle in
+               ("F1 科学机会发现", "F4 可信推荐最低证据", "F5 用户选题")):
+            raise ValueError("Research funnel contract missing")
+        return content.strip()
     if selector:
         if selector=="S01-B":
             heading=r"(?m)^### B ·[^\n]*$"
