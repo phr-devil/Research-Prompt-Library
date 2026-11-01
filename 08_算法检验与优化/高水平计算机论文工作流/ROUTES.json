@@ -264,7 +264,7 @@
     },
     "NEW_MECHANISM": {
       "action": "GENERATE_TESTABLE_MECHANISM",
-      "route": "03-A",
+      "route": null,
       "why": "尚未实现的新机制先从配对残差和合法信息/归纳偏置生成竞争假说，写不同结果签名与最低成本判别；近邻仍须核证，不将构思当科学证据",
       "playbook": "playbooks/ALGORITHM_DESIGN_REFERENCE.md",
       "deliverable": "少量有不同科学解释的机制候选、来源Run/数据或文献及公平替代、下一项有界测试",

@@ -12,10 +12,14 @@ import sys
 from pathlib import Path
 
 REQUIRED = {"run_id", "metric", "value", "status", "evidence_path"}
-NON_EVIDENCE = {"INVALID", "CRASH", "PENDING", "NOT_RUN", "HOLD", "INCONCLUSIVE"}
-ACCEPTED_SOURCE_STATES = {"KEEP", "DISCARD", "VALID", "PASS", "COMPLETE", "EXPLORATORY"}
+NON_EVIDENCE = {"INVALID", "CRASH", "PENDING", "NOT_RUN", "HOLD"}
+# A valid INCONCLUSIVE run can support numeric provenance, not a positive scientific claim.
+ACCEPTED_SOURCE_STATES = {"KEEP", "DISCARD", "INCONCLUSIVE", "VALID", "PASS", "COMPLETE", "EXPLORATORY"}
 IDENTITY = ("data_version", "split", "seed", "protocol_sha", "config_sha",
             "n_units", "statistical_unit", "metric_unit")
+# These fields are required only for a COMPLETE identity assertion, not basic numeric checks.
+CORE_IDENTITY = ("data_version", "split", "protocol_sha", "config_sha",
+                 "n_units", "statistical_unit")
 
 
 def inside(root, candidate, *, must_exist=True):
@@ -78,7 +82,9 @@ def read_source(path, run_id, metric):
             raise ValueError("named metric absent")
     else:
         raise ValueError("unsupported source type; expected JSON/CSV/TSV")
-    if "run_id" in metadata and str(metadata["run_id"]) != run_id:
+    if "run_id" not in metadata or not str(metadata["run_id"]).strip():
+        raise ValueError("source run_id missing; numeric equality alone cannot bind a Run")
+    if str(metadata["run_id"]).strip() != run_id:
         raise ValueError("source run_id mismatch")
     return number(metric_value), metadata
 
@@ -125,20 +131,28 @@ def audit(root, runs_path, claims_path=None, *, atol=1e-8, require_identity=Fals
                 raise ValueError(f"metric value mismatch: TSV={expected}, source={actual}")
             checked = []
             absent = []
+            # Blank RUNS fields are unknown, never evidence of a complete identity.
+            not_recorded = [field for field in CORE_IDENTITY
+                            if not str(row.get(field) or "").strip()]
             for field in IDENTITY:
-                if row.get(field) not in (None, ""):
-                    if field not in metadata:
+                recorded = str(row.get(field) or "").strip()
+                if recorded:
+                    source_field = metadata.get(field)
+                    if source_field is None or not str(source_field).strip():
                         absent.append(field)
-                    elif str(metadata[field]) != str(row[field]):
+                    elif str(source_field).strip() != recorded:
                         raise ValueError(f"provenance mismatch for {field}")
                     else:
                         checked.append(field)
-            if require_identity and absent:
-                raise ValueError("incomplete identity provenance: " + ",".join(absent))
+            missing_identity = sorted(set(absent + not_recorded))
+            if require_identity and missing_identity:
+                raise ValueError("incomplete identity provenance: " + ",".join(missing_identity))
             results.append({"run_id": run_id, "status": "SOURCE_MATCH",
+                            "scientific_run_status": status,
                             "metric": metric, "value": actual,
-                            "identity_scope": "PARTIAL" if absent else "COMPLETE",
-                            "identity_checked": checked, "identity_not_embedded": absent})
+                            "identity_scope": "PARTIAL" if missing_identity else "COMPLETE",
+                            "identity_checked": checked, "identity_not_embedded": absent,
+                            "identity_not_recorded": not_recorded})
         except (OSError, ValueError, TypeError, json.JSONDecodeError, UnicodeError) as exc:
             results.append({"run_id": run_id, "status": "UNVERIFIED", "reason": str(exc)})
     by_result = {r["run_id"]: r for r in results if r["run_id"] in by_id}
@@ -163,7 +177,9 @@ def audit(root, runs_path, claims_path=None, *, atol=1e-8, require_identity=Fals
                 if not math.isclose(expected, source_result["value"], rel_tol=1e-9, abs_tol=atol):
                     raise ValueError("claim value differs from verified source")
                 claim_results.append({"claim_id": claim_id, "run_id": run_id,
-                                      "status": "SOURCE_MATCH_NOT_SCIENCE_REVIEW"})
+                                      "status": "SOURCE_MATCH_NOT_SCIENCE_REVIEW",
+                                      "scientific_run_status": source_result["scientific_run_status"],
+                                      "positive_claim_supported": False})
             except (KeyError, ValueError, TypeError) as exc:
                 claim_results.append({"claim_id": claim_id, "status": "UNVERIFIED",
                                       "reason": str(exc)})

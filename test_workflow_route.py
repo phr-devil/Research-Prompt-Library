@@ -503,12 +503,16 @@ class WorkflowTests(unittest.TestCase):
     def test_new_mechanism_advice_is_constructive_not_evidence_confirm(self):
         advice = router.advise_event("NEW_MECHANISM")
         self.assertEqual("GENERATE_TESTABLE_MECHANISM", advice["action"])
-        self.assertEqual("03-A", advice["route"])
+        self.assertIsNone(advice["route"])
         self.assertEqual("playbooks/ALGORITHM_DESIGN_REFERENCE.md", advice["playbook"])
         self.assertEqual("ADVISORY_ONLY_NO_EXECUTION", advice["permission"])
         design = router.resolve_playbook(advice["playbook"])
         self.assertTrue(design.is_file())
         self.assertNotEqual("playbooks/04_EVIDENCE_CONFIRM.md", advice["playbook"])
+        self.assertNotIn("recommended_platform", advice)
+        implement = router.advise_event("MODEL_DESIGN")
+        self.assertEqual("03-A", implement["route"])
+        self.assertEqual("playbooks/02_BUILD_DEBUG.md", implement["playbook"])
 
     def test_v61_event_advice_covers_decisive_research_scenarios(self):
         cases = {
@@ -517,7 +521,7 @@ class WorkflowTests(unittest.TestCase):
             "NO_GAIN": ("ITERATE", "03-D"),
             "BASELINE_STRONGER": ("DIAGNOSE", "03-E"),
             "INVALID_EVIDENCE": ("BLOCK_AFFECTED_CLAIM", "02-B"),
-            "NEW_MECHANISM": ("GENERATE_TESTABLE_MECHANISM", "03-A"),
+            "NEW_MECHANISM": ("GENERATE_TESTABLE_MECHANISM", None),
             "CONFIRMATION": ("VERIFY_AND_AUTHORIZE", "03-F"),
             "DRAFT": ("WRITE_UNVERIFIED", "05-A"),
             "PIVOT": ("REQUEST_REAL_USER_DIRECTION", None),
@@ -727,6 +731,46 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         strict, out = self.invoke("--require-identity")
         self.assertEqual(strict.returncode, 0)
         self.assertEqual(out["runs"][0]["identity_scope"], "COMPLETE")
+
+    def test_valid_inconclusive_run_keeps_numeric_source_but_not_positive_claim(self):
+        self.save_rows([dict(self.row, status="INCONCLUSIVE")])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(out["runs"][0]["status"], "SOURCE_MATCH")
+        self.assertEqual(out["runs"][0]["scientific_run_status"], "INCONCLUSIVE")
+        self.assertEqual(out["claims"][0]["status"], "SOURCE_MATCH_NOT_SCIENCE_REVIEW")
+        self.assertFalse(out["claims"][0]["positive_claim_supported"])
+
+    def test_source_without_run_identity_fails_even_with_matching_metric(self):
+        self.save_source({"metrics": {"ap": 0.812}})
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(out["runs"][0]["status"], "UNVERIFIED")
+        self.assertIn("source run_id missing", out["runs"][0]["reason"])
+        self.assertEqual(out["claims"][0]["status"], "UNVERIFIED")
+
+    def test_missing_core_run_identity_cannot_appear_complete(self):
+        missing = dict(self.row)
+        for field in ("data_version", "split", "protocol_sha", "config_sha",
+                      "n_units", "statistical_unit"):
+            missing[field] = ""
+        self.save_rows([missing])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(out["runs"][0]["identity_scope"], "PARTIAL")
+        self.assertIn("data_version", out["runs"][0]["identity_not_recorded"])
+        strict, out = self.invoke("--require-identity")
+        self.assertEqual(strict.returncode, 1)
+        self.assertIn("incomplete identity provenance", out["runs"][0]["reason"])
+
+    def test_complete_identity_requires_core_fields_on_both_sides(self):
+        self.save_source({"run_id": "R1", "metrics": {"ap": 0.812}})
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual(out["runs"][0]["identity_scope"], "PARTIAL")
+        strict, out = self.invoke("--require-identity")
+        self.assertEqual(strict.returncode, 1)
+        self.assertIn("protocol_sha", out["runs"][0]["reason"])
 
     def test_all_historical_invalid_runs_do_not_produce_empty_success(self):
         self.save_rows([dict(self.row, status="INVALID")])

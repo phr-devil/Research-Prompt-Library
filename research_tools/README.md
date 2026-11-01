@@ -9,18 +9,18 @@
 ~~~bash
 python research_tools/audit_evidence.py --root /path/to/algorithm-project --runs research/RUNS.tsv
 python research_tools/audit_evidence.py --root /path/to/algorithm-project --runs research/RUNS.tsv --claims research/claims_audit.json
-# 主张完整版本谱系时，要求 RUNS 填写的所有身份字段也存在于来源结果
+# 完整身份核验还要求关键数据/协议/配置/统计单位字段在 RUNS 与来源中非空且匹配
 python research_tools/audit_evidence.py --root /path/to/algorithm-project --runs research/RUNS.tsv --claims research/claims_audit.json --require-identity
 ~~~
 
-可选 **--output research/audit.json** 仅新建报告，不覆盖任何文件。脚本默认只输出 JSON 到标准输出；退出码：0 = 来源检查完成（不表示科学成立），1 = 一条或多条记录无法核对，2 = 输入/路径/JSON 错误。旧 RUN 标为 INVALID/CRASH/PENDING/NOT_RUN/HOLD/INCONCLUSIVE 时保留历史但不允许作为有效数字主张来源。若没有任何 RUN，或只有不可作为有效证据的历史 Run，则拒绝空 PASS。
+可选 **--output research/audit.json** 仅新建报告，不覆盖任何文件。脚本默认只输出 JSON 到标准输出；退出码：0 = 来源检查完成（不表示科学成立），1 = 一条或多条记录无法核对，2 = 输入/路径/JSON 错误。旧 RUN 标为 INVALID/CRASH/PENDING/NOT_RUN/HOLD 时保留历史但不作为可核有效数值；**有效 INCONCLUSIVE 的数值可做 SOURCE_MATCH 来源核验，但不能据此声称机制或正面任务增益成立**。若没有任何 RUN，或只有不可作为有效证据的历史 Run，则拒绝空 PASS。
 
 ## 与现有项目字段保持一致
 
 使用模板 [RUNS.tsv](../08_算法检验与优化/高水平计算机论文工作流/templates/RUNS.tsv) 既有列，不需迁移到另一套实验平台。每条有效行至少含：
 
-- **run_id, metric, value, status, evidence_path**：例如 metric 为 ap；status 为 KEEP / DISCARD；evidence_path 必须相对于项目根目录。
-- 可选填入既有的 **data_version, split, seed, protocol_sha, config_sha, n_units, statistical_unit, metric_unit**；**原始结果里显式含该字段时必须与 RUNS 一致；对版本谱系严格声明可用 --require-identity，缺失的已填写字段会判 UNVERIFIED**，缺失则如实报告 identity_not_embedded，不能宣称完整谱系核验。
+- **run_id, metric, value, status, evidence_path**：status 可为 KEEP / DISCARD / INCONCLUSIVE 等有效结果状态；源 JSON/CSV/TSV 中必须有相同的 run_id，数字相等但无法确认所属Run时拒绝来源匹配；evidence_path 相对于项目根目录。
+- **data_version、split、protocol_sha、config_sha、n_units、statistical_unit** 为完整身份声明的最低要求；seed、metric_unit 若存在仍需匹配。普通模式允许缺字段但明确标 `identity_scope=PARTIAL` / `identity_not_recorded` / `identity_not_embedded`；`--require-identity` 遇关键字段未填或来源缺失时返回 UNVERIFIED。它核数值身份而非数据是否真正独立。
 - JSON 支持 {"run_id":"R1","metrics":{"ap":0.812},"split":"val"}，也支持 {"run_id":"R1","metric":"ap","value":0.812}；CSV/TSV 可为单行宽表（run_id,ap）或长表（run_id,metric,value）。多行必须用 run_id 唯一定位；不读取日志中的任意数字凑匹配。
 - 单个结果来源限 8 MiB：大模型预测先通过项目已有统计脚本导出结构化指标摘要，保留原始预测的真实路径与版本。
 
@@ -34,7 +34,7 @@ python research_tools/audit_evidence.py --root /path/to/algorithm-project --runs
 }
 ~~~
 
-数字核验 SOURCE_MATCH_NOT_SCIENCE_REVIEW 仅代表文稿数字能在有效来源中找到并与 RUNS 对应。**代理指标提高，不意味着真实任务、机制或论文贡献已经得到独立证实。**
+数字核验 SOURCE_MATCH_NOT_SCIENCE_REVIEW 仅代表文稿数字与来源相符；报告同时提供 `scientific_run_status`，`positive_claim_supported=false`，不评定真实科学支持；有效 INCONCLUSIVE 可报告其数值但不能宣称正面增益。**代理指标提高，不意味着真实任务、机制或论文贡献已经得到独立证实。**
 
 ## 安全与局限
 
