@@ -43,6 +43,27 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertIn("不要求在Step05实测",salvage)
         self.assertIn("不新增审批阶段",lessons)
 
+    def test_selection_recommendation_calibration_keeps_positive_controls(self):
+        root='08_算法检验与优化/高水平计算机论文工作流/'
+        funnel=read(root+'IDEA_FUNNEL.md')
+        stage=read(root+'01_科学选题与跨AI审核.md')
+        audit=read(root+'SELECTION_AUDIT.md')
+        evaluation=read('EVALUATION.md')
+        for token in ('具名强基线', '最强简单基线', 'STABLE', 'FRONTIER', 'RESERVE',
+                      'OBSERVED', 'HYPOTHESIZED', 'RETROSPECTIVE_UNVERIFIED',
+                      'RECOMMEND', 'EXPLORE', 'NOT_READY', '无可信来源'):
+            self.assertIn(token,funnel)
+        for token in ('STABLE/FRONTIER/RESERVE', '强基线', '独立真值'):
+            self.assertIn(token,stage)
+        for case_id in ('A1 REALDISP','A2 RASS','A3 SafeSelect','A4 ContactWorld',
+                        'A5 OpenPack','A6 CAR-IMU','P1 保护性正例','P2 保护性正例','P3 保护性正例'):
+            self.assertIn(case_id,audit)
+        for token in ('历史项目的初次选题完整时点资料不齐', '不是历史预测命中率',
+                      '错误排除率', '不应误杀', 'NOT_MEASURED'):
+            self.assertTrue(token in audit or token in evaluation)
+        self.assertIn('NOT_MEASURED',evaluation)
+        self.assertIn('不运行训练',funnel)
+        self.assertIn('真实用户选题',funnel)
     def test_scientific_integrity_still_required(self):
         p=read("09_失败算法项目挽救与转向/WORKFLOW.md")
         self.assertIn("公平",p)
