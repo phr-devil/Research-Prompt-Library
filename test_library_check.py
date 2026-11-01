@@ -147,6 +147,31 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertIn("不新建SIGNAL_KEEP状态", post)
         self.assertIn("明确禁止训练时所有CPU/GPU拟合与更新均不得执行", post)
 
+    def test_mechanism_advice_and_exploratory_slices_are_not_confirmation(self):
+        import json
+        routes = json.loads(self.read8("ROUTES.json"))["event_advice"]
+        self.assertIsNone(routes["NEW_MECHANISM"]["route"])
+        self.assertEqual("playbooks/ALGORITHM_DESIGN_REFERENCE.md",
+                         routes["NEW_MECHANISM"]["playbook"])
+        self.assertEqual("03-A", routes["MODEL_DESIGN"]["route"])
+        data = self.read8("playbooks/01_DATA_BASELINE.md")
+        experiment = self.read8("playbooks/03_EXPERIMENT_LOOP.md")
+        for marker in ("独立开发组", "冻结确认集", "探索性"):
+            self.assertIn(marker, data + "\n" + experiment)
+        for marker in ("已知信号", "SESOI", "独立n/噪声", "检出判据",
+                       "两点一致也不保证", "INCONCLUSIVE"):
+            self.assertIn(marker, experiment)
+
+    def test_legacy_fixed_candidate_and_retry_quotas_do_not_override_evidence(self):
+        design = self.read8("playbooks/02_BUILD_DEBUG.md")
+        recovery = self.read8("RECOVERY.md")
+        orch = self.read8("ORCHESTRATOR.md")
+        self.assertIn("可以仅一项", design)
+        self.assertNotIn("先选 2–3 个候选", design)
+        self.assertNotIn("连续3次尝试", recovery)
+        self.assertIn("不按固定次数", recovery)
+        self.assertIn("先核用户当前意图", orch)
+
     def test_zero_candidate_does_not_impersonate_selection(self):
         nine = (self.root / "09_失败算法项目挽救与转向" / "WORKFLOW.md").read_text(encoding="utf-8")
         self.assertIn("0–3个", nine)
