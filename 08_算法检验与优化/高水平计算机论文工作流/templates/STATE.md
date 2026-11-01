@@ -9,7 +9,7 @@
 - RESEARCH_VALUE: <可选：成功后独立贡献、下一实验能否改变决策；低投入价值不等于假设被证伪>
 - NEXT_HYPOTHESIS/TASK: <下一项最有信息量且在授权范围内的工作>
 - CANDIDATE_LINEAGE: <仅有竞争分支时记录 branch/parent_run/protocol_id/changed_scope/恢复点；详见POST_SELECTION，复用现有RUNS不新建账>
-- AUTH/BUDGET: <实际用户授权、上限、余额和来源；明确禁止训练时CPU/GPU均不训练；无则 UNAUTHORIZED>
+- AUTH/BUDGET: <真实用户授权来源；许可动作及GPU/CPU拟合/付费/确认范围；总时长/尝试数/费用/余额；禁训练时CPU/GPU参数拟合均不可运行；无则 UNAUTHORIZED>
 - BLOCKER/USER_DECISION: <仅重大分叉/真实权限问题需要询问，记录真实用户后续选择；没有则 NONE>
 - PATH_MAP: <已有RUNS/CLAIMS/REVIEW/数据的路径，不重复建账>
 - WORKFLOW_SOURCE/COMMIT: <真实的源仓 SHA 或 UNPINNED>
@@ -21,6 +21,8 @@
 - DECISION_REUSE_KEYS: <仅当需要复用REPAIRABLE带限制继续时记 decision_id, issue_id, claim_id, claim_fingerprint, data_fingerprint, protocol_fingerprint, action_intent, allowed_scope, revisit_before, source_commit, menu_message_reference, user_message_reference, choice=CONTINUE_LIMITED；另由可信调用者核对 review_due=False, permission_revoked=False, new_user_override=False，不自动推断>
 
 - NEXT_TASK_ACCEPTANCE: <可选：本轮一个科学任务的可核验交付物、测试命令或实验判据；验证未执行则 NOT_RUN>
+- RESOURCE_ENVELOPE: <按项目记录当次可用GPU/时间/数据、关键基线最低资源与不确定性；非全库硬编码配置>
+- EXPERIMENT_SCOPE: <CHECK_ONLY | MECHANISM_PILOT | DEVELOPMENT_COMPARE | CONFIRMATORY；说明本轮支持与不支持的推断>
 - EVIDENCE_SCOPE: <可选：ENGINEERING_VALID / EXPERIMENT_VALID / MECHANISM_SUPPORTED / TASK_VALUE_SUPPORTED；不得互相替代>
 - PAPER_READINESS: <可选：NO_INDEPENDENT_CLAIM | CLAIM_WITH_EVIDENCE_GAPS | DRAFTABLE | SUBMISSION_CANDIDATE；可信负结果/理论发现也可构成贡献；SUBMISSION_CANDIDATE不等于已独立审核或获准投稿>
 - HOLDOUT_ACCESS: <可选：未接触/开发中已使用/污染/UNKNOWN；不得用STATE文字证明隔离真实有效>
