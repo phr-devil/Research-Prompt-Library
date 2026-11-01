@@ -316,7 +316,7 @@
       "action": "STOP_REPAIR_SCOPE",
       "route": "03-E",
       "lesson": "L5",
-      "why": "若修复不能恢复科研正确性且不会影响实验可判断性或研究决定，停止无价值修复；必要Bug和使Run有效的定向修复可继续",
+      "why": "昂贵可选修复只有在不能恢复必要测量/数据/训练/评价能力、不能提供合法新观察且不影响科研判断时才停此修复；已授权普通Bug与恢复证据有效性的修复可继续",
       "playbook": "playbooks/02_BUILD_DEBUG.md"
     },
     "INCONCLUSIVE_LOW_VALUE": {
@@ -330,8 +330,8 @@
       "action": "VALIDATE_DATA_AND_BASELINE",
       "route": "02-B",
       "playbook": "playbooks/01_DATA_BASELINE.md",
-      "why": "核真实字段、时钟、标签与独立统计单位，再实施最小公平基线；非必要复杂审查后移",
-      "deliverable": "输入/目标/时钟/标签/组划分审计与可比简单基线",
+      "why": "按本轮目的核实际字段/时钟/单位/标签含义与泄漏；探索性观察不强制完整独立组统计和强基线，拟比较性能时才补相应独立单位与公平对照",
+      "deliverable": "合法数据入口、物理/时间含义和必要范围审计；需要性能比较时附可比简单基线",
       "verify": "数据泄漏、train-only预处理、物理单位及真实batch证据",
       "boundary": "无数据/GPU权限只执行合法检查"
     },
@@ -348,9 +348,9 @@
       "action": "BOUNDED_SCIENTIFIC_ITERATION",
       "route": "03-D",
       "playbook": "playbooks/03_EXPERIMENT_LOOP.md",
-      "why": "先写竞争解释及区分预测，再以获批预算进行固定评价、保留全结果与科学止损",
-      "deliverable": "能区分竞争假设的受控比较、全种子Run与下一科学决定",
-      "verify": "共同评价器/有效单位/置信区间与固定预算",
+      "why": "按任务区分观察发现、能力建设、常规合理优化、机制比较；只有机制因果归因才预写竞争解释/A-B结果签名。已授权预算内允许必要调试与有限nuisance调参，不能用正式holdout选模。",
+      "deliverable": "本轮目标/观察或能力验收/机制判别（按需）+实际Run/代码/数据指针、成本、结果边界及下一动作",
+      "verify": "探索检查真实观测/功能验收；机制比较核共同评价器与公平基线；正式Claim再核独立单位/CI/确认集",
       "boundary": "没有获批资源不运行；无限循环禁止"
     },
     "EVIDENCE_AUDIT": {
@@ -366,9 +366,9 @@
       "action": "WRITE_TESTABLE_METHOD_CONTRACT",
       "route": "03-A",
       "playbook": "playbooks/02_BUILD_DEBUG.md",
-      "why": "新增模块前先明确输入/输出、表征、Loss、测试时可得信息、简单替代与消融；避免装饰性复杂度",
-      "deliverable": "一份映射到现有代码的模块/损失/推理接口合同与对应行为测试",
-      "verify": "接口与公式可手算/可复现；新机制具有区别于简单替代的可证伪预测",
+      "why": "初始模型只需明确合法Input/Output、物理/时序和最小实现；有机制比较或准备正式Claim时才要求简单替代与可区分预测，未实测创新不阻断原型。",
+      "deliverable": "最简可运行模型/模块或科学假说，真实Input/Output与行为验收；机制比较再补A/B及必要消融",
+      "verify": "初期验证shape/mask/time/有限值与合法推理信息；正式优势声明须比较相同信息下的合理强基线",
       "boundary": "无授权GPU不训练；旧协议与正式holdout不可被静默修改"
     },
     "BASELINE_REPRO_FAIL": {
@@ -386,7 +386,7 @@
       "playbook": "playbooks/02_BUILD_DEBUG.md",
       "why": "先区分数据/优化/算子/实现与科学无增益；复现根因再做一项有意义的修复",
       "deliverable": "可重复失败输入或真实日志、根因竞争解释、最小修复及回归测试",
-      "verify": "原失败路径及受影响路径的新运行证据；无修复证据保留BLOCKED",
+      "verify": "原失败路径及受影响代码/Run新证据；若关键训练能力未恢复，只阻断该训练结果/动作，其他合法观察或设计不受影响",
       "boundary": "没有GPU许可不复跑训练，不把工程PASS称为科学有效"
     },
     "ABLATION_CONFOUND": {
@@ -402,8 +402,8 @@
       "action": "CHECK_EFFECT_AND_INDEPENDENCE",
       "route": "03-D",
       "playbook": "playbooks/03_EXPERIMENT_LOOP.md",
-      "why": "区分缺少独立样本、效应接近零与训练随机性，估最小有意义效应和当前精度",
-      "deliverable": "独立单位n、主要配对差额与不确定性、SESOI或MDE依据及是否需补证",
+      "why": "区分探索性未定量、独立样本不足、近零效应及训练随机性；正式收益或无效声明前才要求严格SESOI/MDE，统计无结论不是领域被证伪",
+      "deliverable": "当前证据范围、有效独立n（已知时）、效应方向/精度及最低成本补证选择；仅正式比较补SESOI/MDE",
       "verify": "按合法独立单位估计区间，解释增加seed或新增独立样本各自能解决什么",
       "boundary": "无独立证据不能把不显著写成已证无效；不自动追加GPU/数据采集"
     },
@@ -433,6 +433,24 @@
       "deliverable": "原Run与有效性/DECISION_SCOPE | 可观察结果如何区分解释、减少不确定性或改变决定 | 成本与真实AUTH | 单一CONTINUE/REPAIR/PIVOT/HOLD/STOP建议与恢复条件",
       "verify": "核公平基线、正控/收敛/检出能力中与当前负结果最相关的疑点；跨分支是否共用已失败前提；核一项有意义的下一证据及可执行成本，不得把INCONCLUSIVE写为REFUTED",
       "boundary": "只读建议而非训练批准；重大改题或项目级HOLD/STOP需要真实用户决定，CRITICAL只阻断受影响动作；确认集和CPU/GPU禁训规则不变"
+    },
+    "DISCOVERY": {
+      "action": "BOUNDED_OBSERVATION",
+      "route": null,
+      "playbook": "playbooks/03_EXPERIMENT_LOOP.md",
+      "why": "观察真实传感器现象、配对残差或合法代理特征，不必预设科学竞争机制或完整强基线；只读/训练分别核真实授权",
+      "deliverable": "实际观察与数据/配置指针、适用范围及下一个可验证问题",
+      "verify": "数据许可、无未来泄漏、真实观察可复现，代理只标PROXY_ONLY",
+      "boundary": "不将观察/代理解释成正式准确率、因果收益或训练授权"
+    },
+    "ENABLEMENT": {
+      "action": "BUILD_NECESSARY_EXPERIMENT_CAPABILITY",
+      "route": "03-C",
+      "playbook": "playbooks/02_BUILD_DEBUG.md",
+      "why": "恢复必要实验能力：同步/标定/数据读取/测量/训练稳定性/评价能力即使无即时性能增益也可在原授权预算内建设",
+      "deliverable": "可复现的能力验收与受影响旧证据状态、最小回归测试",
+      "verify": "真实数据/接口下功能或测量有效性；有参数更新须训练授权",
+      "boundary": "工程能力通过不构成科学机制或论文增益确认；禁止无界修复"
     }
   }
 }

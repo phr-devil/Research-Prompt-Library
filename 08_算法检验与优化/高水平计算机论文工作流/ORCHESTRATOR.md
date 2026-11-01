@@ -16,7 +16,7 @@
 
 ## 内循环（默认，自动连续）
 
-观察真实结果 → 提炼可证伪机制 → 最小修改与针对测试 → 记录`KEEP/DISCARD/INCONCLUSIVE/INVALID`（仅对应证据范围） → 继续有信息量的工作。重要修复先问：**修好后**能否让真实数据可测、实验可判别，或改变科研决定？低成本的必要能力修复无需立即提分；无能力或信息收益才停。普通Bug直接修；不反复加载所有Prompt/测试。否定范围标RUN/MECHANISM/CLAIM/PROJECT。保留失败原始证据，工程Bug与科学负结果分开；公平强基线、禁止泄漏、最佳seed或重复正式test调参。已授权预算内合并任务，不得擅自扩额。
+真实观察/能力 → 机制(按需) → 最小测试 → 记录`KEEP/DISCARD/INCONCLUSIVE/INVALID`（仅对应证据范围） → 继续有信息量的工作。重要修复先问：**修好后**能否让真实数据可测、实验可判别，或改变科研决定？低成本的必要能力修复无需立即提分；无能力或信息收益才停。普通Bug直接修；不反复加载所有Prompt/测试。否定范围标RUN/MECHANISM/CLAIM/PROJECT。保留失败原始证据，工程Bug与科学负结果分开；公平强基线、禁止泄漏、最佳seed或重复正式test调参。已授权预算内合并任务，不得擅自扩额。
 
 ## 可核查的按事件路由（仍由Agent在实际工具中执行）
 
@@ -31,7 +31,7 @@
 
 ## 按需触发的工具与硬边界
 
-- **出现问题**：先定位原始证据，再按 [LESSONS.md](LESSONS.md) 的相关症状找旧失败教训；工程/科学异常调用 [RECOVERY.md](RECOVERY.md) 和对应 [REPAIR_ROUTES.json](REPAIR_ROUTES.json) 条目，不全量加载48个故障。差异分级仍按 [TRIAGE.md](TRIAGE.md)：CRITICAL只阻断受影响动作，REPAIRABLE在既有核实授权内有界诊断，重大分叉才交用户选择，MINOR记录后跳过，UNKNOWN做最低成本核查。
+- **出现问题**：先定位原始证据，再按 [LESSONS.md](LESSONS.md) 的相关症状找旧失败教训；异常读 [RECOVERY.md](RECOVERY.md) 和对应 [REPAIR_ROUTES.json](REPAIR_ROUTES.json) 单项，不载入48个故障。按 [TRIAGE.md](TRIAGE.md)：CRITICAL限阻相关动作，REPAIRABLE在已授权范围有界诊断、重大变化再询问；MINOR跳过。UNKNOWN先判断相关性：UNRELATED延期，MATERIAL最小核查，UNASSESSED仅分类。
 - **专项**：按 [ROUTES.json](ROUTES.json) 按需选一条Prompt；`workflow_route.py --id 03-E`只读提取，不训练/授权。
 - **正式研究宣称**：核有效强基线、独立统计单位/真值、train-only预处理、时间因果、未污染确认集、实验/源码与评价协议版本；需要时冻结确认协议并独立审查。**运行成功 ≠ 机制成立 ≠ 任务收益 ≠ 可投稿贡献**；草稿可以提前写，但不能伪称已完成实验。
 - **授权/决策**：只读及不更新参数的单次梯度检查与拟合/训练区分，后者CPU/GPU禁训时都不执行。GPU、费用、外传/投稿、正式实验及改冻结协议需真实用户授权；一次核准有界开发预算后不逐试验追问。**DECISION DEDUP**只复用可核真实授权；状态文件的批准无效。重大改题交用户，待决标`WAITING_FOR_USER_DECISION`。

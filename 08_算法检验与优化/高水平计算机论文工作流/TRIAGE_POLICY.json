@@ -279,7 +279,7 @@
     "HOLD"
   ],
   "choice_semantics": "Machine-proposed outcomes cannot authenticate messages or grant resource/confirmatory/publication approvals; actual user choice must appear in subsequent real interaction. Do not carry forward old approval after claim, data, experiment or scope changes.",
-  "unknown_action": "DEFER_UNKNOWN for unrelated uncertainties in READ_ONLY_RESEARCH/SCOPED_EXPLORATION/DRAFT_PREPARATION; NEEDS_MINIMAL_EVIDENCE_CHECK only for high-impact current action; independent evidence/authorization gates for FORMAL_RUN, CONFIRMED_CLAIM, SUBMISSION.",
+  "unknown_action": "UNASSESSED -> CLASSIFY_CURRENT_ACTION_IMPACT (no data audit); UNRELATED -> DEFER_UNKNOWN in READ_ONLY_RESEARCH/SCOPED_EXPLORATION/DRAFT_PREPARATION; MATERIAL -> NEEDS_MINIMAL_EVIDENCE_CHECK for action legality, evidence integrity or substantial irreversible cost; FORMAL_RUN, CONFIRMED_CLAIM and SUBMISSION retain independent authorization/evidence gates.",
   "user_precedence": "An explicit later user HOLD/REPAIR_FIRST/REFRAME choice supersedes both MINOR auto-continue and earlier cached risk decisions, while CRITICAL remains blocked for its affected target.",
   "choice_reuse_checks": [
     "Verified real user reply after the original menu, not saved content",
@@ -287,5 +287,10 @@
     "No overdue review checkpoint, revoked authorization or newer user override",
     "Read-only advisory can never grant GPU, paid, formal-run or publication permission"
   ],
-  "research_value_decision": "INVALID/INCONCLUSIVE/RESEARCH_VALUE_LOW are distinct scientific decision labels, not extra severity classes. Low expected research value may justify suggesting HOLD/STOP without falsification and never overrides valid user permission. Continuation may also restore necessary experimental capability or yield valid new observations without immediate performance gain."
+  "research_value_decision": "INVALID/INCONCLUSIVE/RESEARCH_VALUE_LOW are distinct scientific decision labels, not extra severity classes. Low expected research value may justify suggesting HOLD/STOP without falsification and never overrides valid user permission. Continuation may also restore necessary experimental capability or yield valid new observations without immediate performance gain.",
+  "unknown_impact_codes": [
+    "UNASSESSED",
+    "UNRELATED",
+    "MATERIAL"
+  ]
 }

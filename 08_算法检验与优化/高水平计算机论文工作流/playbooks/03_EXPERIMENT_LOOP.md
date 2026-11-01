@@ -22,10 +22,10 @@ nuisance记搜索范围、次数、选择准则与公平调参；联合改动不
 ## 2. 最小探索循环
 
 1. **保护评价链**：`PROTECTED`（真值/split/评价器/指标/确认集）和`EDITABLE`（获批模型/Loss/超参）分开；修错误记新`protocol_id`并重算受影响Run；确认集不选模。
-2. **签名/切片**：事前记录，事后切片仅探索，需独立开发组复验；确认集不选片。触觉捷径匹配/打乱，未读触觉不参与启用。
-3. **分支竞争**：预算内比较互异预测，记`parent_run/protocol_id/changed_scope`；看同协议增益/成本，同分更简可KEEP；保留负结果，INCONCLUSIVE非DISCARD。
-4. **空结果校准**：核曲线/搜索边界；正控预写已知信号、SESOI、独立n/噪声、检出判据与失败解释；参考[02-C](../02_最小科学验证与决策.md)。正控PASS不证明真实收益；留全trial。
-5. **独立单位**：配对CI/成本/失效域，区分seed/数据方差。
+2. **探索先观察**：真实现象/数据签名可先记录，事后切片仅探索、正式主张再独立复验；确认集不选片。
+3. **机制比较（按需）**：仅科学机制归因时比较不同预测；保留parent_run/protocol_id/changed_scope；合理调参/能力建设记验收、协议/成本，同分更简优先，保留负结果，INCONCLUSIVE非DISCARD。
+4. **空结果校准**：先核收敛/能力与搜索边界；科学比较再设已知信号正控/独立n/噪声，正式结论才设SESOI/MDE和检出判据。留全trial；正控PASS不证明真实收益。
+5. **正式比较**：报告配对CI/成本/失效域，seed不当独立受试者。
 6. **决策**：负结果先区分可信负证与无效Run，`KEEP/DISCARD/INCONCLUSIVE/INVALID`；`MECHANISM_SIGNAL_UNCONFIRMED`须复验，不盲目换模型，机制FAIL≠PROJECT STOP；获批且有判别力→CONTINUE，无效→REPAIR，改Claim→用户选PIVOT，无信息/高成本→HOLD/STOP。记`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`，见[续投规则](../RESEARCH_DECISIONS.md)。
 
 ## 2.5 自适应 GPU 验证：最小充分证据，不追求利用率
@@ -47,6 +47,6 @@ nuisance记搜索范围、次数、选择准则与公平调参；联合改动不
 
 正式比较/确认前设**SESOI**，据独立组数及组内相关性估**MDE**；初期Pilot可只声明探索性指标、粗略样本与未验证的检出能力。小Pilot只能筛机制，不直接支撑正式Claim。同一对象/episode 内的数万帧不等于数万独立样本；几十个训练 seed 主要反映训练稳定性，不代替新对象。配对比较优先用配对差额/按合法组聚类的区间；组数太少时承认不确定性，不做虚假精确的功效承诺。大量候选/子群筛选后不能把同一验证集的最好点当未偏的正式估计。
 
-**报告一行/实验**（复用RUNS/STATE，保留所有结果）：`Run & commit/data/config/eval版本 | A/B解释与预测 | 改动 | 共同对照 | 主指标+成本+独立n+CI | 全seed/失败源路径 | KEEP/DISCARD/INCONCLUSIVE/INVALID → NEXT`。正式确认转 [04](04_EVIDENCE_CONFIRM.md)。
+**一行差量记录**：探索/能力`Run | 观察或验收 | config/data | cost/AUTH | evidence | NEXT`；机制比较再补A/B与同评价对照；正式确认再补全seed、独立n与CI。科学比较的KEEP/DISCARD/INCONCLUSIVE/INVALID按范围使用。转[04](04_EVIDENCE_CONFIRM.md)。
 
 参考：[Autoresearch](https://github.com/karpathy/autoresearch) · [Google Tuning Playbook](https://github.com/google-research/tuning_playbook) · [K-Dense Experimental Design](https://github.com/K-Dense-AI/scientific-agent-skills/blob/main/skills/experimental-design/SKILL.md)。
