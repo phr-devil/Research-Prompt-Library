@@ -485,5 +485,5 @@
       ]
     }
   ],
-  "repair_value_guard": "Before an expensive non-mandatory repair, identify which claim/evidence/GO decision its success changes; if none, stop that repair. Do not block ordinary authorized bug fixes or scientific-integrity fixes."
+  "repair_value_guard": "Before expensive optional repair, assess restored measurement/data/training/evaluation capability, new valid observations or changed claim/evidence/GO decision; if none and not needed for integrity, stop this repair. Ordinary authorized fixes do not need a novel scientific hypothesis; no unbounded retries."
 }
