@@ -24,6 +24,25 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertIn("仅部分重合不触发",p)
         self.assertIn("增量假设即可；证据不完整标 REPAIRABLE",p)
 
+    def test_mechanism_chain_f4_pilot_salvage_consistent(self):
+        root="08_算法检验与优化/高水平计算机论文工作流/"
+        funnel=read(root+"IDEA_FUNNEL.md")
+        post=read(root+"POST_SELECTION.md")
+        baseline=read(root+"playbooks/01_DATA_BASELINE.md")
+        lessons=read(root+"LESSONS.md")
+        salvage=read("09_失败算法项目挽救与转向/WORKFLOW.md")
+        for token in ("可纠正性", "可辨识性", "EXPLORE", "不运行训练"):
+            self.assertIn(token,funnel)
+        for token in ("问题存在 ≠ 干预能纠正", "能纠正 ≠ 能提前选择", "同信息", "真实用户相应授权"):
+            self.assertIn(token,post)
+        for token in ("CORRECTABLE", "PREDICTABLE", "DISTINCT", "正控"):
+            self.assertIn(token,baseline)
+        for token in ("L8｜任务10 REALDISP", "L9｜任务12 OpenPack", "不能把H2/H3写成已被严格证伪"):
+            self.assertIn(token,lessons)
+        self.assertIn("只有Oracle空间或可训练模型不得包装成RECOMMEND",salvage)
+        self.assertIn("不要求在Step05实测",salvage)
+        self.assertIn("不新增审批阶段",lessons)
+
     def test_scientific_integrity_still_required(self):
         p=read("09_失败算法项目挽救与转向/WORKFLOW.md")
         self.assertIn("公平",p)
