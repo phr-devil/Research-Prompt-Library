@@ -172,6 +172,40 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertIn("不按固定次数", recovery)
         self.assertIn("先核用户当前意图", orch)
 
+    def test_f4_feasibility_preflight_is_claim_scoped_not_gpu_execution(self):
+        funnel = self.read8("IDEA_FUNNEL.md")
+        for token in ("官方支持矩阵", "OS/Python/驱动/CUDA/图形ICD/编译ABI",
+                      "决定性证据", "WITHIN_BUDGET", "GREEN/YELLOW/RED",
+                      "未经授权不训练", "不得RECOMMEND原主张",
+                      "低成本排险", "F5"):
+            self.assertIn(token, funnel)
+        self.assertIn("已证实不兼容且无替代才RED", funnel)
+        self.assertIn("文档缺失为YELLOW", funnel)
+        self.assertIn("不只证明模型能forward", funnel)
+
+    def test_weak_residuals_need_uncertainty_before_expensive_mechanism(self):
+        data = self.read8("playbooks/01_DATA_BASELINE.md")
+        design = self.read8("playbooks/ALGORITHM_DESIGN_REFERENCE.md")
+        for token in ("组级CI", "切片搜索次数", "SESOI",
+                      "不能凭切片点估计直接投入昂贵GPU机制",
+                      "低功效当不可学习证明", "冻结确认集"):
+            self.assertIn(token, data)
+        for token in ("切片独立组数", "组级不确定性",
+                      "最廉价高判别力对照", "非线性上界"):
+            self.assertIn(token, design)
+
+    def test_decisive_probes_and_confirmation_value_reassessment(self):
+        experiment = self.read8("playbooks/03_EXPERIMENT_LOOP.md")
+        post = self.read8("POST_SELECTION.md")
+        for token in ("先复用证据", "廉价、高判别力", "昂贵机制训练",
+                      "负结果先区分", "不盲目换模型",
+                      "INCONCLUSIVE非DISCARD"):
+            self.assertIn(token, experiment)
+        self.assertIn("转入04正式确认之前", post)
+        self.assertIn("具名近邻独立差额", post)
+        self.assertIn("INCONCLUSIVE + MECHANISM_SIGNAL_UNCONFIRMED", post)
+        self.assertIn("不新建SIGNAL_KEEP", post)
+
     def test_zero_candidate_does_not_impersonate_selection(self):
         nine = (self.root / "09_失败算法项目挽救与转向" / "WORKFLOW.md").read_text(encoding="utf-8")
         self.assertIn("0–3个", nine)

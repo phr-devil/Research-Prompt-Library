@@ -38,7 +38,7 @@ python research_tools/audit_evidence.py --root /path/to/algorithm-project --runs
 
 ## 安全与局限
 
-- 证据路径仅能位于 --root 内；拒绝绝对路径、父目录穿越、外部符号链接和不支持的文件格式。
+- 证据路径仅能位于 --root 内；无论脚本在 Windows 还是 POSIX 运行，均拒绝 POSIX 绝对路径、Windows 盘符/UNC/反斜线、父目录穿越、外部符号链接和不支持的格式。
 - 不解析论文或任意 Markdown 里的全部数字；必须明确 metric 和 run_id，避免从无关数字凑证据。
 - 对来源缺少 data_version/protocol_sha 等元数据只报告无法证明的字段；有精确身份要求时应在项目评价器导出这些值后再声称“完整追溯”。
 - 默认绝对数值容差 1e-8，可用 --atol 调整并说明理由；不是统计显著性阈值。
