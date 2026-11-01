@@ -34,6 +34,16 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(2,r.returncode)
         self.assertIn("Unknown route",r.stderr)
 
+    def test_unknown_workflow_version_fails_closed(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            manifest=json.loads((ROOT/"ROUTES.json").read_text(encoding="utf-8"))
+            manifest["workflow_version"]="unexpected-future-version"
+            manifest["default_path"]["mandatory_scenes"]=["01-A"]
+            (root/"ROUTES.json").write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "Unknown workflow version"):
+                router.load_routes(root)
+
     def test_path_escape_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d)
@@ -715,6 +725,19 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         proc, out = self.invoke()
         self.assertEqual(proc.returncode, 1)
         self.assertIn("differs", out["claims"][0]["reason"])
+
+    def test_large_metric_mismatch_uses_only_declared_absolute_tolerance(self):
+        self.save_rows([dict(self.row, value="1000000000.0")])
+        self.save_source(dict(self.result, metrics={"ap": 1000000000.5}))
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("metric value mismatch", out["runs"][0]["reason"])
+        self.save_source(dict(self.result, metrics={"ap": 1000000000.0}))
+        self.save_claims([{"claim_id": "C1", "run_id": "R1", "metric": "ap",
+                           "reported_value": 1000000000.5}])
+        proc, out = self.invoke()
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("claim value differs", out["claims"][0]["reason"])
 
     def test_protocol_data_identity_mismatch_is_not_source_verified(self):
         self.save_source(dict(self.result, protocol_sha="different"))

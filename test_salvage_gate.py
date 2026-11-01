@@ -129,6 +129,21 @@ class GateTests(unittest.TestCase):
         self.assertEqual(gate.inspect_selection(self.candidates,self.selection)[0],
                          "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED")
 
+    def test_negation_with_intervening_words_never_approves(self):
+        self.select("P1")
+        record=json.loads(self.selection.read_text(encoding="utf-8"))
+        for message in ("我不建议选P1", "我不得选择P1", "我不会选择P1",
+                        "我不准备选P1", "我不是选择P1", "请不要选择P1"):
+            record["user_message"]=message
+            self.selection.write_text(json.dumps(record), encoding="utf-8")
+            with self.subTest(message=message), self.assertRaisesRegex(
+                    ValueError, "ambiguous|contradicts"):
+                gate.inspect_selection(self.candidates, self.selection)
+        record["user_message"]="我不建议选P2，但是我决定选P1"
+        self.selection.write_text(json.dumps(record), encoding="utf-8")
+        self.assertEqual(gate.inspect_selection(self.candidates, self.selection)[0],
+                         "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED")
+
     def test_multiple_choices_rejected(self):
         self.select("P1")
         record=json.loads(self.selection.read_text(encoding="utf-8"))
