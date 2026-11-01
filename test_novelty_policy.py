@@ -79,7 +79,7 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertIn("选题后优先获取一项真实证据", post)
         self.assertIn("必要实验能力", policy)
         self.assertIn("能力验收", experiments)
-        self.assertIn("RUN_STATUS=COMPLETE/PARTIAL/CRASH/BLOCKED/NOT_RUN", salvage)
+        self.assertIn("RUN_STATUS=COMPLETE/PARTIAL/INVALID/CRASH/BLOCKED/NOT_RUN", salvage)
         self.assertIn("KEEP/DISCARD/INCONCLUSIVE/INVALID", salvage)
         self.assertNotIn("按 KEEP/DISCARD/INVALID/CRASH 分类", salvage)
         self.assertIn("不得执行 Step 06", salvage)
