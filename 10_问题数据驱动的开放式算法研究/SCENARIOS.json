@@ -886,6 +886,78 @@
       "expected_route": "PAPER_FIRST.md",
       "decision_scope": "EVIDENCE",
       "expected_next": "HOLD机制/保留RELIABLE_TRACK→LAW_BOUNDARY_CLAIM的合法下一探针"
+    },
+    {
+      "id": "D10-54",
+      "event": "OUTPUT_NO_PREMATURE_PUBLICATION_FIGURES",
+      "situation": "活动04仅有一次欠收敛Pilot，无有效新机制收益。Agent准备先制作10张精美论文图、架构海报及汇报PDF，并反复调整字体和配色。",
+      "should": [
+        "遵循EVIDENCE_FIRST_OUTPUT，先保存原始Run并定位可信训练/科学证据",
+        "默认短文本、关键指标与路径；无判断价值不制作精美图片、论文级排版、PPT/PDF",
+        "如有真正必要的Loss诊断只做朴素可复现图，科研结论未知明确UNKNOWN"
+      ],
+      "must_not": [
+        "将工作量、图片数量或精美程度当科研成果",
+        "未实测结果绘制预期成功曲线并当成真实结果",
+        "先美化图表再检查数据泄漏/训练有效性"
+      ],
+      "expected_route": "WORKFLOW.md",
+      "decision_scope": "RUN",
+      "expected_next": "不做美图→有效诊断/真实Run及下一低成本探针"
+    },
+    {
+      "id": "D10-55",
+      "event": "OUTPUT_DIAGNOSTIC_PLOT_NOT_BANNED",
+      "situation": "活动02时序数据存在不明时间错位，只有一张同步曲线能迅速辨别采样和标签偏移。Agent误以为省Token意味着所有绘图绝对禁止。",
+      "should": [
+        "必要科学诊断图允许生成，保持简单标注和真实开发样本血缘",
+        "只生成有区分力的最少图，保存可复现脚本/图片路径且不贴大图",
+        "发现时间错位要修复受影响协议并记录证据，保持holdout封存"
+      ],
+      "must_not": [
+        "为了节省Token忽略关键同步问题",
+        "自动做几十张精美图或全量仪表盘",
+        "绘制、分析或使用sealed holdout内容决定研究任务"
+      ],
+      "expected_route": "DATA_INSIGHT.md",
+      "decision_scope": "EVIDENCE",
+      "expected_next": "最简同步诊断图→核时序/标签对齐及真实修复"
+    },
+    {
+      "id": "D10-56",
+      "event": "OUTPUT_CONTEXT_REUSE_AND_INCREMENTAL_REPORT",
+      "situation": "WorkBuddy已有可信STATE和20次Run记录，用户要求继续当前已授权机制实验。Agent每轮重读全章、全部旧日志与全部论文，反复输出10页回顾，未新跑任何实验。",
+      "should": [
+        "只读STATE/最新有效Run索引和当前相关证据，不重新读取未变更历史",
+        "复用缓存及已核结果；只输出NEW_EVIDENCE+PATH/DECISION_CHANGE/NEXT_PROBE/AUTH，若无证据只报阻碍",
+        "同批关联修复在授权内连续完成，训练原日志落盘只引用路径"
+      ],
+      "must_not": [
+        "将重新总结旧结果称为本轮科研进展",
+        "每次输出整个STATE、全部源码、训练日志和长报告",
+        "默认多Agent重复审核不影响判断的相同问题"
+      ],
+      "expected_route": "WORKFLOW.md",
+      "decision_scope": "RUN",
+      "expected_next": "按需读证据+增量Run→精简回报或明确阻碍"
+    },
+    {
+      "id": "D10-57",
+      "event": "OUTPUT_TOKEN_SAVINGS_KEEP_SCIENTIFIC_EVIDENCE",
+      "situation": "活动05获得小幅组级性能改进，但差异可能来自目标标签预算和抽样偏差。Agent以节约Token为由跳过公平基线、真实独立组统计和确认设计，直接写论文结论。",
+      "should": [
+        "精简文字和图表不等于降低验证标准，仍需合法同K基线/独立group证据及具名近邻",
+        "对Claim只设计最关键的统计对照和证据图，输出路径、未知与下一验证",
+        "保持最终sealed确认集不参与选模，尚未确认写CLAIM_WITH_GAPS或VALUE_UNVERIFIED"
+      ],
+      "must_not": [
+        "用省Token作为跳过必要科学验证的理由",
+        "将开发集小幅正指标直接称CONFIRMED_CLAIM",
+        "因美化不必要而禁止真正支持科学结论的图表"
+      ],
+      "expected_route": "PAPER_FIRST.md",
+      "decision_scope": "EVIDENCE",
+      "expected_next": "必要公平/独立证据保留，精简格式→CLAIM_WITH_GAPS及下一探针"
     }
   ]
 }

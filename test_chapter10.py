@@ -185,7 +185,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 53)
+        self.assertEqual(len(cases), 57)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -225,7 +225,11 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                            "CLAIM_SIMPLE_METHOD_REAL_NOVELTY",
                            "CLAIM_COMPLEX_MODEL_GAIN_ONLY_NOT_NOVEL",
                            "CLAIM_ABLATION_BY_CONTRIBUTION_NOT_CHECKLIST",
-                           "CLAIM_MECHANISM_FAILED_BUT_TRACKS_RETAIN"})
+                           "CLAIM_MECHANISM_FAILED_BUT_TRACKS_RETAIN",
+                           "OUTPUT_NO_PREMATURE_PUBLICATION_FIGURES",
+                           "OUTPUT_DIAGNOSTIC_PLOT_NOT_BANNED",
+                           "OUTPUT_CONTEXT_REUSE_AND_INCREMENTAL_REPORT",
+                           "OUTPUT_TOKEN_SAVINGS_KEEP_SCIENTIFIC_EVIDENCE"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -238,7 +242,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 54):
+        for i in range(17, 58):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -412,7 +416,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("SEARCH_TRACE:", state)
         self.assertIn("SEARCH_DISCOVERY.md", read(CH10 / "README.md"))
         self.assertIn("搜索盲审", read(CH10 / "REPLAY_PROTOCOL.md"))
-        self.assertIn("53个", read(CH10 / "README.md"))
+        self.assertIn("57个", read(CH10 / "README.md"))
         scenario_map = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
         for i in range(32, 37):
             case = scenario_map[f"D10-{i}"]
@@ -514,6 +518,37 @@ class ProblemDataWorkflowTests(unittest.TestCase):
             self.assertEqual(by_id[f"D10-{i}"]["decision_scope"], "EVIDENCE")
         self.assertIn("UNDERTRAINED", by_id["D10-48"]["expected_next"])
         self.assertIn("CLAIM_EVIDENCE_MAP", by_id["D10-50"]["expected_next"])
+
+    def test_evidence_first_media_and_token_efficiency_without_science_loss(self):
+        flow = read(CH10 / "WORKFLOW.md")
+        start = read(CH10 / "START.md")
+        insight = read(CH10 / "DATA_INSIGHT.md")
+        loop = read(CH10 / "EXPERIMENT_LOOP.md")
+        paper = read(CH10 / "PAPER_FIRST.md")
+        confirm = read(CH10 / "CONFIRMATION.md")
+        state = read(CH10 / "templates/STATE.md")
+        replay = read(CH10 / "REPLAY_PROTOCOL.md")
+        for marker in ("EVIDENCE_FIRST_OUTPUT", "NEW_EVIDENCE+PATH", "图片三档",
+                       "诊断图", "PPT/PDF", "01–05", "活动06",
+                       "有效Run", "合并CI", "Token"):
+            self.assertIn(marker, flow)
+        self.assertIn("图片", start)
+        self.assertIn("诊断图", insight)
+        self.assertIn("不贴全部日志", loop)
+        self.assertIn("不提前生成精美论文图", paper)
+        self.assertIn("正式成品", confirm)
+        self.assertIn("只更新本轮变化", state)
+        self.assertIn("不得回显完整STATE", state)
+        self.assertIn("无效图表", replay)
+        self.assertLess(len(state), 2250)
+        self.assertLess(len(start), 1300)
+        self.assertLess(len(flow) + len(read(CH10 / "TASK_EXPLORATION.md")) + len(loop), 19000)
+        by_id = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
+        self.assertEqual(by_id["D10-54"]["expected_route"], "WORKFLOW.md")
+        self.assertEqual(by_id["D10-55"]["expected_route"], "DATA_INSIGHT.md")
+        self.assertEqual(by_id["D10-56"]["expected_route"], "WORKFLOW.md")
+        self.assertEqual(by_id["D10-57"]["expected_route"], "PAPER_FIRST.md")
+        self.assertEqual(by_id["D10-57"]["decision_scope"], "EVIDENCE")
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()
