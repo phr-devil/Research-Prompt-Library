@@ -40,5 +40,6 @@
 - [EXAMPLE_SENSOR.md](EXAMPLE_SENSOR.md)：传感器跨平台迁移的假想执行实例（明确非实测）
 - [templates/STATE.md](templates/STATE.md)：可选、极简的项目断点
 - [REFERENCES.md](REFERENCES.md)：高星 GitHub 项目的具体借鉴点、限制与原始链接
+- [SCENARIOS.json](SCENARIOS.json)：8个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
 
 **状态以真实项目文件和工具运行结果为准**；本文只提供指导，不能自动访问本地数据或替用户训练。
