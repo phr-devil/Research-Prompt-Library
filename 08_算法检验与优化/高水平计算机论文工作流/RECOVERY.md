@@ -21,6 +21,8 @@
 
 **严重度与权限**：`CRITICAL`只阻断受影响操作；`REPAIRABLE`在真实既有授权、范围及预算不变时可自主有界处理，实质分叉才问用户；`MINOR`可顺手修或记录跳过。UNKNOWN不自动致命。CPU/GPU参数拟合、付费、外传/投稿、正式确认和冻结协议变更仍受单独真实授权约束；明确禁训练时CPU/GPU均不训练。第九章改题需用户重新选择。
 
+**自动纠错回复（仅真实阶段结束或需决策时）**：小Bug集中在一次研发结果中简报，不逐错误打断；`修复内容 | 新鲜测试结果/NOT_RUN | 受影响Run/Claim | 恢复到哪一步`，通常1–3行。**已验证修复**才说“已修复并续做”；仅更改代码未执行验证应说“已修改，待验证”，不能假称RESUME成功。发现污染须写明`INVALID`及撤销了什么主张；正常科学负结果只汇报证据和下一项判别，不叫Bug。仅权限、冻结协议、重大改题或无有效廉价下一步时，集中提一个明确问题，不把例行修复变成审批。
+
 **恢复与升级**：优先复用 `research/STATE.md` / `RUNS.tsv` / `CLAIMS.md`，仅增量记录 `route | symptom | first_bad_evidence | root_cause_or_unknown | fix | verify | invalidated_runs/claims | best_valid_run | next_action | authorization`。相关代码或测试未运行则如实标记，不能把静态路由建议当作实际修复。升级只说明受影响目标、证据、阻碍及2–3个可选方向；无真实决策分叉不打断用户。
 
 **按需定位**：`python workflow_route.py --repair 03-D` 只打印当前路由的两个典型故障，`--check` 只静态验证路由。遇新型错误直接遵循上面五动作，不扩充故障大全。参考 [Superpowers](https://github.com/obra/superpowers)、[mini-SWE-agent](https://github.com/SWE-agent/mini-swe-agent)、[pytest](https://github.com/pytest-dev/pytest)、[autoresearch](https://github.com/karpathy/autoresearch) 的原则；不强制安装这些工具。
