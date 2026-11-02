@@ -276,5 +276,30 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertIn("BASELINE_PENDING", nine)
         self.assertIn("唯一对应候选的完整标题", nine)
 
+    def test_data_first_readiness_not_a_new_absolute_gate(self):
+        import json
+        root = self.root / "08_算法检验与优化" / "高水平计算机论文工作流"
+        post = self.read8("POST_SELECTION.md")
+        data = self.read8("playbooks/01_DATA_BASELINE.md")
+        pilot = self.read8("02_最小科学验证与决策.md")
+        funnel = self.read8("IDEA_FUNNEL.md")
+        routes = json.loads((root / "ROUTES.json").read_text(encoding="utf-8"))["event_advice"]
+        for key in ("当前Claim必需的数据", "完整下载≠独立真值", "PARTIAL_DATA"):
+            self.assertIn(key, post)
+        self.assertIn("F1–F4不强制下载", funnel)
+        for key in ("PARTIAL_DATA", "WAITING_FOR_DATA", "封存test只核存在/校验值"):
+            self.assertIn(key, data)
+        for key in ("哈希或CRC", "WAITING_FOR_AUTH", "下载不是所有MVP准入条件"):
+            self.assertIn(key, pilot)
+        self.assertIn("完整下载非硬性准入", routes["NEW_PROJECT"]["boundary"])
+        self.assertIn("PARTIAL_DATA", routes["DATA_AUDIT"]["deliverable"])
+        self.assertIn("不重复下载", routes["RESUME"]["why"])
+        items = json.loads((self.root / "EVAL_CASES_CURRENT.json").read_text(encoding="utf-8"))["cases"]
+        mapping = {x["id"]: x for x in items}
+        self.assertEqual(len(mapping), len(items))
+        for case_id, selector in (("N26", "02-B"), ("N27", "02-B"), ("N28", "F1-F4-DOCUMENT")):
+            self.assertEqual(mapping[case_id]["prompt_selector"], selector)
+            self.assertTrue(mapping[case_id]["must"] and mapping[case_id]["critical"])
+
 if __name__ == "__main__":
     unittest.main()

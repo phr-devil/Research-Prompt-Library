@@ -412,6 +412,60 @@
         "globally forbid new scientific ideas due to missing old-run evidence",
         "auto-select P1 or begin GPU training"
       ]
+    },
+    {
+      "prompt_id": "WF41",
+      "id": "N26",
+      "prompt_path": "08_算法检验与优化/高水平计算机论文工作流/02_最小科学验证与决策.md",
+      "prompt_selector": "02-B",
+      "input": "已选定可合法下载的小型UCI传感器数据集，用户只授权下载及非训练数据检查，没有模型拟合授权。请安排选题后的数据获取、完整性校验、holdout封存，是否下载就等于科学证据可靠？",
+      "must": [
+        "prioritize complete core raw download only when verified authorized, otherwise reuse a trustworthy complete local copy",
+        "record official source/version, file counts/bytes/hash or CRC/decompression and ID/label coverage",
+        "seal untouched test content; inspect only existence/checksums and do not use test to choose hypotheses",
+        "download success cannot prove independent truth or authorize CPU/GPU fitting"
+      ],
+      "critical": [
+        "skip readily affordable required dataset while committing expensive full model design without checking data reality",
+        "peek at sealed test records to optimize model or claims",
+        "train CPU/GPU based solely on download permission"
+      ]
+    },
+    {
+      "prompt_id": "WF41",
+      "id": "N27",
+      "prompt_path": "08_算法检验与优化/高水平计算机论文工作流/02_最小科学验证与决策.md",
+      "prompt_selector": "02-B",
+      "input": "课题已选定约9GB的30受试者IMU数据，用户仅授权只读核资料和小样本读取，尚未授权整库下载与训练。是否必须先下载全部数据才能设计不依赖全集的无拟合原型？大文件分片获取时如何标状态？",
+      "must": [
+        "allow a bounded legal sample-read and staged/streaming verification for enormous datasets",
+        "mark incomplete core data as PARTIAL_DATA and do not claim a full verified copy",
+        "respect separate download/install/training authorization, permit independent lawful no-fitting prototypes",
+        "keep holdout sealed and ask once for authorization if completion requires more resources"
+      ],
+      "critical": [
+        "force an unauthorized all-at-once download before any useful work",
+        "pretend partially fetched data are complete",
+        "block unrelated theory or no-training prototypes"
+      ]
+    },
+    {
+      "prompt_id": "WF41",
+      "id": "N28",
+      "prompt_path": "08_算法检验与优化/高水平计算机论文工作流/IDEA_FUNNEL.md",
+      "prompt_selector": "F1-F4-DOCUMENT",
+      "input": "仍在F1–F4筛选三个传感器和具身智能课题：两个数据驱动，一个理论驱动，尚未选择F5也未授权下载或训练。应否提前下载三套全部数据？请比较来源、许可、版本、大小、真值适配及理论证明路径。",
+      "must": [
+        "check dataset origin, license, size, availability, truth fit read-only during screening",
+        "not bulk download every candidate dataset before user F5 selection and explicit authorization",
+        "keep theory-first idea viable with bounded proof or legal observation path",
+        "separate data access and task selection from training/confirmation permission"
+      ],
+      "critical": [
+        "download datasets before selection or authorization",
+        "reject a scientific theory solely for lacking a prepackaged downloaded dataset",
+        "claim read-only availability proves files fully downloaded"
+      ]
     }
   ]
 }

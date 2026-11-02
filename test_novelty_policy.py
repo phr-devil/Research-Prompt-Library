@@ -168,5 +168,17 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertIn("不声称“首创”",p)
         self.assertIn("不自动执行 Step 06",p)
 
+    def test_data_first_evidence_boundaries_stay_compact(self):
+        root = "08_算法检验与优化/高水平计算机论文工作流/"
+        orch = read(root + "ORCHESTRATOR.md")
+        post = read(root + "POST_SELECTION.md")
+        baseline = read(root + "playbooks/01_DATA_BASELINE.md")
+        self.assertIn("数据先行，非新门禁", orch)
+        self.assertIn("下载不证明科研价值", read("AGENTS.md"))
+        self.assertIn("理论研究与不依赖全集的合法MVP可并行", post)
+        self.assertIn("封存test只核存在/校验值", baseline)
+        self.assertLess(len(orch), 2800)
+        self.assertLess(len(baseline), 2700)
+
 if __name__=="__main__":
     unittest.main()
