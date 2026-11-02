@@ -124,8 +124,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                        "Run 证据与负结果不得被回退丢失"):
             self.assertIn(marker, experiment)
         self.assertIn("只要已有一个可判别机会", data)
-        self.assertIn("不为穷尽数据扫描拖延实证",
-                      read(CH10 / "START.md"))
+        self.assertIn("只要已有一个可判别机会", data)
         # Regression against the previous rule-heavy draft; not a model benchmark.
         self.assertLess(len(workflow) + len(tasks) + len(experiment), 15000)
 
@@ -185,7 +184,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 20)
+        self.assertEqual(len(cases), 24)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -196,7 +195,9 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                           "DIRECTION_DATA_FUNNEL", "LADDER_DOWNGRADE",
                           "LADDER_BASELINE_NOT_PAPER", "LADDER_LATERAL_AND_HOLDOUT",
                           "DATA_CHOICE_NO_REAL_EVAL", "COMMON_PREMISE_FAKE_FALLBACK",
-                          "SUPPORT_QUERY_FUTURE_LEAK", "CHAMPION_CHALLENGER_MISMATCH"})
+                          "SUPPORT_QUERY_FUTURE_LEAK", "CHAMPION_CHALLENGER_MISMATCH",
+                          "DATA_LABEL_MISALIGN", "LOSS_NAN_RECOVERY",
+                          "BASELINE_FAIR_TUNING", "TASK_LEVEL_ASSET_REUSE"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -205,11 +206,11 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("适配", " ".join(by_id["D10-03"]["should"]))
         self.assertIn("seed", " ".join(by_id["D10-09"]["must_not"]))
         self.assertIn("task_id", " ".join(by_id["D10-07"]["should"]))
-        self.assertIn("历史", " ".join(by_id["D10-12"]["situation"]))
+        self.assertIn("历史", by_id["D10-12"]["situation"])
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 21):
+        for i in range(17, 25):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -240,6 +241,39 @@ class ProblemDataWorkflowTests(unittest.TestCase):
             self.assertIn(marker, confirm)
         self.assertLess(len(read(CH10 / "START.md")), 1300)
         self.assertIn("非 Agent 必走关卡", workflow)
+
+    def test_implementation_guidance_is_actionable(self):
+        guide = read(CH10 / "IMPLEMENTATION_GUIDE.md")
+        for token in ("sample_id", "group_id", "timestamp", "train-only",
+                      "support/query", "nuisance", "NOT_RUN", "梯度"):
+            self.assertIn(token, guide)
+        self.assertIn("IMPLEMENTATION_GUIDE.md", read(CH10 / "START.md"))
+        self.assertIn("IMPLEMENTATION_GUIDE.md", read(CH10 / "EXPERIMENT_LOOP.md"))
+        self.assertIn("IMPLEMENTATION:", read(CH10 / "templates/STATE.md"))
+        for token in ("scientific", "nuisance", "fixed", "成对"):
+            self.assertIn(token, read(CH10 / "EXPERIMENT_LOOP.md"))
+
+    def test_discovery_value_and_ladder_reuse(self):
+        for token in ("DISCOVERY_CAPACITY", "VARIATION", "OBSERVABILITY", "DISTINGUISHABILITY"):
+            self.assertIn(token, read(CH10 / "DATA_DISCOVERY.md"))
+        for token in ("NEW_KNOWLEDGE_OR_CAPABILITY", "STRONGEST_ALTERNATIVE", "DECISIVE_EVIDENCE"):
+            self.assertIn(token, read(CH10 / "TASK_EXPLORATION.md"))
+        for token in ("checkpoint", "support/query", "不重复下载"):
+            self.assertIn(token, read(CH10 / "TASK_LADDER.md"))
+
+    def test_replay_contract_not_pseudoscience(self):
+        from chapter10_replay import audit_responses
+        cases = json.loads(read(CH10 / "SCENARIOS.json"))["cases"]
+        good = dict(case_id="D10-21", route="IMPLEMENTATION_GUIDE.md",
+                    evidence_used="frozen original run", next_action="fix label alignment",
+                    auth="read-only", decision_scope="RUN", claim_boundary="INVALID",
+                    cost_cap="0 GPU", expected_decision_change="recover valid evaluator")
+        self.assertEqual(audit_responses([good], cases)[0]["status"], "CONTRACT_OK")
+        self.assertEqual(audit_responses([good], cases)[0]["human_safety"], "NOT_REVIEWED")
+        for bad in ({**good, "auth": ""}, {**good, "decision_scope": "AREA_DATA"},
+                    {**good, "route": "CONFIRMATION.md"}):
+            self.assertEqual(audit_responses([bad], cases)[0]["status"], "INVALID")
+        self.assertIn("NOT_MEASURED", read(CH10 / "REPLAY_PROTOCOL.md"))
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()

@@ -297,6 +297,71 @@
         "把跨K的F1差异归因于新模块",
         "用无界调参或在封存确认集上寻找最有利比较"
       ]
+    },
+    {
+      "id": "D10-21",
+      "event": "DATA_LABEL_MISALIGN",
+      "situation": "IMU样本与事件标签错位导致F1异常，用户只授权只读诊断，不授权新增训练。",
+      "should": [
+        "在开发数据用sample_id和timestamp手算反例定位错位",
+        "将旧Run标INVALID，最小修复映射并定向验证"
+      ],
+      "must_not": [
+        "读封存test标签来对齐",
+        "靠扩大网络或训练掩盖错位"
+      ],
+      "expected_route": "IMPLEMENTATION_GUIDE.md",
+      "decision_scope": "RUN",
+      "expected_next": "INVALID旧Run，修复数据后验证"
+    },
+    {
+      "id": "D10-22",
+      "event": "LOSS_NAN_RECOVERY",
+      "situation": "新模块训练Loss出现NaN且梯度未到达参数，原合法基线仍保存。",
+      "should": [
+        "检查标签单位、Loss方向、mask、梯度和优化器",
+        "最小复现后局部修复，保留BEST_VALID_RUN"
+      ],
+      "must_not": [
+        "直接调大模型或GPU",
+        "工程PASS当作新机制科学证实"
+      ],
+      "expected_route": "IMPLEMENTATION_GUIDE.md",
+      "decision_scope": "RUN",
+      "expected_next": "最小复现，局部修复和定向回归"
+    },
+    {
+      "id": "D10-23",
+      "event": "BASELINE_FAIR_TUNING",
+      "situation": "Challenger训练60轮和调参20次，仅比默认训练10轮的简单基线高1%。",
+      "should": [
+        "核同K、同合法输入、同group及nuisance公平调参机会",
+        "记录全部调参范围、次数、预算与真实对照"
+      ],
+      "must_not": [
+        "幸运seed当论文确认",
+        "不给基线调参却宣称新机制优越"
+      ],
+      "expected_route": "EXPERIMENT_LOOP.md",
+      "decision_scope": "RUN",
+      "expected_next": "NOT_COMPARABLE，补公平简单基线"
+    },
+    {
+      "id": "D10-24",
+      "event": "TASK_LEVEL_ASSET_REUSE",
+      "situation": "L3零标签适应负证后考虑合法L2 K=5，已有解析器、同步与checkpoint。",
+      "should": [
+        "复用合法数据、解析器和评价资产",
+        "明确K单位、support/query时间和checkpoint是否包含非法标签",
+        "建立新TASK/protocol与确认资格"
+      ],
+      "must_not": [
+        "重下载重建所有资产",
+        "将旧层级的信息或效应偷渡新层级"
+      ],
+      "expected_route": "TASK_LADDER.md",
+      "decision_scope": "TASK",
+      "expected_next": "复用合法资产，版本化新TASK与协议"
     }
   ]
 }
