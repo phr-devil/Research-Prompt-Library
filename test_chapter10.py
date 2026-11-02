@@ -184,7 +184,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 26)
+        self.assertEqual(len(cases), 28)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -198,7 +198,9 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                           "SUPPORT_QUERY_FUTURE_LEAK", "CHAMPION_CHALLENGER_MISMATCH",
                           "DATA_LABEL_MISALIGN", "LOSS_NAN_RECOVERY",
                           "BASELINE_FAIR_TUNING", "TASK_LEVEL_ASSET_REUSE",
-                          "DIRECTION_BEFORE_DOWNLOAD", "MULTIDATASET_ROLE_AND_COMPATIBILITY"})
+                          "DIRECTION_BEFORE_DOWNLOAD", "MULTIDATASET_ROLE_AND_COMPATIBILITY",
+                          "PARALLEL_DATASET_DEV_WITH_SEALED_GROUPS",
+                          "PAPER_FIRST_NOT_SCORE_ONLY"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -211,7 +213,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 27):
+        for i in range(17, 29):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -302,6 +304,24 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         cases = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
         self.assertIn("先下载数据库", " ".join(cases["D10-25"]["must_not"]))
         self.assertIn("同一库", " ".join(cases["D10-26"]["must_not"]))
+
+    def test_multi_dataset_pivots_and_paper_first_quality(self):
+        data = read(CH10 / "DATA_DISCOVERY.md")
+        paper = read(CH10 / "PAPER_FIRST.md")
+        workflow = read(CH10 / "WORKFLOW.md")
+        for term in ("3–4", "D4_PIVOT_OR_CONFIRM", "DEV_SHARED",
+                     "SEALED_CONFIRM", "PORTFOLIO_PIVOT_MAP", "DATASET_PORTFOLIO_GAP"):
+            self.assertIn(term, data)
+        for term in ("PERFORMANCE_FLOOR", "PAPER_PATH_CANDIDATE", "SCIENCE_UPGRADE",
+                     "RUNNABLE", "VALUE_UNVERIFIED", "具名最近邻"):
+            self.assertIn(term, paper)
+        for name in ("START.md", "README.md", "EXPERIMENT_LOOP.md", "CONFIRMATION.md"):
+            self.assertIn("PAPER_FIRST.md", read(CH10 / name))
+        self.assertIn("PAPER_FIRST.md", workflow)
+        self.assertIn("PAPER_PATH:", read(CH10 / "templates/STATE.md"))
+        scenes = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
+        self.assertIn("DEV_SHARED", " ".join(scenes["D10-27"]["should"]))
+        self.assertIn("论文接收", " ".join(scenes["D10-28"]["must_not"]))
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()

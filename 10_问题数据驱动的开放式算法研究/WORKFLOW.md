@@ -4,9 +4,9 @@
 
 ## 1. 三个决策循环（六项活动，不是六道审批门）
 
-- **外循环 A｜研究机会**：01 从4–6类问题（不强制）收敛宽研究方向/任务族，再推荐1–3个AREA_DATA组合；**每组合默认D1开发＋D2独立来源复现（可选D3压力测试）**，核跨库标签/科学命题可比性，用户选择方向和组合 → 02 经PRE_DOWNLOAD_PLAN及真实下载授权后分批准备数据/开发观察 → 03 发现可检验TASK，按需构建L0–L3任务阶梯。一个有依据的机会就可开展有界实验；**不要求完整方法假说**、穷尽任务、复现所有强基线或先证明算法增益。[DATA_DISCOVERY.md](DATA_DISCOVERY.md) / [TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md)。
-- **内循环 B｜算法实证**：04 保留可信基线，按症状选择简单优化、正控、残差/可学性探针、新机制或工程恢复；在已授权范围和预算内试验并记录真实正负结果。首次负Pilot不自动STOP，不为 GPU 占用率扩大无信息实验。[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。
-- **外循环 C｜科研价值**：05 分别核科研可行性与独立贡献，用真实收益/规律、具名近邻和简单竞争解释评价；可继续当前层级、`UP`挑战更难信息条件、`DOWN`使用更现实的合法标定、`NARROW`收窄主张，或`LATERAL`比较备用科研任务。06 只有冻结 Claim/方法/协议并获授权后才严格独立确认。层级切换必须更新Claim与公平评价，**L0/L1没有天然论文保底**。[TASK_LADDER.md](TASK_LADDER.md) / [CONFIRMATION.md](CONFIRMATION.md)。
+- **外循环 A｜研究机会**：01 从4–6类问题（不强制）收敛宽研究方向/任务族，再推荐1–3个AREA_DATA组合；**每组合默认3–4库，支持同时开发、备用转题和独立确认**，核跨库标签/科学命题可比性，用户选择方向和组合 → 02 经PRE_DOWNLOAD_PLAN及真实下载授权后分批准备数据/开发观察 → 03 发现可检验TASK，按需构建L0–L3任务阶梯。一个有依据的机会就可开展有界实验；**不要求完整方法假说**、穷尽任务、复现所有强基线或先证明算法增益。[DATA_DISCOVERY.md](DATA_DISCOVERY.md) / [TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md)。
+- **内循环 B｜算法实证**：04 优先取得稳健有效性能，尽早建立最低论文贡献候选，再渐进增加科学机制；在已授权范围按症状优化或修复，记录真实正负结果。首次负Pilot不自动STOP，不为 GPU 占用率扩大无信息实验。[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。
+- **外循环 C｜科研价值**：05 先核最低可投稿路线（稳健真实结果＋近邻之外的可信贡献＋独立确认路径），再提升科学深度；可继续当前层级、`UP`挑战更难信息条件、`DOWN`使用更现实的合法标定、`NARROW`收窄主张，或`LATERAL`比较备用科研任务。06 只有冻结 Claim/方法/协议并获授权后才严格独立确认。层级切换必须更新Claim与公平评价，**L0/L1没有天然论文保底**。[TASK_LADDER.md](TASK_LADDER.md) / [CONFIRMATION.md](CONFIRMATION.md)。
 
 **单次循环可跳转**：已有 STATE/Run 直接续做；低门槛 EXPLORE、中门槛追加投入、高门槛正式确认。**当前最优选择并不由L2的名称决定**：L1若科学价值更明确可先研究L1；L3若有廉价关键正控可先尝试L3。初始 UNKNOWN 不自动否决；论文确认仍核独立真值、时间因果、公平强基线、独立组、效应不确定性与直接近邻。
 
@@ -26,10 +26,10 @@
 
 ## 2.5 最短决策产物（不额外加阶段）
 
-- **尚未选方向/组合**：先形成`DIRECTION_CARD`（研究问题、变化轴、任务族、可见信息），再用 [DATA_DISCOVERY.md](DATA_DISCOVERY.md) 形成`DATA_PORTFOLIO(D1/D2/可选D3) / PREFERRED / WHY_THIS_OVER_ALTERNATIVE / MOST_DANGEROUS_UNKNOWN / NEXT_LOW_COST_CHECK`；不先下载再倒推任务。下载前须有每库`PRE_DOWNLOAD_PLAN`和用户真实授权。
+- **尚未选方向/组合**：先形成`DIRECTION_CARD`（研究问题、变化轴、任务族、可见信息），再用 [DATA_DISCOVERY.md](DATA_DISCOVERY.md) 形成`DATA_PORTFOLIO(默认D1–D4) / PREFERRED / WHY_THIS_OVER_ALTERNATIVE / MOST_DANGEROUS_UNKNOWN / NEXT_LOW_COST_CHECK`；不先下载再倒推任务。下载前须有每库`PRE_DOWNLOAD_PLAN`和用户真实授权。
 - **已有数据但未确定任务**：使用 [TASK_EXPLORATION.md](TASK_EXPLORATION.md) 形成`PRIMARY_TASK / WHY_THIS_OVER_RESERVE / VALUE_HYPOTHESIS / FEASIBILITY_UNKNOWN / MINIMUM_PROBE`；可只保留一个TASK。
 - **多层级研究**：只在真正有不同标签、部署信息或科学命题时按 [TASK_LADDER.md](TASK_LADDER.md) 进行`COMMON_PREMISE / NEW_LEVER / CLAIM_AND_TEST_CHANGE`检查；不满足则修复当前任务/收窄Claim，而非假降级。
-- **已有可信基线、准备做实验**：按 [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) 的`Champion–Challenger`固定可比条件，保存正负结果和成本；只有新信息能改变决定时升级训练预算。
+- **已有可信基线、准备实验**：公平Champion–Challenger，按需读 [PAPER_FIRST.md](PAPER_FIRST.md)；优先`PERFORMANCE_FLOOR→PAPER_PATH_CANDIDATE→SCIENCE_UPGRADE`（非硬门、非发表承诺）。
 - **进入正式证据/投稿**：按 [CONFIRMATION.md](CONFIRMATION.md) 对当前任务层级**冻结一份完整证据快照**；所有不同任务/层级的开发搜索史单独披露，确认集不能从中选赢家。
 
 以上按**当前阻碍选其中一项**，不是每轮都交五份报告。实际授权、Run/机制—Task—Area-Data止损和证据等级仍由本文件统一决策。
@@ -66,4 +66,4 @@
 
 `SCENARIOS.json` 和 `test_chapter10.py` 仅测试设计/结构，不证明科研效能。实际需按 [REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md) 在相同信息/授权/预算下做**历史盲回放**（遮蔽后续结局）及**前瞻性跟踪**，比较首个真实有效结果、任务价值、过早停止、无效实验、科研确认与 GPU/Token/人工总成本；未运行标 NOT_MEASURED。
 
-**最短行为回放（只用于工作流审查）**：冻结一个真实项目某时点的用户目标、可见STATE/Run、工具与预算，隐藏后续成功/失败；在相同输入下让不同版本Agent各自输出`ROUTE / EVIDENCE_USED / NEXT_ACTION / AUTH / DECISION_SCOPE / CLAIM_BOUNDARY`。先判断是否有**越权、holdout泄漏、无根据的任务降级或伪造确认**（一项即可判该决策不安全），再比较探针是否信息充分、可复现、成本合理。可用`SCENARIOS.json`的`expected_route / decision_scope / expected_next`做合成预检，**不能把匹配关键词或合成通过率称为科研成功率**；正式有效性靠遮蔽结局的真实项目回放和前瞻试验。不能承诺论文接收或成功率；方法借鉴见 [REFERENCES.md](REFERENCES.md)。
+**最短行为回放**：冻结真实项目当时的STATE/Run、工具、授权与预算，隐藏结局；两个Agent在相同输入下各给`ROUTE / EVIDENCE_USED / NEXT_ACTION / AUTH / DECISION_SCOPE / CLAIM_BOUNDARY`。先核越权、holdout泄漏和伪确认，再评信息价值/成本。合成场景只做结构防错，**不代表科研成功率**；真实检验按 [REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md)，来源见 [REFERENCES.md](REFERENCES.md)。

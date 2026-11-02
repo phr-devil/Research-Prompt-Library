@@ -5,8 +5,10 @@
 - WORKFLOW: CHAPTER_10 / PD-RW v1.3（用户明确选择）
 - AREA_DATA: <大科学问题、用户真实选择消息或来源；未选标 WAITING_FOR_USER_SELECTION>
 - DIRECTION_CARD: <下载前宽研究方向、变化轴、任务族、部署可见信息与真值假设；方向未确定为UNDECIDED>
-- DATA_PORTFOLIO: <D1开发＋D2独立复现＋可选D3压力测试；每库官方来源/版本/许可、标签语义、独立组、角色；未就绪SECOND_DATASET_GAP>
+- DATA_PORTFOLIO: <默认3–4库，DEV_SHARED/PIVOT_RESERVE/SEALED_CONFIRM并可随任务更新；每库官方来源/版本/许可、标签语义、独立组、角色；未就绪SECOND_DATASET_GAP>
 - DATA_CHOICE: <如适用：PREFERRED / WHY_THIS_OVER_ALTERNATIVE / MOST_DANGEROUS_UNKNOWN / NEXT_LOW_COST_CHECK；已选组合不强制重做筛选>
+- PORTFOLIO_PIVOT_MAP: <最多2条不同失败前提的备用任务族与对应可用数据库>
+- PAPER_PATH: <PERFORMANCE_FLOOR/PAPER_PATH_CANDIDATE/SCIENCE_UPGRADE、直接近邻差额及确认缺口；未知标VALUE_UNVERIFIED>
 - SCIENTIFIC_VALUE: <成功后可能新增何种独立知识/真实任务能力；不明确 VALUE_UNVERIFIED>
 - PRE_DOWNLOAD_PLAN: <每库所需文件/总存储/下载顺序/官方许可、train-dev-封存角色及真实授权；未授权为WAITING_FOR_AUTH>
 - DATA_MANIFEST: <按dataset_id分别记录官方URL/版本/许可/清单/文件指纹/角色/实际路径；未下载为 NOT_RUN>
