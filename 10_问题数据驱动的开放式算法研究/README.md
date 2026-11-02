@@ -5,7 +5,7 @@
 ## 唯一入口与最短路径
 
 - **AI 首次进入**：只读 [START.md](START.md)，再按用户意图读 [WORKFLOW.md](WORKFLOW.md) 的对应活动；只在需要时读一份专题。已有项目优先读其最新 STATE、原始 Run/数据版本；**无需预读所有章节、24条旧Prompt或全部来源**。
-- **用户只说“传感器/具身智能，想找好数据库和研究问题”**：先明确**宽研究方向＋任务族**，再由ChatGPT只读筛出1–3个研究组合；**每个组合默认规划3–4个互补数据库**（可多库同时开发，保留转题资源和独立确认），标明标签/分组兼容性与来源。**第一步方向确定后直接完成数据库选择、下载清单并通知用户下载；无需再让用户选择一次数据库**；不要求提前决定具体算法或先证明增益。
+- **每次用户会指定研究方向**（如视觉、NLP、机器人、传感器或明确「方向不限」）：AI仅在本轮范围内筛1–3个问题—资源组合；**每个组合默认规划3–4个互补数据库**（可多库同时开发，保留转题资源和独立确认），标明标签/分组兼容性与来源。**第一步方向确定后直接完成数据库选择、下载清单并通知用户下载；无需再让用户选择一次数据库**；不要求提前决定具体算法或先证明增益。
 - **已确定方向**：AI直接选库并给每库官方来源/文件/大小/许可/存储位置，发`DOWNLOAD_READY_NOTICE`通知用户下载；仅用户提供数据或给予真实下载权限后才开始数据准备。真实观察 → 具体TASK → 稳健结果和最低论文贡献 → 科学升级 → 独立确认；已有资产不重下。第二库暂不可得时可单库有界探索，但标SECOND_DATASET_GAP，不宣称跨数据库证据。
 - **用户已给出具体科学机制并要求验证**：更适合 [第八章](../08_算法检验与优化/高水平计算机论文工作流/START.md)；失败成果挽救另走 [第九章](../09_失败算法项目挽救与转向/README.md)。不得未经用户确认自动迁移旧项目。
 
@@ -13,7 +13,7 @@
 
 | 编号 | 任务与入口 | 最小交付 | 主要执行环境 |
 |---|---|---|---|
-| 01 | 定方向后自动选3–4个数据库：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | DIRECTION_CARD→DATA_PORTFOLIO→PRE_DOWNLOAD_PLAN→DOWNLOAD_READY_NOTICE（通知用户下载） | ChatGPT（检索/论文/判断） |
+| 01 | 按本轮USER_SCOPE筛选问题并自动选数据库/评估基准：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | DIRECTION_CARD→DATA_PORTFOLIO或PROOF_PATH→需要下载则通知用户 |
 | 02 | 收到下载数据或获得授权后做数据审计与开放观察：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | 每库DATA_MANIFEST＋OBSERVATIONS；保护封存确认资源 | 获授权的 WorkBuddy/Codex/本地环境 |
 | 03 | 发现任务并按需设计多层Task Ladder：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md) | PRIMARY_TASK、L0–L3可行层级与科学主张、最小判别 | ChatGPT＋可访问真实数据的 Agent |
 | 04 | 优先可信结果、渐进提升科学性：[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 可复核的性能与最小论文贡献候选，再增强机制 | 获授权的代码/实验 Agent |
