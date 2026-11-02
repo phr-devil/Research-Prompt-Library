@@ -454,6 +454,42 @@
       "expected_route": "DATA_DISCOVERY.md",
       "decision_scope": "AREA_DATA",
       "expected_next": "DIRECTION_DEFINED→DATA_PORTFOLIO→PRE_DOWNLOAD_PLAN→DOWNLOAD_READY_NOTICE，下载待用户执行/授权"
+    },
+    {
+      "id": "D10-30",
+      "event": "USER_SCOPE_NON_SENSOR_DOMAIN",
+      "situation": "用户本轮明确要求在自然语言处理（NLP）领域选算法论文课题；过去虽常做传感器研究，但本轮不得跨学科转题，尚无下载或训练许可。",
+      "should": [
+        "USER_SCOPE以本轮NLP方向为准，在NLP内部筛选子任务，不推荐传感器/IMU研究",
+        "按NLP问题核官方数据、公开评估基准和许可，若属于纯理论问题采用PROOF_PATH",
+        "按本轮方向完成选题和匹配的数据库/评估资源，需下载则发送DOWNLOAD_READY_NOTICE"
+      ],
+      "must_not": [
+        "因为历史偏好或教学示例PAMAP2/OpenPack而改为传感器方向",
+        "把NLP强行解释成跨设备IMU泛化",
+        "在未授权情况下下载或训练"
+      ],
+      "expected_route": "DATA_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "USER_SCOPE=NLP→领域内选题→相应DATA_PORTFOLIO/PROOF_PATH→下载待授权"
+    },
+    {
+      "id": "D10-31",
+      "event": "USER_SCOPE_UNRESTRICTED_RESEARCH",
+      "situation": "用户本轮明确表示方向不限，要求以可行性与论文价值优先，未指定传感器、机器人或其他学科。",
+      "should": [
+        "将USER_SCOPE标为明确方向不限，在可核范围内跨学科搜索可完成的研究问题",
+        "任何学科均无默认优先级，不能用此前的传感器项目缩小搜索空间",
+        "选定方向后自动规划匹配的多库/基准/证明资源，需下载则给DOWNLOAD_READY_NOTICE"
+      ],
+      "must_not": [
+        "将方向不限曲解为仅传感器子方向不限",
+        "只检索旧传感器关键词并声称全学科筛选",
+        "把自主选题等同于下载许可"
+      ],
+      "expected_route": "DATA_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "USER_SCOPE=UNRESTRICTED→跨学科选题→匹配资源与必要下载通知"
     }
   ]
 }

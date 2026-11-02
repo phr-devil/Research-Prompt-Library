@@ -44,7 +44,7 @@
 - [templates/STATE.md](templates/STATE.md)：可选、极简的项目断点
 - [REFERENCES.md](REFERENCES.md)：高星 GitHub 项目的具体借鉴点、限制与原始链接
 - [REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md)：真实项目冻结点的盲回放和人工配对评审
-- [SCENARIOS.json](SCENARIOS.json)：28个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
+- [SCENARIOS.json](SCENARIOS.json)：31个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
 
 **工作流质量评价**：结构回归并非科研成功率。[WORKFLOW.md 的评测协议](WORKFLOW.md) 要求使用信息隔离的历史盲回放和前瞻性项目审计，在相同预算下比较任务发现、有效科研证据、过早止损、无效循环与总资源成本；**目前尚未运行真实模型对照，效果未测量**。评测按需开展，不成为每个科研项目的强制阶段。
 
