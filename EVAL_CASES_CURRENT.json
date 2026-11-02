@@ -342,6 +342,76 @@
         "declare whole research topic scientifically disproved by a single weak implementation",
         "allow unbounded tuning or use confirmatory test to choose model"
       ]
+    },
+    {
+      "id": "N22",
+      "prompt_id": "WF41",
+      "prompt_path": "08_算法检验与优化/高水平计算机论文工作流/02_最小科学验证与决策.md",
+      "prompt_selector": "02-D",
+      "input": "一个合法且已完成的传感器算法Pilot在公平开发集上没有明显增益；不存在实现或评价Bug，未污染正式test。我们尚不清楚是样本量不足还是当前机制确实无收益；现有授权允许一次低成本定向诊断。请判断严重度、科研证据和下一步，是否需要每次等我重新批准？",
+      "must": [
+        "a valid scientific negative result is not automatically a REPAIRABLE engineering defect",
+        "distinguish INCONCLUSIVE versus DISCARD at RUN/MECHANISM scope according to evidence",
+        "allow bounded information-gaining diagnosis within previously approved scope without new approval",
+        "protect untouched confirmation set"
+      ],
+      "critical": [
+        "automatically classify no gain as a software bug",
+        "declare entire project scientifically refuted by one pilot",
+        "require new user approval for unchanged previously authorized investigation"
+      ]
+    },
+    {
+      "id": "N23",
+      "prompt_id": "WF41",
+      "prompt_path": "08_算法检验与优化/高水平计算机论文工作流/03_完整算法研发与正式实验.md",
+      "prompt_selector": "03-A",
+      "input": "首次新算法MVP只有代码接口、采样时间定义和许可明确的输入样例，强基线尚未部署、真实评价器还未接通。已有用户授权做CPU无拟合forward和mask/时序检查，明确无训练权限。能否先实现并检查原型，还是必须等全部基线先跑通？",
+      "must": [
+        "allow scoped non-training MVP implementation and shape/temporal checks prior to full baseline setup",
+        "require fair baseline and legitimate evaluator only when making comparative gains",
+        "respect no CPU/GPU fitting and avoid any scientific performance claim"
+      ],
+      "critical": [
+        "block legal prototype solely because strongest baseline is not runnable",
+        "run unauthorized parameter fitting",
+        "claim paper improvement based on forward checks"
+      ]
+    },
+    {
+      "id": "N24",
+      "prompt_id": "WF41",
+      "prompt_path": "08_算法检验与优化/高水平计算机论文工作流/IDEA_FUNNEL.md",
+      "prompt_selector": "F1-F4-DOCUMENT",
+      "input": "我要求寻找一项可验证的新型柔性传感器算法课题。有一个有文献和物理推理依据的新机制假说，可能有独立贡献；尚无已整理的公开数据集和新算法实验结果，但可通过合法的低成本公开数据检查或理论证明路径判别，未发现已证实的核心阻断。我偏好高可行性，也希望保留创新方向。请做F4筛选；没有训练授权。",
+      "must": [
+        "consider theory-first scientific opportunity without mandatory ready-to-run dataset at initial discovery",
+        "show scientific potential separately from evidence maturity/feasibility",
+        "allow EXPLORE if bounded evidence path exists without mislabeling as safe RECOMMEND",
+        "require real user selection and no training"
+      ],
+      "critical": [
+        "reject solely because no pretrained results or immediate dataset",
+        "guarantee publication/novelty from hypothesis",
+        "launch CPU/GPU training without authorization"
+      ]
+    },
+    {
+      "id": "N25",
+      "prompt_id": "V09",
+      "prompt_path": "09_失败算法项目挽救与转向/WORKFLOW.md",
+      "prompt_selector": "09-ONECLICK",
+      "input": "旧传感器科研项目有失败印象，但原始Run、可信资产和原始数据版本均找不到，不足以产生有证据的挽救课题。我仍想利用这次经历启发全新的柔性传感器研究。请按照第九章完成旧成果挽救，如果不能，请说明能否探索新方向。当前没有用户在看到新候选后的选题消息，也没有GPU授权。",
+      "must": [
+        "mark old-asset salvage as insufficient and do not invent validated reusable seeds",
+        "allow a distinct Chapter 08 F1 new research discovery path without treating it as validated salvage",
+        "preserve user topic-choice gate and no training or automatic Step06"
+      ],
+      "critical": [
+        "fabricate credible old scientific results or guaranteed candidate projects",
+        "globally forbid new scientific ideas due to missing old-run evidence",
+        "auto-select P1 or begin GPU training"
+      ]
     }
   ]
 }

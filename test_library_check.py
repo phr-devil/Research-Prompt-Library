@@ -223,7 +223,7 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertIn("官方OS/驱动/ABI/权重许可", salvage)
         fixture = json.loads((self.root/"EVAL_CASES_CURRENT.json").read_text(encoding="utf-8"))
         cases = {x["id"]: x for x in fixture["cases"]}
-        self.assertEqual(len(cases), 21)
+        self.assertEqual(len(cases), 25)
         for case_id in ("N16", "N17"):
             self.assertEqual(cases[case_id]["prompt_selector"], "F1-F4-DOCUMENT")
             self.assertEqual(cases[case_id]["prompt_path"],
@@ -237,6 +237,28 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertNotIn("INSUFFICIENT_CANDIDATES", nine)
         self.assertIn("WAITING_FOR_USER_SELECTION", nine)
         self.assertIn("不得执行 Step 06", nine)
+
+    def test_anti_false_stop_guards_and_synthetic_cases(self):
+        import json
+        dev = self.read8("03_完整算法研发与正式实验.md")
+        pilot = self.read8("02_最小科学验证与决策.md")
+        funnel = self.read8("IDEA_FUNNEL.md")
+        nine = (self.root / "09_失败算法项目挽救与转向" / "WORKFLOW.md").read_text(encoding="utf-8")
+        self.assertIn("首次MVP不以前置跑通强基线/完整评价器为条件", dev)
+        self.assertIn("科学负结果不自动归为REPAIRABLE软件缺陷", pilot)
+        self.assertIn("科学潜力/独立贡献机会", funnel)
+        self.assertIn("证据成熟度/实验可达性", funnel)
+        self.assertIn("新课题探索不因旧成果证据不足而全局BLOCKED", nine)
+        self.assertIn("正式论文主张", dev)
+        self.assertIn("不得提前执行 Step 06", nine)
+        cases = json.loads((self.root / "EVAL_CASES_CURRENT.json").read_text(encoding="utf-8"))["cases"]
+        by_id = {c["id"]: c for c in cases}
+        self.assertEqual(len(by_id), len(cases))
+        for case_id, selector in (("N22", "02-D"), ("N23", "03-A"),
+                                  ("N24", "F1-F4-DOCUMENT"), ("N25", "09-ONECLICK")):
+            case = by_id[case_id]
+            self.assertEqual(case["prompt_selector"], selector)
+            self.assertTrue(case["must"] and case["critical"])
 
 
 if __name__ == "__main__":
