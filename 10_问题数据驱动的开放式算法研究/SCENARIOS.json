@@ -9,13 +9,14 @@
       "should": [
         "先按现实问题/变化条件选择宽研究方向与任务族，形成DIRECTION_CARD",
         "为推荐方向选择2–3个独立且互补的数据库，明确D1开发/D2外部复现/可选D3压力测试",
-        "给出1–3个有官方证据的方向—多数据库组合、每库许可/兼容性与PRE_DOWNLOAD_PLAN，等待用户选择",
+        "活动01方向确定后立即自动选择3–4个数据库、生成PRE_DOWNLOAD_PLAN和DOWNLOAD_READY_NOTICE通知用户下载",
         "允许没有足够数据的理论/证明路线用NOT_APPLICABLE标注"
       ],
       "must_not": [
         "在方向未选前自动下载一个热门库再倒推任务",
         "将一个数据库的train/test误称独立多数据库",
-        "把用户选择组合误认为下载/拟合授权"
+        "把用户选择组合误认为下载/拟合授权",
+        "完成研究方向却只给方向，要求用户另发消息才开始选库"
       ]
     },
     {
@@ -371,7 +372,7 @@
       "situation": "Agent已经找到一个容量很大的热门IMU数据库，但用户尚未确定想做跨人泛化、重戴漂移还是故障检测，也没有下载许可。",
       "should": [
         "先形成DIRECTION_CARD：ROOT_PROBLEM/VARIATION_AXIS/TASK_FAMILY/合法可见信息",
-        "只读提出多个可选方向及至少两库的互补组合，不下载",
+        "先选择宽研究方向，然后自动核官方数据选择3–4库并发下载通知，不下载",
         "研究方向、组合、PRE_DOWNLOAD_PLAN与实际下载权限分别记录"
       ],
       "must_not": [
@@ -435,6 +436,24 @@
       "expected_route": "PAPER_FIRST.md",
       "decision_scope": "TASK",
       "expected_next": "最低论文路线必须有可反驳独立贡献和合法确认，不承诺发表"
+    },
+    {
+      "id": "D10-29",
+      "event": "DIRECTION_COMPLETED_AUTONOMOUS_DATASET_SELECTION",
+      "situation": "用户已选择第十章的触觉传感器跨设备泛化方向，活动01已完成；尚未下载任何数据库、也未授权下载。Agent打算只报方向，等用户再要求开始选库。",
+      "should": [
+        "活动01方向确定后直接继续官方数据源筛选，自动定3–4库DATA_PORTFOLIO，不再要求用户选择数据库",
+        "同一次完成PRE_DOWNLOAD_PLAN、DOWNLOAD_READY_NOTICE，逐库给官方链接/必要文件/大小或UNKNOWN、优先级/保存目录/分组封存",
+        "完成后通知用户进行下载或授权下载，状态DOWNLOAD_READY_WAITING_FOR_USER，明确NOT_RUN"
+      ],
+      "must_not": [
+        "只报告研究方向后停住等待用户再发开始选库的指令",
+        "自动选库就擅自进行数据下载、安装或CPU/GPU拟合",
+        "杜撰未核实的直链或文件体积"
+      ],
+      "expected_route": "DATA_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "DIRECTION_DEFINED→DATA_PORTFOLIO→PRE_DOWNLOAD_PLAN→DOWNLOAD_READY_NOTICE，下载待用户执行/授权"
     }
   ]
 }
