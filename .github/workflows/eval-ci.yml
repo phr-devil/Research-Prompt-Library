@@ -132,7 +132,7 @@ jobs:
           from pathlib import Path
           base="52e6ac8db257fee13f859db2229ba242cf10f458"
           head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
-          selected=["N18","N19","N20","N21","N22","N23","N24","N25"]
+          selected=["N18","N19","N20","N21","N22","N23","N24","N25","N26","N27","N28"]
           subprocess.run([sys.executable,"eval_runner.py","--suite","current",
                           "--cases",",".join(selected),"--base-ref",base,
                           "--candidate-ref",head,"--max-calls",str(2*len(selected)),
@@ -143,7 +143,7 @@ jobs:
           assert m["status"]=="PLAN_ONLY" and m["actual_calls"]==0
           assert m["selected_cases"]==selected and len(p)==2*len(selected)
           assert set(x["case_id"] for x in p)==set(selected)
-          print("ANTI_OVERCAUTION_PLAN_PASS: 8 scenarios, 16 planned, 0 model calls")
+          print(f"ANTI_OVERCAUTION_PLAN_PASS: {len(selected)} scenarios, {len(p)} planned, 0 model calls")
           PY
 
       - name: Verify all 24 research scene prompts can be extracted

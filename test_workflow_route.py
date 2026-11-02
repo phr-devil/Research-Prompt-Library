@@ -1079,5 +1079,20 @@ class EvidenceSourceAuditTests(unittest.TestCase):
                                                   scoped_work_verified=True),
                          "BLOCKED_CRITICAL")
 
+    def test_data_first_uses_existing_event_with_separate_resource_authority(self):
+        new = router.advise_event("NEW_PROJECT")
+        data = router.advise_event("DATA_AUDIT")
+        resume = router.advise_event("RESUME")
+        self.assertIn("完整下载非硬性准入", new["boundary"])
+        self.assertIn("选题不授权下载", new["why"])
+        self.assertIn("官方来源/版本/许可", data["deliverable"])
+        self.assertIn("PARTIAL_DATA", data["deliverable"])
+        self.assertIn("确认集", data["verify"])
+        self.assertIn("不重复下载", resume["why"])
+        self.assertEqual(data["permission"], "ADVISORY_ONLY_NO_EXECUTION")
+        self.assertEqual(router.propose_transition("REPAIRABLE", "FORMAL_RUN",
+                                                  scoped_work_verified=True),
+                         "INDEPENDENT_EVIDENCE_OR_APPROVAL_GATE")
+
 if __name__=="__main__":
     unittest.main()

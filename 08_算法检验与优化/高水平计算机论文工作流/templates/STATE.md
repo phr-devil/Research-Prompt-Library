@@ -12,6 +12,7 @@
 - AUTH/BUDGET: <真实用户授权来源；许可动作及GPU/CPU拟合/付费/确认范围；总时长/尝试数/费用/余额；禁训练时CPU/GPU参数拟合均不可运行；无则 UNAUTHORIZED>
 - BLOCKER/USER_DECISION: <仅重大分叉/真实权限问题需要询问，记录真实用户后续选择；没有则 NONE>
 - PATH_MAP: <已有RUNS/CLAIMS/REVIEW/数据的路径，不重复建账>
+- DATA_ASSET: <可选：官方源/版本/许可、核心文件清单及校验指针、FULL_VERIFIED|PARTIAL_DATA|WAITING_FOR_AUTH|WAITING_FOR_DATA|NOT_APPLICABLE；未实际核验则UNKNOWN>
 - WORKFLOW_SOURCE/COMMIT: <真实的源仓 SHA 或 UNPINNED>
 
 按需补充（不默认展开）：
