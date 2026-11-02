@@ -225,7 +225,7 @@
       "route": null,
       "why": "仅用户已选定课题才进入；数据驱动题先复用或获授权准备完整核心数据（沿用DATA_AUDIT，非新阶段），再做最小观察/MVP；理论/超大数据可先行独立合法原型。未选择仍TOPIC_EXPLORATION，选题不授权下载、训练",
       "playbook": "playbooks/01_DATA_BASELINE.md",
-      "deliverable": "核心数据可获取路径/实际已校验清单或PARTIAL_DATA/WAITING_FOR_AUTH/WAITING_FOR_DATA，以及最小原型验收或观察；比较时才补基线",
+      "deliverable": "核心数据可获取路径/实际已校验清单或PARTIAL_DATA/WAITING_FOR_AUTH/WAITING_FOR_DATA，以及最小原型验收或观察；开始声称性能改善时再补公平基线",
       "verify": "真实数据源/版本/许可、实际文件数量/校验状态、合法输入与封存test；无完整数据需求者按自身验证",
       "boundary": "完整下载非硬性准入；选题不等于下载/训练授权；不以封存test选模"
     },
