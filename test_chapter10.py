@@ -132,6 +132,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
     def test_synthetic_scenarios_are_unique_and_guardrails_explicit(self):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
+        self.assertEqual(data["version"], "PD-RW-v1.1")
         self.assertEqual(len(cases), 12)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
@@ -144,6 +145,11 @@ class ProblemDataWorkflowTests(unittest.TestCase):
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
         self.assertIn("not actual model evaluation", data["note"])
+        by_id = {c["id"]: c for c in cases}
+        self.assertIn("适配", " ".join(by_id["D10-03"]["should"]))
+        self.assertIn("seed", " ".join(by_id["D10-09"]["must_not"]))
+        self.assertIn("task_id", " ".join(by_id["D10-07"]["should"]))
+        self.assertIn("历史", " ".join(by_id["D10-12"]["situation"]))
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()
