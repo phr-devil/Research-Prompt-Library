@@ -3,7 +3,7 @@ name: research-paper-workflow
 description: Feasibility-first scientific research workflow: grounded topic selection, credible baselines, learnability checks, scoped iteration, and evidence-led paper claims.
 ---
 
-# Research Workflow v6.1｜按需路由
+# Research Workflow v6.1｜可行性优先、按需路由
 
 **按用户意图，不按文件顺序。** 总控：[ORCHESTRATOR.md](ORCHESTRATOR.md)；精确关键词/事件入口：[根目录AGENTS.md](../../AGENTS.md)。不要求安装Skill、扫描所有Markdown或执行24个历史场景。
 
