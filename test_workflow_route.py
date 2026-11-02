@@ -107,6 +107,32 @@ class WorkflowTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 router.load_triage(root=root,routes=router.load_routes())
 
+    def test_repairable_advice_shows_bounded_fast_path_without_granting_permission(self):
+        output=router.show_triage("03-E")
+        self.assertIn("REPAIRABLE: USER_CHOICE", output)
+        self.assertIn("FAST_PATH:", output)
+        self.assertIn("ASK_USER_ONLY_IF:", output)
+        self.assertIn("No GPU/formal/paid permission", output)
+        self.assertEqual(router.propose_transition("REPAIRABLE", "SCOPED_EXPLORATION"),
+                         "WAITING_FOR_USER_DECISION")
+        self.assertEqual(router.propose_transition("REPAIRABLE", "SCOPED_EXPLORATION",
+                                                 scoped_work_verified=True),
+                         "BOUNDED_DIAGNOSTIC_CONTINUE")
+
+    def test_repair_thresholds_and_replies_do_not_add_mandatory_gates(self):
+        policy=(ROOT/"RESEARCH_DECISIONS.md").read_text(encoding="utf-8")
+        triage=(ROOT/"TRIAGE.md").read_text(encoding="utf-8")
+        recovery=(ROOT/"RECOVERY.md").read_text(encoding="utf-8")
+        for k in ("低门槛 EXPLORE", "中门槛 CONTINUE", "高门槛 CONFIRM",
+                  "PROJECT级HOLD/STOP", "只核当前动作"):
+            self.assertIn(k, policy)
+        for k in ("普通Bug不逐项询问", "阶段末仅报增量", "NOT_RUN"):
+            self.assertIn(k, triage)
+        for k in ("已验证修复", "待验证", "INVALID", "NOT_RUN"):
+            self.assertIn(k, recovery)
+        self.assertEqual(len(router.load_routes()), 24)
+        self.assertEqual(sum(map(len, router.load_repairs()[1].values())), 48)
+
     def test_scoped_transition_matrix_is_fail_closed(self):
         intents=("READ_ONLY_RESEARCH","SCOPED_EXPLORATION","DRAFT_PREPARATION",
                  "FORMAL_RUN","CONFIRMED_CLAIM","SUBMISSION")
