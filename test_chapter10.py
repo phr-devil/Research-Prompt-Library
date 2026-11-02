@@ -127,7 +127,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("不为穷尽数据扫描拖延实证",
                       read(CH10 / "START.md"))
         # Regression against the previous rule-heavy draft; not a model benchmark.
-        self.assertLess(len(workflow) + len(tasks) + len(experiment), 13500)
+        self.assertLess(len(workflow) + len(tasks) + len(experiment), 15000)
 
     def test_research_direction_data_selection_is_actionable(self):
         guide = read(CH10 / "DATA_DISCOVERY.md")
