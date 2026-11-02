@@ -102,7 +102,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                      "cleanlab/cleanlab", "iterative/dvc"):
             self.assertIn("https://github.com/" + repo, refs)
         self.assertIn("可能不如", refs)
-        self.assertIn("不安装", refs)
+        self.assertIn("不强制安装", refs)
 
     def test_synthetic_scenarios_are_unique_and_guardrails_explicit(self):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
