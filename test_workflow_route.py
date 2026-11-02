@@ -168,6 +168,34 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("无需先完成02-D",routes["03-A"][1]["when"])
         self.assertIn("独立审查",routes["04-B"][1]["when"])
 
+    def test_feasibility_first_workflow_preserves_scientific_gates(self):
+        funnel=(ROOT/"IDEA_FUNNEL.md").read_text(encoding="utf-8")
+        post=(ROOT/"POST_SELECTION.md").read_text(encoding="utf-8")
+        decisions=(ROOT/"RESEARCH_DECISIONS.md").read_text(encoding="utf-8")
+        orch=(ROOT/"ORCHESTRATOR.md").read_text(encoding="utf-8")
+        baseline=(ROOT/"playbooks/01_DATA_BASELINE.md").read_text(encoding="utf-8")
+        experiments=(ROOT/"playbooks/03_EXPERIMENT_LOOP.md").read_text(encoding="utf-8")
+        agents=(ROOT.parent.parent/"AGENTS.md").read_text(encoding="utf-8")
+        self.assertIn("F2 可行性与最低贡献轻筛",funnel)
+        self.assertIn("F3 可学性风险与机制空间轻筛",funnel)
+        self.assertIn("F4 可行性优先推荐",funnel)
+        self.assertIn("用户可反选",funnel)
+        for term in ("可信基线","可学性","独立贡献"):
+            self.assertIn(term,post)
+        for term in ("BEST_VALID_RUN","NO_INDEPENDENT_CLAIM","新机制"):
+            self.assertIn(term,post)
+        self.assertIn("基础成果不是论文保底",decisions)
+        self.assertIn("高可行性",orch)
+        self.assertIn("可学性最小探针",baseline)
+        self.assertIn("探针失败≠不可学习",baseline)
+        self.assertIn("先优化再增强",experiments)
+        self.assertIn("可行性优先",agents)
+        self.assertEqual(len(router.load_routes()),24)
+        self.assertEqual(sum(len(v) for v in router.load_repairs()[1].values()),48)
+        self.assertLess(len(orch),2800)
+        self.assertLess(len(baseline),2700)
+        self.assertLess(len(experiments),2700)
+
     def test_optional_idea_funnel_contract(self):
         funnel=(ROOT/"IDEA_FUNNEL.md").read_text(encoding="utf-8")
         stage=(ROOT/"01_科学选题与跨AI审核.md").read_text(encoding="utf-8")
