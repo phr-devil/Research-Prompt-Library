@@ -8,7 +8,7 @@
 - **内循环 B｜算法实证**：04 保留可信基线，按症状选择简单优化、正控、残差/可学性探针、新机制或工程恢复；在已授权范围和预算内试验并记录真实正负结果。首次负Pilot不自动STOP，不为 GPU 占用率扩大无信息实验。[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。
 - **外循环 C｜科研价值**：05 分别核科研可行性与独立贡献，用真实收益/规律、具名近邻和简单竞争解释评价；可继续当前层级、`UP`挑战更难信息条件、`DOWN`使用更现实的合法标定、`NARROW`收窄主张，或`LATERAL`比较备用科研任务。06 只有冻结 Claim/方法/协议并获授权后才严格独立确认。层级切换必须更新Claim与公平评价，**L0/L1没有天然论文保底**。[TASK_LADDER.md](TASK_LADDER.md) / [CONFIRMATION.md](CONFIRMATION.md)。
 
-**单次循环可跳转**：已有 STATE/Run 直接续做；低门槛 EXPLORE、中门槛追加投入、高门槛正式确认。初始 UNKNOWN 不自动否决；论文确认仍核独立真值、时间因果、公平强基线、独立组、效应不确定性与直接近邻。
+**单次循环可跳转**：已有 STATE/Run 直接续做；低门槛 EXPLORE、中门槛追加投入、高门槛正式确认。**当前最优选择并不由L2的名称决定**：L1若科学价值更明确可先研究L1；L3若有廉价关键正控可先尝试L3。初始 UNKNOWN 不自动否决；论文确认仍核独立真值、时间因果、公平强基线、独立组、效应不确定性与直接近邻。
 
 ## 2. 单入口事件路由（一次只读必要的一份专题）
 
@@ -23,6 +23,16 @@
 | 用户改变研究范围/权限/预算 | 本文件＋最新 STATE | 影响范围与真实用户决策 |
 
 先读 [START.md](START.md)、最新可核 STATE/有效 Run，再按阻碍只读一份专题；不预读 24 旧 Prompt、全部失败史或重复检查已验证数据。ChatGPT 优先公开资料与科学论证，WorkBuddy/Codex 在用户实际授权范围内核本地资产并执行。状态缓存与现场不符时以原始证据和最新授权为准。
+
+## 2.5 最短决策产物（不额外加阶段）
+
+- **用户尚未选组合**：使用 [DATA_DISCOVERY.md](DATA_DISCOVERY.md) 的`PREFERRED / WHY_THIS_OVER_ALTERNATIVE / MOST_DANGEROUS_UNKNOWN / NEXT_LOW_COST_CHECK`推荐一项有依据的组合，提供必要备选；不直接进入本地下载或训练。
+- **已有数据但未确定任务**：使用 [TASK_EXPLORATION.md](TASK_EXPLORATION.md) 形成`PRIMARY_TASK / WHY_THIS_OVER_RESERVE / VALUE_HYPOTHESIS / FEASIBILITY_UNKNOWN / MINIMUM_PROBE`；可只保留一个TASK。
+- **多层级研究**：只在真正有不同标签、部署信息或科学命题时按 [TASK_LADDER.md](TASK_LADDER.md) 进行`COMMON_PREMISE / NEW_LEVER / CLAIM_AND_TEST_CHANGE`检查；不满足则修复当前任务/收窄Claim，而非假降级。
+- **已有可信基线、准备做实验**：按 [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) 的`Champion–Challenger`固定可比条件，保存正负结果和成本；只有新信息能改变决定时升级训练预算。
+- **进入正式证据/投稿**：按 [CONFIRMATION.md](CONFIRMATION.md) 对当前任务层级**冻结一份完整证据快照**；所有不同任务/层级的开发搜索史单独披露，确认集不能从中选赢家。
+
+以上按**当前阻碍选其中一项**，不是每轮都交五份报告。实际授权、Run/机制—Task—Area-Data止损和证据等级仍由本文件统一决策。
 
 ## 3. 唯一下一行动算法（不机械全跑检查表）
 
