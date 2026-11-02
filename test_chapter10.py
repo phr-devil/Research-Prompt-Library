@@ -184,8 +184,8 @@ class ProblemDataWorkflowTests(unittest.TestCase):
     def test_synthetic_scenarios_are_unique_and_guardrails_explicit(self):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
-        self.assertEqual(data["version"], "PD-RW-v1.2")
-        self.assertEqual(len(cases), 16)
+        self.assertEqual(data["version"], "PD-RW-v1.3")
+        self.assertEqual(len(cases), 20)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -194,7 +194,9 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                           "LEARNABILITY_DIAGNOSIS", "SCOPED_AUTOREPAIR",
                           "VALUE_VS_BASELINE", "BLINDED_EVALUATION",
                           "DIRECTION_DATA_FUNNEL", "LADDER_DOWNGRADE",
-                          "LADDER_BASELINE_NOT_PAPER", "LADDER_LATERAL_AND_HOLDOUT"})
+                          "LADDER_BASELINE_NOT_PAPER", "LADDER_LATERAL_AND_HOLDOUT",
+                          "DATA_CHOICE_NO_REAL_EVAL", "COMMON_PREMISE_FAKE_FALLBACK",
+                          "SUPPORT_QUERY_FUTURE_LEAK", "CHAMPION_CHALLENGER_MISMATCH"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -207,6 +209,37 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
+        for i in range(17, 21):
+            case = by_id[f"D10-{i:02d}"]
+            for field in ("expected_route", "decision_scope", "expected_next"):
+                self.assertTrue(case[field], (case["id"], field))
+            self.assertTrue((CH10 / case["expected_route"]).is_file())
+            self.assertIn(case["decision_scope"], {"AREA_DATA", "TASK", "EVIDENCE", "RUN"})
+        self.assertIn("INVALID", by_id["D10-19"]["expected_next"])
+        self.assertIn("NOT_COMPARABLE", by_id["D10-20"]["expected_next"])
+
+    def test_v13_decisions_are_falsifiable_and_same_premise_is_not_reset(self):
+        data = read(CH10 / "DATA_DISCOVERY.md")
+        task = read(CH10 / "TASK_EXPLORATION.md")
+        ladder = read(CH10 / "TASK_LADDER.md")
+        loop = read(CH10 / "EXPERIMENT_LOOP.md")
+        workflow = read(CH10 / "WORKFLOW.md")
+        confirm = read(CH10 / "CONFIRMATION.md")
+        self.assertIn("WHY_THIS_OVER_ALTERNATIVE", workflow)
+        self.assertIn("MOST_DANGEROUS_UNKNOWN", data)
+        self.assertIn("NEXT_LOW_COST_CHECK", data)
+        self.assertIn("STOP_OR_PIVOT_EVIDENCE", task)
+        for marker in ("COMMON_PREMISE", "NEW_LEVER", "CLAIM_AND_TEST_CHANGE",
+                       "NO_NEW_LEVER", "support/query", "K-shot"):
+            self.assertIn(marker, ladder)
+        for marker in ("Champion–Challenger", "NOT_COMPARABLE",
+                       "COMPARABLE_POS/NEG", "COST_CAP"):
+            self.assertIn(marker, loop)
+        for marker in ("dataset_manifest_hash", "selection_history_ref",
+                       "support/query", "CONFIRMATION_UNAVAILABLE"):
+            self.assertIn(marker, confirm)
+        self.assertLess(len(read(CH10 / "START.md")), 1300)
+        self.assertIn("非 Agent 必走关卡", workflow)
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()
