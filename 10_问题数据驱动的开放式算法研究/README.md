@@ -20,7 +20,7 @@
 | 05 | 选定论文主张：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_CANDIDATE：明确独立价值、竞争解释与证据缺口 | ChatGPT＋代码 Agent |
 | 06 | 严格科学确认：[CONFIRMATION.md](CONFIRMATION.md) | 有效独立证据或 CONFIRMATION_UNAVAILABLE，论文声明边界 | 独立核验与获授权正式实验 |
 
-**实验内循环**：真实发现 → 候选任务/方法 → 最小公正比较 → KEEP / IMPROVE / REPAIR / INCONCLUSIVE / DISCARD（只针对具体 Run/机制）→ 新观察。**研究外循环**：确认该任务还值得做、同一问题—数据组合仍有价值，还是应该向用户提出重大转向；详见 [WORKFLOW.md](WORKFLOW.md)。**改进重点**：从数据与物理问题发现任务；按症状查可学性/正控/残差；用增量信息与总成本决定续投。正式确认还要检查新任务与封存数据是否匹配，不能把已预留的组自动当成所有新任务的独立验证。
+**唯一主线：三个决策循环贯穿六项活动**——A 研究机会（大问题＋数据→真实观察→具体 TASK）→ B 算法实证（有界基线、探针和机制实验→有效 Run）→ C 科研价值（核独立贡献→保留、调整或主动比较备用任务→严格确认）。可按结果回到对应循环，**不是六道强制关卡**。首次负 Pilot 不自动停题，封存的 holdout 也未必适用于后来发现的所有 TASK。下一行动与止损只按 [WORKFLOW.md](WORKFLOW.md) 决定。
 
 ## 五条不可放宽的边界
 
@@ -34,8 +34,8 @@
 
 - [WORKFLOW.md](WORKFLOW.md)：总控、状态路由、权限和跨活动续做
 - [DATA_DISCOVERY.md](DATA_DISCOVERY.md)：研究问题＋数据的筛选与完整性/封存合同
-- [TASK_EXPLORATION.md](TASK_EXPLORATION.md)：任务产生、比较、收敛与止损
-- [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：实际 Agent 研发指令、按症状可学性诊断、实验循环与分支止损；重大故障按需复用第八章 [TRIAGE](../08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) / [RECOVERY](../08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md)
+- [TASK_EXPLORATION.md](TASK_EXPLORATION.md)：任务发现、主/备选机会维护与论文 Claim 收敛；不重复实验纠错/止损规则
+- [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：真实实验、按症状探针、可复现 Run 与修复；故障按需复用第八章 [TRIAGE](../08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) / [RECOVERY](../08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md)
 - [CONFIRMATION.md](CONFIRMATION.md)：从开放探索到严格论文确认
 - [EXAMPLE_SENSOR.md](EXAMPLE_SENSOR.md)：传感器跨平台迁移的假想执行实例（明确非实测）
 - [templates/STATE.md](templates/STATE.md)：可选、极简的项目断点
