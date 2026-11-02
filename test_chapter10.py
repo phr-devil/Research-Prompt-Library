@@ -184,7 +184,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 28)
+        self.assertEqual(len(cases), 29)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -200,7 +200,8 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                           "BASELINE_FAIR_TUNING", "TASK_LEVEL_ASSET_REUSE",
                           "DIRECTION_BEFORE_DOWNLOAD", "MULTIDATASET_ROLE_AND_COMPATIBILITY",
                           "PARALLEL_DATASET_DEV_WITH_SEALED_GROUPS",
-                          "PAPER_FIRST_NOT_SCORE_ONLY"})
+                          "PAPER_FIRST_NOT_SCORE_ONLY",
+                          "DIRECTION_COMPLETED_AUTONOMOUS_DATASET_SELECTION"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -213,7 +214,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 29):
+        for i in range(17, 30):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -322,6 +323,27 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         scenes = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
         self.assertIn("DEV_SHARED", " ".join(scenes["D10-27"]["should"]))
         self.assertIn("论文接收", " ".join(scenes["D10-28"]["must_not"]))
+
+    def test_after_direction_ai_selects_datasets_then_notifies_user_download(self):
+        start = read(CH10 / "START.md")
+        data = read(CH10 / "DATA_DISCOVERY.md")
+        flow = read(CH10 / "WORKFLOW.md")
+        intro = read(CH10 / "README.md")
+        for token in ("无需再问用户选哪个数据库", "DOWNLOAD_READY_NOTICE"):
+            self.assertIn(token, start)
+        for token in ("本轮立即自主选定", "DOWNLOAD_READY_WAITING_FOR_USER",
+                      "活动01完成即继续选库", "URL_UNVERIFIED", "通知用户"):
+            self.assertIn(token, data)
+        for token in ("第一步确定方向后AI立即自主筛库", "DOWNLOAD_READY_NOTICE",
+                      "通知用户下载"):
+            self.assertIn(token, flow)
+        self.assertIn("无需再让用户选择一次数据库", intro)
+        self.assertIn("DOWNLOAD_READY_NOTICE:", read(CH10 / "templates/STATE.md"))
+        scenarios = json.loads(read(CH10 / "SCENARIOS.json"))["cases"]
+        case = next(x for x in scenarios if x["id"] == "D10-29")
+        self.assertEqual(case["expected_route"], "DATA_DISCOVERY.md")
+        self.assertIn("DOWNLOAD_READY_NOTICE", case["expected_next"])
+        self.assertIn("擅自", " ".join(case["must_not"]))
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()
