@@ -294,7 +294,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
             self.assertIn(term, workflow)
             self.assertIn(term, state)
         self.assertIn("先确定宽研究方向", intro)
-        self.assertIn("先选方向，禁止先下载", intro)
+        self.assertIn("不代为下载或训练", intro)
         self.assertIn("UCI HAR Smartphones", example)
         self.assertIn("PAMAP2", example)
         self.assertIn("不同采样率", read(CH10 / "README.md") + data + example)
