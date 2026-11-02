@@ -1,3 +1,7 @@
+## 2026-11-02 新增独立第十章：问题—数据驱动开放研究 PD-RW v1.0
+
+新增 [第十章](10_问题数据驱动的开放式算法研究/README.md) 作为与第08章具体命题开发、第09章失败项目挽救并行的独立路线，不修改旧章节。由大科学问题/合法数据资源出发，在真实开发数据中发现任务、有限分支迭代并严格封存最终确认。借鉴 [RD-Agent](https://github.com/microsoft/RD-Agent) 的研究—实现反馈、[autoresearch](https://github.com/karpathy/autoresearch) 的固定评价与Run记录（不采用无限循环）、[AIDE](https://github.com/WecoAI/aideml) / [AI-Scientist-v2](https://github.com/SakanaAI/AI-Scientist-v2) 的有限分支、[AI-Scientist-v3](https://github.com/SakanaAI/AI-Scientist-v3) 的探索—消融—封存评价，以及 [MLflow](https://github.com/mlflow/mlflow)、[Optuna](https://github.com/optuna/optuna)、[Cleanlab](https://github.com/cleanlab/cleanlab) 等项目的日志、预算与数据质量思想。详细来源/Stars日期/适用与不可照搬部分见 [REFERENCES.md](10_问题数据驱动的开放式算法研究/REFERENCES.md)。不代表实际安装、端到端科研试验或论文成功率提升。
+
 ## 2026-10-31 RevGraph 科学价值复盘进入 v6.1（非新增审核阶段）
 
 在第八项 [LESSONS.md](08_算法检验与优化/高水平计算机论文工作流/LESSONS.md) 的L3保留 RevGraph“任务/工程PASS多但论文贡献未证”的三类教训：工程验收不等于学术创新；内部传播代理指标不能代替真实任务/独立机制证据；不能把近邻差异与成功后贡献判断拖到科研末期。仅在已有的启动、MVP和事件型科学外循环中加入成功价值反推、代理/任务或机制价值并列核查、关键结果时的竞争力复评；新增 `PROXY_ONLY_GAIN` 只读事件建议，不增加必经步骤或GPU权限。注意本仓库无RevGraph原始Run，相关历史结果仍需回到真实科研仓库验证，不能据此推断论文质量或宣称真实下游实验已完成。
