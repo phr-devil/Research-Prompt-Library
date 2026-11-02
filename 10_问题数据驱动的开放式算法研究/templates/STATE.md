@@ -1,36 +1,39 @@
-# PD-RW｜项目最小续做状态（可选模板）
+# PD-RW｜最小续做 STATE（按需字段，不是填写表）
 
-> 若项目已有 STATE、RUNS、CLAIMS 或 data manifest，直接复用并记录路径，不迁移或重复建立。这里是示例占位，不是权限授予、已运行的证据或必填审批表。
+现有STATE、RUNS、CLAIMS、manifest优先**复用原路径**；只更新本轮变化和下一步所需字段，其他不复制、不填空占位。原始日志/图片/代码留在原处；未运行NOT_RUN，证据不足UNKNOWN。
 
-- WORKFLOW: CHAPTER_10 / PD-RW v1.3（用户明确选择）
-- USER_SCOPE: <本轮用户明确的研究领域/方向或「方向不限」，资源/排除条件；缺失写SCOPE_UNSPECIFIED，不继承旧项目>
-- SEARCH_TRACE: <按需：SEARCH_MODE/查询族/来源与时窗/重要近邻/覆盖缺口/EXPAND或DEEPEN等下一动作；未查询写SEARCH_PARTIAL，复用已有日志>
-- AREA_DATA: <大科学问题、用户真实选择消息或来源；未选标 WAITING_FOR_USER_SELECTION>
-- DIRECTION_CARD: <下载前宽研究方向、变化轴、任务族、部署可见信息与真值假设；方向未确定为UNDECIDED>
-- DATA_PORTFOLIO: <默认3–4库，DEV_SHARED/PIVOT_RESERVE/SEALED_CONFIRM并可随任务更新；每库官方来源/版本/许可、标签语义、独立组、角色；未就绪SECOND_DATASET_GAP>
-- DATA_CHOICE: <如适用：PREFERRED / WHY_THIS_OVER_ALTERNATIVE / MOST_DANGEROUS_UNKNOWN / NEXT_LOW_COST_CHECK；已选组合不强制重做筛选>
-- PORTFOLIO_PIVOT_MAP: <最多2条不同失败前提的备用任务族与对应可用数据库>
-- PAPER_PATH: <PERFORMANCE_FLOOR/PAPER_PATH_CANDIDATE/SCIENCE_UPGRADE、直接近邻差额及确认缺口；未知标VALUE_UNVERIFIED>
-- ALGORITHM_HYPOTHESIS: <仅机制变更：ERROR_PATTERN / MECHANISM_LEVER / STRONG_SIMPLE_ALTERNATIVE / DISCRIMINATING_SIGNATURE / PROBE / COST_CAP；未运行HYPOTHESIZED>
-- CLAIM_EVIDENCE_MAP: <能力/机制/规律候选之一、现有可复核Run、最强简单与具名近邻、缺少的必要实验/正式确认资格；无独立贡献NO_INDEPENDENT_CLAIM>
-- EXPERIMENT_BRANCH: <复用现有RUNS parent_run、失败前提、可复用资产和下一不同杠杆；无需额外树/记忆库>
-- SCIENTIFIC_VALUE: <成功后可能新增何种独立知识/真实任务能力；不明确 VALUE_UNVERIFIED>
-- DOWNLOAD_READY_NOTICE: <方向确定后AI已自动选库，发送下载清单通知用户；下载待用户执行/授权，记DOWNLOAD_READY_WAITING_FOR_USER>
-- PRE_DOWNLOAD_PLAN: <每库所需文件/总存储/下载顺序/官方许可、train-dev-封存角色及真实授权；未授权为WAITING_FOR_AUTH>
-- DATA_MANIFEST: <按dataset_id分别记录官方URL/版本/许可/清单/文件指纹/角色/实际路径；未下载为 NOT_RUN>
-- DATA_READINESS: <FULL_VERIFIED | PARTIAL_DATA | WAITING_FOR_AUTH | WAITING_FOR_DATA | UNKNOWN | NOT_APPLICABLE>
-- HOLDOUT: <独立分组/封存证据、与当前TASK/CLAIM适配性及权限；UNTOUCHED | CONTAMINATED | UNKNOWN | NOT_APPLICABLE>
-- OBSERVATIONS: <开发集 OBSERVED / HYPOTHESIZED / PROXY_ONLY，原始证据路径>
-- DATA_INSIGHTS: <DATA_INSIGHT_CARD简短指针：dataset/split/group、事实或假设、最强混杂、任务机会、下一合法核查；无可信现象NO_RELIABLE_INSIGHT_YET，不用封存集择题>
-- TASK_DISCOVERY: <PRIMARY_TASK/RESERVE_TASK与INSIGHT_ORIGIN、合法标签/K/预测前可用输入、最强简单替代、MINIMUM_PROBE、授权；未获拟合权限BASELINE_PENDING>
-- TASK_CANDIDATES: <task_id, 来源, 有效观察, 可反驳价值, 任务选择史指针；未知记 UNKNOWN，不凭事后记忆造预注册>
-- TASK_LADDER: <可选：ROOT_PROBLEM / PRIMARY_LEVEL(L0–L3) / LEVEL_CLAIMS与合法K及部署信息 / SHARED_ASSETS / PIVOT_CONDITION / CONFIRMATION；没有有效阶梯写 NOT_APPLICABLE，不强制填四层>
-- ACTIVE_TASK: <当前科研任务及允许的标定K/部署前输入；可以为 UNDECIDED，不阻止合法数据观察>
-- IMPLEMENTATION: <可选：Input/Output、保护的资产、实际行为测试PASS/NOT_RUN；仅编码时填写>
-- BEST_VALID_RUN: <原始可信Run、commit、数据/协议版本、指标及路径；NONE；性能比较注明当前Champion、K单位、可见信息与公平预算>
-- CLAIM_CANDIDATE: <主Claim及具名近邻、强基线差额、证据缺口；UNVERIFIED>
-- AUTH/BUDGET: <真实用户授权的来源与作用范围、GPU/CPU拟合/下载/正式确认/费用边界；UNAUTHORIZED>
-- NEXT: <唯一信息价值最高的合法动作、可区分结果与可能决策；按证据上探UP/下探DOWN/收窄NARROW/横向LATERAL/HOLD（仅当适用），验收、成本上限/停止条件或所需真实授权>
-- PATH_MAP: <项目现有RUNS/CLAIMS/代码/数据清单映射，别重复复制>
+## 常驻索引（仅变化时更新）
+- WORKFLOW: CHAPTER_10 / PD-RW v1.3（仅用户明确选择）
+- USER_SCOPE: <本轮用户研究范围或「方向不限」；SCOPE_UNSPECIFIED不继承旧课题>
+- AREA_DATA: <当前大问题及选择来源；未选WAITING_FOR_USER_SELECTION>
+- ACTIVE_TASK: <当前TASK_ID/合法K/部署前信息/协议；可UNDECIDED>
+- AUTH/BUDGET: <实际下载/安装/CPU或GPU拟合/确认等许可及上限；否则UNAUTHORIZED>
+- HOLDOUT: <UNTOUCHED/CONTAMINATED/UNKNOWN/NOT_APPLICABLE及适配任务证据>
+- BEST_VALID_RUN: <有效Run ID＋原始指标/配置/代码路径；NONE>
+- NEXT: <唯一最有价值的合法行动＋POS/NEG/INVALID及成本>
+- PATH_MAP: <现有RUNS/CLAIMS/代码/数据索引，不复述文件内容>
 
-**判定对象必须分开**：RUN/MECHANISM、TASK、AREA_DATA、EVIDENCE、AUTH、PAPER_READINESS；单次负Pilot不能写成整个问题—数据组合 STOP。只更新本轮发生变化的字段，不在空项目初始阶段填满全部模板。
+## 专题索引（当前涉及才添加，其他省略）
+- SEARCH_TRACE: <查询来源/日期/覆盖缺口；SEARCH_PARTIAL>
+- DIRECTION_CARD: <宽方向/变化轴/独立真值假设>
+- DATA_PORTFOLIO: <默认3–4库、开发/备用/SEALED_CONFIRM角色；SECOND_DATASET_GAP>
+- DATA_CHOICE: <PREFERRED及选择证据指针>
+- PRE_DOWNLOAD_PLAN: <官方文件/大小/许可/存储及WAITING_FOR_AUTH>
+- DOWNLOAD_READY_NOTICE: <已告知用户所需下载项；DOWNLOAD_READY_WAITING_FOR_USER>
+- DATA_MANIFEST: <dataset_id/版本/指纹/许可/真实路径；NOT_RUN>
+- DATA_READINESS: <FULL_VERIFIED/PARTIAL_DATA/WAITING_FOR_DATA/UNKNOWN>
+- DATA_INSIGHTS: <关键DATA_INSIGHT_CARD路径或NO_RELIABLE_INSIGHT_YET>
+- OBSERVATIONS: <OBSERVED/HYPOTHESIZED/PROXY_ONLY及原始来源>
+- TASK_DISCOVERY: <PRIMARY_TASK/必要RESERVE_TASK/MINIMUM_PROBE>
+- TASK_CANDIDATES: <候选选择史链接，不复制>
+- PORTFOLIO_PIVOT_MAP: <真正不同失败前提的备选>
+- TASK_LADDER: <可选L0–L3不同信息条件及切换证据；NOT_APPLICABLE>
+- IMPLEMENTATION: <需要编码时才记接口/保护/定向测试>
+- ALGORITHM_HYPOTHESIS: <仅重大机制：ERROR_PATTERN/MECHANISM_LEVER/STRONG_SIMPLE_ALTERNATIVE/DISCRIMINATING_SIGNATURE/PROBE>
+- EXPERIMENT_BRANCH: <parent_run/失败前提/可复用资产指针>
+- PAPER_PATH: <PERFORMANCE_FLOOR/PAPER_PATH_CANDIDATE/SCIENCE_UPGRADE及证据指针>
+- SCIENTIFIC_VALUE: <不同于具名近邻的新能力/规律；VALUE_UNVERIFIED>
+- CLAIM_EVIDENCE_MAP: <能力/机制/规律候选、最强替代、待补证据/确认资格>
+- CLAIM_CANDIDATE: <一句Claim或UNVERIFIED>
+
+区分RUN/MECHANISM、TASK、AREA_DATA、EVIDENCE、AUTH及PAPER_READINESS；单次负Pilot不能项目级STOP。每轮不得回显完整STATE。

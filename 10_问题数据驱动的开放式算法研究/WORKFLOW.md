@@ -24,17 +24,16 @@
 | 正式科学确认、公开主张、投稿 | [CONFIRMATION.md](CONFIRMATION.md) | 预冻结协议、独立证据或 CONFIRMATION_UNAVAILABLE |
 | 用户改变研究范围/权限/预算 | 本文件＋最新 STATE | 影响范围与真实用户决策 |
 
-先读 [START.md](START.md)、最新可核 STATE/有效 Run，再按阻碍只读一份专题；不预读 24 旧 Prompt、全部失败史或重复检查已验证数据。ChatGPT 优先公开资料与科学论证，WorkBuddy/Codex 在用户实际授权范围内核本地资产并执行。状态缓存与现场不符时以原始证据和最新授权为准。
+已有项目先核STATE/有效Run的索引，再按阻碍只读一份专题与受影响证据；无需每轮重读全章、旧Prompt、历史失败和完整训练日志。规则/协议或证据变化时才重读相关内容。ChatGPT 优先公开资料与科学论证，WorkBuddy/Codex 在用户实际授权范围内核本地资产并执行。状态缓存与现场不符时以原始证据和最新授权为准。
 
-## 2.5 最短决策产物（不额外加阶段）
+## 2.5 各阶段的最短交接（不是每轮填写全部字段）
 
-- **活动01选题**：按本轮`USER_SCOPE`自适应搜索并形成`SEARCH_HANDOFF`，只在其范围内确定`DIRECTION_CARD`；随后记`WHY_THIS_OVER_ALTERNATIVE`，自动配置`DATA_PORTFOLIO`（默认D1–D4）和`PRE_DOWNLOAD_PLAN`，需要下载即发`DOWNLOAD_READY_NOTICE`；不另问选库，未授权不下载。
-- **活动02–03数据到任务**：按需用 [DATA_INSIGHT.md](DATA_INSIGHT.md) 在未污染开发池形成`DATA_INSIGHT_CARD`，再以 [TASK_EXPLORATION.md](TASK_EXPLORATION.md) 形成`PRIMARY_TASK / WHY_THIS_OVER_RESERVE / VALUE_HYPOTHESIS / FEASIBILITY_UNKNOWN / MINIMUM_PROBE`；无明显现象可凭现实需求/近邻设计可检验任务；未授权不拟合。
-- **多层级研究**：只在真正有不同标签、部署信息或科学命题时按 [TASK_LADDER.md](TASK_LADDER.md) 进行`COMMON_PREMISE / NEW_LEVER / CLAIM_AND_TEST_CHANGE`检查；不满足则修复当前任务/收窄Claim，而非假降级。
-- **活动04↔05双向迭代**：公平Champion–Challenger、`ALGORITHM_HYPOTHESIS`→合法Run→归因诊断→`CLAIM_EVIDENCE_MAP`决定下一探针，按需读[PAPER_FIRST.md](PAPER_FIRST.md)；`PERFORMANCE_FLOOR/PAPER_PATH_CANDIDATE/SCIENCE_UPGRADE`是证据状态，不是依次强制过关或发表承诺。
-- **进入正式证据/投稿**：按 [CONFIRMATION.md](CONFIRMATION.md) 对当前任务层级**冻结一份完整证据快照**；所有不同任务/层级的开发搜索史单独披露，确认集不能从中选赢家。
+- **01**：`SEARCH_HANDOFF → DIRECTION_CARD → DATA_PORTFOLIO → PRE_DOWNLOAD_PLAN → DOWNLOAD_READY_NOTICE`；用户未授权不得下载。
+- **02–03**：按需`DATA_INSIGHT_CARD → PRIMARY_TASK / VALUE_HYPOTHESIS / MINIMUM_PROBE`；无真实现象可从合法需求/文献提出可检验任务，不冒充已观察。
+- **04↔05**：公平Champion–Challenger和`ALGORITHM_HYPOTHESIS → 有效Run → CLAIM_EVIDENCE_MAP → NEXT_PROBE`，按需读[PAPER_FIRST.md](PAPER_FIRST.md)；`PERFORMANCE_FLOOR/PAPER_PATH_CANDIDATE/SCIENCE_UPGRADE`不是强制阶段。
+- **06**：冻结当前Task/Claim/方法/协议及选择史，按[CONFIRMATION.md](CONFIRMATION.md)核独立证据。级间转换按[TASK_LADDER.md](TASK_LADDER.md)更新合法信息、评估和Claim。
 
-以上按**当前阻碍选其中一项**，不是每轮都交五份报告。实际授权、Run/机制—Task—Area-Data止损和证据等级仍由本文件统一决策。
+每次只交当前阻碍所需的最少字段；授权、证据、机制/任务/区域级止损仍由本文件统一决定。
 
 ## 3. 唯一下一行动算法（不机械全跑检查表）
 
@@ -62,10 +61,12 @@
 - 用户选择**宽研究方向或多数据库研究组合**不代表授权下载、安装、外传、CPU Ridge等拟合、GPU训练、付费、正式确认或投稿。下载前需`DIRECTION_CARD`＋AI已选`DATA_PORTFOLIO`＋逐库`PRE_DOWNLOAD_PLAN`并通知用户；获授权后才可下载，第二库缺失时写`SECOND_DATASET_GAP`且不冒充跨库确认。逐项以真实用户消息为准。无权限/工具写 NOT_RUN。实质更改科研目标、资源、冻结确认协议须再次批准。
 - 保护原始数据血缘、训练/开发隔离、train-only 预处理、合法分组/评价器与封存确认集。`task_id/protocol_id/eligible_holdout` 必须支持当前新任务：提前封存不代表任何任务都能用；任务搜索或确认集污染不可靠换 seed、重划分洗白。
 - 复用 `research/STATE.md`、`RUNS.tsv`、`CLAIMS.md` 等资产，不新建空目录；保存 `BEST_VALID_RUN`、任务选择史、失败原始 Run、源码和数据/评价版本。协议更改只重算受影响证据。
-- 默认汇报：当前问题—数据/TASK、真实新证据及边界、保留/修复/暂停理由、一个最有信息价值的下一步与成本授权缺口；不要流水账。**单次负Pilot** ≠ 整个 AREA_DATA 失败。
+- **EVIDENCE_FIRST_OUTPUT（01–06统一）**：默认仅`NEW_EVIDENCE+PATH | DECISION_CHANGE/UNCERTAINTY | NEXT_PROBE(+不同结果如何改变决定) | AUTH/COST`；无新证据只报阻碍/下一动作。日志、代码、图、失败Run完整**落盘但不回显全文**；Agent只读/报相关diff、关键指标和必要报错尾部。避免重复总结、长报告、无效多Agent审核。用户要完整文档时再展开。**单次负Pilot** ≠ 整个 AREA_DATA 失败。
+- **图片三档**：01–05默认纯文本和紧凑表格；不自动生成装饰图、论文级美图、PPT/PDF、仪表盘、未实测成功曲线。仅当能判别假设/错误或支持必要科研证据时制作**简单可复现诊断图**（Loss、残差、group对照等）；复用旧图与脚本，不反复美化。活动05只形成证据草图，正式论文图片排版延至活动06**证据可靠且用户确需交付**时。必要统计图不可为省Token省略。
+- **上下文与执行**：复用STATE、manifest、缓存、有效Run；只在新信息可能改变结论时重查/复跑/绘图。已授权的关联修复连续完成，局部回归按影响执行；关键科学验证与合并CI不删。比较Token、GPU、人工总成本，不牺牲可复现性。
 
 ## 6. 评测与来源（非 Agent 必走关卡）
 
 `SCENARIOS.json` 和 `test_chapter10.py` 仅测试设计/结构，不证明科研效能。实际需按 [REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md) 在相同信息/授权/预算下做**历史盲回放**（遮蔽后续结局）及**前瞻性跟踪**，比较首个真实有效结果、任务价值、过早停止、无效实验、科研确认与 GPU/Token/人工总成本；未运行标 NOT_MEASURED。
 
-**工作流回放**：同输入/预算遮蔽结果，比安全、信息价值与成本；合成场景**不代表科研成功率**。见[REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md)。
+

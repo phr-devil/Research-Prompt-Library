@@ -37,4 +37,4 @@
 4. 如复杂方案失败但简单方案仍有独立价值，继续最小论文路线；如果简单性能有了但贡献完全被覆盖，保留资产并在同一数据池里`NARROW/DOWN/LATERAL`换一个真实问题，不硬写论文。开发集负Pilot先辨工程/欠收敛/机制。
 5. 最终独立确认前冻结任务、方法、指标与选择史；已参与多库搜索的D1/D2/D3不得冒充未接触确认。科学升级不能借确认集反复改方向。
 
-**一次最短输出**：`BEST_VALID_RUN | PERFORMANCE_FLOOR | PAPER_PATH/STRONGEST_NEIGHBOR_GAP | SCIENCE_UPGRADE_OPTION | NEXT | AUTH`。仅报真实新证据，不要求每轮填所有字段。脚本/数据准备/CPU拟合/GPU训练均遵守用户的实际授权。
+**最短输出**：`BEST_VALID_RUN | PAPER_PATH/STRONGEST_NEIGHBOR_GAP | NEXT | AUTH`（只在变化时更新），证据用Run路径引用；不提前生成精美论文图、架构宣传图或长报告。科研诊断图按需；已获可靠证据且用户确需投稿交付，才在活动06美化。执行仍须真实授权。

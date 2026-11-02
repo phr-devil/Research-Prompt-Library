@@ -1,4 +1,4 @@
-# 活动 03/05｜发现具体任务、维护机会、收敛科学 Claim
+# 活动 03｜发现具体任务和维护机会（Claim归[PAPER_FIRST.md](PAPER_FIRST.md)）
 
 **本文件只回答研究什么与为什么有价值**。接收活动02的[DATA_INSIGHT.md](DATA_INSIGHT.md) `DATA_INSIGHT_CARD`及活动01的`SEARCH_HANDOFF`，把现象转为可验证问题。实验怎么做交 [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)，RUN/机制、Task、Area-Data 级续投与止损由 [WORKFLOW.md](WORKFLOW.md) 唯一决定；不要在本文件重建审核关卡。
 
@@ -98,9 +98,7 @@
 - 同一批准的核心问题—数据范围内可在真实授权内探索其他任务；实质改变用户选定问题、数据库或资源时由用户决定。`Run/机制` 失败不能直接扩写成 `Task`、`Area-Data` 失败。
 - 保存 `task_id → selection_history → protocol_id → eligible_holdout`：开发组切片、任务、指标及失败实验均可追溯。改变标签、组别、输入或时间关系后，旧封存组未必适配；不能读测试集来择题，也不能重划分已污染数据制造独立确认。
 
-### 活动05与04并行：不重复整个选题漏斗
-
-一旦已有可信基线、真实剩余误差或有依据的新机制，就维护[PAPER_FIRST.md](PAPER_FIRST.md)的`CLAIM_EVIDENCE_MAP`：能力、机制或规律三类候选中**只选当前证据最相关的一种**，明确最强简单替代、具名近邻覆盖的合法输入与部署条件、必要消融/成本对照及确认资格。它反馈给活动04决定下一次实验；**不是等所有算法训练完才想创新，也不是没有增益就强写论文**。价值未核实可继续廉价探索，普通Run不重读整套文献。
+活动05的`CLAIM_EVIDENCE_MAP`交[PAPER_FIRST.md](PAPER_FIRST.md)；普通Run不重复任务漏斗或全部近邻文献。
 
 ## 4. 从任务到科学 Claim 的适时收敛
 
