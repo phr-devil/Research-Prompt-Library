@@ -223,11 +223,11 @@
     "NEW_PROJECT": {
       "action": "MVP",
       "route": null,
-      "why": "用户明确已选定课题才进入MVP；无用户选题且尚属探索须改TOPIC_EXPLORATION，不自动训练",
+      "why": "仅用户已选定课题才进入；数据驱动题先复用或获授权准备完整核心数据（沿用DATA_AUDIT，非新阶段），再做最小观察/MVP；理论/超大数据可先行独立合法原型。未选择仍TOPIC_EXPLORATION，选题不授权下载、训练",
       "playbook": "playbooks/01_DATA_BASELINE.md",
-      "deliverable": "合法数据/理论观察入口、最小原型验收或受影响阻断；开始声称性能改善时再补公平基线",
-      "verify": "当前真实输入/物理时序/许可、最小shape/mask/行为可复查；机制/性能比较时才核真值、独立分组与公平评价",
-      "boundary": "不得仅选题就授权训练"
+      "deliverable": "核心数据可获取路径/实际已校验清单或PARTIAL_DATA/WAITING_FOR_AUTH/WAITING_FOR_DATA，以及最小观察/原型；比较时才补基线",
+      "verify": "真实数据源/版本/许可、实际文件数量/校验状态、合法输入与封存test；无完整数据需求者按自身验证",
+      "boundary": "完整下载非硬性准入；选题不等于下载/训练授权；不以封存test选模"
     },
     "TOPIC_EXPLORATION": {
       "action": "CHATGPT_TOPIC_RESEARCH",
@@ -237,7 +237,7 @@
     "RESUME": {
       "action": "RECOVER",
       "route": null,
-      "why": "仅查最后有效Run/代码/数据指纹和真实授权；不重训已完成证据",
+      "why": "复用最新有效Run及已有数据manifest/指纹，版本未变不重复下载/全量哈希；按现有授权补缺，继续原任务",
       "playbook": "POST_SELECTION.md",
       "deliverable": "复用的有效Run与一个当前任务/假设",
       "verify": "代码、数据、协议、Run指纹仍匹配",
@@ -330,10 +330,10 @@
       "action": "VALIDATE_DATA_AND_BASELINE",
       "route": "02-B",
       "playbook": "playbooks/01_DATA_BASELINE.md",
-      "why": "按本轮目的核实际字段/时钟/单位/标签含义与泄漏；探索性观察不强制完整独立组统计和强基线，拟比较性能时才补相应独立单位与公平对照",
-      "deliverable": "合法数据入口、物理/时间含义和必要范围审计；需要性能比较时附可比简单基线",
-      "verify": "数据泄漏、train-only预处理、物理单位及真实batch证据",
-      "boundary": "无数据/GPU权限只执行合法检查"
+      "why": "数据驱动选题确定后优先复用或获授权完整获取当前Claim核心原始文件并验证完整性；超大集可分片并行开发；不把下载当成科研真值",
+      "deliverable": "官方来源/版本/许可/清单及体积，实际下载文件数/字节、哈希或CRC、解压与组ID覆盖/缺项、状态FULL_VERIFIED|PARTIAL_DATA|WAITING_FOR_AUTH|WAITING_FOR_DATA；比较时再补简单基线",
+      "verify": "逐文件完整性/真实batch可读性，确认集只核存在与哈希并封存；按当前任务核标签/时序/分组",
+      "boundary": "未获下载/安装/空间授权不得操作；PARTIAL_DATA≠全集；确认集不可选模，下载不授权CPU/GPU训练"
     },
     "IMPLEMENTATION": {
       "action": "BUILD_AND_VERIFY_MVP",
@@ -447,7 +447,7 @@
       "action": "BUILD_NECESSARY_EXPERIMENT_CAPABILITY",
       "route": "03-C",
       "playbook": "playbooks/02_BUILD_DEBUG.md",
-      "why": "恢复必要实验能力：同步/标定/数据读取/测量/训练稳定性/评价能力即使无即时性能增益也可在原授权预算内建设",
+      "why": "在原授权预算内恢复必要能力：合法数据获取/分片校验/索引、同步、标定、读取、测量或训练稳定性；完整数据不是所有合法MVP的前置门槛",
       "deliverable": "可复现的能力验收与受影响旧证据状态、最小回归测试",
       "verify": "真实数据/接口下功能或测量有效性；有参数更新须训练授权",
       "boundary": "工程能力通过不构成科学机制或论文增益确认；禁止无界修复"
