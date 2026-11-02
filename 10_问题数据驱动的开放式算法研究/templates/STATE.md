@@ -4,6 +4,7 @@
 
 - WORKFLOW: CHAPTER_10 / PD-RW v1.3（用户明确选择）
 - USER_SCOPE: <本轮用户明确的研究领域/方向或「方向不限」，资源/排除条件；缺失写SCOPE_UNSPECIFIED，不继承旧项目>
+- SEARCH_TRACE: <按需：SEARCH_MODE/查询族/来源与时窗/重要近邻/覆盖缺口/EXPAND或DEEPEN等下一动作；未查询写SEARCH_PARTIAL，复用已有日志>
 - AREA_DATA: <大科学问题、用户真实选择消息或来源；未选标 WAITING_FOR_USER_SELECTION>
 - DIRECTION_CARD: <下载前宽研究方向、变化轴、任务族、部署可见信息与真值假设；方向未确定为UNDECIDED>
 - DATA_PORTFOLIO: <默认3–4库，DEV_SHARED/PIVOT_RESERVE/SEALED_CONFIRM并可随任务更新；每库官方来源/版本/许可、标签语义、独立组、角色；未就绪SECOND_DATASET_GAP>

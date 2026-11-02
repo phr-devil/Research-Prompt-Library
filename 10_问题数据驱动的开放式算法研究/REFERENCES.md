@@ -14,6 +14,19 @@
 | [Cleanlab](https://github.com/cleanlab/cleanlab) | 标签质量、数据问题定位 | 开放观察时审查标签/数据真实性 | 模型标记的可疑标签不等于真实标注错误 |
 | [DVC](https://github.com/treeverse/dvc) | 原始数据和实验版本可追溯 | manifest、data_version、split/protocol_id、增量复跑 | 不强制安装 DVC 或重复存储大型数据 |
 
+## 活动01搜索机制（移植设计，不默认安装）
+
+| 官方 GitHub 项目 | 借鉴 | 不照搬 |
+|---|---|---|
+| [STORM](https://github.com/stanford-oval/storm) | 多视角问题地图、追问、引用 | 不自动产出长篇百科报告 |
+| [GPT Researcher](https://github.com/assafelovic/gpt-researcher) | 研究问题规划、证据与来源合成 | 不默认部署多Agent |
+| [Deep Research](https://github.com/dzhng/deep-research) / [Local Deep Researcher](https://github.com/langchain-ai/local-deep-researcher) | 递归检索、深广调节、发现证据缺口 | 不无界搜索 |
+| [SearXNG](https://github.com/searxng/searxng) | 多搜索源减少单源覆盖偏差 | 不强制自建搜索服务 |
+| [PaperQA2](https://github.com/Future-House/paper-qa) | 论文原文依据与具名近邻核查 | 不把未读论文声称已核 |
+| [last30days-skill](https://github.com/mvanhorn/last30days-skill) | 最近社区/项目动态作热点线索 | 热度≠真实科研价值 |
+
+具体转换见[SEARCH_DISCOVERY.md](SEARCH_DISCOVERY.md)。OpenAlex/Semantic Scholar等只有真实可用时才作为论文元数据来源；未接通API不假称查询。无Star排名、无第三方代码复制。
+
 ## PD-RW v1.3｜从优秀项目移植的五项小机制
 
 1. **选题必须落成可验证的建议**（RD-Agent）：不是堆热门模型，而是“为什么选数据/反对理由/最大未知/下一最廉价检查”；用真实反馈更新科研问题。
