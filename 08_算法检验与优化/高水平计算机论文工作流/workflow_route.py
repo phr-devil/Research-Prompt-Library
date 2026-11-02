@@ -186,7 +186,9 @@ def show_triage(key):
         if level == "REPAIRABLE":
             out.append("FAST_PATH: "+rule["fast_path"])
             out.append("ASK_USER_ONLY_IF: "+rule["user_choice_required_when"])
-        if rule["menu"]:out.append("OPTIONS: "+" / ".join(rule["menu"]))
+        if rule["menu"]:
+            label = "USER_OPTIONS_IF_REQUIRED: " if level == "REPAIRABLE" else "OPTIONS: "
+            out.append(label+" / ".join(rule["menu"]))
     out.append("UNKNOWN -> classify CURRENT_ACTION_IMPACT only: UNRELATED=DEFER_UNKNOWN; MATERIAL=NEEDS_MINIMAL_EVIDENCE_CHECK; UNASSESSED=classify only (not STOP/PASS).")
     out.append("Actual later user messages must be verified by the host; stored choices alone are not approval.")
     out.append("No GPU/formal/paid permission is conferred by this read-only tool.")
