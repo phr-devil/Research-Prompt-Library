@@ -36,12 +36,14 @@
 - [DATA_DISCOVERY.md](DATA_DISCOVERY.md)：研究大方向搜索、数据库选择理由、研究问题/数据适配与封存合同
 - [TASK_EXPLORATION.md](TASK_EXPLORATION.md)：任务科学价值×可行性比较、主/备选任务与 Claim 收敛
 - [TASK_LADDER.md](TASK_LADDER.md)：L0–L3任务阶梯、共享资产、UP/DOWN/NARROW/LATERAL/HOLD与两类传感器示例
+- [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)：任务到代码、基线、测试不变量与训练诊断（编码时按需读）
 - [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：真实实验、按症状探针、分层公平对照、可复现 Run 与修复；故障按需复用第八章 [TRIAGE](../08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) / [RECOVERY](../08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md)
 - [CONFIRMATION.md](CONFIRMATION.md)：从开放探索到严格论文确认
 - [EXAMPLE_SENSOR.md](EXAMPLE_SENSOR.md)：传感器跨平台迁移的假想执行实例（明确非实测）
 - [templates/STATE.md](templates/STATE.md)：可选、极简的项目断点
 - [REFERENCES.md](REFERENCES.md)：高星 GitHub 项目的具体借鉴点、限制与原始链接
-- [SCENARIOS.json](SCENARIOS.json)：20个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
+- [REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md)：真实项目冻结点的盲回放和人工配对评审
+- [SCENARIOS.json](SCENARIOS.json)：24个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
 
 **工作流质量评价**：结构回归并非科研成功率。[WORKFLOW.md 的评测协议](WORKFLOW.md) 要求使用信息隔离的历史盲回放和前瞻性项目审计，在相同预算下比较任务发现、有效科研证据、过早止损、无效循环与总资源成本；**目前尚未运行真实模型对照，效果未测量**。评测按需开展，不成为每个科研项目的强制阶段。
 

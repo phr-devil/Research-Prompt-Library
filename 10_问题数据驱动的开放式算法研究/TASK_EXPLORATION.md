@@ -35,6 +35,10 @@
 
 **共同失败前提特别检查**：两个任务都依赖并不存在的独立设备ID或未知的目标标定标签时，即使名称不同也不是风险分散；与多个L层相关的输入、标定K、真值和确认组须按 [TASK_LADDER.md](TASK_LADDER.md) 核实际不同。任务选定后普通模型试验不每轮重新做选题漏斗。
 
+### 若任务成功，究竟新增哪条知识？
+
+用`OBSERVATION → NEW_KNOWLEDGE_OR_CAPABILITY → STRONGEST_ALTERNATIVE → DECISIVE_EVIDENCE`写一句证据链：实际开发数据现象（或HYPOTHESIZED）→成功后新增的可反驳规律/真实部署能力→最强简单策略或具名近邻→能改变投资决定的廉价实验证据。跨设备F1低不自动等于科研贡献；若同K校准就能消除误差，可转向真实标定成本/稳定性边界，也可只保留L0资产。缺独立贡献证据记VALUE_UNVERIFIED，不自动拒绝有界试验。
+
 ## 2. 最小 TASK_CARD 与当前选择
 
 每项最多八要素，可复用现有文件：`TASK_ID/ORIGIN`｜`SCIENTIFIC_QUESTION`｜`INPUT_TARGET`（部署可见输入、独立真值/证明义务、组）｜`TESTABLE_DIFFERENCE`（只有机制归因才必须要求竞争 A/B 预测）｜`BASELINE`｜`VALUE`（近邻之外可能新增的知识或真实能力）｜`MINIMUM_PROBE`｜`COST_RISK`。

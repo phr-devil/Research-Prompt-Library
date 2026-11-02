@@ -1,6 +1,6 @@
 # 活动 04｜可运行实验、信息驱动迭代与自动恢复
 
-**本文件只负责怎样获得可信 Run**；“研究什么”见 [TASK_EXPLORATION.md](TASK_EXPLORATION.md)，KEEP/HOLD/PIVOT 的科研范围和授权由 [WORKFLOW.md](WORKFLOW.md) 唯一控制。首次探索不需证明新网络超过强基线或补完全部消融。
+**本文件只负责怎样获得可信 Run**；“研究什么”见 [TASK_EXPLORATION.md](TASK_EXPLORATION.md)，KEEP/HOLD/PIVOT 的科研范围和授权由 [WORKFLOW.md](WORKFLOW.md) 唯一控制。首次探索不需证明新网络超过强基线或补完全部消融。具体接口、行为测试与训练故障诊断按需读 [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)，不是每轮都必须加载。
 
 ## 1. 按当前问题选择模式，而不是逐一闯关
 
@@ -37,6 +37,12 @@ ChatGPT 只传已核实的问题—数据、TASK、最大 UNKNOWN、证据指针
 - **执行后证据**：配对group差异/合理不确定性、完整训练收敛或必要正控、代码与配置版本、真实独立单位数、额外标签/算力成本、失败结果及可重现原始路径。小收益不能靠挑最优seed升级为论文主张；负Pilot不自动判全部机制不可学。
 - **不同状态有不同动作**：`INVALID`（数据/评价失效）只隔离并定向修复；`NOT_COMPARABLE`先明确预算/输入差别；`INCONCLUSIVE`按是否存在廉价辨别选择继续或HOLD；`COMPARABLE_POS/NEG`仅更新当前机制证据，若触发不同科学任务的研究则交 [TASK_LADDER.md](TASK_LADDER.md)。
 - **预算策略**：不强制每个任务短/长和多seed；当欠收敛、容量或数据尺度可能改变科学结论时才成对扩容。升级实验需要说明“若结果A/B出现，将改变哪个决定”；连续试验无新信息时停止**本分支**，保留有价值的开发观察与失败证据。
+
+### 公平调参与计算投入的触发条件（按需）
+
+区分`scientific`（研究机制变量）、`nuisance`（各法合理调优的学习率、正则、epoch）、`fixed`（任务/标签/合法输入/group/evaluator）。记录各法搜索范围、次数、预算；基线欠调参而候选充分搜索不能证明创新，联合改动也不能声称单模块因果归因。
+
+扩大GPU只在可能改变决定时：末尾checkpoint还在改善→成对延长；容量不足有证据→成对小/大；独立组不确定→优先更多合法group而非无限seed；标签/梯度/评价错误→先修复。不得以GPU占用率作为目标，仍受真实授权上限约束。
 
 ## 3. 正负 Pilot 后的按症状实验选择
 
