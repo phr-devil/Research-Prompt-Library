@@ -184,7 +184,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 29)
+        self.assertEqual(len(cases), 31)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -201,7 +201,9 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                           "DIRECTION_BEFORE_DOWNLOAD", "MULTIDATASET_ROLE_AND_COMPATIBILITY",
                           "PARALLEL_DATASET_DEV_WITH_SEALED_GROUPS",
                           "PAPER_FIRST_NOT_SCORE_ONLY",
-                          "DIRECTION_COMPLETED_AUTONOMOUS_DATASET_SELECTION"})
+                          "DIRECTION_COMPLETED_AUTONOMOUS_DATASET_SELECTION",
+                          "USER_SCOPE_NON_SENSOR_DOMAIN",
+                          "USER_SCOPE_UNRESTRICTED_RESEARCH"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -214,7 +216,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 30):
+        for i in range(17, 32):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -293,7 +295,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         for term in ("DIRECTION_CARD", "DATA_PORTFOLIO", "PRE_DOWNLOAD_PLAN"):
             self.assertIn(term, workflow)
             self.assertIn(term, state)
-        self.assertIn("先确定宽研究方向", intro)
+        self.assertIn("研究范围由本轮用户指令", intro)
         self.assertIn("不代为下载或训练", intro)
         self.assertIn("UCI HAR Smartphones", example)
         self.assertIn("PAMAP2", example)
@@ -331,7 +333,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         intro = read(CH10 / "README.md")
         for token in ("无需再问用户选哪个数据库", "DOWNLOAD_READY_NOTICE"):
             self.assertIn(token, start)
-        for token in ("本轮立即自主选定", "DOWNLOAD_READY_WAITING_FOR_USER",
+        for token in ("立即选定学科匹配", "DOWNLOAD_READY_WAITING_FOR_USER",
                       "活动01完成即继续选库", "URL_UNVERIFIED", "通知用户"):
             self.assertIn(token, data)
         for token in ("第一步确定方向后AI立即自主筛库", "DOWNLOAD_READY_NOTICE",
@@ -344,6 +346,28 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertEqual(case["expected_route"], "DATA_DISCOVERY.md")
         self.assertIn("DOWNLOAD_READY_NOTICE", case["expected_next"])
         self.assertIn("擅自", " ".join(case["must_not"]))
+
+    def test_activity01_obeys_per_run_user_domain_not_sensor_defaults(self):
+        start = read(CH10 / "START.md")
+        workflow = read(CH10 / "WORKFLOW.md")
+        discovery = read(CH10 / "DATA_DISCOVERY.md")
+        readme = read(CH10 / "README.md")
+        state = read(CH10 / "templates/STATE.md")
+        for content in (start, workflow, discovery, readme):
+            self.assertIn("方向不限", content)
+        for marker in ("USER_SCOPE", "SCOPE_UNSPECIFIED", "PROOF_PATH",
+                       "NLP", "不默认", "官方"):
+            if marker == "不默认":
+                self.assertIn("不默认", start)
+            else:
+                self.assertIn(marker, discovery)
+        self.assertIn("USER_SCOPE:", state)
+        self.assertIn("非默认范围", read(CH10 / "EXAMPLE_SENSOR.md"))
+        by_id = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
+        for cid in ("D10-30", "D10-31"):
+            self.assertEqual(by_id[cid]["expected_route"], "DATA_DISCOVERY.md")
+        self.assertIn("USER_SCOPE=NLP", by_id["D10-30"]["expected_next"])
+        self.assertIn("USER_SCOPE=UNRESTRICTED", by_id["D10-31"]["expected_next"])
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()

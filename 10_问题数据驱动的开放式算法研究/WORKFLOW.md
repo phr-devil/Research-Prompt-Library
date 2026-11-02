@@ -1,10 +1,10 @@
 # PD-RW v1.3｜第十章唯一决策总控（ChatGPT / WorkBuddy / Codex）
 
-**目标**：先确定宽研究方向，再配置多数据库证据组合（或理论证明路径），获授权后尽早获得最小可信实证，逐步发现具体科研任务（TASK）、方法和独立科学贡献。**仅用户明确选择第十章时启用**；第八章具体命题研究和第九章挽救工作不被自动覆盖或迁移。
+**目标**：**本轮研究学科/方向完全以用户当次指令为准**，只有明确「方向不限」时才跨学科；不默认传感器或具身智能。随后在给定范围内选择可信数据/评估基准（或理论证明），获授权后完成实证。**仅用户明确选择第十章时启用**；第八章具体命题研究和第九章挽救工作不被自动覆盖或迁移。
 
 ## 1. 三个决策循环（六项活动，不是六道审批门）
 
-- **外循环 A｜研究机会**：01 从4–6类问题（不强制）收敛宽研究方向/任务族，再推荐1–3个AREA_DATA组合；**每组合默认3–4库，支持同时开发、备用转题和独立确认**，核跨库标签/科学命题可比性，**第一步确定方向后AI立即自主筛库，不等用户再选数据库** → 完成PRE_DOWNLOAD_PLAN及DOWNLOAD_READY_NOTICE通知用户下载 → 02 仅收到数据或获实际下载授权后准备/观察 → 03 发现可检验TASK，按需构建L0–L3任务阶梯。一个有依据的机会就可开展有界实验；**不要求完整方法假说**、穷尽任务、复现所有强基线或先证明算法增益。[DATA_DISCOVERY.md](DATA_DISCOVERY.md) / [TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md)。
+- **外循环 A｜研究机会**：01 读取本轮`USER_SCOPE`，在用户指定领域内比较4–6类子问题（可少）；明确「方向不限」才跨学科推荐1–3个AREA_DATA组合；**每组合默认3–4库，支持同时开发、备用转题和独立确认**，核跨库标签/科学命题可比性，**第一步确定方向后AI立即自主筛库，不等用户再选数据库** → 完成PRE_DOWNLOAD_PLAN及DOWNLOAD_READY_NOTICE通知用户下载 → 02 仅收到数据或获实际下载授权后准备/观察 → 03 发现可检验TASK，按需构建L0–L3任务阶梯。一个有依据的机会就可开展有界实验；**不要求完整方法假说**、穷尽任务、复现所有强基线或先证明算法增益。[DATA_DISCOVERY.md](DATA_DISCOVERY.md) / [TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md)。
 - **内循环 B｜算法实证**：04 优先取得稳健有效性能，尽早建立最低论文贡献候选，再渐进增加科学机制；在已授权范围按症状优化或修复，记录真实正负结果。首次负Pilot不自动STOP，不为 GPU 占用率扩大无信息实验。[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。
 - **外循环 C｜科研价值**：05 先核最低可投稿路线（稳健真实结果＋近邻之外的可信贡献＋独立确认路径），再提升科学深度；可继续当前层级、`UP`挑战更难信息条件、`DOWN`使用更现实的合法标定、`NARROW`收窄主张，或`LATERAL`比较备用科研任务。06 只有冻结 Claim/方法/协议并获授权后才严格独立确认。层级切换必须更新Claim与公平评价，**L0/L1没有天然论文保底**。[TASK_LADDER.md](TASK_LADDER.md) / [CONFIRMATION.md](CONFIRMATION.md)。
 
@@ -14,7 +14,7 @@
 
 | 当前最主要阻碍 | 读哪个文件 | 下一项有效交付 |
 |---|---|---|
-| 方向确定但数据库待选，或数据待下载 | [DATA_DISCOVERY.md](DATA_DISCOVERY.md) | 自主完成DATA_PORTFOLIO、PRE_DOWNLOAD_PLAN，发送DOWNLOAD_READY_NOTICE并等待用户下载/授权 |
+| 本轮研究方向已给定或明确不限，尚待选题/数据选择 | [DATA_DISCOVERY.md](DATA_DISCOVERY.md) | USER_SCOPE→DIRECTION_CARD→数据库/评估基准→需要下载则通知用户 |
 | 数据可用，但 TASK 未明或出现更好的科学机会 | [TASK_EXPLORATION.md](TASK_EXPLORATION.md) | 一个主 TASK、可选一个不同失败前提的备选、最小判别 |
 | 同一问题可用不同标签预算/部署条件完成分层任务，或考虑上探/下探 | [TASK_LADDER.md](TASK_LADDER.md) | 一项主层级与L0共享资产、层级间公平协议、切换判据 |
 | 有 TASK/基线/负 Pilot/普通代码故障 | [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)；写代码才读 [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) | 有效 Run、定向修复或 NEXT_PROBE |
@@ -26,7 +26,7 @@
 
 ## 2.5 最短决策产物（不额外加阶段）
 
-- **第一步方向已定、数据库待选**：直接完成官方来源核查，记录`WHY_THIS_OVER_ALTERNATIVE`理由，自动定`DATA_PORTFOLIO(默认D1–D4)`和`PRE_DOWNLOAD_PLAN`，**立即通知用户下载**（`DOWNLOAD_READY_NOTICE`）；不单独追问数据库选哪个。没有真实下载授权前，不执行下载、安装或拟合。
+- **活动01选题**：读取本轮`USER_SCOPE`（具体研究方向/排除条件，或明确「方向不限」），只在其范围内确定`DIRECTION_CARD`；接着自动核官方来源、记`WHY_THIS_OVER_ALTERNATIVE`，配置`DATA_PORTFOLIO`（默认D1–D4）及`PRE_DOWNLOAD_PLAN`，需要下载即发`DOWNLOAD_READY_NOTICE`；不另问用户选库，未授权不下载。
 - **已有数据但未确定任务**：使用 [TASK_EXPLORATION.md](TASK_EXPLORATION.md) 形成`PRIMARY_TASK / WHY_THIS_OVER_RESERVE / VALUE_HYPOTHESIS / FEASIBILITY_UNKNOWN / MINIMUM_PROBE`；可只保留一个TASK。
 - **多层级研究**：只在真正有不同标签、部署信息或科学命题时按 [TASK_LADDER.md](TASK_LADDER.md) 进行`COMMON_PREMISE / NEW_LEVER / CLAIM_AND_TEST_CHANGE`检查；不满足则修复当前任务/收窄Claim，而非假降级。
 - **已有可信基线、准备实验**：公平Champion–Challenger，按需读 [PAPER_FIRST.md](PAPER_FIRST.md)；优先`PERFORMANCE_FLOOR→PAPER_PATH_CANDIDATE→SCIENCE_UPGRADE`（非硬门、非发表承诺）。
