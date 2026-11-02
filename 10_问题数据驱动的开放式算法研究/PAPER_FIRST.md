@@ -11,6 +11,24 @@
 
 `CONFIRMED_CLAIM`仅用于冻结主张后，获得授权且独立确认支持的范围；不意味着投稿成功。
 
+## 1.5 两条目标与三种贡献：同起点、不同证据
+
+**双轨并行思考，不要求双模型并行训练**：`RELIABLE_TRACK`寻求可信性能/可复核规律，`NOVELTY_TRACK`识别具名近邻尚未解决的真实差额。两轨共享`BEST_VALID_RUN`、合法group和预测；创新分支失败不丢稳妥资产，稳妥基线高分不自动成为论文。早期`VALUE_UNVERIFIED`允许最小探索，既不要求先有论文级增益，也不把不确定性写成已确认。
+
+| 候选独立贡献 | 可以主张什么 | 优先必要证据（按主张选，不强制全做） |
+|---|---|---|
+| **CAPABILITY_CLAIM** 能力 | 更困难/更真实的信息、标签、部署或资源约束下可达的新能力 | 相同合法信息/K/预算强简单替代、真实应用约束、独立group |
+| **MECHANISM_CLAIM** 机制 | 机制利用何种信息/归纳偏置，为什么有效 | 具名近邻差异、相关消融/正控、竞争解释、可重复效应 |
+| **LAW_BOUNDARY_CLAIM** 规律/边界 | 真实失效条件、标注—性能/成本曲线或跨库稳定规律 | 可信评价对象、条件/混杂控制、独立单位、关键反例/跨库规律 |
+
+**最低可信贡献**必须是具名近邻以外、可被反驳且有合法确认路径的一项，不是自动需要三种贡献。只有高分/复现/多seed/Oracle上限但无独立差额时记`NO_INDEPENDENT_CLAIM`，保留工程资产。实际确认由活动06完成。
+
+### 从Claim反推最有价值的实验
+
+维护简短`CLAIM_EVIDENCE_MAP = CLAIM_TYPE + CLAIM_SENTENCE | STRONGEST_SIMPLE_ALTERNATIVE | STRONGEST_NAMED_NEIGHBOR+DIFFERENCE | DEV_EVIDENCE_PATH | REQUIRED_DECISIVE_TEST | CONFIRMATION_ROUTE+CONTAMINATION | NEXT_PROBE+COST/AUTH`。没有实验结果写`HYPOTHESIZED`，直接近邻未读原文写`NEIGHBOR_UNVERIFIED`。不为了填表启动无关消融。对照、组级稳健、标签/资源公平和理论正控按主张选择；未经授权不拟合或读sealed。
+
+**与活动04双向循环**：早期即可记录最小Claim候选→决定第四步的下一项最便宜判别→用有效Run更新贡献/风险→必要时`SCIENCE_UPGRADE`。强基线解决表面任务、文献已覆盖原贡献时，先考虑真实不同前提的`NARROW/DOWN/LATERAL`或新机制，而非自动强写论文；更难网络不代表更高创新。只暂停没有新增信息的**分支**，项目级转向和资源授权仍遵循[WORKFLOW.md](WORKFLOW.md)。
+
 ## 2. 每轮怎么做
 
 1. 从多数据库资产池选一个最容易得到合法真实结果、且有论文价值可能性的任务。用最简单可靠的基线、正确group、逐样本预测构建`PERFORMANCE_FLOOR`；不先为新架构牺牲基线。

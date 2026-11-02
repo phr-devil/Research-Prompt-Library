@@ -33,6 +33,12 @@ Run:     run_id, parent_run, data_version, protocol_id, cost, raw_paths
 
 新机制开工前写`WHAT_CHANGES_ONLY`（只修改哪个模块/信息/损失）＋`EXPECTED_SIGNATURE`（在哪个合法开发组与简单替代不同）＋`REMOVAL_CONDITION`；只有机制归因才要求对照。缺证据标HYPOTHESIZED，不按模型热度堆架构。
 
+### 机制与工程变更分开
+
+收到`ALGORITHM_HYPOTHESIS`后先核`ERROR_PATTERN`有实际开发证据还是`HYPOTHESIZED`；选择`MECHANISM_LEVER`（合法额外信息/归纳偏置/优化/容量），说明与当前Champion同输入、同K、同预算的`STRONG_SIMPLE_ALTERNATIVE`，设计可观察`DISCRIMINATING_SIGNATURE`。新信息不能从预测后的标签、未来状态或封存集取得；额外信息成本要计入比较。未核可用性先做低成本正控，不能直接把Oracle差距当部署收益。
+
+算法优化修改`EDITABLE`内最相关的模块，保留`PROTECTED`的split、真值、评价器；同一机制必要的协同改动可成组，但机制和学习率/epoch等`nuisance`变化须在归因时区分。完成Run后用原始逐样本预测、group差额与训练曲线反馈给活动04；**模型更复杂不是创新证据，工程PASS也不是科学增益**。
+
 ## 3. 实际编码测试：按变更选择，不是全套审批
 
 | 改动 | 有效行为证据 | 有区分力的反例 |
