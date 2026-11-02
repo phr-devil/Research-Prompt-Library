@@ -108,6 +108,27 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("POSSIBLE_OUTCOMES_AND_DECISION", workflow)
         self.assertIn("确认集污染", workflow)
 
+    def test_three_loop_separation_and_early_evidence(self):
+        workflow = read(CH10 / "WORKFLOW.md")
+        tasks = read(CH10 / "TASK_EXPLORATION.md")
+        experiment = read(CH10 / "EXPERIMENT_LOOP.md")
+        data = read(CH10 / "DATA_DISCOVERY.md")
+        # Six activities remain, but the agent should navigate by three decisions.
+        for marker in ("外循环 A", "内循环 B", "外循环 C",
+                       "POSSIBLE_OUTCOMES_AND_DECISION", "不机械全跑"):
+            self.assertIn(marker, workflow)
+        for marker in ("一个", "PRIMARY_TASK", "RESERVE_TASK",
+                       "NEXT_DISCRIMINATING_PROBE", "CLAIM_CANDIDATE"):
+            self.assertIn(marker, tasks)
+        for marker in ("PROTECTED", "EDITABLE", "NEXT_PROBE",
+                       "Run 证据与负结果不得被回退丢失"):
+            self.assertIn(marker, experiment)
+        self.assertIn("只要已有一个可判别机会", data)
+        self.assertIn("不为穷尽数据扫描拖延实证",
+                      read(CH10 / "START.md"))
+        # Regression against the previous rule-heavy draft; not a model benchmark.
+        self.assertLess(len(workflow) + len(tasks) + len(experiment), 10500)
+
     def test_confirmation_requires_scientific_evidence(self):
         confirm = read(CH10 / "CONFIRMATION.md")
         for marker in ("具名最近邻", "独立", "原始证据", "TASK_SEARCH_DISCLOSURE",
