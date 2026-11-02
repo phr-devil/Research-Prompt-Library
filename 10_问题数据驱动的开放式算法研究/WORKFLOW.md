@@ -1,4 +1,4 @@
-# PD-RW v1.0｜第十章独立总控（给 ChatGPT、WorkBuddy、Codex）
+# PD-RW v1.1｜第十章独立总控（给 ChatGPT、WorkBuddy、Codex）
 
 ## 0. 当前意图与运行边界
 
