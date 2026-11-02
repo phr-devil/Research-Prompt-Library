@@ -16,8 +16,8 @@
 | 01 | 自适应科研机会搜索并自动选库：[SEARCH_DISCOVERY.md](SEARCH_DISCOVERY.md) / [DATA_DISCOVERY.md](DATA_DISCOVERY.md) | SEARCH_HANDOFF→DIRECTION_CARD→DATA_PORTFOLIO或PROOF_PATH→下载通知 |
 | 02 | 获数据/授权后核数据审计与科研现象：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) / [DATA_INSIGHT.md](DATA_INSIGHT.md) | DATA_MANIFEST＋DATA_INSIGHT_CARD（可无可信现象）；封存确认资源 | 获授权的 WorkBuddy/Codex/本地环境 |
 | 03 | 从现象/文献生成、比较任务并按需分层：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md) | PRIMARY_TASK＋NEXT_DISCRIMINATING_PROBE、备选任务按需，不提前承诺增益 | ChatGPT＋可访问真实数据的 Agent |
-| 04 | 优先可信结果、渐进提升科学性：[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 可复核的性能与最小论文贡献候选，再增强机制 | 获授权的代码/实验 Agent |
-| 05 | 选定论文主张：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_CANDIDATE：明确独立价值、竞争解释与证据缺口 | ChatGPT＋代码 Agent |
+| 04 | 双轨算法开发：可信性能＋有依据的机制探索：[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 有效Run、ALGORITHM_HYPOTHESIS及下一最有价值实验 | 获授权的代码/实验 Agent |
+| 05 | 与活动04并行收敛独立贡献：[PAPER_FIRST.md](PAPER_FIRST.md) / [TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_EVIDENCE_MAP：可信贡献候选、最强替代及实验缺口 | ChatGPT＋代码 Agent |
 | 06 | 严格科学确认：[CONFIRMATION.md](CONFIRMATION.md) | 有效独立证据或 CONFIRMATION_UNAVAILABLE，论文声明边界 | 独立核验与获授权正式实验 |
 
 **唯一主线：三个决策循环贯穿六项活动**——A 研究机会（先定宽方向→多数据库角色配置→授权后真实观察→任务）→ B 算法实证（可信L0基线、判别探针→有效 Run）→ C 科研价值（L1/L2/L3上探、下探、收窄或横向备用→严格确认）。阶段可以跳转，**不是六道强制关卡**。Task Ladder 是按数据条件启用的研究机会结构，非四级必做、非难度越高论文价值必高；L0/L1也不自动构成保底论文。下探换标签预算/部署信息时更换TASK和协议，封存holdout仍须重新核任务适配。科学止损统一见 [WORKFLOW.md](WORKFLOW.md)。
@@ -37,7 +37,7 @@
 - [DATA_DISCOVERY.md](DATA_DISCOVERY.md)：数据/基准组合、独立评价、下载与封存合同
 - [DATA_INSIGHT.md](DATA_INSIGHT.md)：活动02开发池画像、数据类型分析、混杂与现象验证、DATA_INSIGHT_CARD
 - [TASK_EXPLORATION.md](TASK_EXPLORATION.md)：任务科学价值×可行性比较、主/备选任务与 Claim 收敛
-- [PAPER_FIRST.md](PAPER_FIRST.md)：先形成最低可投稿研究路线，再提高科学性；只在活动03–05按需加载
+- [PAPER_FIRST.md](PAPER_FIRST.md)：可信性能、独立贡献与增强科学性分账，活动04↔05按需反馈
 - [TASK_LADDER.md](TASK_LADDER.md)：L0–L3任务阶梯、共享资产、UP/DOWN/NARROW/LATERAL/HOLD与两类传感器示例
 - [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)：任务到代码、基线、测试不变量与训练诊断（编码时按需读）
 - [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：真实实验、按症状探针、分层公平对照、可复现 Run 与修复；故障按需复用第八章 [TRIAGE](../08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) / [RECOVERY](../08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md)
@@ -46,7 +46,7 @@
 - [templates/STATE.md](templates/STATE.md)：可选、极简的项目断点
 - [REFERENCES.md](REFERENCES.md)：高星 GitHub 项目的具体借鉴点、限制与原始链接
 - [REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md)：真实项目冻结点的盲回放和人工配对评审
-- [SCENARIOS.json](SCENARIOS.json)：45个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
+- [SCENARIOS.json](SCENARIOS.json)：53个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
 
 **工作流质量评价**：结构回归并非科研成功率。[WORKFLOW.md 的评测协议](WORKFLOW.md) 要求使用信息隔离的历史盲回放和前瞻性项目审计，在相同预算下比较任务发现、有效科研证据、过早止损、无效循环与总资源成本；**目前尚未运行真实模型对照，效果未测量**。评测按需开展，不成为每个科研项目的强制阶段。
 

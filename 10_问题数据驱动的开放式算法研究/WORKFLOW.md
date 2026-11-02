@@ -5,8 +5,8 @@
 ## 1. 三个决策循环（六项活动，不是六道审批门）
 
 - **外循环 A｜研究机会**：01 在本轮`USER_SCOPE`内按[SEARCH_DISCOVERY.md](SEARCH_DISCOVERY.md)自适应广搜/深查热点与空白、核最强近邻，明确「方向不限」才跨学科推荐1–3个AREA_DATA组合；**每组合默认3–4库，支持同时开发、备用转题和独立确认**，核跨库标签/科学命题可比性，**第一步确定方向后AI立即自主筛库，不等用户再选数据库** → 完成PRE_DOWNLOAD_PLAN及DOWNLOAD_READY_NOTICE通知用户下载 → 02 收到数据/获授权后按[DATA_INSIGHT.md](DATA_INSIGHT.md)在开发池核真实现象与假象 → 03 接[TASK_EXPLORATION.md](TASK_EXPLORATION.md)选具体可检验TASK与最廉价判别，按需构建L0–L3任务阶梯。一个有依据的机会就可开展有界实验；**不要求完整方法假说**、穷尽任务、复现所有强基线或先证明算法增益。[DATA_DISCOVERY.md](DATA_DISCOVERY.md) / [TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md)。
-- **内循环 B｜算法实证**：04 优先取得稳健有效性能，尽早建立最低论文贡献候选，再渐进增加科学机制；在已授权范围按症状优化或修复，记录真实正负结果。首次负Pilot不自动STOP，不为 GPU 占用率扩大无信息实验。[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。
-- **外循环 C｜科研价值**：05 先核最低可投稿路线（稳健真实结果＋近邻之外的可信贡献＋独立确认路径），再提升科学深度；可继续当前层级、`UP`挑战更难信息条件、`DOWN`使用更现实的合法标定、`NARROW`收窄主张，或`LATERAL`比较备用科研任务。06 只有冻结 Claim/方法/协议并获授权后才严格独立确认。层级切换必须更新Claim与公平评价，**L0/L1没有天然论文保底**。[TASK_LADDER.md](TASK_LADDER.md) / [CONFIRMATION.md](CONFIRMATION.md)。
+- **内循环 B｜算法实证**：04 并行考虑`RELIABLE_TRACK`（稳妥性能/现象）和`NOVELTY_TRACK`（机制/规律探索），在已授权范围内按证据动态投入，**不要求双模型同时训练**；新机制先有可区分假设，按症状修复与学习负结果。首次负Pilot不自动STOP，不为GPU占用率扩大无信息实验。[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。
+- **外循环 C｜科研价值**：05 与04并行更新`CLAIM_EVIDENCE_MAP`，区分稳健性能、能力/机制/规律三类独立贡献候选及证据缺口；有最低可信论文路线再按信息价值科学升级；可继续当前层级、`UP`挑战更难信息条件、`DOWN`使用更现实的合法标定、`NARROW`收窄主张，或`LATERAL`比较备用科研任务。06 只有冻结 Claim/方法/协议并获授权后才严格独立确认。层级切换必须更新Claim与公平评价，**L0/L1没有天然论文保底**。[TASK_LADDER.md](TASK_LADDER.md) / [CONFIRMATION.md](CONFIRMATION.md)。
 
 **单次循环可跳转**：已有 STATE/Run 直接续做；低门槛 EXPLORE、中门槛追加投入、高门槛正式确认。**当前最优选择并不由L2的名称决定**：L1若科学价值更明确可先研究L1；L3若有廉价关键正控可先尝试L3。初始 UNKNOWN 不自动否决；论文确认仍核独立真值、时间因果、公平强基线、独立组、效应不确定性与直接近邻。
 
@@ -20,7 +20,7 @@
 | 数据或文献已提供机会，但具体TASK未定 | [TASK_EXPLORATION.md](TASK_EXPLORATION.md) | 主TASK、必要备选、性能空间/信息条件的最小探针 |
 | 同一问题可用不同标签预算/部署条件完成分层任务，或考虑上探/下探 | [TASK_LADDER.md](TASK_LADDER.md) | 一项主层级与L0共享资产、层级间公平协议、切换判据 |
 | 有 TASK/基线/负 Pilot/普通代码故障 | [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)；写代码才读 [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) | 有效 Run、定向修复或 NEXT_PROBE |
-| 有可信结果、需要论文主张或比较任务价值 | [TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_CANDIDATE、近邻差额、证据缺口 |
+| 有可信结果、需要收敛论文贡献或判断创新价值 | [PAPER_FIRST.md](PAPER_FIRST.md)；确需转任务才读[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_EVIDENCE_MAP、具名近邻差额与下一必要实验 |
 | 正式科学确认、公开主张、投稿 | [CONFIRMATION.md](CONFIRMATION.md) | 预冻结协议、独立证据或 CONFIRMATION_UNAVAILABLE |
 | 用户改变研究范围/权限/预算 | 本文件＋最新 STATE | 影响范围与真实用户决策 |
 
@@ -31,7 +31,7 @@
 - **活动01选题**：按本轮`USER_SCOPE`自适应搜索并形成`SEARCH_HANDOFF`，只在其范围内确定`DIRECTION_CARD`；随后记`WHY_THIS_OVER_ALTERNATIVE`，自动配置`DATA_PORTFOLIO`（默认D1–D4）和`PRE_DOWNLOAD_PLAN`，需要下载即发`DOWNLOAD_READY_NOTICE`；不另问选库，未授权不下载。
 - **活动02–03数据到任务**：按需用 [DATA_INSIGHT.md](DATA_INSIGHT.md) 在未污染开发池形成`DATA_INSIGHT_CARD`，再以 [TASK_EXPLORATION.md](TASK_EXPLORATION.md) 形成`PRIMARY_TASK / WHY_THIS_OVER_RESERVE / VALUE_HYPOTHESIS / FEASIBILITY_UNKNOWN / MINIMUM_PROBE`；无明显现象可凭现实需求/近邻设计可检验任务；未授权不拟合。
 - **多层级研究**：只在真正有不同标签、部署信息或科学命题时按 [TASK_LADDER.md](TASK_LADDER.md) 进行`COMMON_PREMISE / NEW_LEVER / CLAIM_AND_TEST_CHANGE`检查；不满足则修复当前任务/收窄Claim，而非假降级。
-- **已有可信基线、准备实验**：公平Champion–Challenger，按需读 [PAPER_FIRST.md](PAPER_FIRST.md)；优先`PERFORMANCE_FLOOR→PAPER_PATH_CANDIDATE→SCIENCE_UPGRADE`（非硬门、非发表承诺）。
+- **活动04↔05双向迭代**：公平Champion–Challenger、`ALGORITHM_HYPOTHESIS`→合法Run→归因诊断→`CLAIM_EVIDENCE_MAP`决定下一探针，按需读[PAPER_FIRST.md](PAPER_FIRST.md)；`PERFORMANCE_FLOOR/PAPER_PATH_CANDIDATE/SCIENCE_UPGRADE`是证据状态，不是依次强制过关或发表承诺。
 - **进入正式证据/投稿**：按 [CONFIRMATION.md](CONFIRMATION.md) 对当前任务层级**冻结一份完整证据快照**；所有不同任务/层级的开发搜索史单独披露，确认集不能从中选赢家。
 
 以上按**当前阻碍选其中一项**，不是每轮都交五份报告。实际授权、Run/机制—Task—Area-Data止损和证据等级仍由本文件统一决策。

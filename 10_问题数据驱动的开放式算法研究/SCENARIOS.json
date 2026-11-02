@@ -742,6 +742,150 @@
       "expected_route": "TASK_EXPLORATION.md",
       "decision_scope": "TASK",
       "expected_next": "AUTH_REQUIRED→先完成零拟合诊断并请求对应训练授权"
+    },
+    {
+      "id": "D10-46",
+      "event": "ALGO_DUAL_TRACK_NOT_DOUBLE_BUDGET",
+      "situation": "算法研究已获有限GPU预算；Agent把双轨误解为需要各训练一套庞大网络、分别用满预算，尽管两个机制假说没有独立证据。",
+      "should": [
+        "将RELIABLE_TRACK与NOVELTY_TRACK理解为两个价值目标而非必须同时训练的两套流水线",
+        "复用同一合法数据、评价器与BEST_VALID_RUN，按NEXT_PROBE的预期信息价值和总预算选择下一实验",
+        "不同科学杠杆出现时可有界保留一个备选分支，普通调参不另造实验树"
+      ],
+      "must_not": [
+        "因双轨规则而强制增加2倍GPU预算",
+        "每轮固定运行所有备选模型或无限循环",
+        "把已知基线复现直接宣称创新论文成功"
+      ],
+      "expected_route": "EXPERIMENT_LOOP.md",
+      "decision_scope": "RUN",
+      "expected_next": "RELIABLE_TRACK/NOVELTY_TRACK共用资产→单个最有信息价值NEXT_PROBE"
+    },
+    {
+      "id": "D10-47",
+      "event": "ALGO_MECHANISM_HYPOTHESIS_WITHOUT_LEVER",
+      "situation": "新算法只是换了Backbone名称和几层注意力，却没有对应的残差证据、额外合法信息或独立归纳偏置。Agent准备直接增加大规模训练。",
+      "should": [
+        "在设计重大新机制时形成ALGORITHM_HYPOTHESIS，指出ERROR_PATTERN、MECHANISM_LEVER、STRONG_SIMPLE_ALTERNATIVE和DISCRIMINATING_SIGNATURE",
+        "检查EXTRA_INFORMATION/INDUCTIVE_BIAS/OPTIMIZATION/CAPACITY中是否有真实差别，并用合法开发数据选择最便宜的竞争解释探针",
+        "缺数据可先标HYPOTHESIZED，不因没有完整新颖性证明而直接否决低成本尝试"
+      ],
+      "must_not": [
+        "纯换名/堆模块就声称有机制创新",
+        "未经证据检验直接追加大规模GPU实验",
+        "要求普通bug修复也填写完整新机制假设"
+      ],
+      "expected_route": "EXPERIMENT_LOOP.md",
+      "decision_scope": "RUN",
+      "expected_next": "ALGORITHM_HYPOTHESIS→最小判别签名/强简单替代"
+    },
+    {
+      "id": "D10-48",
+      "event": "ALGO_NEGATIVE_PILOT_UNDERTRAINED",
+      "situation": "新机制首次Pilot不如基线；训练曲线尾部仍持续改善，且baseline训练时长比Challenger充分得多。Agent准备宣称整个课题不可学。",
+      "should": [
+        "标UNDERTRAINED/INCONCLUSIVE，优先核训练曲线、评价和公平调参，而不是科学机制REFUTED",
+        "在权限和预算内必要时成对延长或小规模容量锚点，保留负Run与既有Champion",
+        "仅在有公平负证据且下一判别不值得时HOLD当前机制，不能自动AREA_DATA STOP"
+      ],
+      "must_not": [
+        "单次欠训练Pilot判定项目不可学",
+        "对新模型扩GPU却不给简单基线公平调优",
+        "回退代码时抹除失败实验日志"
+      ],
+      "expected_route": "EXPERIMENT_LOOP.md",
+      "decision_scope": "RUN",
+      "expected_next": "UNDERTRAINED→公平短/长或定向训练诊断；保留Run"
+    },
+    {
+      "id": "D10-49",
+      "event": "ALGO_BRANCH_FUSION_INCOMPATIBLE_INPUTS",
+      "situation": "Agent发现两个分支看起来都能提高分数，分支A零目标标签、分支B需目标K=5，计划直接融合并称零标签方法有显著增益。",
+      "should": [
+        "先核两个分支标签预算、预测前信息、split和任务协议是否兼容",
+        "不同K/合法输入时按不同TASK或成本性能曲线分别评价，不能作为同条件零标签机制融合证据",
+        "复用相容的代码和数据资产，但不得继承不合法的信息、Claim或sealed资格"
+      ],
+      "must_not": [
+        "把不同K的预测直接融合后宣称同信息条件算法胜利",
+        "从先验测试集选两个分支再解释融合收益",
+        "因为分支数多就认为技术路线创新性更高"
+      ],
+      "expected_route": "EXPERIMENT_LOOP.md",
+      "decision_scope": "RUN",
+      "expected_next": "NOT_COMPARABLE→分别建立合法同K/同输入公平对照"
+    },
+    {
+      "id": "D10-50",
+      "event": "CLAIM_SIMPLE_METHOD_REAL_NOVELTY",
+      "situation": "简单Ridge模型在新且严格的部署约束下表现稳定，且同类最近邻论文未验证这一特定条件；复杂新网络没有增益。Agent主张简单算法无法形成高价值论文，准备丢弃结果。",
+      "should": [
+        "保留RELIABLE_TRACK中真实且可复现的开发组结果，并核最强具名近邻是否覆盖特定合法部署条件",
+        "如存在未覆盖能力/可靠性或成本规律，建立CAPABILITY_CLAIM或LAW_BOUNDARY_CLAIM和最小必要独立确认路径",
+        "机制创新失败只淘汰该机制，不能抹去其他有独立价值的证据"
+      ],
+      "must_not": [
+        "仅因方法简单就直接宣称毫无论文机会",
+        "仅凭开发高分就说已经满足独立贡献与确认",
+        "为凑创新强行叠加复杂网络"
+      ],
+      "expected_route": "PAPER_FIRST.md",
+      "decision_scope": "EVIDENCE",
+      "expected_next": "CLAIM_EVIDENCE_MAP→最强近邻差额/最低必要独立证据"
+    },
+    {
+      "id": "D10-51",
+      "event": "CLAIM_COMPLEX_MODEL_GAIN_ONLY_NOT_NOVEL",
+      "situation": "复杂模型在开发集比未经调优的简单基线高2%，但额外利用目标标签、更多GPU与后验切片；邻近论文已有近似机制。",
+      "should": [
+        "建立CLAIM_EVIDENCE_MAP，先核公平同K/输入/预算强简单基线和具名近邻差额",
+        "区分PERFORMANCE_FLOOR与PAPER_PATH_CANDIDATE，没有可信独立贡献标VALUE_UNVERIFIED或NO_INDEPENDENT_CLAIM",
+        "审查多重试验/开发集选择史，冻结后续合法确认路径"
+      ],
+      "must_not": [
+        "把开发集2%或高复杂度直接当机制论文独立创新",
+        "不公平多资源比较却写同信息贡献",
+        "以反复解封测试集选择Claim"
+      ],
+      "expected_route": "PAPER_FIRST.md",
+      "decision_scope": "EVIDENCE",
+      "expected_next": "CLAIM_EVIDENCE_MAP→补公平简单替代/核具名近邻/确定证据状态"
+    },
+    {
+      "id": "D10-52",
+      "event": "CLAIM_ABLATION_BY_CONTRIBUTION_NOT_CHECKLIST",
+      "situation": "当前贡献主张是少标签成本降低，主要未知是同K强简单标定的成本比较；Agent准备强制跑20种注意力模块消融，耗尽GPU。",
+      "should": [
+        "根据CAPABILITY_CLAIM选最能区分同K标定成本及部署约束的必要实验",
+        "仅当MECHANISM_CLAIM依赖新模块归因时再设计相关消融和正控",
+        "按可能改变结论的信息价值分配总预算，能以最小试验回答就不扫全部架构"
+      ],
+      "must_not": [
+        "把所有可能的消融当成固定审核清单",
+        "不核同K标签/数据来源便报告标注效率提升",
+        "因为缺网络模块消融就否决已形成的可检验能力型贡献"
+      ],
+      "expected_route": "PAPER_FIRST.md",
+      "decision_scope": "EVIDENCE",
+      "expected_next": "CAPABILITY_CLAIM→同K成本/公平对照的最小证据"
+    },
+    {
+      "id": "D10-53",
+      "event": "CLAIM_MECHANISM_FAILED_BUT_TRACKS_RETAIN",
+      "situation": "新物理约束机制在合法开发数据公平负效应，但强基线可复现，另一种潜在跨组规律有真实证据；Agent准备取消所有论文研究机会。",
+      "should": [
+        "对机制记录COMPARABLE_NEG，HOLD或DISCARD对应机制并保存失败前提和原始Run",
+        "保留可靠基线与有证据的LAW_BOUNDARY_CLAIM候选，独立近邻查新及验证仍未完成则标CLAIM_WITH_GAPS",
+        "决定下一有效探针或有不同失败前提的NARROW/LATERAL，而不是按失败次数项目级STOP"
+      ],
+      "must_not": [
+        "因为一种机制负结果就对整个AREA_DATA宣称失败",
+        "强行把负机制包装成成功且有创新",
+        "绕过独立验证直接称规律型论文已CONFIRMED"
+      ],
+      "expected_route": "PAPER_FIRST.md",
+      "decision_scope": "EVIDENCE",
+      "expected_next": "HOLD机制/保留RELIABLE_TRACK→LAW_BOUNDARY_CLAIM的合法下一探针"
     }
   ]
 }

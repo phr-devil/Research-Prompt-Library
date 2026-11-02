@@ -127,7 +127,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("只要已有一个可判别机会", data)
         self.assertIn("只要已有一个可判别机会", data)
         # Regression against the previous rule-heavy draft; not a model benchmark.
-        self.assertLess(len(workflow) + len(tasks) + len(experiment), 18000)
+        self.assertLess(len(workflow) + len(tasks) + len(experiment), 19000)
 
     def test_research_direction_data_selection_is_actionable(self):
         guide = read(CH10 / "DATA_DISCOVERY.md")
@@ -185,7 +185,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 45)
+        self.assertEqual(len(cases), 53)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -217,7 +217,15 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                            "INSIGHT_CROSS_DATASET_LABEL_INCOMPATIBILITY",
                            "TASK_BASELINE_STRONG_NO_PAPER_GAP",
                            "TASK_PIVOT_SAME_DATA_DIFFERENT_PREMISE",
-                           "TASK_READ_ONLY_WITH_NO_FIT_AUTH"})
+                           "TASK_READ_ONLY_WITH_NO_FIT_AUTH",
+                           "ALGO_DUAL_TRACK_NOT_DOUBLE_BUDGET",
+                           "ALGO_MECHANISM_HYPOTHESIS_WITHOUT_LEVER",
+                           "ALGO_NEGATIVE_PILOT_UNDERTRAINED",
+                           "ALGO_BRANCH_FUSION_INCOMPATIBLE_INPUTS",
+                           "CLAIM_SIMPLE_METHOD_REAL_NOVELTY",
+                           "CLAIM_COMPLEX_MODEL_GAIN_ONLY_NOT_NOVEL",
+                           "CLAIM_ABLATION_BY_CONTRIBUTION_NOT_CHECKLIST",
+                           "CLAIM_MECHANISM_FAILED_BUT_TRACKS_RETAIN"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -230,7 +238,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 46):
+        for i in range(17, 54):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -404,7 +412,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("SEARCH_TRACE:", state)
         self.assertIn("SEARCH_DISCOVERY.md", read(CH10 / "README.md"))
         self.assertIn("搜索盲审", read(CH10 / "REPLAY_PROTOCOL.md"))
-        self.assertIn("45个", read(CH10 / "README.md"))
+        self.assertIn("53个", read(CH10 / "README.md"))
         scenario_map = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
         for i in range(32, 37):
             case = scenario_map[f"D10-{i}"]
@@ -452,7 +460,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("responsible-ai-toolbox", refs)
         self.assertIn("数据→任务发现盲审", read(CH10 / "REPLAY_PROTOCOL.md"))
         self.assertLess(len(start), 1300)
-        self.assertLess(len(flow) + len(tasks) + len(read(CH10 / "EXPERIMENT_LOOP.md")), 18000)
+        self.assertLess(len(flow) + len(tasks) + len(read(CH10 / "EXPERIMENT_LOOP.md")), 19000)
         by_id = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
         for i in range(38, 43):
             self.assertEqual(by_id[f"D10-{i}"]["expected_route"], "DATA_INSIGHT.md")
@@ -462,6 +470,50 @@ class ProblemDataWorkflowTests(unittest.TestCase):
             self.assertEqual(by_id[f"D10-{i}"]["decision_scope"], "TASK")
         self.assertIn("PERFORMANCE_UNKNOWN", by_id["D10-38"]["expected_next"])
         self.assertIn("AUTH_REQUIRED", by_id["D10-45"]["expected_next"])
+
+    def test_activity04_05_dual_track_mechanism_and_claim_feedback(self):
+        flow = read(CH10 / "WORKFLOW.md")
+        loop = read(CH10 / "EXPERIMENT_LOOP.md")
+        paper = read(CH10 / "PAPER_FIRST.md")
+        guide = read(CH10 / "IMPLEMENTATION_GUIDE.md")
+        task = read(CH10 / "TASK_EXPLORATION.md")
+        state = read(CH10 / "templates/STATE.md")
+        refs = read(CH10 / "REFERENCES.md")
+        intro = read(CH10 / "README.md")
+        replay = read(CH10 / "REPLAY_PROTOCOL.md")
+        for marker in ("RELIABLE_TRACK", "NOVELTY_TRACK", "ALGORITHM_HYPOTHESIS",
+                       "MECHANISM_LEVER", "DISCRIMINATING_SIGNATURE",
+                       "EXTRA_INFORMATION", "INDUCTIVE_BIAS", "OPTIMIZATION", "CAPACITY",
+                       "UNDERTRAINED", "INCONCLUSIVE", "COMPARABLE_NEG",
+                       "BEST_VALID_RUN", "NEXT_PROBE", "不要求双模型同时训练"):
+            self.assertIn(marker, loop)
+        for marker in ("CAPABILITY_CLAIM", "MECHANISM_CLAIM", "LAW_BOUNDARY_CLAIM",
+                       "CLAIM_EVIDENCE_MAP", "STRONGEST_SIMPLE_ALTERNATIVE",
+                       "STRONGEST_NAMED_NEIGHBOR", "NO_INDEPENDENT_CLAIM",
+                       "PAPER_PATH_CANDIDATE", "PERFORMANCE_FLOOR",
+                       "SCIENCE_UPGRADE", "CONFIRMED_CLAIM"):
+            self.assertIn(marker, paper)
+        for marker in ("CLAIM_EVIDENCE_MAP", "ALGORITHM_HYPOTHESIS",
+                       "RELIABLE_TRACK", "NOVELTY_TRACK"):
+            self.assertIn(marker, flow + loop)
+        self.assertIn("ALGORITHM_HYPOTHESIS", guide)
+        self.assertIn("CLAIM_EVIDENCE_MAP", task)
+        self.assertIn("ALGORITHM_HYPOTHESIS:", state)
+        self.assertIn("CLAIM_EVIDENCE_MAP:", state)
+        self.assertIn("InternScience/MLEvolve", refs)
+        self.assertIn("活动04↔05", replay)
+        self.assertIn("ALGORITHM_HYPOTHESIS", intro)
+        self.assertLess(len(read(CH10 / "START.md")), 1300)
+        self.assertLess(len(flow) + len(task) + len(loop), 19000)
+        by_id = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
+        for i in range(46, 50):
+            self.assertEqual(by_id[f"D10-{i}"]["expected_route"], "EXPERIMENT_LOOP.md")
+            self.assertEqual(by_id[f"D10-{i}"]["decision_scope"], "RUN")
+        for i in range(50, 54):
+            self.assertEqual(by_id[f"D10-{i}"]["expected_route"], "PAPER_FIRST.md")
+            self.assertEqual(by_id[f"D10-{i}"]["decision_scope"], "EVIDENCE")
+        self.assertIn("UNDERTRAINED", by_id["D10-48"]["expected_next"])
+        self.assertIn("CLAIM_EVIDENCE_MAP", by_id["D10-50"]["expected_next"])
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()

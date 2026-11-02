@@ -4,11 +4,12 @@
 
 | 开源项目与官方来源 | 值得借鉴 | 在第十章中的落地 | 不照搬的部分 |
 |---|---|---|---|
-| [Microsoft RD-Agent](https://github.com/microsoft/RD-Agent) | 科学问题/实现/实测反馈之间持续循环 | 问题—数据→TASK→最小实验→反馈修订 | 不为每个课题引入多个 Agent、服务或冗长日志 |
+| [Microsoft RD-Agent](https://github.com/microsoft/RD-Agent) | Research↔Development反馈：用实测残差更新技术假说 | `ALGORITHM_HYPOTHESIS`→Run→改机制/Claim | 不默认复杂多Agent或把改进当新颖性 |
 | [Karpathy autoresearch](https://github.com/karpathy/autoresearch) · [program.md](https://github.com/karpathy/autoresearch/blob/master/program.md) | 固定评价基础设施、短反馈、可回退代码、逐次记录 | 保护 evaluator、`BEST_VALID_RUN`、原始负结果与版本 | `LOOP FOREVER`、仅按单一开发分数保留，均不适用于论文确认 |
-| [AIDE (WecoAI/aideml)](https://github.com/WecoAI/aideml) | 代码试验树、调试、分支血缘 | 一个主分支＋有不同解释的少量备选；记录 parent_run | 代码竞赛得分与科研创新不能划等号 |
+| [AIDE (WecoAI/aideml)](https://github.com/WecoAI/aideml) | 代码试验树、调试、分支血缘 | 一个主分支＋不同解释的有界备选，保留负结果和parent_run | 代码竞赛得分与科学发现不能划等号 |
+| [MLEvolve](https://github.com/InternScience/MLEvolve) | 经验记忆、渐进式跨分支搜索与停滞识别 | 复用成功与负结果，依据不同失败前提决定`NEXT_PROBE` | 不默认记忆服务、无界树搜索、GPU堆叠 |
 | [AI-Scientist-v2](https://github.com/SakanaAI/AI-Scientist-v2) | 假设—实验—反馈的开放探索与实验管理 | 有界的候选任务/机制探索 | 官方承认：有强起始模板时开放 v2 不一定优于 v1；多分支不保证成功 |
-| [AI-Scientist-v3](https://github.com/SakanaAI/AI-Scientist-v3) | 研究调查、消融、独立末次评估分离 | 多任务搜索与最终封存确认严格分离 | 不自动生成或声称一篇论文已通过科学验证 |
+| [AI-Scientist-v3](https://github.com/SakanaAI/AI-Scientist-v3) | 研究调查、消融、独立末次评估分离 | 活动05的`CLAIM_EVIDENCE_MAP`与活动06封存确认严格分离 | 不把高验证分数或论文自动生成当科学成功 |
 | [MLflow](https://github.com/mlflow/mlflow) | Run 参数、指标、产物与血缘 | 复用现有 STATE/RUNS/CLAIMS 指针和可恢复比较 | 不强制部署追踪服务器 |
 | [Optuna](https://github.com/optuna/optuna) | 有界 Trial、记录搜索史和低成本剪枝 | 按新信息/总成本选择试验，保留被淘汰分支 | 低保真剪枝不是机制科学证伪；不在 test 上调参 |
 | [Cleanlab](https://github.com/cleanlab/cleanlab) | 标签质量、数据问题定位 | 开放观察时审查标签/数据真实性 | 模型标记的可疑标签不等于真实标注错误 |

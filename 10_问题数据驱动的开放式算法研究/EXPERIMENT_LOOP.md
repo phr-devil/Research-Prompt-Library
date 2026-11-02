@@ -10,6 +10,12 @@
 - `MECHANISM_TEST`：需要机制归因时才写竞争解释、不同预测或正控；无归因需求不强迫 A/B。
 - `CONFIRMATORY`：只在冻结 Claim/协议并获授权后转 [CONFIRMATION.md](CONFIRMATION.md)；不在探索内循环反复打开封存集。
 
+## 1.5 双轨算法开发：稳妥结果 × 创新探索（按证据分配，而非双模型硬并行）
+
+- `RELIABLE_TRACK`：共享合法数据/评价器/基线，优先获得可复现性能、可解释的失效边界或成本—性能规律；这是研究资产，**没有独立近邻差额不能自动称论文保底**。
+- `NOVELTY_TRACK`：从已核残差、真实任务约束和具名近邻缺口提出差异化机制、能力或规律；其失败只更新对应机制/Claim，不丢弃可靠结果。
+- 两轨**不是两套固定预算/审批**；不要求双模型同时训练。同一Agent按`NEXT_PROBE`的信息价值和总成本选其中一轨，也可一个实验同时服务两轨。保留现有最简单可信Champion和最多一条**不同失败前提**的活跃Challenger；多分支仅在有新解释或可辨别结果时启用。旧Run、负结果与Checkpoint按既有路径复用。
+
 ## 2. Agent 一次性执行合同（跨平台交接）
 
 ChatGPT 只传已核实的问题—数据、TASK、最大 UNKNOWN、证据指针、冻结资产与真实授权范围；WorkBuddy/Codex 应先核本地 STATE/manifest/Run，不假定聊天里写的路径或权限真实存在。不同步时以原始证据和最新用户消息为准，不重复下载或建立空目录。
@@ -21,6 +27,12 @@ ChatGPT 只传已核实的问题—数据、TASK、最大 UNKNOWN、证据指针
 > **PROTECTED**：标签及原始血缘、合法 group/split、评价器、未接触确认集和用户冻结内容。**EDITABLE**：当前批准范围内模型、特征、Loss、普通调参。变更时间/标签/协议需要新版本，只重算受影响 Run，不能静默覆盖历史。
 >
 > **OUTPUT**：实际新增 Run/观察、原始路径、相对公平基线的效应及独立组不确定性（不具备则 UNKNOWN）、修复及验证结果、成本与唯一下一探针；没执行写 NOT_RUN，崩溃记 PARTIAL/CRASH。
+
+### 新机制设计前的最小假设（不额外开审批门）
+
+对真正改变机制/信息/任务能力的Challenger，附一行`ALGORITHM_HYPOTHESIS = ERROR_PATTERN | MECHANISM_LEVER | STRONG_SIMPLE_ALTERNATIVE | DISCRIMINATING_SIGNATURE | PROBE(+POS/NEG/INVALID决策) | COST_CAP`。假说可由数据、物理或文献驱动；初始仅标`HYPOTHESIZED`，不要求预先证明正收益。纯工程修复、超参调优或基线复现不必造“新机制”。
+
+优先检查该方法**凭什么有新增能力**：`EXTRA_INFORMATION`（部署前合法信息）、`INDUCTIVE_BIAS`（物理/结构约束）、`OPTIMIZATION`（同一目标更可训练）、`CAPACITY`（模型表达力），或明确的新成本/可靠性规律。若四者均无差异，可能只是换名。先给出区别于公平简单替代的合法、可观察预测；不强制每次设计全套消融。
 
 ## 2.5 任务阶梯的实验复用与公平条件
 
@@ -48,6 +60,12 @@ ChatGPT 只传已核实的问题—数据、TASK、最大 UNKNOWN、证据指针
 
 沿用`DATA_PORTFOLIO`中D1–D4的`DEV_SHARED/PIVOT_RESERVE/SEALED_CONFIRM`用途角色；可同时在多库开展开发，开发集发现问题与选模，外部库按预定的**任务映射、合法标签预算、独立group和确认用途**评估。可分别训练/适应，但必须报告跨库哪部分共享机制、哪个新条件被测试；不把不同库的原始分类F1直接相加，也不把D2用于调参后仍称未触碰独立确认。单库正结果先标`SINGLE_DATASET_EVIDENCE`，多库独立增益必须靠真实可比数据与对照支持。
 
+### 结果反馈：一次迭代要回答一个决策问题
+
+`INVALID`（泄漏/真值/评价/代码缺陷）→定向修复与受影响回归，不作科学否定；`UNDERTRAINED`→必要时公平成对延长/调优；`COMPARABLE_NEG`→定位是否假说/信息前提未成立，考虑更简单方案或不同机制；`MIXED`→查独立group、成本与切片选择历史；`COMPARABLE_POS`→核强简单替代及对应`CLAIM_EVIDENCE_MAP`；`INCONCLUSIVE`→只追加可能改变决定的有界探针。保留失败Run；如无新增信息且成本不值得，HOLD**当前分支**而非AREA_DATA。
+
+采用AIDE/MLEvolve式**有界经验复用**：在现有`RUNS.tsv/STATE`中记录`parent_run / failed_premise_or_signal / reusable_asset / next_distinct_lever`（可用既有字段则不扩列）；分支融合只有在信息预算、机制前提及评价协议兼容时才试，不默认树搜索、向量数据库或多Agent。失败的解释只限本次有效证据，欠训练不等于证明机制不可学。
+
 ## 3. 正负 Pilot 后的按症状实验选择
 
 | 当前证据 | 优先最小动作 | 不能推出 |
@@ -71,4 +89,4 @@ ChatGPT 只传已核实的问题—数据、TASK、最大 UNKNOWN、证据指针
 
 复用现有 STATE/RUNS，记录 `run_id | task_id | parent_run | data_version | protocol_id/evaluator_version | code_commit | seed | auth | cost | status | metrics_or_observations | raw_paths | decision_scope`，只读最近有效 Run 和当前相关代码；不重复训练已验证结果。`KEEP/IMPROVE/REPAIR/INCONCLUSIVE/DISCARD` 先限定 RUN/机制，不能因单次结果把 AREA_DATA 判失败。
 
-**默认输出**：真实新增证据与路径、修复/未解决风险、下一项 `NEXT_PROBE` 及成本/授权缺口；不贴全日志。`无限循环`和流水账都不是工作目标。
+**默认输出**：真实新增证据与路径、`RELIABLE_TRACK/NOVELTY_TRACK`的关键变化、修复/未解决风险、`CLAIM_EVIDENCE_MAP`所需下一项`NEXT_PROBE`及授权缺口；不贴全日志。`无限循环`和流水账都不是工作目标。
