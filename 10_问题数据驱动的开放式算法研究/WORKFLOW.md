@@ -37,7 +37,7 @@ OBSERVE → TASK/METHOD_PROPOSAL → LOW_COST_PROBE → EXPERIMENT → EVIDENCE_
 | 准备对外宣称/投稿 | CONFIRMATION.md | 证据矩阵、独立确认或诚实标缺 |
 | 用户改变范围/数据库/实际预算 | 本文件＋最新 STATE | 受影响范围与真实授权，必要时请用户决策 |
 
-**加载原则**：一次只读入口、最新 STATE/有效 Run、恰当的一份专题；需要时再定向读取原始论文/代码/另一份手册。只写相对于已有证据的增量。禁止为了流程齐全而先建一套空项目目录。
+**加载原则**：一次只读入口、最新 STATE/有效 Run、恰当的一份专题；需要时再定向读取原始论文/代码/另一份手册。只写相对于已有证据的增量。禁止为了流程齐全而先建一套空项目目录。**如果当前事实和已有 STATE 不符，先修正状态依据**，不要依过期缓存启动训练。只有用户要求进入新活动或已有结果触发实际阻碍才换专题；不按六阶段机械浏览全部文件。
 
 ## 2.5 探索路线与资源递进（针对当前证据，而非六道门）
 
@@ -48,6 +48,12 @@ OBSERVE → TASK/METHOD_PROPOSAL → LOW_COST_PROBE → EXPERIMENT → EVIDENCE_
 
 **每轮默认只有一个主分支，备选至多少量且要有不同失败前提；不因一个负 Pilot 自动放弃 AREA_DATA，也不靠换模型名字重置同一失败前提。**真实权限必须逐项已批准。下一动作及其 `DECISION_SCOPE` 由证据决定，不因文档出现某项检查就要求全量验收。细则见 [TASK_EXPLORATION.md](TASK_EXPLORATION.md) 与 [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。
 
+## 2.6 每轮优先级与交接的最小算法
+
+**先识别当前阻碍，不新增审查关卡**：①已证实真实性/权限风险→隔离受影响动作；②数据/评价/平台不能运行→`ENABLEMENT`；③任务不明确→`DISCOVERY`；④有有效任务但证据不足→`LOW_COST_PROBE`；⑤可信结果足以形成候选贡献→`CLAIM_REVIEW`；⑥冻结后才进入正式 `CONFIRMATION`。若多个阻碍并存，只优先解决**会影响下一项科研决定**且成本最低的一个。恢复必要能力本身可以是合法、有效的阶段成果。
+
+**下一行动合同（非新文件）**：`CURRENT_EVIDENCE | BLOCKER_OR_UNKNOWN | NEXT_PROBE | POSSIBLE_OUTCOMES_AND_DECISION | AUTH/BUDGET | DELIVERABLE`。结果无论正负都记录；固定规则是 **先保护科学有效性，再按信息收益/总成本续投**，而不是先追开发集高分。ChatGPT 负责公开资料、选择与科研论证；代码 Agent 只在真实已授权范围内核本地资产并执行实验，不因 ChatGPT 写了路径或实验合同就假定数据/授权存在。
+
 ## 3. 三层决策，禁止跨层推断
 
 | 决策对象 | CONTINUE / REPAIR | DISCARD / HOLD / PIVOT |
@@ -56,7 +62,7 @@ OBSERVE → TASK/METHOD_PROPOSAL → LOW_COST_PROBE → EXPERIMENT → EVIDENCE_
 | **TASK** | 当前任务可学/可修/还有有价值理论解释，存在可负担的判别或新干预 | 独立真值不可获得、科学价值被覆盖且无剩余问题，或多条合理路线已低信息/高成本 |
 | **AREA_DATA（问题—数据组合）** | 同一数据支持另一有科研价值的任务，且可合法独立验证 | 核心任务所需信号/独立评价被证实不可达且无合理替代，或投入收益失衡；重大转向由用户选择 |
 
-另设 **EVIDENCE**（OBSERVED/PROXY_ONLY/EXPLORATORY/COMPARABLE/CONFIRMATION_UNAVAILABLE/CONFIRMED）及 **AUTH**（VERIFIED_SCOPED/WAITING_FOR_AUTH）两个独立维度；**不把 RUN_STATUS=COMPLETE 或 GPU 耗时算成科学成功**。理论贡献用可核证明义务替代不适用的监督指标。
+另设 **EVIDENCE**（OBSERVED/PROXY_ONLY/EXPLORATORY/COMPARABLE/CONFIRMATION_UNAVAILABLE/CONFIRMED）及 **AUTH**（VERIFIED_SCOPED/WAITING_FOR_AUTH）两个独立维度；**不把 RUN_STATUS=COMPLETE 或 GPU 耗时算成科学成功**。探索期的 KEEP 只代表该分支值得继续，不等于论文效果已证实。理论贡献用可核证明义务替代不适用的监督指标。
 
 - 缺数据、训练没收敛、强基线没部署、单次负Pilot和未知近邻，**不是**区域数据组合自动 STOP 的理由。受限于权限或关键资源暂缺时标 HOLD/WAITING，而非科学 REFUTED。
 - 已证实泄漏、伪真值、越权、确认集污染、不可替代平台阻断，**立即停止受影响动作/主张**；保留无关的合法观察与有效结果。
@@ -66,7 +72,7 @@ OBSERVE → TASK/METHOD_PROPOSAL → LOW_COST_PROBE → EXPERIMENT → EVIDENCE_
 
 可使用已有 research/STATE.md、RUNS.tsv、CLAIMS.md，不强制重命名。没有则按需参考 [templates/STATE.md](templates/STATE.md)；数据清单可以采用简单 TSV/JSON，旧清单若足够即复用。
 
-**每一项执行任务只需**：GOAL、当下可核依据/未知、允许读/改的数据代码与冻结对象、真实授权及总预算、可验证产物、停止条件、NEXT。代码 Agent 在批准范围内**连续**完成数据读取→局部实现→受影响测试→一次有区分力的实验→增量记录，不要逐文件询问。未经授权不执行拟合；只做计算/设计时不伪称已跑真实数据。
+**每一项执行任务只需**：GOAL、当下可核依据/未知、允许读/改的数据代码与冻结对象、真实授权及总预算、可验证产物、停止条件、NEXT。代码 Agent 在批准范围内**连续**完成数据读取→局部实现→受影响测试→一次有区分力的实验→增量记录，不要逐文件询问。科研新发现、正常 Bug 修复和确认集调用是不同动作；可在同一授权范围内连续处理前两者，但不能自动扩大到正式确认。未经授权不执行拟合；只做计算/设计时不伪称已跑真实数据。
 
 **最低 Run 字段**：run_id / task_id / method / parent_run（适用时）/ source_commit / data_version / split_protocol / evaluator_version / authorization / cost / status / metrics_or_observations / raw_path / decision_scope。没执行写 NOT_RUN；半途终止写 PARTIAL/CRASH，不强行补数值。已有可信证据复用，不因本章有新模板强迫迁移。
 
@@ -75,7 +81,7 @@ OBSERVE → TASK/METHOD_PROPOSAL → LOW_COST_PROBE → EXPERIMENT → EVIDENCE_
 - **安全结束**：达到本轮任务验收，输出可复核结果和路径；有更优下一实验且仍有已授权预算时可继续。未授权或重大改变时只报告需求与可继续的合法工作。
 - **有限探索停止**：没有能改变研究决策或恢复必要实验能力的下一项行动，继续成本明显高于信息收益，则对对应 **RUN/MECHANISM/TASK** 标 HOLD 并说明恢复证据；不能自动扩大成 AREA_DATA/PROJECT STOP。连续更换同一失败前提的网络而无新增证据，应停止受影响分支而非无限续命；不能只因一次负结果 STOP。
 - **重大范围变更**：更换核心研究问题/数据库、确认协议、无法覆盖的新增资源/费用、对外发布/投稿须明确用户决定。用户只选一个问题—数据组合不等于选定最终算法、授权训练或进入论文确认。
-- **默认最终回复**：一行当前问题—数据组合与证据等级；本轮新增观察/Run；保留与淘汰的 TASK/机制及理由；数据/确认集保护与授权；下一件最有信息价值的工作（或者真实阻断）。不提交流水账和长日志。
+- **默认最终回复**：一行当前问题—数据组合与证据等级；本轮新增观察/Run、保留与淘汰的 TASK/机制及理由；数据/确认集保护与授权；下一件最有信息价值的工作（或者真实阻断）。最多给一项主行动和一项有不同失败前提的备选，不提交流水账和长日志。用户只问分析/方案时不要擅自将计划变成真实拟合训练。
 
 ## 6. 工作流实际效能评测（不同于静态 CI，非 Agent 必走关卡）
 
