@@ -15,7 +15,7 @@
 
 nuisance记搜索范围、次数、选择准则与公平调参；联合改动不冒充单模块因果（[Tuning Playbook](https://github.com/google-research/tuning_playbook)）。
 
-训练前复用基线及残差，先公平优化可行方案，再依证据选廉价可学性探针或新机制；不强制训练。获批后限`max_trials/max_gpu_time`、核显存，保留`BEST_VALID_RUN`。
+训练前先复用证据和基线，优先廉价、高判别力探针；公平优化可行方案后再考虑昂贵机制训练。获批后限`max_trials/max_gpu_time`，保留`BEST_VALID_RUN`。
 
 机制见[算法设计](ALGORITHM_DESIGN_REFERENCE.md)；时钟异常见[诊断](SENSOR_DIAGNOSTICS.md)。
 
