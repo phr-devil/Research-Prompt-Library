@@ -15,8 +15,8 @@
 
 - **封存holdout**：从早期任务发现、切片/标签观察、特征工程、调参和候选任务选择中隔离；仅在提前决定确认方案且确有权限时用于独立最终评价。若已使用确认集选择任务/模型，标 CONTAMINATED，不得事后换 seed / 简单重划分称为独立确认。
 - **同一个公开数据库**也可能提供有效确认数据，前提是真正从未用于选择且与主张对应，分组和时间因果有效；外部数据库/新采数据可加强外部泛化证据，不能因为是同一个源就必然全无确认价值。
-- **开放式多任务搜索**额外产生选择偏差。报告候选任务与开发集试验范围，用独立于任务选择的数据/组验证最终固定的任务与方法；如果没有独立证据，明确 CONFIRMATION_UNAVAILABLE，并限制论文/性能/泛化主张。
-- 禁止确认集的重复“试到好”为止、测试结果驱动重新发明主张再复测同一集。真正的新假说可以继续探索，但需要新的独立确认路径。
+- **开放式多任务搜索**额外产生选择偏差。报告候选任务、切片、指标及开发集试验范围；对最终主 Claim 核对 **task_id、protocol_id、eligible_holdout** 的对应关系。原先为另一个任务预留的组，若标签、分组或时间结构不支持新主张，就不合格。只用独立于任务选择且真正适配该主张的数据/组验证最终冻结的方法；如没有，明确 CONFIRMATION_UNAVAILABLE，并限制论文/性能/泛化主张。
+- 禁止确认集的重复“试到好”为止、测试结果驱动重新发明主张再复测同一集。**确认集出现失败/异质性也是合法结果，必须报告**；不能只展示成功的组、seed 或任务。真正的新假说可以继续探索，但需要新的独立确认路径。
 
 ## 3. 对应主张选择相应证据
 
@@ -50,10 +50,10 @@
 | 字段 | 填写内容 |
 |---|---|
 | CLAIM_ID / SCOPE | 当前一句科学主张及限定场景 |
-| EVIDENCE_RUNS | 真实完整 Run ID、源码/数据/划分/指标与原始证据指针 |
+| EVIDENCE_RUNS | 真实完整 Run ID、源码/数据/划分/指标与原始证据指针；负结果与被试过的候选不可删除 |
 | TASK_SEARCH_DISCLOSURE | 被探索任务、切片和模型选择的简明范围 |
 | BASELINES/NEIGHBORS | 公平简单与具名近邻的对照/缺失说明 |
-| INDEPENDENT_CONFIRM | 未接触holdout、外部独立组/证明，或 CONFIRMATION_UNAVAILABLE |
+| INDEPENDENT_CONFIRM | 与当前 task/claim 对应且未参与选择的 holdout、外部独立组/证明，或 CONFIRMATION_UNAVAILABLE |
 | UNCERTAINTY / LIMITS | 独立n、CI/效应、训练预算、方法和应用边界 |
 | PAPER_READINESS | NO_INDEPENDENT_CLAIM / CLAIM_WITH_GAPS / DRAFTABLE / SUBMISSION_CANDIDATE |
 
