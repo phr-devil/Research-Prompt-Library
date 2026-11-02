@@ -14,6 +14,20 @@
 | [Cleanlab](https://github.com/cleanlab/cleanlab) | 标签质量、数据问题定位 | 开放观察时审查标签/数据真实性 | 模型标记的可疑标签不等于真实标注错误 |
 | [DVC](https://github.com/treeverse/dvc) | 原始数据和实验版本可追溯 | manifest、data_version、split/protocol_id、增量复跑 | 不强制安装 DVC 或重复存储大型数据 |
 
+## 活动02–03：数据现象与任务发现（设计借鉴，不要求安装）
+
+| 官方开源项目 | 能力及本章迁移点 | 注意 |
+|---|---|---|
+| [FG Data Profiling](https://github.com/data-centric-ai-community/fg-data-profiling) | 快速数据画像 → `DATA_INSIGHT.md` 的原始分布/缺失 | 自动报告不等于任务科学贡献 |
+| [Microsoft Data Formulator](https://github.com/microsoft/data-formulator) | 探索时衍生问题、保持数据线索 → 定向追问 | 不无限生成图表/Agent |
+| [Renumics Spotlight](https://github.com/Renumics/spotlight) / [Sliceguard](https://github.com/Renumics/sliceguard) | 多模态/异常切片探索 → 组级科研现象候选 | 自动找出的切片须复核样本量/多重搜索 |
+| [Cleanlab](https://github.com/cleanlab/cleanlab) | 疑似标签错误、重复和异常 → 数据假象排查 | 部分诊断依赖模型概率/特征，未经授权不拟合；标记不是真值 |
+| [Evidently](https://github.com/evidentlyai/evidently) / [Deepchecks](https://github.com/deepchecks/deepchecks) | 分布变化、数据与模型诊断 → 决定哪类任务值得试 | 数据分布漂移不等于性能下降 |
+| [Microsoft Responsible AI Toolbox](https://github.com/microsoft/responsible-ai-toolbox) | error analysis与困难数据群体 → 从失效转任务 | 须合法group、逐样本预测和独立确认 |
+| [tsfresh](https://github.com/blue-yonder/tsfresh) / [sktime](https://github.com/sktime/sktime) | 时间序列专用特征/任务诊断 → 按需路由 | 不在非时序数据强制使用；拟合需授权 |
+
+只迁移分析思想；库的许可、版本、运行成本及本地安装权限在真正调用时核查。不应为了使用这些工具而改变用户本轮学科。
+
 ## 活动01搜索机制（移植设计，不默认安装）
 
 | 官方 GitHub 项目 | 借鉴 | 不照搬 |
