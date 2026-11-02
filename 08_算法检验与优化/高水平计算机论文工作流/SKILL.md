@@ -1,16 +1,18 @@
 ---
 name: research-paper-workflow
-description: Prototype-first algorithm research agent: minimum viable baseline and model, evidence-led iteration, on-demand scientific review and failure recovery.
+description: Feasibility-first scientific research workflow: grounded topic selection, credible baselines, learnability checks, scoped iteration, and evidence-led paper claims.
 ---
 
-# Research Workflow v6.1｜按需路由
+# Research Workflow v6.1｜可行性优先、按需路由
 
-**只加载 [ORCHESTRATOR.md](ORCHESTRATOR.md) 与本次项目现有证据开始。** 有明确科研目标就直接在授权范围内设计最小基线/实现可运行原型；不把24场景当作预先全过的审批链，不强制安装额外Skill或打开多Agent。
+**按用户意图，不按文件顺序。** 总控：[ORCHESTRATOR.md](ORCHESTRATOR.md)；精确关键词/事件入口：[根目录AGENTS.md](../../AGENTS.md)。不要求安装Skill、扫描所有Markdown或执行24个历史场景。
 
-- 第一类科学选题（01-A～D）优先在 ChatGPT 完成；宽泛探索时按需参考[科研机会漏斗 F1–F5](IDEA_FUNNEL.md)，F1–F4连续发现与收敛，F5用户选题；已有明确命题直接走MVP。真实本地执行才转 WorkBuddy/Codex，独立审查仅在关键风险时另行触发。
-- 正常：最低必要数据核查 → 原型 + 简单对照 → 修改/实验/记录 → 下一个有信息量的行动。
-- 意外、无增益、假增益：按现象选一条 [LESSONS.md](LESSONS.md) 与 [RECOVERY.md](RECOVERY.md)，需要具体场景时查看 [ROUTES.json](ROUTES.json) 或 `workflow_route.py --id 03-E`。
-- 核心主张有变化/正式确认：才读近邻研究、正式实验、独立审核及论文相关旧Prompt；不重复无关审查。
-- 严格保留独立真值、泄漏防范、公平强基线、原始Run证据；区分程序PASS与科学贡献。GPU/费用/数据外传/冻结正式实验/投稿需要真实用户单独授权；不无限自主训练。
-- Step05第09类必须让用户从P1/P2/P3中明确选择，不可自动替选。失败有效结果保留，非法/无效结论不得继续宣称。
-- 少写日志，仅给真实成果与必要分叉选择。Skill未安装只按可访问的Markdown执行，不声称原生调用。
+- **新题**：ChatGPT优先读[IDEA_FUNNEL.md](IDEA_FUNNEL.md)，F1–F4先核合法数据/评价、可复用基线及最低独立贡献潜力，F5用户选题。高风险创新仍允许EXPLORE；不承诺论文成功率。
+- **续做**：读[POST_SELECTION.md](POST_SELECTION.md)与已有有效Run；先建立可信基线和真实剩余问题，按需查可学性，再公平优化或验证必要新机制。基线跑通≠论文贡献；保留BEST_VALID_RUN。
+- **Bug或训练异常**：读[RECOVERY.md](RECOVERY.md)，已授权范围内最小修复→定向验证→原任务恢复；科研负结果不是Bug。
+- **无增益或科研分叉**：读[RESEARCH_DECISIONS.md](RESEARCH_DECISIONS.md)；按真实信息价值与成本决定CONTINUE/REPAIR/PIVOT/HOLD，失效仅限对应Run/Claim。
+- **正式证据**：才按需读[playbooks/04_EVIDENCE_CONFIRM.md](playbooks/04_EVIDENCE_CONFIRM.md)，核独立真值、公平基线、统计及确认集隔离。
+- **授权**：GPU、训练、费用、外传、冻结协议、投稿和重大改题必须核真实用户权限；第09章P1/P2/P3只能由用户选。
+- **回复**：只报告新证据、已验证修改、受影响范围和下一项任务；没有真实分叉不逐项请示。
+
+只读GitHub文档不等于实际执行；无工具/证据时明确未核实，不宣称已完成科研。
