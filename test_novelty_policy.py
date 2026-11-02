@@ -142,7 +142,7 @@ class NoveltyPolicyTests(unittest.TestCase):
         self.assertIn("第08章F1",salvage)
         self.assertIn("不得提前执行 Step 06",salvage)
         tests={x["id"]:x for x in json.loads(read("EVAL_CASES_CURRENT.json"))["cases"]}
-        self.assertEqual(len(tests),25)
+        self.assertTrue({f"N{i:02d}" for i in range(1, 26)} <= set(tests), "Missing protected fixture IDs")
         for id_,sel in (("N18","02-B"),("N19","03-C"),("N20","03-E"),("N21","03-D")):
             self.assertEqual(tests[id_]["prompt_selector"],sel)
             self.assertTrue(tests[id_]["must"] and tests[id_]["critical"])

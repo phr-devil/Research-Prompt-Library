@@ -32,7 +32,7 @@
 
 **可执行测试**：按 [PyTorch 合同测试模板](../templates/test_algorithm_contract.py) 与 [接入方法](../templates/ALGORITHM_TEST_USAGE.md) 适配真实算法；未接入适配器必须失败，未实现的可选测试是 SKIP，不可报已验证。传感器/异步时序按需读 [专项诊断](SENSOR_DIAGNOSTICS.md)。
 
-**自主修复**：以有效Run和diff定位异常；最小复现→单根因修复（关联错误可合并）→定向回归→恢复任务。数据/协议变更时隔离失效Run/Claim；未测不报PASS。新型问题按 [RECOVERY.md](../RECOVERY.md) 处理。
+**自主修复/影响驱动测试**：复用Run与diff，最小复现→合并同源Bug→只回归受影响调用链。仅标签、时序、split、预处理、评价器变更须核对应不变量及重算失效Run；其他可信测试复用既有结果，未测记NOT_RUN。
 
 已知软件行为或 Bug 用 **复现失败→修复→相关回归**；未知科学收益由真正的开发评价和后续确认检验，**禁止把“新算法必须提高 X%”写成单元测试**。可借鉴 [Testing ML](https://github.com/GokuMohandas/testing-ml) 的最低功能/不变性/方向性分类。
 

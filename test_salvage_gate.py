@@ -183,5 +183,52 @@ class GateTests(unittest.TestCase):
             gate.inspect_selection(self.candidates, self.selection)
 
 
+    def test_unique_full_project_title_is_valid_structure_only(self):
+        self.cards["candidates"][1]["title"] = "跨设备触觉事件泛化建模"
+        self.save()
+        self.select("P2")
+        record = json.loads(self.selection.read_text(encoding="utf-8"))
+        for message in ("我选择跨设备触觉事件泛化建模", "跨设备触觉事件泛化建模"):
+            record["user_message"] = message
+            self.selection.write_text(json.dumps(record), encoding="utf-8")
+            self.assertEqual(gate.inspect_selection(self.candidates, self.selection)[0],
+                             "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED")
+
+    def test_title_mentions_do_not_grant_approval(self):
+        self.cards["candidates"][1]["title"] = "跨设备触觉事件泛化建模"
+        self.save()
+        self.select("P2")
+        record = json.loads(self.selection.read_text(encoding="utf-8"))
+        for message in ("请评价跨设备触觉事件泛化建模的风险",
+                        "我不选择跨设备触觉事件泛化建模",
+                        "讨论跨设备触觉事件泛化建模和其他想法"):
+            record["user_message"] = message
+            self.selection.write_text(json.dumps(record), encoding="utf-8")
+            with self.subTest(message=message), self.assertRaisesRegex(
+                    ValueError, "not clearly|ambiguous"):
+                gate.inspect_selection(self.candidates, self.selection)
+
+    def test_multiple_full_titles_rejected(self):
+        self.cards["candidates"][0]["title"] = "跨域触觉标定模型"
+        self.cards["candidates"][1]["title"] = "跨设备触觉事件泛化建模"
+        self.save()
+        self.select("P1")
+        record = json.loads(self.selection.read_text(encoding="utf-8"))
+        record["user_message"] = "我选择跨域触觉标定模型或跨设备触觉事件泛化建模"
+        self.selection.write_text(json.dumps(record), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Multiple|ambiguous"):
+            gate.inspect_selection(self.candidates, self.selection)
+
+    def test_title_selection_requires_message_reference(self):
+        self.cards["candidates"][1]["title"] = "跨设备触觉事件泛化建模"
+        self.save()
+        self.select("P2")
+        record = json.loads(self.selection.read_text(encoding="utf-8"))
+        record["user_message"] = "我选择跨设备触觉事件泛化建模"
+        record.pop("user_message_reference")
+        self.selection.write_text(json.dumps(record), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Missing user message"):
+            gate.inspect_selection(self.candidates, self.selection)
+
 if __name__ == "__main__":
     unittest.main()

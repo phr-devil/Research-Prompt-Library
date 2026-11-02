@@ -156,7 +156,7 @@ def load_triage(root=ROOT, routes=None):
         raise ValueError("Empty route-specific guidance")
     if any(not isinstance(doc["levels"]["REPAIRABLE"].get(k), str)
            or not doc["levels"]["REPAIRABLE"][k].strip()
-           for k in ("fast_path", "user_choice_required_when")):
+           for k in ("fast_path", "user_choice_required_when", "execution_preference")):
         raise ValueError("Missing bounded repairable fast-path guidance")
     if [e.get("id") for e in doc.get("stages",[])]!=["01","02","03","04","05"]:
         raise ValueError("Missing stage-specific rules")
@@ -184,6 +184,7 @@ def show_triage(key):
         rule=doc["levels"][level]
         out.append(level+": "+rule["default"]+" — "+rule["meaning"])
         if level == "REPAIRABLE":
+            out.append("EXECUTION_PRIORITY: "+rule["execution_preference"])
             out.append("FAST_PATH: "+rule["fast_path"])
             out.append("ASK_USER_ONLY_IF: "+rule["user_choice_required_when"])
         if rule["menu"]:
