@@ -168,6 +168,38 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("无需先完成02-D",routes["03-A"][1]["when"])
         self.assertIn("独立审查",routes["04-B"][1]["when"])
 
+    def test_ai_navigation_is_intent_first_and_source_consistent(self):
+        repo=ROOT.parent.parent
+        agents=(repo/"AGENTS.md").read_text(encoding="utf-8")
+        landing=(repo/"README.md").read_text(encoding="utf-8")
+        chapter=(ROOT/"README.md").read_text(encoding="utf-8")
+        start=(ROOT/"START.md").read_text(encoding="utf-8")
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        topic=(ROOT/"01_科学选题与跨AI审核.md").read_text(encoding="utf-8")
+        funnel=(ROOT/"IDEA_FUNNEL.md").read_text(encoding="utf-8")
+        for term in ("AI 快速定位", "新课题", "可学性", "Bug", "无增益",
+                     "论文Claim", "第09章", "不搜索整库"):
+            self.assertIn(term, agents)
+        for relative in ("IDEA_FUNNEL.md", "POST_SELECTION.md",
+                         "RESEARCH_DECISIONS.md", "RECOVERY.md",
+                         "playbooks/01_DATA_BASELINE.md",
+                         "playbooks/04_EVIDENCE_CONFIRM.md"):
+            self.assertIn(relative, agents)
+            self.assertTrue((ROOT/relative).is_file(), relative)
+        for doc in (landing, chapter, start, skill):
+            self.assertIn("可行性优先", doc)
+        self.assertIn("按意图打开", landing)
+        self.assertIn("任务关键词", chapter)
+        self.assertIn("F5真实用户选择", start)
+        self.assertIn("Feasibility-first", skill)
+        self.assertIn("F2数据/评价/基线可行性", topic)
+        self.assertIn("F3可学性风险", topic)
+        self.assertIn("F4可行性优先推荐", topic)
+        self.assertIn("公开数据/官方任务定义", funnel)
+        self.assertIn("不训练", router.extract(ROOT/"01_科学选题与跨AI审核.md", "01-A"))
+        self.assertEqual(len(router.load_routes()),24)
+        self.assertLess(len(start),950)
+
     def test_feasibility_first_workflow_preserves_scientific_gates(self):
         funnel=(ROOT/"IDEA_FUNNEL.md").read_text(encoding="utf-8")
         post=(ROOT/"POST_SELECTION.md").read_text(encoding="utf-8")
