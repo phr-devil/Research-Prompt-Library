@@ -36,7 +36,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         start = read(CH10 / "START.md")
         self.assertLess(len(start), 1300)
         for name in ("README.md", "WORKFLOW.md", "DATA_DISCOVERY.md",
-                     "SEARCH_DISCOVERY.md",
+                     "SEARCH_DISCOVERY.md", "DATA_INSIGHT.md",
                      "TASK_EXPLORATION.md", "EXPERIMENT_LOOP.md",
                      "CONFIRMATION.md", "REFERENCES.md", "EXAMPLE_SENSOR.md",
                      "templates/STATE.md", "SCENARIOS.json", "TASK_LADDER.md"):
@@ -127,7 +127,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("只要已有一个可判别机会", data)
         self.assertIn("只要已有一个可判别机会", data)
         # Regression against the previous rule-heavy draft; not a model benchmark.
-        self.assertLess(len(workflow) + len(tasks) + len(experiment), 15000)
+        self.assertLess(len(workflow) + len(tasks) + len(experiment), 18000)
 
     def test_research_direction_data_selection_is_actionable(self):
         guide = read(CH10 / "DATA_DISCOVERY.md")
@@ -185,7 +185,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 37)
+        self.assertEqual(len(cases), 45)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -209,7 +209,15 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                           "SEARCH_FALSE_WHITESPACE_SYNONYMS",
                           "SEARCH_ADAPTIVE_STOP_WITH_COVERAGE_GAP",
                           "SEARCH_DEEPEN_HIGH_RISK_NEIGHBOR",
-                          "SEARCH_TO_DATA_DOWNLOAD_PERMISSION_HANDOFF"})
+                          "SEARCH_TO_DATA_DOWNLOAD_PERMISSION_HANDOFF",
+                           "INSIGHT_SHIFT_WITHOUT_PREDICTION_LOSS",
+                           "INSIGHT_AUTOMATED_LABEL_WARNING",
+                           "INSIGHT_GROUP_CLASS_CONFOUNDING",
+                           "INSIGHT_POST_HOC_TINY_SLICE",
+                           "INSIGHT_CROSS_DATASET_LABEL_INCOMPATIBILITY",
+                           "TASK_BASELINE_STRONG_NO_PAPER_GAP",
+                           "TASK_PIVOT_SAME_DATA_DIFFERENT_PREMISE",
+                           "TASK_READ_ONLY_WITH_NO_FIT_AUTH"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -222,7 +230,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 38):
+        for i in range(17, 46):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -396,7 +404,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("SEARCH_TRACE:", state)
         self.assertIn("SEARCH_DISCOVERY.md", read(CH10 / "README.md"))
         self.assertIn("搜索盲审", read(CH10 / "REPLAY_PROTOCOL.md"))
-        self.assertIn("37个", read(CH10 / "README.md"))
+        self.assertIn("45个", read(CH10 / "README.md"))
         scenario_map = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
         for i in range(32, 37):
             case = scenario_map[f"D10-{i}"]
@@ -407,6 +415,53 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("WAITING_FOR_AUTH", scenario_map["D10-37"]["expected_next"])
         self.assertIn("GAP_CANDIDATE_UNVERIFIED", scenario_map["D10-34"]["expected_next"])
         self.assertIn("TREND_UNVERIFIED", scenario_map["D10-33"]["expected_next"])
+
+    def test_data_insight_to_task_discovery_real_data_and_permissions(self):
+        start = read(CH10 / "START.md")
+        flow = read(CH10 / "WORKFLOW.md")
+        data = read(CH10 / "DATA_DISCOVERY.md")
+        insight = read(CH10 / "DATA_INSIGHT.md")
+        tasks = read(CH10 / "TASK_EXPLORATION.md")
+        readme = read(CH10 / "README.md")
+        refs = read(CH10 / "REFERENCES.md")
+        state = read(CH10 / "templates/STATE.md")
+        for doc in (start, flow, data, tasks, readme):
+            self.assertIn("DATA_INSIGHT.md", doc)
+        for marker in ("DATA_MANIFEST", "DATA_INSIGHT_CARD", "GROUP", "DIRECTION_CARD",
+                       "WAITING_FOR_DATA", "NOT_RUN", "PERFORMANCE_UNKNOWN",
+                       "DRIFT_DETECTED", "SUSPECTED_LABEL_ISSUE", "EXPLORATORY",
+                       "NO_RELIABLE_INSIGHT_YET", "NEXT_LOW_COST_CHECK",
+                       "多模态", "时间序列", "文本", "理论/仿真",
+                       "Cleanlab", "Evidently", "Spotlight",
+                       "不等于", "封存"):
+            if marker == "GROUP":
+                self.assertIn("group", insight.lower())
+            else:
+                self.assertIn(marker, insight)
+        for marker in ("HYPOTHESIZED_TASK", "MINIMUM_PROBE",
+                       "BASELINE_PENDING/AUTH_REQUIRED", "DATA_INSIGHT_CARD",
+                       "TASK_EXPLORATION", "NEXT_DISCRIMINATING_PROBE",
+                       "NO_INDEPENDENT_CLAIM"):
+            if marker == "TASK_EXPLORATION":
+                self.assertIn("TASK_EXPLORATION.md", insight)
+            else:
+                self.assertIn(marker, tasks)
+        self.assertIn("DATA_INSIGHTS:", state)
+        self.assertIn("TASK_DISCOVERY:", state)
+        self.assertIn("fg-data-profiling", refs)
+        self.assertIn("responsible-ai-toolbox", refs)
+        self.assertIn("数据→任务发现盲审", read(CH10 / "REPLAY_PROTOCOL.md"))
+        self.assertLess(len(start), 1300)
+        self.assertLess(len(flow) + len(tasks) + len(read(CH10 / "EXPERIMENT_LOOP.md")), 18000)
+        by_id = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
+        for i in range(38, 43):
+            self.assertEqual(by_id[f"D10-{i}"]["expected_route"], "DATA_INSIGHT.md")
+            self.assertEqual(by_id[f"D10-{i}"]["decision_scope"], "EVIDENCE")
+        for i in range(43, 46):
+            self.assertEqual(by_id[f"D10-{i}"]["expected_route"], "TASK_EXPLORATION.md")
+            self.assertEqual(by_id[f"D10-{i}"]["decision_scope"], "TASK")
+        self.assertIn("PERFORMANCE_UNKNOWN", by_id["D10-38"]["expected_next"])
+        self.assertIn("AUTH_REQUIRED", by_id["D10-45"]["expected_next"])
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()
