@@ -124,9 +124,10 @@ class WorkflowTests(unittest.TestCase):
         triage=(ROOT/"TRIAGE.md").read_text(encoding="utf-8")
         recovery=(ROOT/"RECOVERY.md").read_text(encoding="utf-8")
         for k in ("低门槛 EXPLORE", "中门槛 CONTINUE", "高门槛 CONFIRM",
-                  "PROJECT级HOLD/STOP", "只核当前动作"):
+                  "PROJECT级HOLD/STOP", "只核当前动作", "理论证明"):
             self.assertIn(k, policy)
-        for k in ("普通Bug不逐项询问", "阶段末仅报增量", "NOT_RUN"):
+        for k in ("普通Bug不逐项询问", "阶段末仅报增量", "NOT_RUN",
+                  "有效Pilot无增益不属于Bug"):
             self.assertIn(k, triage)
         for k in ("已验证修复", "待验证", "INVALID", "NOT_RUN"):
             self.assertIn(k, recovery)
