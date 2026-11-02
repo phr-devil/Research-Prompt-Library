@@ -17,7 +17,7 @@
 | 未选组合、数据/标签/封存状态不明 | [DATA_DISCOVERY.md](DATA_DISCOVERY.md) | AREA_DATA_CARD、DATA_MANIFEST 或真实开发观察 |
 | 数据可用，但 TASK 未明或出现更好的科学机会 | [TASK_EXPLORATION.md](TASK_EXPLORATION.md) | 一个主 TASK、可选一个不同失败前提的备选、最小判别 |
 | 同一问题可用不同标签预算/部署条件完成分层任务，或考虑上探/下探 | [TASK_LADDER.md](TASK_LADDER.md) | 一项主层级与L0共享资产、层级间公平协议、切换判据 |
-| 有 TASK/基线/负 Pilot/普通代码故障 | [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 有效 Run、定向修复或 NEXT_PROBE |
+| 有 TASK/基线/负 Pilot/普通代码故障 | [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)；写代码才读 [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) | 有效 Run、定向修复或 NEXT_PROBE |
 | 有可信结果、需要论文主张或比较任务价值 | [TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_CANDIDATE、近邻差额、证据缺口 |
 | 正式科学确认、公开主张、投稿 | [CONFIRMATION.md](CONFIRMATION.md) | 预冻结协议、独立证据或 CONFIRMATION_UNAVAILABLE |
 | 用户改变研究范围/权限/预算 | 本文件＋最新 STATE | 影响范围与真实用户决策 |
@@ -64,6 +64,6 @@
 
 ## 6. 评测与来源（非 Agent 必走关卡）
 
-`SCENARIOS.json` 和 `test_chapter10.py` 仅测试设计/结构，不证明科研效能。实际需在相同信息/授权/预算下做**历史盲回放**（遮蔽后续结局）及**前瞻性跟踪**，比较首个真实有效结果、任务价值、过早停止、无效实验、科研确认与 GPU/Token/人工总成本；未运行标 NOT_MEASURED。
+`SCENARIOS.json` 和 `test_chapter10.py` 仅测试设计/结构，不证明科研效能。实际需按 [REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md) 在相同信息/授权/预算下做**历史盲回放**（遮蔽后续结局）及**前瞻性跟踪**，比较首个真实有效结果、任务价值、过早停止、无效实验、科研确认与 GPU/Token/人工总成本；未运行标 NOT_MEASURED。
 
 **最短行为回放（只用于工作流审查）**：冻结一个真实项目某时点的用户目标、可见STATE/Run、工具与预算，隐藏后续成功/失败；在相同输入下让不同版本Agent各自输出`ROUTE / EVIDENCE_USED / NEXT_ACTION / AUTH / DECISION_SCOPE / CLAIM_BOUNDARY`。先判断是否有**越权、holdout泄漏、无根据的任务降级或伪造确认**（一项即可判该决策不安全），再比较探针是否信息充分、可复现、成本合理。可用`SCENARIOS.json`的`expected_route / decision_scope / expected_next`做合成预检，**不能把匹配关键词或合成通过率称为科研成功率**；正式有效性靠遮蔽结局的真实项目回放和前瞻试验。不能承诺论文接收或成功率；方法借鉴见 [REFERENCES.md](REFERENCES.md)。
