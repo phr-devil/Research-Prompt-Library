@@ -4,7 +4,7 @@
 
 ## 1. 大方向与数据库搜索：为什么研究这类问题
 
-**研究范围由每次用户指令指定**：先核`USER_SCOPE`（学科/方向、资源与排除项，或明确「方向不限」），先按[SEARCH_DISCOVERY.md](SEARCH_DISCOVERY.md)按需检索得到`SEARCH_HANDOFF`，本文件主要核数据；不能默认传感器方向。已有数据/Run只复用适配部分：
+**研究范围由每次用户指令指定**：例如NLP、视觉或生命科学均按本轮领域核`USER_SCOPE`（学科/方向、资源与排除项，或明确「方向不限」），先按[SEARCH_DISCOVERY.md](SEARCH_DISCOVERY.md)按需检索得到`SEARCH_HANDOFF`，本文件主要核数据；不能默认传感器方向。已有数据/Run只复用适配部分：
 
 1. **机会搜索**：按本轮用户范围建立问题地图；4–6类只是起点而非搜索硬上限。关键词扩展、热点/空白和具名近邻反查交[SEARCH_DISCOVERY.md](SEARCH_DISCOVERY.md)，不重新重复读取已核来源。
 2. **方向收敛**：接收`SEARCH_HANDOFF`中具名近邻、最高价值机会和未覆盖范围；只排已证实无合法评价/必要资源的问题，其余未知保留`EXPLORABLE`，不把热点或文献少当创新证据。

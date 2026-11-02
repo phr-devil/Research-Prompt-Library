@@ -387,7 +387,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                        "TREND_UNVERIFIED", "GAP_CANDIDATE_UNVERIFIED",
                        "NEIGHBOR_CHECKED_WITH_LIMITS", "NO_INDEPENDENT_GAP",
                        "DATA_OR_VALUE_GAP", "DOWNLOAD_READY_NOTICE",
-                       "不按固定论文篇数", "仅用作**线索**"):
+                       "不按固定论文篇数", "只用作**线索**"):
             self.assertIn(marker, search)
         self.assertLess(len(start), 1300)
         self.assertIn("SEARCH_DISCOVERY.md", start)
