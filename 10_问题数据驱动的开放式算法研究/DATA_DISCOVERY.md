@@ -20,7 +20,7 @@
 |---|---|---|---|
 | 气体传感器跨时间漂移/浓度 | [UCI Gas Sensor Drift at Different Concentrations](https://archive.ics.uci.edu/dataset/270/gas+sensor+array+drift+dataset+at+different+concentrations) | 6种气体、浓度信息、16传感器、10批次，可设计跨批和K-shot任务 | 某些气体在某批次缺失；浓度/批次混杂；页面许可字段与研究用途文本可能冲突，先核用途条件 |
 | 可穿戴动作跨人/标定/位置 | [UCI PAMAP2](https://archive.ics.uci.edu/dataset/231/pamap2+physical+activity+monitoring) | 多位置IMU、心率与活动标签，可定义跨人、少样本和传感位置约束 | 受试者约9人，组级泛化证据有限；**多IMU位置不自动构成跨设备平台** |
-| 工业工序/多模态/可靠性 | [OpenPack官方项目](https://open-pack.github.io/) | 16名受试者、约53小时包装工序和多模态元数据，支持工序、缺失/鲁棒性问题 | 时间同步、标签与部署前信息；额外传感器互补不代表动态激活可学 |
+| 工业工序/多模态/可靠性 | [OpenPack官方项目](https://open-pack.github.io/) | 16名受试者、约53小时包装工序和多模态元数据，支持工序、缺失/鲁棒性问题 | 时间同步、标签与部署前信息；官方多仓库/模态许可不同，RGB另有限制；额外传感器互补不代表动态激活可学 |
 
 数据库示例的来源、版本、许可证与使用约束要在**实际使用时重新核官方页面**。理论问题若有合适的证明路径，不必为了套此表硬找数据库。
 
