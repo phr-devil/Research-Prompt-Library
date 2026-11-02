@@ -223,7 +223,8 @@ class ResearchDecisionContractTests(unittest.TestCase):
         self.assertIn("官方OS/驱动/ABI/权重许可", salvage)
         fixture = json.loads((self.root/"EVAL_CASES_CURRENT.json").read_text(encoding="utf-8"))
         cases = {x["id"]: x for x in fixture["cases"]}
-        self.assertEqual(len(cases), 25)
+        self.assertEqual(len(cases), len(fixture["cases"]), "Duplicate current case IDs")
+        self.assertTrue({f"N{i:02d}" for i in range(1, 26)} <= set(cases), "Missing protected regression fixtures")
         for case_id in ("N16", "N17"):
             self.assertEqual(cases[case_id]["prompt_selector"], "F1-F4-DOCUMENT")
             self.assertEqual(cases[case_id]["prompt_path"],
@@ -260,6 +261,20 @@ class ResearchDecisionContractTests(unittest.TestCase):
             self.assertEqual(case["prompt_selector"], selector)
             self.assertTrue(case["must"] and case["critical"])
 
+
+    def test_scoped_exploration_and_independent_holdout_contract(self):
+        evidence = self.read8("playbooks/04_EVIDENCE_CONFIRM.md")
+        self.assertIn("原公开数据集内预先隔离", evidence)
+        self.assertIn("从未参与选择", evidence)
+        self.assertIn("不能靠事后重划", evidence)
+        self.assertIn("CONFIRMATION_UNAVAILABLE", evidence)
+        post = self.read8("POST_SELECTION.md")
+        self.assertIn("常规优化、发现新现象或实验能力建设", post)
+        self.assertIn("机制归因才要求", post)
+        nine = (self.root / "09_失败算法项目挽救与转向" /
+                "WORKFLOW.md").read_text(encoding="utf-8")
+        self.assertIn("BASELINE_PENDING", nine)
+        self.assertIn("唯一对应候选的完整标题", nine)
 
 if __name__ == "__main__":
     unittest.main()

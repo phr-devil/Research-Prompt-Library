@@ -1052,5 +1052,32 @@ class EvidenceSourceAuditTests(unittest.TestCase):
         self.assertEqual("BLOCKED_CRITICAL", router.propose_transition(
             "CRITICAL", "SCOPED_EXPLORATION", "CONTINUE_LIMITED"))
 
+    def test_scoped_research_advice_does_not_require_baselines_for_first_mvp(self):
+        advice = router.advise_event("NEW_PROJECT")
+        self.assertIn("最小原型验收", advice["deliverable"])
+        self.assertIn("开始声称性能改善时再补公平基线", advice["deliverable"])
+        mechanism = router.advise_event("NEW_MECHANISM")
+        self.assertIn("物理/理论原理", mechanism["why"])
+        self.assertIn("机制归因", mechanism["why"])
+        impl = router.advise_event("IMPLEMENTATION")
+        self.assertIn("只在涉及训练或性能比较时", impl["why"])
+        self.assertIn("仅当前动作确证阻断", (ROOT / "POST_SELECTION.md").read_text(encoding="utf-8"))
+
+    def test_repairable_autonomous_priority_cannot_bypass_permissions(self):
+        policy = router.load_triage()
+        rule = policy["levels"]["REPAIRABLE"]
+        self.assertEqual(rule["default"], "USER_CHOICE")  # legacy fallback
+        self.assertIn("VERIFIED_SCOPED_AUTONOMOUS_FIRST", rule["execution_preference"])
+        self.assertIn("EXECUTION_PRIORITY", router.show_triage("03-E"))
+        self.assertEqual(router.propose_transition(
+            "REPAIRABLE", "SCOPED_EXPLORATION", scoped_work_verified=True),
+            "BOUNDED_DIAGNOSTIC_CONTINUE")
+        self.assertEqual(router.propose_transition(
+            "REPAIRABLE", "SCOPED_EXPLORATION", scoped_work_verified=True,
+            material_change=True), "WAITING_FOR_USER_DECISION")
+        self.assertEqual(router.propose_transition("CRITICAL", "SCOPED_EXPLORATION",
+                                                  scoped_work_verified=True),
+                         "BLOCKED_CRITICAL")
+
 if __name__=="__main__":
     unittest.main()
