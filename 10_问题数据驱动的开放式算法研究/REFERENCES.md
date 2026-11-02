@@ -1,31 +1,24 @@
-# 第十章｜公开高星 GitHub 工作流参考与迁移边界
+# 第十章｜开源工作流对照与可迁移机制（2026-11-02 复核）
 
-> **来源核验时间：2026-11-02**。Stars 为约数、随时间变化；热门≠科学成功率/论文质量。只借鉴可核的方法，不复制第三方项目提示词、源代码或许可证限制不明的内容，也不宣称这些框架已安装在用户电脑上。
+> 只引用公开官方仓库或官方文档；**Stars 不是科研效能、真实性或投稿成功率**，故不再维护易过期的星数排名。以下仅借鉴任务组织与实验可追踪性，不代表已安装这些框架，也不复制第三方提示词或代码。
 
-| 官方 GitHub 项目 | Stars 约数 | 仓库/文档中的机制 | 第十章对应设计 | 不能照搬的部分 |
-|---|---:|---|---|---|
-| [karpathy/autoresearch](https://github.com/karpathy/autoresearch) · [program.md](https://github.com/karpathy/autoresearch/blob/master/program.md) | 99k | 固定 prepare/evaluator、实验脚本、结果记录、保留增益并回退 | 稳定评价器、短反馈、BEST_VALID_RUN 与原始负结果 | 原文 LOOP FOREVER、只追求一个验证指标；科研要预算、停止和多任务选择纠偏 |
-| [mlflow/mlflow](https://github.com/mlflow/mlflow) | 28.6k | 跟踪 experiment/run、parameters、metrics 和模型产物 | 简明 Run 证据索引、可复现 provenance | 不要求服务部署或新平台栈 |
-| [microsoft/RD-Agent](https://github.com/microsoft/RD-Agent) | 15.2k | Research ideas (R) 与 implementation (D) 在真实反馈中进化，覆盖数据/模型研发 | 数据发现→科研任务生成→代码实验→反馈回流 | 不为普通项目引入复杂多 Agent 架构 |
-| [optuna/optuna](https://github.com/optuna/optuna) | 15k | Trial 管理、搜索空间、剪枝与预算优化 | 有界调参、记录全部 trial、选择信息价值实验 | 不把过早 pruning 当科学机制被证伪，也不在封存test优化 |
-| [SakanaAI/AI-Scientist](https://github.com/SakanaAI/AI-Scientist) | 14.9k | idea→experiment→review/write-up 的研究闭环 | 记录从假设到结果到论文证据的因果链 | 自动生成文章不代表科研主张正确或论文保底 |
-| [cleanlab/cleanlab](https://github.com/cleanlab/cleanlab) | 11.7k | 数据/标签质量与异常样本分析 | 数据优先、发现失效与标签问题 | 模型对数据的可疑标记不自动等于真实标签错误 |
-| [SakanaAI/AI-Scientist-v2](https://github.com/SakanaAI/AI-Scientist-v2) | 7.4k | Agentic tree search、实验管理、有限候选展开 | 必要时小规模科学机制分支与实验树追踪 | 官方指出开放 v2 在强起始模板下可能不如受约束的 v1，不可推断更多搜索必然更成功 |
-| [WecoAI/aideml](https://github.com/WecoAI/aideml) | 1.6k | 代码节点的 generate→debug→benchmark 搜索树 | 少量不同代码实现竞争、保留 lineage | 代码搜索与 ML benchmark 胜率不等于科研创新或论文增益 |
-| [SakanaAI/AI-Scientist-v3](https://github.com/SakanaAI/AI-Scientist-v3) | 0.6k | task investigation、ablation、sealed final evaluation、posthoc、paper 分阶段证据 | 开放探索与最终确认严格分离 | 不要求容器编排、自动写论文、多模型评审或覆盖旧框架 |
-| [DVC](https://github.com/iterative/dvc) | 未在本轮 API 确认 | 数据/实验版本与可复现流水线的典型工具 | manifest、data_version、split_protocol、按依赖增量复跑 | 不强制安装 DVC 或额外重复存储大型文件 |
+| 开源项目与官方来源 | 值得借鉴 | 在第十章中的落地 | 不照搬的部分 |
+|---|---|---|---|
+| [Microsoft RD-Agent](https://github.com/microsoft/RD-Agent) | 科学问题/实现/实测反馈之间持续循环 | 问题—数据→TASK→最小实验→反馈修订 | 不为每个课题引入多个 Agent、服务或冗长日志 |
+| [Karpathy autoresearch](https://github.com/karpathy/autoresearch) · [program.md](https://github.com/karpathy/autoresearch/blob/master/program.md) | 固定评价基础设施、短反馈、可回退代码、逐次记录 | 保护 evaluator、`BEST_VALID_RUN`、原始负结果与版本 | `LOOP FOREVER`、仅按单一开发分数保留，均不适用于论文确认 |
+| [AIDE (WecoAI/aideml)](https://github.com/WecoAI/aideml) | 代码试验树、调试、分支血缘 | 一个主分支＋有不同解释的少量备选；记录 parent_run | 代码竞赛得分与科研创新不能划等号 |
+| [AI-Scientist-v2](https://github.com/SakanaAI/AI-Scientist-v2) | 假设—实验—反馈的开放探索与实验管理 | 有界的候选任务/机制探索 | 官方承认：有强起始模板时开放 v2 不一定优于 v1；多分支不保证成功 |
+| [AI-Scientist-v3](https://github.com/SakanaAI/AI-Scientist-v3) | 研究调查、消融、独立末次评估分离 | 多任务搜索与最终封存确认严格分离 | 不自动生成或声称一篇论文已通过科学验证 |
+| [MLflow](https://github.com/mlflow/mlflow) | Run 参数、指标、产物与血缘 | 复用现有 STATE/RUNS/CLAIMS 指针和可恢复比较 | 不强制部署追踪服务器 |
+| [Optuna](https://github.com/optuna/optuna) | 有界 Trial、记录搜索史和低成本剪枝 | 按新信息/总成本选择试验，保留被淘汰分支 | 低保真剪枝不是机制科学证伪；不在 test 上调参 |
+| [Cleanlab](https://github.com/cleanlab/cleanlab) | 标签质量、数据问题定位 | 开放观察时审查标签/数据真实性 | 模型标记的可疑标签不等于真实标注错误 |
+| [DVC](https://github.com/treeverse/dvc) | 原始数据和实验版本可追溯 | manifest、data_version、split/protocol_id、增量复跑 | 不强制安装 DVC 或重复存储大型数据 |
 
-## 对第十章最重要的五项迁移
+## 这次审查形成的四个具体改动
 
-1. **研究问题范围先于具体模型**（RD-Agent + Cleanlab）：从数据和可信科学问题发现任务，不在选题时赌一个必胜机制。
-2. **保护不可随意变化的评价资产**（autoresearch）：合法 split、共同 evaluator、原始数据与封存确认保持稳定，算法可以迭代；正式协议确需修正则版本化。
-3. **有限、有明确反馈的分支探索**（AIDE + AI-Scientist-v2）：默认一主分支，只有独立科学解释且预算合理才开备选，负 Pilot 不推断整个方向失败。
-4. **总资源效率**（Optuna + autoresearch）：只跑能带来新信息/恢复能力/可信改进的实验，允许早停不值得的单分支，但禁止无限搜索和对 test 调参。
-5. **探索—确认分离**（AI-Scientist-v3 + MLflow）：任务选择、开发调优、最终确认分开，明确每条结论的 provenance、可反驳条件和论文边界。
+1. **固定比较条件，保留完整搜索史**（autoresearch / MLflow / DVC）：不因回退代码删除失败 Run；协议变化只重评受影响部分。
+2. **任务、方法与验证一一对应**（RD-Agent / AI-Scientist-v3）：预留 holdout 只代表隔离，不保证适用于后来发现的每个新任务；必须核真值、组别、因果和独立性。
+3. **信息价值驱动而非 GPU 占用驱动**（AIDE / Optuna）：一主分支、按症状选择最廉价判别，升级训练预算以能改变决定为条件，不机械强制双规模/正控。
+4. **开放探索不等于任意论文故事**（AI-Scientist-v2/v3）：在关键投入前按需复核直接近邻，独立报告简单强基线、弱效果、失败组及任务搜索偏差。
 
-## 科研适配为何有别于 ML 自动竞赛
-
-- 本章的最优目标是**有效、可重复、具有独立价值的科研 Claim / 单位总研发成本**，不只是开发集上的最高分。
-- 一个数据集上发掘多个任务、指标或切片会产生**选择偏差**，应预留独立确认或限制主张；高星自动实验框架本身不会解决这一点。
-- 神经网络/优化方法之外，还允许从物理理论、数据质量、任务定义、可靠性与实验能力中产生科研贡献。
-- 各项目的许可证不同，若需实际安装、复制源码或外传数据，应查看相应项目的正式许可；本章仅写独立的 Markdown 工作指令。
+**适配边界**：这些项目大多追求 ML 工程或单指标优化，第十章追求的则是**可复核的独立科研价值/总资源成本**。以上为设计依据而非工作流效果的实证；只有同条件历史盲回放与前瞻性测试才能判断改版是否真的有帮助。论文/项目作者与许可条款需按实际用途核实。
