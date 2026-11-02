@@ -36,6 +36,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         start = read(CH10 / "START.md")
         self.assertLess(len(start), 1300)
         for name in ("README.md", "WORKFLOW.md", "DATA_DISCOVERY.md",
+                     "SEARCH_DISCOVERY.md",
                      "TASK_EXPLORATION.md", "EXPERIMENT_LOOP.md",
                      "CONFIRMATION.md", "REFERENCES.md", "EXAMPLE_SENSOR.md",
                      "templates/STATE.md", "SCENARIOS.json", "TASK_LADDER.md"):
@@ -184,7 +185,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 31)
+        self.assertEqual(len(cases), 37)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -203,7 +204,12 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                           "PAPER_FIRST_NOT_SCORE_ONLY",
                           "DIRECTION_COMPLETED_AUTONOMOUS_DATASET_SELECTION",
                           "USER_SCOPE_NON_SENSOR_DOMAIN",
-                          "USER_SCOPE_UNRESTRICTED_RESEARCH"})
+                          "USER_SCOPE_UNRESTRICTED_RESEARCH",
+                          "SEARCH_ADAPTIVE_SCOPE_BOUNDARY", "SEARCH_TREND_STARS_NOT_SCIENCE",
+                          "SEARCH_FALSE_WHITESPACE_SYNONYMS",
+                          "SEARCH_ADAPTIVE_STOP_WITH_COVERAGE_GAP",
+                          "SEARCH_DEEPEN_HIGH_RISK_NEIGHBOR",
+                          "SEARCH_TO_DATA_DOWNLOAD_PERMISSION_HANDOFF"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -216,7 +222,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 32):
+        for i in range(17, 38):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -368,6 +374,39 @@ class ProblemDataWorkflowTests(unittest.TestCase):
             self.assertEqual(by_id[cid]["expected_route"], "DATA_DISCOVERY.md")
         self.assertIn("USER_SCOPE=NLP", by_id["D10-30"]["expected_next"])
         self.assertIn("USER_SCOPE=UNRESTRICTED", by_id["D10-31"]["expected_next"])
+
+    def test_search_discovery_adaptive_contract_and_topic_handoff(self):
+        search = read(CH10 / "SEARCH_DISCOVERY.md")
+        data = read(CH10 / "DATA_DISCOVERY.md")
+        start = read(CH10 / "START.md")
+        flow = read(CH10 / "WORKFLOW.md")
+        state = read(CH10 / "templates/STATE.md")
+        for marker in ("USER_SCOPE", "QUICK", "STANDARD", "DEEP",
+                       "EXPAND", "DEEPEN", "REFRAME", "NARROW", "SELECT",
+                       "SEARCH_HANDOFF", "COVERAGE_GAP", "NEW_UNIQUE_EVIDENCE",
+                       "TREND_UNVERIFIED", "GAP_CANDIDATE_UNVERIFIED",
+                       "NEIGHBOR_CHECKED_WITH_LIMITS", "NO_INDEPENDENT_GAP",
+                       "DATA_OR_VALUE_GAP", "DOWNLOAD_READY_NOTICE",
+                       "不按固定论文篇数", "仅用作**线索**"):
+            self.assertIn(marker, search)
+        self.assertLess(len(start), 1300)
+        self.assertIn("SEARCH_DISCOVERY.md", start)
+        self.assertIn("SEARCH_DISCOVERY.md", flow)
+        self.assertIn("SEARCH_DISCOVERY.md", data)
+        self.assertIn("SEARCH_TRACE:", state)
+        self.assertIn("SEARCH_DISCOVERY.md", read(CH10 / "README.md"))
+        self.assertIn("搜索盲审", read(CH10 / "REPLAY_PROTOCOL.md"))
+        self.assertIn("37个", read(CH10 / "README.md"))
+        scenario_map = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
+        for i in range(32, 37):
+            case = scenario_map[f"D10-{i}"]
+            self.assertEqual(case["expected_route"], "SEARCH_DISCOVERY.md")
+            self.assertTrue(case["should"])
+            self.assertTrue(case["must_not"])
+        self.assertEqual(scenario_map["D10-37"]["expected_route"], "DATA_DISCOVERY.md")
+        self.assertIn("WAITING_FOR_AUTH", scenario_map["D10-37"]["expected_next"])
+        self.assertIn("GAP_CANDIDATE_UNVERIFIED", scenario_map["D10-34"]["expected_next"])
+        self.assertIn("TREND_UNVERIFIED", scenario_map["D10-33"]["expected_next"])
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()

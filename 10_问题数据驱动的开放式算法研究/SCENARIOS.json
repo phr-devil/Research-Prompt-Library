@@ -8,7 +8,7 @@
       "situation": "用户想做传感器＋具身智能算法，未指定宽研究方向、任务族或数据库，明确走第十章；没有下载/训练授权。",
       "should": [
         "先按现实问题/变化条件选择宽研究方向与任务族，形成DIRECTION_CARD",
-        "为推荐方向选择2–3个独立且互补的数据库，明确D1开发/D2外部复现/可选D3压力测试",
+        "为推荐方向规划默认3–4个独立且互补的数据库/基准，明确开发、备用与外部确认角色",
         "活动01方向确定后立即自动选择3–4个数据库、生成PRE_DOWNLOAD_PLAN和DOWNLOAD_READY_NOTICE通知用户下载",
         "允许没有足够数据的理论/证明路线用NOT_APPLICABLE标注"
       ],
@@ -490,6 +490,114 @@
       "expected_route": "DATA_DISCOVERY.md",
       "decision_scope": "AREA_DATA",
       "expected_next": "USER_SCOPE=UNRESTRICTED→跨学科选题→匹配资源与必要下载通知"
+    },
+    {
+      "id": "D10-32",
+      "event": "SEARCH_ADAPTIVE_SCOPE_BOUNDARY",
+      "situation": "用户明确只做计算机视觉。首轮检索仅找到两个成熟题目，但科学可学条件不清；有人建议直接搜索气体传感或IMU以快速凑多个领域。",
+      "should": [
+        "保持USER_SCOPE=计算机视觉，SEARCH_MODE按信息缺口选择；先在视觉内部对同义词、相邻子问题和学会论文执行EXPAND",
+        "依据可获取的视觉数据/评估基准及具名近邻决定DEEPEN或SELECT，记录SEARCH_COVERAGE和COVERAGE_GAP",
+        "范围明确后同轮自动选对应数据库并在必要时发DOWNLOAD_READY_NOTICE"
+      ],
+      "must_not": [
+        "因传感器历史案例擅自跨出用户学科",
+        "缺少论文时凭模型想象创新或无依据换领域",
+        "把关键词次数作为硬性选题门槛"
+      ],
+      "expected_route": "SEARCH_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "USER_SCOPE内EXPAND→核候选近邻与资源→SEARCH_HANDOFF→DATA_DISCOVERY"
+    },
+    {
+      "id": "D10-33",
+      "event": "SEARCH_TREND_STARS_NOT_SCIENCE",
+      "situation": "用户方向不限，某热门开源Agent的Star近期高涨；论坛讨论大量转发，但未检查其正式论文、基准和应用真值。",
+      "should": [
+        "将社区/GitHub热度只作趋势线索，核官方论文、数据/评价协议和近年变化，真实计数不可得写TREND_UNVERIFIED",
+        "比较科研需求、最强已有方法及最低可检验贡献，允许成熟可靠方向优先于热点",
+        "保存查询日期、时间窗口与代表性原始来源，防止宣传热度误导科学性"
+      ],
+      "must_not": [
+        "以Star或讨论量直接称有高科研价值和高发表概率",
+        "编造某主题过去一年论文增速",
+        "因用户方向不限就只检索旧传感器词"
+      ],
+      "expected_route": "SEARCH_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "验证趋势来源和真实科研问题；未证实标TREND_UNVERIFIED"
+    },
+    {
+      "id": "D10-34",
+      "event": "SEARCH_FALSE_WHITESPACE_SYNONYMS",
+      "situation": "AI搜索‘cross-platform latent drift rescue’未见论文，宣称全球首次；但领域里存在不同称谓的跨域适应、设备漂移补偿及同数据强基线。",
+      "should": [
+        "以不同学科和历史术语检索同一任务，沿关键具名近邻前后向引文追踪；相邻学科仅核现有技术不越界选题",
+        "核合法输入信息、数据条件、标签预算及竞争方案，不能仅按标题是否匹配判断创新",
+        "未找到反证前保留GAP_CANDIDATE_UNVERIFIED；若明确覆盖则NO_INDEPENDENT_GAP并REFRAME"
+      ],
+      "must_not": [
+        "仅因搜索结果少就宣布全球首次和显著创新",
+        "将同一批论文换名字当独立证据",
+        "忽略官方基准上已解决相同问题的简单双模型"
+      ],
+      "expected_route": "SEARCH_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "逆向新颖性核查，GAP_CANDIDATE_UNVERIFIED或NO_INDEPENDENT_GAP"
+    },
+    {
+      "id": "D10-35",
+      "event": "SEARCH_ADAPTIVE_STOP_WITH_COVERAGE_GAP",
+      "situation": "AI已找到一个合法、较易完成的项目；重复检索大多没有新证据。另一个不影响当前首选的研究分支尚未查清，用户未要求全面穷尽。",
+      "should": [
+        "按NEW_UNIQUE_EVIDENCE、DECISION_CHANGE和成本决定SELECT，保留明确COVERAGE_GAP而非强制继续查所有支路",
+        "给首选方向、具名近邻、最小有效任务/论文贡献候选与NEXT_LOW_COST_CHECK",
+        "同轮转DATA_DISCOVERY配置数据，不因搜索不完整增加用户确认关卡"
+      ],
+      "must_not": [
+        "必须搜索固定数量论文才允许选题",
+        "在没有足够证据时声称全部研究空白已核实",
+        "为增加搜索数量延迟明确可评估的首选方向"
+      ],
+      "expected_route": "SEARCH_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "有证据SELECT+公开COVERAGE_GAP；自动交接选库"
+    },
+    {
+      "id": "D10-36",
+      "event": "SEARCH_DEEPEN_HIGH_RISK_NEIGHBOR",
+      "situation": "现有搜索显示首选任务可能有论文覆盖，但只读到标题和博客摘要；用户要求科学价值优先，核心新颖性直接依赖该论文细节。",
+      "should": [
+        "先DEEPEN直接近邻原文/官方实现，查部署前信息、真值、K预算和论文中的真实条件",
+        "不能读取原文时标NEIGHBOR_UNVERIFIED，下一步针对可访问资料低成本核查，不得编造差异",
+        "如确认主张已覆盖，REFRAME到不同合法条件；项目不因机制级负结果自动STOP"
+      ],
+      "must_not": [
+        "只看摘要就称最强近邻没有覆盖该创新点",
+        "在关键直接近邻未核实的情况下声称论文贡献已确认",
+        "反复搜索无关GitHub项目代替原文核查"
+      ],
+      "expected_route": "SEARCH_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "DEEPEN强近邻→核论文实际条件或NEIGHBOR_UNVERIFIED"
+    },
+    {
+      "id": "D10-37",
+      "event": "SEARCH_TO_DATA_DOWNLOAD_PERMISSION_HANDOFF",
+      "situation": "活动01已经按本轮非传感器NLP方向完成SEARCH_HANDOFF，选定可评价的主任务；需要三个互补公开基准，用户尚未授权下载。",
+      "should": [
+        "SEARCH_HANDOFF不要求用户再选方向/数据库，直接转DATA_DISCOVERY自主核3–4个合适基准的版本、许可、标签及独立组",
+        "逐库形成PRE_DOWNLOAD_PLAN，官方来源可核则给DOWNLOAD_READY_NOTICE通知用户下载，无法核直链写URL_UNVERIFIED",
+        "保持DOWNLOAD_READY_WAITING_FOR_USER；不下载、不拟合、不解封测试集"
+      ],
+      "must_not": [
+        "搜索结束后强制新一轮交互问是否开始选库",
+        "自动从搜索系统下载大规模原始数据或运行CPU/GPU训练",
+        "将搜索时读过的benchmark测试成绩当未污染独立确认"
+      ],
+      "expected_route": "DATA_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "SEARCH_HANDOFF→自动DATA_PORTFOLIO→DOWNLOAD_READY_NOTICE→WAITING_FOR_AUTH"
     }
   ]
 }
