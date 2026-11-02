@@ -62,7 +62,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         for marker in ("CONTAMINATED", "CONFIRMATION_UNAVAILABLE",
                        "任务搜索", "同一个公开数据库", "换 seed"):
             self.assertIn(marker, post)
-        self.assertIn("用户选择**研究组合**", read(CH10 / "WORKFLOW.md"))
+        self.assertIn("用户选择**宽研究方向或多数据库研究组合**", read(CH10 / "WORKFLOW.md"))
         self.assertIn("TASK_EVALUABLE", data)
         self.assertIn("CLAIM_CONFIRMABLE", data)
         self.assertIn("任务尚未确定时", data)
@@ -300,7 +300,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("D2若用于任务选型", confirm)
         self.assertIn("SINGLE_DATASET_EVIDENCE", read(CH10 / "EXPERIMENT_LOOP.md"))
         cases = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
-        self.assertIn("方向未选", " ".join(cases["D10-25"]["must_not"]))
+        self.assertIn("先下载数据库", " ".join(cases["D10-25"]["must_not"]))
         self.assertIn("同一库", " ".join(cases["D10-26"]["must_not"]))
 
     def test_existing_library_link_validator(self):
