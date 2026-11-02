@@ -399,6 +399,42 @@
       "expected_route": "DATA_DISCOVERY.md",
       "decision_scope": "AREA_DATA",
       "expected_next": "建立D1/D2兼容性与角色合同；无法对齐标CROSS_DATASET_TASK_GAP"
+    },
+    {
+      "id": "D10-27",
+      "event": "PARALLEL_DATASET_DEV_WITH_SEALED_GROUPS",
+      "situation": "用户选定跨设备IMU方向并希望4个数据库同时使用；D1/D2/D3用于任务探索与调参，某Agent还想把D2当未触碰独立确认。",
+      "should": [
+        "多个数据库可合法共同开发、分别训练或迁移，记录DEV_SHARED角色与真实group",
+        "所有参与模型或任务选择的库不再充当同一主张的未接触SEALED_CONFIRM",
+        "为当前任务保留独立封存组或另取未参与选择来源；D4可为转题备用"
+      ],
+      "must_not": [
+        "强制多库只能一个一个训练",
+        "将参与过调参的D2冒充未触碰确认",
+        "把多个窗口数当多个独立人"
+      ],
+      "expected_route": "DATA_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "3–4库资产池，保留转题能力并分账DEV_SHARED/SEALED_CONFIRM"
+    },
+    {
+      "id": "D10-28",
+      "event": "PAPER_FIRST_NOT_SCORE_ONLY",
+      "situation": "复杂模型没有稳定优于Ridge，简单个性化却有高开发F1；用户希望先找到可投稿论文路线再提高科学机制，但普通微调可能已有近邻。",
+      "should": [
+        "保留可信PERFORMANCE_FLOOR，核具名近邻和最低独立贡献",
+        "若没有论文差额，标VALUE_UNVERIFIED或REUSE_ONLY而非包装高F1",
+        "优先探索标签成本/跨库物理规律/新任务，再对可信PAPER_PATH_CANDIDATE做SCIENCE_UPGRADE"
+      ],
+      "must_not": [
+        "高开发F1直接保证论文接收",
+        "借封存集挑最佳论文故事",
+        "复杂网络没有提升仍无限试"
+      ],
+      "expected_route": "PAPER_FIRST.md",
+      "decision_scope": "TASK",
+      "expected_next": "最低论文路线必须有可反驳独立贡献和合法确认，不承诺发表"
     }
   ]
 }
