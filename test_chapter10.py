@@ -147,7 +147,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                        "SHARED_ASSETS", "PIVOT_CONDITION", "CONFIRMATION",
                        "L0", "L1", "L2", "L3", "UP", "DOWN", "NARROW",
                        "LATERAL", "HOLD", "NO_INDEPENDENT_CLAIM",
-                       "新TASK", "标签", "不是论文"):
+                       "新的TASK", "标签", "不自动是论文"):
             # Last textual marker may vary; essential contract terms are required.
             self.assertIn(marker, ladder)
         self.assertIn("TASK_LADDER.md", task)
