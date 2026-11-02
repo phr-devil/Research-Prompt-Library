@@ -53,7 +53,8 @@ def inspect_selection(candidates, selection=None):
     chosen = record.get("selected_id")
     if chosen not in IDS:
         raise ValueError("User must choose exactly one P1/P2/P3")
-    offered = [item["id"] for item in json.loads(Path(candidates).read_text(encoding="utf-8"))["candidates"]]
+    items = json.loads(Path(candidates).read_text(encoding="utf-8"))["candidates"]
+    offered = [item["id"] for item in items]
     if chosen not in offered:
         raise ValueError("Selected project was not offered in the shortlist")
     if record.get("candidate_sha256") != digest:
@@ -62,17 +63,19 @@ def inspect_selection(candidates, selection=None):
         if not isinstance(record.get(key), str) or not record[key].strip():
             raise ValueError("Missing user message and provenance reference")
     message = record["user_message"].strip()
-    # Accept explicit IDs or a small conservative set of unequivocal Chinese ordinals.
-    # This is only a syntactic consistency check, not authentication of a human message.
+    # A complete offered title may replace a numbered option; this remains syntax-only.
+    offered_titles = {item["id"]: item["title"].strip() for item in items}
     aliases = {
         "P1": r"(?:(?<![A-Za-z0-9])P1(?![A-Za-z0-9])|第[一1]个(?:项目|课题|方案)|第[一1]项|方案一)",
         "P2": r"(?:(?<![A-Za-z0-9])P2(?![A-Za-z0-9])|第[二2]个(?:项目|课题|方案)|第[二2]项|方案二)",
         "P3": r"(?:(?<![A-Za-z0-9])P3(?![A-Za-z0-9])|第[三3]个(?:项目|课题|方案)|第[三3]项|方案三)",
     }
+    for option, title in offered_titles.items():
+        aliases[option] = "(?:" + aliases[option] + "|" + re.escape(title) + r"(?![\w]))"
     if not re.search(aliases[chosen], message, flags=re.IGNORECASE):
         raise ValueError("Selected ID not clearly expressed by user message")
     bare_choice = r"(?:P[123]|第[一二三123]个(?:项目|课题|方案)?|第[一二三123]项|方案[一二三])"
-    if re.fullmatch(bare_choice,message,flags=re.IGNORECASE):
+    if re.fullmatch(bare_choice,message,flags=re.IGNORECASE) or message == offered_titles[chosen]:
         return "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED", digest
 
     # Recognize the explicitly *chosen* option, not just any ID mentioned
@@ -93,9 +96,10 @@ def inspect_selection(candidates, selection=None):
                 explicit.append((option,mention))
     if not explicit or {option for option,_ in explicit}!={chosen}:
         raise ValueError("Selection intent is ambiguous or contradicts selected ID")
+    all_targets = "(?:" + "|".join(aliases.values()) + ")"
     for option,mention in explicit:
         tail=message[mention.end():]
-        if re.match(r"\s*(?:和|或|与|以及|还是|、|/)\s*(?:P[123]|第[一二三123]个|方案[一二三])",tail,flags=re.IGNORECASE):
+        if re.match(r"\s*(?:和|或|与|以及|还是|、|/)\s*" + all_targets,tail,flags=re.IGNORECASE):
             raise ValueError("Multiple candidate projects in one selection")
     return "STRUCTURE_PASS_HUMAN_MESSAGE_MUST_BE_VERIFIED", digest
 

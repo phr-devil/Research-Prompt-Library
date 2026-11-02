@@ -23,8 +23,9 @@
       ],
       "auto_continue_affected": false,
       "safe_unaffected_work": true,
-      "fast_path": "Within independently verified existing permission/scope and unchanged claim/protocol, bounded lowest-cost diagnosis may proceed without another user menu; not confirmation.",
-      "user_choice_required_when": "material claim/scope/protocol/resource change, new unresolved risk, original authorization missing or user HOLD"
+      "fast_path": "First, with independently verified existing permission, unchanged claim/protocol/budget and no newer user HOLD, do bounded cheapest relevant diagnosis/repair + affected regression + resume without a new menu. Not formal/paid/GPU/publication approval.",
+      "user_choice_required_when": "material claim/scope/protocol/resource change, new unresolved risk, original authorization missing or user HOLD",
+      "execution_preference": "VERIFIED_SCOPED_AUTONOMOUS_FIRST; USER_CHOICE is only the no-verified-scope or material-change fallback. Never infer authorization from prompt or repo files."
     },
     "MINOR": {
       "meaning": "已知影响低且不改变当前科学结论、数据完整性、资源权限或主要验收",

@@ -225,8 +225,8 @@
       "route": null,
       "why": "用户明确已选定课题才进入MVP；无用户选题且尚属探索须改TOPIC_EXPLORATION，不自动训练",
       "playbook": "playbooks/01_DATA_BASELINE.md",
-      "deliverable": "可信数据/目标合同和最简单公平基线或阻断",
-      "verify": "真实字段/真值/分组/评估入口可复查",
+      "deliverable": "合法数据/理论观察入口、最小原型验收或受影响阻断；开始声称性能改善时再补公平基线",
+      "verify": "当前真实输入/物理时序/许可、最小shape/mask/行为可复查；机制/性能比较时才核真值、独立分组与公平评价",
       "boundary": "不得仅选题就授权训练"
     },
     "TOPIC_EXPLORATION": {
@@ -265,10 +265,10 @@
     "NEW_MECHANISM": {
       "action": "GENERATE_TESTABLE_MECHANISM",
       "route": null,
-      "why": "尚未实现的新机制先从配对残差和合法信息/归纳偏置生成竞争假说，写不同结果签名与最低成本判别；近邻仍须核证，不将构思当科学证据",
+      "why": "新假说可来自真实配对残差、物理/理论原理、具名论文或跨域机制迁移，未实测标HYPOTHESIZED；构思先核合法信息与最小可观察目标，机制归因/高投入前再设计竞争假说与不同结果签名，不把构思当证据",
       "playbook": "playbooks/ALGORITHM_DESIGN_REFERENCE.md",
-      "deliverable": "少量有不同科学解释的机制候选、来源Run/数据或文献及公平替代、下一项有界测试",
-      "verify": "所需推理信息真实可见，科学差额与可区分预测明确；无数据仅列待核假说",
+      "deliverable": "一个有来源的最简假说/方法、合法推理信息与最便宜观察或可证伪检查；需要机制归因才补公平替代和不同预测",
+      "verify": "输入合法与可观察目标明确；机制比较时核同信息替代及可区分预测，正式结论需独立证据",
       "boundary": "只读生成不授权实现/训练；F5与09人工选题门禁、CPU/GPU禁训和确认集隔离不改变"
     },
     "CONFIRMATION": {
@@ -339,9 +339,9 @@
       "action": "BUILD_AND_VERIFY_MVP",
       "route": "03-C",
       "playbook": "playbooks/02_BUILD_DEBUG.md",
-      "why": "从科研主张生成输入/输出/损失与测试合同，按合法授权实现、复现与最小排错",
+      "why": "初期按合法Input/Output/shape/mask/time先做可核的最小原型；只在涉及训练或性能比较时要求Loss、梯度、基线与评价",
       "deliverable": "最小模型、关键模块接口与相关行为/回归测试",
-      "verify": "真实batch、时序、梯度、Loss数值与最小集成输出",
+      "verify": "最小实现的真实batch/shape/mask/时间因果/有限值；Loss/梯度只在相关变更且已授权时核；正式优势需公平比较",
       "boundary": "工程通过不代表新机制/论文贡献"
     },
     "EXPERIMENT": {
@@ -385,7 +385,7 @@
       "route": "03-E",
       "playbook": "playbooks/02_BUILD_DEBUG.md",
       "why": "先区分数据/优化/算子/实现与科学无增益；复现根因再做一项有意义的修复",
-      "deliverable": "可重复失败输入或真实日志、根因竞争解释、最小修复及回归测试",
+      "deliverable": "可复现的失败或有效原始日志、当前最可信根因、最小修复及受影响回归；未知复杂问题再列竞争解释",
       "verify": "原失败路径及受影响代码/Run新证据；若关键训练能力未恢复，只阻断该训练结果/动作，其他合法观察或设计不受影响",
       "boundary": "没有GPU许可不复跑训练，不把工程PASS称为科学有效"
     },

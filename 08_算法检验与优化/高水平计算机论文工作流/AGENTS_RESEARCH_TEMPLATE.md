@@ -2,7 +2,7 @@
 
 **默认简单，按需复杂**：从已有有效数据/代码/Run继续，先获得合法观察、必要实验能力或最简可运行算法；在已批准范围按探索发现/工程建设/机制比较选择不同任务合同并记录结果，不强制每次提出竞争假说。不要要求先完成五阶段或24 Prompt。复杂问题才调用 [ORCHESTRATOR.md](ORCHESTRATOR.md)、[RECOVERY.md](RECOVERY.md)、[LESSONS.md](LESSONS.md) 对应内容。
 
-新方向选题（01-A～D）默认由 ChatGPT 完成文献、创新、命题和算法骨架；本地研发 Agent 不要求重复选题，实际执行与独立验证按需转交。
+普通Bug可按当前事件直读[RECOVERY.md](RECOVERY.md)或一份对应手册，不必先加载完整总控、此模板或全部历史。新方向选题（01-A～D）默认由 ChatGPT 完成文献、创新、命题和算法骨架；本地研发 Agent 不要求重复选题，实际执行与独立验证按需转交。
 
 **选题已确定时的研发知识入口**：[POST_SELECTION.md](POST_SELECTION.md)。由当前事件选择且仅阅读相关的一份 [数据/强基线](playbooks/01_DATA_BASELINE.md)、[实现/排错](playbooks/02_BUILD_DEBUG.md)、[实验迭代](playbooks/03_EXPERIMENT_LOOP.md) 或 [科学证据](playbooks/04_EVIDENCE_CONFIRM.md) 手册；不预加载全部文本。Agent 按本轮目标说明真实Input/Output、数据边界及观察或验收；性能比较时再补公平基线、统计与机制判别，不用未知的论文贡献阻断原型。 核心模块设计不明确时按需读 [架构选择参考](playbooks/ALGORITHM_DESIGN_REFERENCE.md)；测试方法按 [接入说明](templates/ALGORITHM_TEST_USAGE.md) 接入真实 PyTorch 项目，传感器问题用 [专项诊断](playbooks/SENSOR_DIAGNOSTICS.md)，未适配/未运行不得汇报通过。
 
