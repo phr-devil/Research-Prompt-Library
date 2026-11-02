@@ -15,17 +15,17 @@
 
 nuisance记搜索范围、次数、选择准则与公平调参；联合改动不冒充单模块因果（[Tuning Playbook](https://github.com/google-research/tuning_playbook)）。
 
-训练前先复用证据，优先廉价、高判别力探针，再考虑昂贵机制训练；不强制训练；获批后测吞吐/显存，限`max_trials/max_gpu_time`，复用`BEST_VALID_RUN`。
+训练前复用基线及残差，先公平优化可行方案，再依证据选廉价可学性探针或新机制；不强制训练。获批后限`max_trials/max_gpu_time`、核显存，保留`BEST_VALID_RUN`。
 
-机制设计见[算法设计](ALGORITHM_DESIGN_REFERENCE.md)；时钟/缺模态异常见[诊断](SENSOR_DIAGNOSTICS.md)。
+机制见[算法设计](ALGORITHM_DESIGN_REFERENCE.md)；时钟异常见[诊断](SENSOR_DIAGNOSTICS.md)。
 
 ## 2. 最小探索循环
 
 1. **保护评价链**：`PROTECTED`（真值/split/评价器/指标/确认集）和`EDITABLE`（获批模型/Loss/超参）分开；修错误记新`protocol_id`并重算受影响Run；确认集不选模。
 2. **探索先观察**：真实现象/数据签名可先记录，事后切片仅探索、正式主张再独立复验；确认集不选片。
-3. **机制比较（按需）**：仅科学机制归因时比较不同预测；保留parent_run/protocol_id/changed_scope；合理调参/能力建设记验收、协议/成本，同分更简优先，保留负结果，INCONCLUSIVE非DISCARD。
+3. **先优化再增强（按需）**：公平调优有效简单方案；只有新信号/残差或合理理论依据时增加机制比较并写不同预测。保留parent_run/protocol_id/changed_scope；同分更简，负结果留档，INCONCLUSIVE非DISCARD。
 4. **空结果校准**：先核收敛/能力与搜索边界；科学比较再设已知信号正控/独立n/噪声，正式结论才设SESOI/MDE和检出判据。留全trial；正控PASS不证明真实收益。
-5. **正式比较**：报告配对CI/成本/失效域，seed不当独立受试者。
+5. **成果保护**：保留最佳合法Run；创新失败只淘汰该机制。正式比较报告配对CI/成本/失效域，seed非独立受试者；基线可运行≠论文。
 6. **决策**：负结果先区分可信负证与无效Run，`KEEP/DISCARD/INCONCLUSIVE/INVALID`；`MECHANISM_SIGNAL_UNCONFIRMED`须复验，不盲目换模型，机制FAIL≠PROJECT STOP；获批且有判别力→CONTINUE，无效→REPAIR，改Claim→用户选PIVOT，无信息/高成本→HOLD/STOP。记`DECISION_SCOPE=RUN|MECHANISM|CLAIM|PROJECT`，见[续投规则](../RESEARCH_DECISIONS.md)。
 
 ## 2.5 自适应 GPU 验证：最小充分证据，不追求利用率
