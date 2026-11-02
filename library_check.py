@@ -165,7 +165,7 @@ def validate(root=ROOT):
     # Chapter 10 is a standalone route; verify its own documents without changing 08/09 gates.
     ten = root / "10_问题数据驱动的开放式算法研究"
     ten_files = ("README.md", "START.md", "WORKFLOW.md", "DATA_DISCOVERY.md",
-                 "TASK_EXPLORATION.md", "EXPERIMENT_LOOP.md", "CONFIRMATION.md",
+                 "TASK_EXPLORATION.md", "TASK_LADDER.md", "EXPERIMENT_LOOP.md", "CONFIRMATION.md",
                  "REFERENCES.md", "EXAMPLE_SENSOR.md", "templates/STATE.md")
     for name in ten_files:
         if not (ten / name).is_file():
