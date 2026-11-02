@@ -24,6 +24,14 @@
 
 **层级变更不恢复独立性**：多任务/多级搜索用过的开发组始终是开发证据；先为L3封存的组也不一定支持L2的K-shot标定或新标签。确认池不匹配则`CONFIRMATION_UNAVAILABLE`或使用确实独立的外部数据；不能在封存集上找最好的层级。L0工程或L1普通校准若已被近邻覆盖，结论可以是可靠资产/负结果，而非`SUBMISSION_CANDIDATE`。可参考 [TASK_LADDER.md](TASK_LADDER.md) 的不同级别主张定义。
 
+## 2.7 一次可核验的最终确认快照（借鉴隔离式Evaluator）
+
+**在正式确认前一次性冻结**：`claim_id / task_id / level_id / K_unit_and_timing / deployment_visible_information / chosen_method_and_commit / dataset_manifest_hash / group_split_protocol / evaluator_version / selection_history_ref / eligible_holdout / primary_metric_and_analysis_unit / authorized_confirm_action`。复用现有STATE、RUNS或CLAIMS，不要求新管理平台；不具备的字段明示UNKNOWN或CONFIRMATION_UNAVAILABLE，不能为了填表打开封存测试数据。
+
+跨层级`L3→L2→L1`切换后，必须确认目标K-shot**support/query样本不重叠，且support标签早于query预测可得**。同K/同部署信息对照才属于算法贡献比较；不同K可以研究标签成本—性能关系，但必须在每个K匹配简单强基线。确认池只执行被冻结的一次主比较；如果确认失败，记录负结果和失效组，下一理论/任务视为新的探索而非“重新确认”。
+
+**选择史与报告边界**：最终发现是从多个TASK/LEVEL/指标/模型搜索而来，就披露选择范围；即使最终选了容易L1，不能隐藏L2/L3的有效负证据并称其为预注册成功。代码/运行成功≠科学正确≠论文接收；确认集不可用时保留EXPLORATORY/CLAIM_WITH_GAPS或寻找新的真正独立数据。
+
 ## 3. 对应主张选择相应证据
 
 | 主张类型 | 必须与之匹配的证据 | 常见越界 |
