@@ -38,7 +38,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         for name in ("README.md", "WORKFLOW.md", "DATA_DISCOVERY.md",
                      "TASK_EXPLORATION.md", "EXPERIMENT_LOOP.md",
                      "CONFIRMATION.md", "REFERENCES.md", "EXAMPLE_SENSOR.md",
-                     "templates/STATE.md", "SCENARIOS.json"):
+                     "templates/STATE.md", "SCENARIOS.json", "TASK_LADDER.md"):
             self.assertTrue((CH10 / name).is_file(), name)
         for marker in ("DATA_DISCOVERY.md", "TASK_EXPLORATION.md", "EXPERIMENT_LOOP.md",
                        "CONFIRMATION.md", "不自动", "NOT_RUN"):
@@ -127,7 +127,38 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("不为穷尽数据扫描拖延实证",
                       read(CH10 / "START.md"))
         # Regression against the previous rule-heavy draft; not a model benchmark.
-        self.assertLess(len(workflow) + len(tasks) + len(experiment), 10500)
+        self.assertLess(len(workflow) + len(tasks) + len(experiment), 13500)
+
+    def test_research_direction_data_selection_is_actionable(self):
+        guide = read(CH10 / "DATA_DISCOVERY.md")
+        for marker in ("大方向", "4–6类", "1–3", "为什么选这个",
+                       "LADDER_POTENTIAL", "PAMAP2", "OpenPack",
+                       "SOURCE_UNVERIFIED", "TASK_EVALUABLE"):
+            self.assertIn(marker, guide)
+        self.assertIn("DATA_DISCOVERY.md", read(CH10 / "START.md"))
+
+    def test_task_ladder_has_scientifically_safe_pivots(self):
+        ladder = read(CH10 / "TASK_LADDER.md")
+        task = read(CH10 / "TASK_EXPLORATION.md")
+        workflow = read(CH10 / "WORKFLOW.md")
+        experiment = read(CH10 / "EXPERIMENT_LOOP.md")
+        confirm = read(CH10 / "CONFIRMATION.md")
+        for marker in ("ROOT_PROBLEM", "PRIMARY_LEVEL", "LEVEL_CLAIMS",
+                       "SHARED_ASSETS", "PIVOT_CONDITION", "CONFIRMATION",
+                       "L0", "L1", "L2", "L3", "UP", "DOWN", "NARROW",
+                       "LATERAL", "HOLD", "NO_INDEPENDENT_CLAIM",
+                       "新TASK", "标签", "不是论文"):
+            # Last textual marker may vary; essential contract terms are required.
+            self.assertIn(marker, ladder)
+        self.assertIn("TASK_LADDER.md", task)
+        self.assertIn("TASK_LADDER.md", workflow)
+        self.assertIn("TASK_LADDER.md", experiment)
+        self.assertIn("TASK_LADDER.md", confirm)
+        self.assertIn("TASK_LADDER:", read(CH10 / "templates/STATE.md"))
+        self.assertIn("TASK_LADDER.md", read(CH10 / "README.md"))
+        self.assertIn("TASK_LADDER.md", read(CH10 / "START.md"))
+        self.assertIn("K-shot", confirm)
+        self.assertIn("不自动", workflow)
 
     def test_confirmation_requires_scientific_evidence(self):
         confirm = read(CH10 / "CONFIRMATION.md")
@@ -153,15 +184,17 @@ class ProblemDataWorkflowTests(unittest.TestCase):
     def test_synthetic_scenarios_are_unique_and_guardrails_explicit(self):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
-        self.assertEqual(data["version"], "PD-RW-v1.1")
-        self.assertEqual(len(cases), 12)
+        self.assertEqual(data["version"], "PD-RW-v1.2")
+        self.assertEqual(len(cases), 16)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
                           "TASK_DISCOVERY", "MECHANISM_NEGATIVE", "TASK_SWITCH",
                           "CLAIM_CONFIRM", "ROUTE_ISOLATION",
                           "LEARNABILITY_DIAGNOSIS", "SCOPED_AUTOREPAIR",
-                          "VALUE_VS_BASELINE", "BLINDED_EVALUATION"})
+                          "VALUE_VS_BASELINE", "BLINDED_EVALUATION",
+                          "DIRECTION_DATA_FUNNEL", "LADDER_DOWNGRADE",
+                          "LADDER_BASELINE_NOT_PAPER", "LADDER_LATERAL_AND_HOLDOUT"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -171,6 +204,9 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("seed", " ".join(by_id["D10-09"]["must_not"]))
         self.assertIn("task_id", " ".join(by_id["D10-07"]["should"]))
         self.assertIn("历史", " ".join(by_id["D10-12"]["situation"]))
+        self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
+        self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
+        self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()
