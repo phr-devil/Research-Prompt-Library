@@ -18,6 +18,12 @@
 - **开放式多任务搜索**额外产生选择偏差。报告候选任务、切片、指标及开发集试验范围；对最终主 Claim 核对 **task_id、protocol_id、eligible_holdout** 的对应关系。原先为另一个任务预留的组，若标签、分组或时间结构不支持新主张，就不合格。只用独立于任务选择且真正适配该主张的数据/组验证最终冻结的方法；如没有，明确 CONFIRMATION_UNAVAILABLE，并限制论文/性能/泛化主张。
 - 禁止确认集的重复“试到好”为止、测试结果驱动重新发明主张再复测同一集。**确认集出现失败/异质性也是合法结果，必须报告**；不能只展示成功的组、seed 或任务。真正的新假说可以继续探索，但需要新的独立确认路径。
 
+## 2.5 Task Ladder 中的科学确认：退化不等于保底论文
+
+若任务经过`L3 → L2 → L1`下探或`LATERAL`横向切换，**先冻结最终层级的独立科学主张**，再核：`task_id / level_id / permitted_K / observed_info / source_run / protocol_id / eligible_holdout / selection_history`。每层要求的目标标签、标定时间与部署输入不同，**不能直接比较跨层 F1 然后宣称同信息条件下算法优越**。可跨层报告“标签成本—性能”曲线，但需保持每个预算K的公平强简单基线、明确标定与测试分离；不把不同K的数据优势归因于新模块。
+
+**层级变更不恢复独立性**：多任务/多级搜索用过的开发组始终是开发证据；先为L3封存的组也不一定支持L2的K-shot标定或新标签。确认池不匹配则`CONFIRMATION_UNAVAILABLE`或使用确实独立的外部数据；不能在封存集上找最好的层级。L0工程或L1普通校准若已被近邻覆盖，结论可以是可靠资产/负结果，而非`SUBMISSION_CANDIDATE`。可参考 [TASK_LADDER.md](TASK_LADDER.md) 的不同级别主张定义。
+
 ## 3. 对应主张选择相应证据
 
 | 主张类型 | 必须与之匹配的证据 | 常见越界 |
@@ -49,11 +55,11 @@
 
 | 字段 | 填写内容 |
 |---|---|
-| CLAIM_ID / SCOPE | 当前一句科学主张及限定场景 |
+| CLAIM_ID / SCOPE | 当前一句科学主张、任务层级（若适用）与合法部署信息/标定标签预算K |
 | EVIDENCE_RUNS | 真实完整 Run ID、源码/数据/划分/指标与原始证据指针；负结果与被试过的候选不可删除 |
 | TASK_SEARCH_DISCLOSURE | 被探索任务、切片和模型选择的简明范围 |
 | BASELINES/NEIGHBORS | 公平简单与具名近邻的对照/缺失说明 |
-| INDEPENDENT_CONFIRM | 与当前 task/claim 对应且未参与选择的 holdout、外部独立组/证明，或 CONFIRMATION_UNAVAILABLE |
+| INDEPENDENT_CONFIRM | 与当前 task/level/claim、合法K-shot时间关系相匹配且未参与选择的 holdout、外部独立组/证明，或 CONFIRMATION_UNAVAILABLE |
 | UNCERTAINTY / LIMITS | 独立n、CI/效应、训练预算、方法和应用边界 |
 | PAPER_READINESS | NO_INDEPENDENT_CLAIM / CLAIM_WITH_GAPS / DRAFTABLE / SUBMISSION_CANDIDATE |
 
