@@ -87,7 +87,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
     def test_confirmation_requires_scientific_evidence(self):
         confirm = read(CH10 / "CONFIRMATION.md")
         for marker in ("具名最近邻", "独立", "原始证据", "TASK_SEARCH_DISCLOSURE",
-                       "公平", "组级", "具身控制", "机械", "正式投稿",
+                       "公平", "组级", "具身控制", "机制", "正式投稿",
                        "CONFIRMATION_UNAVAILABLE"):
             # Mechanistic subject is present in specific task types.
             self.assertIn(marker, confirm)
@@ -101,7 +101,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                      "WecoAI/aideml", "mlflow/mlflow", "optuna/optuna",
                      "cleanlab/cleanlab", "iterative/dvc"):
             self.assertIn("https://github.com/" + repo, refs)
-        self.assertIn("不一定优于", refs)
+        self.assertIn("可能不如", refs)
         self.assertIn("不安装", refs)
 
     def test_synthetic_scenarios_are_unique_and_guardrails_explicit(self):
