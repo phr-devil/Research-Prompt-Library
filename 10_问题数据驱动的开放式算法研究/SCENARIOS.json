@@ -5,25 +5,27 @@
     {
       "id": "D10-01",
       "event": "AREA_DATA_DISCOVERY",
-      "situation": "用户希望做传感器+具身智能，只有问题范围，没有指定数据、方法；明确走第十章，尚无下载/训练许可。",
+      "situation": "用户想做传感器＋具身智能算法，未指定宽研究方向、任务族或数据库，明确走第十章；没有下载/训练授权。",
       "should": [
-        "只读核官方数据/许可/大小、标签与验证可能性",
-        "提出0–3个有依据的问题—数据组合，等待真实用户选择组合",
-        "允许理论/无现成数据路线与有界证明路径"
+        "先按现实问题/变化条件选择宽研究方向与任务族，形成DIRECTION_CARD",
+        "为推荐方向选择2–3个独立且互补的数据库，明确D1开发/D2外部复现/可选D3压力测试",
+        "给出1–3个有官方证据的方向—多数据库组合、每库许可/兼容性与PRE_DOWNLOAD_PLAN，等待用户选择",
+        "允许没有足够数据的理论/证明路线用NOT_APPLICABLE标注"
       ],
       "must_not": [
-        "自动下载全部候选数据或CPU/GPU拟合",
-        "在初筛要求新的模型必须先证明超越强基线"
+        "在方向未选前自动下载一个热门库再倒推任务",
+        "将一个数据库的train/test误称独立多数据库",
+        "把用户选择组合误认为下载/拟合授权"
       ]
     },
     {
       "id": "D10-02",
       "event": "DATA_PARTIAL",
-      "situation": "用户已选一个10GB传感器数据组合，授权小样本只读检查，不能整库下载；现有组别/标签仍不清楚。",
+      "situation": "用户已选择跨人IMU研究方向与D1/D2组合，D1是10GB；仅授权分片只读观察，不能整库下载或训练。",
       "should": [
-        "保持PARTIAL_DATA/WAITING_FOR_AUTH区分",
-        "允许合法分片/样本试读和独立无训练原型",
-        "记录待获取文件、权限和有界下一步"
+        "保留DIRECTION_CARD及D1/D2不同角色/合法确认计划",
+        "区分PARTIAL_DATA/WAITING_FOR_AUTH和第二库尚未准备状态",
+        "在真实授权内仅做分片/试读和可复用数据接口检查"
       ],
       "must_not": [
         "将样本冒充完整数据或已验证科学结论",
@@ -362,6 +364,41 @@
       "expected_route": "TASK_LADDER.md",
       "decision_scope": "TASK",
       "expected_next": "复用合法资产，版本化新TASK与协议"
+    },
+    {
+      "id": "D10-25",
+      "event": "DIRECTION_BEFORE_DOWNLOAD",
+      "situation": "Agent已经找到一个容量很大的热门IMU数据库，但用户尚未确定想做跨人泛化、重戴漂移还是故障检测，也没有下载许可。",
+      "should": [
+        "先形成DIRECTION_CARD：ROOT_PROBLEM/VARIATION_AXIS/TASK_FAMILY/合法可见信息",
+        "只读提出多个可选方向及至少两库的互补组合，不下载",
+        "研究方向、组合、PRE_DOWNLOAD_PLAN与实际下载权限分别记录"
+      ],
+      "must_not": [
+        "先下载数据库，再从里面随便找课题",
+        "将选择研究方向视为授权下载或GPU训练"
+      ],
+      "expected_route": "DATA_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "DIRECTION_DEFINED + DATA_PORTFOLIO_PROPOSED；未授权保持WAITING_FOR_AUTH"
+    },
+    {
+      "id": "D10-26",
+      "event": "MULTIDATASET_ROLE_AND_COMPATIBILITY",
+      "situation": "用户希望发表跨传感器泛化研究。D1=PAMAP2，D2=UCI HAR Smartphones，二者采样率、装置和部分类别不同；有人主张直接拼接，或把同一数据集train/test当两个独立库。",
+      "should": [
+        "核D1开发、D2独立复现角色和官方来源，明确标签/单位/任务映射及合法group",
+        "保留不同数据库分别训练、跨库检验统一科学主张的可能性",
+        "只在用户授权后按PRE_DOWNLOAD_PLAN分别获取必要文件；D2参与调参则不再是未接触确认集"
+      ],
+      "must_not": [
+        "强行拼接异构特征和不同语义标签",
+        "把同一库两个split算成两独立数据库",
+        "用D2反复选模型仍称独立外部确认"
+      ],
+      "expected_route": "DATA_DISCOVERY.md",
+      "decision_scope": "AREA_DATA",
+      "expected_next": "建立D1/D2兼容性与角色合同；无法对齐标CROSS_DATASET_TASK_GAP"
     }
   ]
 }

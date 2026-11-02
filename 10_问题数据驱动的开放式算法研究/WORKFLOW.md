@@ -1,10 +1,10 @@
 # PD-RW v1.3｜第十章唯一决策总控（ChatGPT / WorkBuddy / Codex）
 
-**目标**：从大问题＋可靠数据（或理论证明路径）出发，尽早获得最小可信实证，逐步发现具体科研任务（TASK）、方法和独立科学贡献。**仅用户明确选择第十章时启用**；第八章具体命题研究和第九章挽救工作不被自动覆盖或迁移。
+**目标**：先确定宽研究方向，再配置多数据库证据组合（或理论证明路径），获授权后尽早获得最小可信实证，逐步发现具体科研任务（TASK）、方法和独立科学贡献。**仅用户明确选择第十章时启用**；第八章具体命题研究和第九章挽救工作不被自动覆盖或迁移。
 
 ## 1. 三个决策循环（六项活动，不是六道审批门）
 
-- **外循环 A｜研究机会**：01 从4–6类实际问题（不强制）筛到1–3个有官方数据与独立评价路径的AREA_DATA候选，用户选择组合 → 02 尽早准备当前核心数据/真实开发观察 → 03 发现可检验 TASK，按需构建L0–L3的任务阶梯。一个有依据的机会就可开展有界实验；**不要求完整方法假说**、穷尽任务、复现所有强基线或先证明算法增益。[DATA_DISCOVERY.md](DATA_DISCOVERY.md) / [TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md)。
+- **外循环 A｜研究机会**：01 从4–6类问题（不强制）收敛宽研究方向/任务族，再推荐1–3个AREA_DATA组合；**每组合默认D1开发＋D2独立来源复现（可选D3压力测试）**，核跨库标签/科学命题可比性，用户选择方向和组合 → 02 经PRE_DOWNLOAD_PLAN及真实下载授权后分批准备数据/开发观察 → 03 发现可检验TASK，按需构建L0–L3任务阶梯。一个有依据的机会就可开展有界实验；**不要求完整方法假说**、穷尽任务、复现所有强基线或先证明算法增益。[DATA_DISCOVERY.md](DATA_DISCOVERY.md) / [TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md)。
 - **内循环 B｜算法实证**：04 保留可信基线，按症状选择简单优化、正控、残差/可学性探针、新机制或工程恢复；在已授权范围和预算内试验并记录真实正负结果。首次负Pilot不自动STOP，不为 GPU 占用率扩大无信息实验。[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。
 - **外循环 C｜科研价值**：05 分别核科研可行性与独立贡献，用真实收益/规律、具名近邻和简单竞争解释评价；可继续当前层级、`UP`挑战更难信息条件、`DOWN`使用更现实的合法标定、`NARROW`收窄主张，或`LATERAL`比较备用科研任务。06 只有冻结 Claim/方法/协议并获授权后才严格独立确认。层级切换必须更新Claim与公平评价，**L0/L1没有天然论文保底**。[TASK_LADDER.md](TASK_LADDER.md) / [CONFIRMATION.md](CONFIRMATION.md)。
 
@@ -26,7 +26,7 @@
 
 ## 2.5 最短决策产物（不额外加阶段）
 
-- **用户尚未选组合**：使用 [DATA_DISCOVERY.md](DATA_DISCOVERY.md) 的`PREFERRED / WHY_THIS_OVER_ALTERNATIVE / MOST_DANGEROUS_UNKNOWN / NEXT_LOW_COST_CHECK`推荐一项有依据的组合，提供必要备选；不直接进入本地下载或训练。
+- **尚未选方向/组合**：先形成`DIRECTION_CARD`（研究问题、变化轴、任务族、可见信息），再用 [DATA_DISCOVERY.md](DATA_DISCOVERY.md) 形成`DATA_PORTFOLIO(D1/D2/可选D3) / PREFERRED / WHY_THIS_OVER_ALTERNATIVE / MOST_DANGEROUS_UNKNOWN / NEXT_LOW_COST_CHECK`；不先下载再倒推任务。下载前须有每库`PRE_DOWNLOAD_PLAN`和用户真实授权。
 - **已有数据但未确定任务**：使用 [TASK_EXPLORATION.md](TASK_EXPLORATION.md) 形成`PRIMARY_TASK / WHY_THIS_OVER_RESERVE / VALUE_HYPOTHESIS / FEASIBILITY_UNKNOWN / MINIMUM_PROBE`；可只保留一个TASK。
 - **多层级研究**：只在真正有不同标签、部署信息或科学命题时按 [TASK_LADDER.md](TASK_LADDER.md) 进行`COMMON_PREMISE / NEW_LEVER / CLAIM_AND_TEST_CHANGE`检查；不满足则修复当前任务/收窄Claim，而非假降级。
 - **已有可信基线、准备做实验**：按 [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) 的`Champion–Challenger`固定可比条件，保存正负结果和成本；只有新信息能改变决定时升级训练预算。
@@ -57,7 +57,7 @@
 
 ## 5. 边界、可复现证据与交付
 
-- 用户选择**研究组合**不代表授权下载、安装、外传、CPU Ridge 等拟合、GPU 训练、付费、正式确认或投稿；逐项以真实用户消息为准。无权限/工具写 NOT_RUN。实质更改科研目标、资源、冻结确认协议须再次批准。
+- 用户选择**宽研究方向或多数据库研究组合**不代表授权下载、安装、外传、CPU Ridge等拟合、GPU训练、付费、正式确认或投稿。下载前最低需`DIRECTION_CARD`＋`DATA_PORTFOLIO`＋按库`PRE_DOWNLOAD_PLAN`；获授权后才分批下载，第二库缺失时写`SECOND_DATASET_GAP`且不冒充跨库确认。逐项以真实用户消息为准。无权限/工具写 NOT_RUN。实质更改科研目标、资源、冻结确认协议须再次批准。
 - 保护原始数据血缘、训练/开发隔离、train-only 预处理、合法分组/评价器与封存确认集。`task_id/protocol_id/eligible_holdout` 必须支持当前新任务：提前封存不代表任何任务都能用；任务搜索或确认集污染不可靠换 seed、重划分洗白。
 - 复用 `research/STATE.md`、`RUNS.tsv`、`CLAIMS.md` 等资产，不新建空目录；保存 `BEST_VALID_RUN`、任务选择史、失败原始 Run、源码和数据/评价版本。协议更改只重算受影响证据。
 - 默认汇报：当前问题—数据/TASK、真实新证据及边界、保留/修复/暂停理由、一个最有信息价值的下一步与成本授权缺口；不要流水账。**单次负Pilot** ≠ 整个 AREA_DATA 失败。

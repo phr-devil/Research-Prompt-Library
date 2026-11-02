@@ -39,6 +39,10 @@
 
 用`OBSERVATION → NEW_KNOWLEDGE_OR_CAPABILITY → STRONGEST_ALTERNATIVE → DECISIVE_EVIDENCE`写一句证据链：实际开发数据现象（或HYPOTHESIZED）→成功后新增的可反驳规律/真实部署能力→最强简单策略或具名近邻→能改变投资决定的廉价实验证据。跨设备F1低不自动等于科研贡献；若同K校准就能消除误差，可转向真实标定成本/稳定性边界，也可只保留L0资产。缺独立贡献证据记VALUE_UNVERIFIED，不自动拒绝有界试验。
 
+### 多数据库共同问题与任务适配（发现TASK时按需）
+
+任务提出时先核`DATA_PORTFOLIO`的D1/D2能否检验**同一科学问题**，不要求两个数据集拥有完全相同特征维数/采样率/标签列表。共同标签确实可映射时，先写train-only映射与各库独立group；无法合法统一时，可以在各库内分别建立任务/简单基线，用统一的物理假说、条件对比或效应量做独立支持，**不得直接汇总不同比例/不同定义的F1**。外部库参与任务或模型选择后，只能称为探索/复现开发证据，不能再称未触碰确认集；若D2不适合所选TASK，优先替换D2或收窄Claim，不强行把库拼接。
+
 ## 2. 最小 TASK_CARD 与当前选择
 
 每项最多八要素，可复用现有文件：`TASK_ID/ORIGIN`｜`SCIENTIFIC_QUESTION`｜`INPUT_TARGET`（部署可见输入、独立真值/证明义务、组）｜`TESTABLE_DIFFERENCE`（只有机制归因才必须要求竞争 A/B 预测）｜`BASELINE`｜`VALUE`（近邻之外可能新增的知识或真实能力）｜`MINIMUM_PROBE`｜`COST_RISK`。

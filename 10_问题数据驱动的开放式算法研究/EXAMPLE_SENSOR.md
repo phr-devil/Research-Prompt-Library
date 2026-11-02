@@ -6,13 +6,23 @@
 
 研究大方向：**可穿戴 IMU 在新使用者、新设备或佩戴条件变化下的稳定识别**，不是先指定 Transformer。
 
-由 ChatGPT 只读并列比较候选数据库（如 [PAMAP2官方](https://archive.ics.uci.edu/dataset/231/pamap2+physical+activity+monitoring) 与 [OpenPack官方](https://open-pack.github.io/)），至少写出标签/参与者/设备与位置区分、合法分组、数据规模及许可、直接近邻和最危险未知。选择由用户决定；此处 **PRIMARY_DATA=UNVERIFIED**，不是授权下载/训练。
+下载前先确立`DIRECTION_CARD`：`ROOT_PROBLEM`=可穿戴IMU跨人/采集设备条件下的稳定活动识别；`VARIATION_AXIS`=受试者与传感装置；`TASK_FAMILY`=活动分类或少样本个性化；`DEPLOYMENT`=当前和合法过去时刻的IMU信号；`WHY_MULTIPLE_DATASETS`=不能用单一设备/被试集合假定跨平台稳健。
 
-若主要需求是跨人活动识别，PAMAP2可能支持较低成本的探索，但只有有限独立受试者；若主张真正跨硬件设备，该数据的多个佩戴位置不应自动视为设备域。OpenPack有较丰富的工业活动和多模态数据，但不等于可直接验证无监督动态传感器选择。最终用适配性而非数据流行程度决定。
+由ChatGPT只读核查并推荐一个**DATA_PORTFOLIO**，而不是只选一个数据库：
+
+| 数据库与拟议角色 | 与方向的关系 | 下载/实验前必须核查 |
+|---|---|---|
+| **D1 开发/探索**：[PAMAP2官方](https://archive.ics.uci.edu/dataset/231/pamap2+physical+activity+monitoring) | 多身体位置IMU与活动标签，适合先研究跨人/位置差异 | 受试者分组、原始信号、标签范围、多个佩戴位置不等于不同硬件域 |
+| **D2 独立来源复现**：[UCI HAR Smartphones官方](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones) | 腰部手机IMU与活动标签，提供不同硬件/采样条件下同类研究问题 | 与D1仅在明确共有活动上可映射标签；50Hz与PAMAP2约100Hz不能未经验证强行拼接；官方测试集应按其实际使用史封存 |
+| **D3 可选压力测试**：[OpenPack官方](https://open-pack.github.io/) | 工业工序和多模态条件可挑战真实时序鲁棒性 | 工序标签与普通生活活动**不是同一分类任务**，需另定义合法任务/物理Claim，不能冒充D1/D2同标签复现 |
+
+示例均为**待核组合**，不是已经核实共同协议。先给PRE_DOWNLOAD_PLAN（每库必要文件、许可、存储、合法划分和下载顺序），用户选择方向＋组合不等于批准下载或训练。
+
+PAMAP2可先给出低成本的开发基线，UCI HAR用于异源设备条件下复核**经过明确对齐的研究命题**；若最终任务超出两库共同可评价的类别或真值条件，就缩窄主张或重新选择D2。OpenPack可作为不同任务的压力扩展，但不能把不存在的标签映射当成同一证据。
 
 ## 02：建立L0真实研究资产
 
-获真实授权且数据到位后，核来源/manifest/时间/标签和合法group划分；准备最简单公平的传感器识别基线，保存逐组误差与预留的未接触确认资源。**L0完成仅意味着可信实验能力，不代表有可发表论文。** 本例所有步骤仍为 NOT_RUN。
+获真实授权且数据到位后，按D1→D2（可选D3）分别核来源/manifest/时钟/标签、合法group划分及跨库任务可比性；在D1准备简单公平基线，D2只用于其已明确角色的外部复核，保存逐组误差与未接触确认资源。**L0完成仅意味着可信实验能力，不代表有可发表论文。** 本例所有步骤仍为 NOT_RUN。
 
 ## 03：围绕同一 ROOT_PROBLEM 设计L0–L3（不是四关）
 
@@ -36,4 +46,4 @@
 
 冻结**最终层级的**TASK_ID、K、部署前输入/观测历史、split/评价器/模型与主Claim；确认 holdout 是否真的含当前任务需要的独立group和标签、且从未参与多层级择题。确认失败如实报告，不用重划分/新seed洗白。具身闭环增益还需真实闭环证据，离线 IMU F1 不能冒充机器人任务成功率。
 
-**最小续做交付**：ROOT_PROBLEM=跨人IMU可靠识别；L0=NOT_RUN；PRIMARY_LEVEL=UNDECIDED；HOLDOUT=UNKNOWN；BEST_VALID_RUN=NONE；AUTH=WAITING_FOR_AUTH；NEXT=只读确认适合该问题的官方数据和合法独立验证路径。
+**最小续做交付**：ROOT_PROBLEM=跨人IMU可靠识别；DATA_PORTFOLIO=PAMAP2(D1)+UCI HAR(D2)+OpenPack(D3可选,任务不对齐)；L0=NOT_RUN；PRIMARY_LEVEL=UNDECIDED；HOLDOUT=UNKNOWN；BEST_VALID_RUN=NONE；AUTH=WAITING_FOR_AUTH；NEXT=先只读核D1/D2标签映射及每库下载/封存方案，不下载。
