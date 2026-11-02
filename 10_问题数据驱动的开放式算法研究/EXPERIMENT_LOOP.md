@@ -1,6 +1,6 @@
 # 活动 04｜可运行实验、信息驱动迭代与自动恢复
 
-**本文件只负责怎样获得可信 Run**；“研究什么”见 [TASK_EXPLORATION.md](TASK_EXPLORATION.md)，KEEP/HOLD/PIVOT 的科研范围和授权由 [WORKFLOW.md](WORKFLOW.md) 唯一控制。首次探索不需证明新网络超过强基线或补完全部消融。具体接口、行为测试与训练故障诊断按需读 [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)，不是每轮都必须加载。
+**本文件只负责怎样获得可信 Run**；“研究什么”见 [TASK_EXPLORATION.md](TASK_EXPLORATION.md)，KEEP/HOLD/PIVOT 的科研范围和授权由 [WORKFLOW.md](WORKFLOW.md) 唯一控制。首次探索不需证明新网络超过强基线或补完全部消融。优先可信`PERFORMANCE_FLOOR`与最低`PAPER_PATH_CANDIDATE`，再渐进增强科学性，见 [PAPER_FIRST.md](PAPER_FIRST.md)。具体接口、行为测试与训练故障诊断按需读 [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)，不是每轮都必须加载。
 
 ## 1. 按当前问题选择模式，而不是逐一闯关
 
@@ -46,7 +46,7 @@ ChatGPT 只传已核实的问题—数据、TASK、最大 UNKNOWN、证据指针
 
 ### 多数据库实验结果的边界（仅跨库执行时读）
 
-沿用`DATA_PORTFOLIO`的D1/D2/D3角色；开发集发现问题与选模，外部库按预定的**任务映射、合法标签预算、独立group和确认用途**评估。可分别训练/适应，但必须报告跨库哪部分共享机制、哪个新条件被测试；不把不同库的原始分类F1直接相加，也不把D2用于调参后仍称未触碰独立确认。单库正结果先标`SINGLE_DATASET_EVIDENCE`，多库独立增益必须靠真实可比数据与对照支持。
+沿用`DATA_PORTFOLIO`中D1–D4的`DEV_SHARED/PIVOT_RESERVE/SEALED_CONFIRM`用途角色；可同时在多库开展开发，开发集发现问题与选模，外部库按预定的**任务映射、合法标签预算、独立group和确认用途**评估。可分别训练/适应，但必须报告跨库哪部分共享机制、哪个新条件被测试；不把不同库的原始分类F1直接相加，也不把D2用于调参后仍称未触碰独立确认。单库正结果先标`SINGLE_DATASET_EVIDENCE`，多库独立增益必须靠真实可比数据与对照支持。
 
 ## 3. 正负 Pilot 后的按症状实验选择
 

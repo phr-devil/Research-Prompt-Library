@@ -46,4 +46,4 @@ PAMAP2可先给出低成本的开发基线，UCI HAR用于异源设备条件下�
 
 冻结**最终层级的**TASK_ID、K、部署前输入/观测历史、split/评价器/模型与主Claim；确认 holdout 是否真的含当前任务需要的独立group和标签、且从未参与多层级择题。确认失败如实报告，不用重划分/新seed洗白。具身闭环增益还需真实闭环证据，离线 IMU F1 不能冒充机器人任务成功率。
 
-**最小续做交付**：ROOT_PROBLEM=跨人IMU可靠识别；DATA_PORTFOLIO=PAMAP2(D1)+UCI HAR(D2)+OpenPack(D3可选,任务不对齐)；L0=NOT_RUN；PRIMARY_LEVEL=UNDECIDED；HOLDOUT=UNKNOWN；BEST_VALID_RUN=NONE；AUTH=WAITING_FOR_AUTH；NEXT=先只读核D1/D2标签映射及每库下载/封存方案，不下载。
+**最小续做交付**：ROOT_PROBLEM=跨人IMU可靠识别；DATA_PORTFOLIO=PAMAP2(D1开发)+UCI HAR(D2可联合开发或独立复现)+OpenPack(D3转题备用,标签不对齐)+D4独立来源待核；L0=NOT_RUN；PRIMARY_LEVEL=UNDECIDED；HOLDOUT=UNKNOWN；BEST_VALID_RUN=NONE；AUTH=WAITING_FOR_AUTH；NEXT=先只读核D1/D2标签映射及每库下载/封存方案，不下载。

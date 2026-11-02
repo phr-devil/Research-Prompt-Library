@@ -5,18 +5,18 @@
 ## 唯一入口与最短路径
 
 - **AI 首次进入**：只读 [START.md](START.md)，再按用户意图读 [WORKFLOW.md](WORKFLOW.md) 的对应活动；只在需要时读一份专题。已有项目优先读其最新 STATE、原始 Run/数据版本；**无需预读所有章节、24条旧Prompt或全部来源**。
-- **用户只说“传感器/具身智能，想找好数据库和研究问题”**：先明确**宽研究方向＋任务族**，再由ChatGPT只读筛出1–3个研究组合；**每个组合默认含2–3个独立且互补的数据库**（D1开发、D2外部复现、可选D3压力测试），标明标签/分组兼容性与来源。等用户选方向和组合后才规划下载；不要求提前决定具体算法或先证明增益。
-- **已选方向与多数据库组合**：先给每库必要文件、许可、分组封存和下载顺序的PRE_DOWNLOAD_PLAN；只有获得各项实际下载权限后才分批准备数据。真实观察 → 具体TASK → 实验 → 外部独立复现；已有资产不重下。第二库暂不可得时可单库有界探索，但标SECOND_DATASET_GAP，不宣称跨数据库证据。
+- **用户只说“传感器/具身智能，想找好数据库和研究问题”**：先明确**宽研究方向＋任务族**，再由ChatGPT只读筛出1–3个研究组合；**每个组合默认规划3–4个互补数据库**（可多库同时开发，保留转题资源和独立确认），标明标签/分组兼容性与来源。等用户选方向和组合后才规划下载；不要求提前决定具体算法或先证明增益。
+- **已选方向与多数据库组合**：先给每库必要文件、许可、分组封存和下载顺序的PRE_DOWNLOAD_PLAN；只有获得各项实际下载权限后才分批准备数据。真实观察 → 具体TASK → 稳健结果和最低论文贡献 → 科学升级 → 独立确认；已有资产不重下。第二库暂不可得时可单库有界探索，但标SECOND_DATASET_GAP，不宣称跨数据库证据。
 - **用户已给出具体科学机制并要求验证**：更适合 [第八章](../08_算法检验与优化/高水平计算机论文工作流/START.md)；失败成果挽救另走 [第九章](../09_失败算法项目挽救与转向/README.md)。不得未经用户确认自动迁移旧项目。
 
 ## 六项研究活动（可跳跃，不是六道审批门）
 
 | 编号 | 任务与入口 | 最小交付 | 主要执行环境 |
 |---|---|---|---|
-| 01 | 先选研究方向，再设计多数据库组合：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | DIRECTION_CARD＋DATA_PORTFOLIO：D1/D2及可选D3的来源、角色、兼容性及风险 | ChatGPT（检索/论文/判断） |
+| 01 | 先选研究方向，再设计多数据库组合：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | DIRECTION_CARD＋DATA_PORTFOLIO：3–4库的开发、备用、确认角色、兼容性和风险 | ChatGPT（检索/论文/判断） |
 | 02 | 多库下载计划、获授权的数据准备及开放观察：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | PRE_DOWNLOAD_PLAN＋每库DATA_MANIFEST＋OBSERVATIONS；开发/外部确认隔离 | 获授权的 WorkBuddy/Codex/本地环境 |
 | 03 | 发现任务并按需设计多层Task Ladder：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md) | PRIMARY_TASK、L0–L3可行层级与科学主张、最小判别 | ChatGPT＋可访问真实数据的 Agent |
-| 04 | 自适应有界算法探索：[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 可复核 Run、按症状诊断、下一探针与机制级止损 | 获授权的代码/实验 Agent |
+| 04 | 优先可信结果、渐进提升科学性：[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 可复核的性能与最小论文贡献候选，再增强机制 | 获授权的代码/实验 Agent |
 | 05 | 选定论文主张：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_CANDIDATE：明确独立价值、竞争解释与证据缺口 | ChatGPT＋代码 Agent |
 | 06 | 严格科学确认：[CONFIRMATION.md](CONFIRMATION.md) | 有效独立证据或 CONFIRMATION_UNAVAILABLE，论文声明边界 | 独立核验与获授权正式实验 |
 
@@ -35,6 +35,7 @@
 - [WORKFLOW.md](WORKFLOW.md)：总控、状态路由、权限和跨活动续做
 - [DATA_DISCOVERY.md](DATA_DISCOVERY.md)：研究大方向搜索、数据库选择理由、研究问题/数据适配与封存合同
 - [TASK_EXPLORATION.md](TASK_EXPLORATION.md)：任务科学价值×可行性比较、主/备选任务与 Claim 收敛
+- [PAPER_FIRST.md](PAPER_FIRST.md)：先形成最低可投稿研究路线，再提高科学性；只在活动03–05按需加载
 - [TASK_LADDER.md](TASK_LADDER.md)：L0–L3任务阶梯、共享资产、UP/DOWN/NARROW/LATERAL/HOLD与两类传感器示例
 - [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)：任务到代码、基线、测试不变量与训练诊断（编码时按需读）
 - [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：真实实验、按症状探针、分层公平对照、可复现 Run 与修复；故障按需复用第八章 [TRIAGE](../08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) / [RECOVERY](../08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md)
