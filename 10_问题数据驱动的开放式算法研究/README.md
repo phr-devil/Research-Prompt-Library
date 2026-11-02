@@ -13,14 +13,14 @@
 
 | 编号 | 任务与入口 | 最小交付 | 主要执行环境 |
 |---|---|---|---|
-| 01 | 选择问题范围及可信数据：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | AREA_DATA_CARD：问题、数据、适配、验证路径、一个最大风险 | ChatGPT（检索/论文/判断） |
+| 01 | 从研究大方向筛选可信问题—数据组合：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | AREA_DATA_CARD：官方来源、为什么选择、真实问题、验证资源及主要风险 | ChatGPT（检索/论文/判断） |
 | 02 | 数据准备及开放式观察：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | DATA_MANIFEST＋OBSERVATIONS；合法开发数据，不碰封存确认集 | 获授权的 WorkBuddy/Codex/本地环境 |
-| 03 | 系统化发现任务：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | TASK_CANDIDATES：机会扫描、任务候选与最小判别 | ChatGPT＋可访问真实数据的 Agent |
+| 03 | 发现任务并按需设计多层Task Ladder：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) / [TASK_LADDER.md](TASK_LADDER.md) | PRIMARY_TASK、L0–L3可行层级与科学主张、最小判别 | ChatGPT＋可访问真实数据的 Agent |
 | 04 | 自适应有界算法探索：[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 可复核 Run、按症状诊断、下一探针与机制级止损 | 获授权的代码/实验 Agent |
 | 05 | 选定论文主张：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_CANDIDATE：明确独立价值、竞争解释与证据缺口 | ChatGPT＋代码 Agent |
 | 06 | 严格科学确认：[CONFIRMATION.md](CONFIRMATION.md) | 有效独立证据或 CONFIRMATION_UNAVAILABLE，论文声明边界 | 独立核验与获授权正式实验 |
 
-**唯一主线：三个决策循环贯穿六项活动**——A 研究机会（大问题＋数据→真实观察→具体 TASK）→ B 算法实证（有界基线、探针和机制实验→有效 Run）→ C 科研价值（核独立贡献→保留、调整或主动比较备用任务→严格确认）。可按结果回到对应循环，**不是六道强制关卡**。首次负 Pilot 不自动停题，封存的 holdout 也未必适用于后来发现的所有 TASK。下一行动与止损只按 [WORKFLOW.md](WORKFLOW.md) 决定。
+**唯一主线：三个决策循环贯穿六项活动**——A 研究机会（大问题＋官方数据与选择理由→真实观察→任务）→ B 算法实证（可信L0基线、判别探针→有效 Run）→ C 科研价值（L1/L2/L3上探、下探、收窄或横向备用→严格确认）。阶段可以跳转，**不是六道强制关卡**。Task Ladder 是按数据条件启用的研究机会结构，非四级必做、非难度越高论文价值必高；L0/L1也不自动构成保底论文。下探换标签预算/部署信息时更换TASK和协议，封存holdout仍须重新核任务适配。科学止损统一见 [WORKFLOW.md](WORKFLOW.md)。
 
 ## 五条不可放宽的边界
 
@@ -33,9 +33,10 @@
 ## 相关材料
 
 - [WORKFLOW.md](WORKFLOW.md)：总控、状态路由、权限和跨活动续做
-- [DATA_DISCOVERY.md](DATA_DISCOVERY.md)：研究问题＋数据的筛选与完整性/封存合同
-- [TASK_EXPLORATION.md](TASK_EXPLORATION.md)：任务发现、主/备选机会维护与论文 Claim 收敛；不重复实验纠错/止损规则
-- [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：真实实验、按症状探针、可复现 Run 与修复；故障按需复用第八章 [TRIAGE](../08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) / [RECOVERY](../08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md)
+- [DATA_DISCOVERY.md](DATA_DISCOVERY.md)：研究大方向搜索、数据库选择理由、研究问题/数据适配与封存合同
+- [TASK_EXPLORATION.md](TASK_EXPLORATION.md)：任务科学价值×可行性比较、主/备选任务与 Claim 收敛
+- [TASK_LADDER.md](TASK_LADDER.md)：L0–L3任务阶梯、共享资产、UP/DOWN/NARROW/LATERAL/HOLD与两类传感器示例
+- [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：真实实验、按症状探针、分层公平对照、可复现 Run 与修复；故障按需复用第八章 [TRIAGE](../08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) / [RECOVERY](../08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md)
 - [CONFIRMATION.md](CONFIRMATION.md)：从开放探索到严格论文确认
 - [EXAMPLE_SENSOR.md](EXAMPLE_SENSOR.md)：传感器跨平台迁移的假想执行实例（明确非实测）
 - [templates/STATE.md](templates/STATE.md)：可选、极简的项目断点
