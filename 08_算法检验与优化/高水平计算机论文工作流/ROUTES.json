@@ -225,7 +225,7 @@
       "route": null,
       "why": "仅用户已选定课题才进入；数据驱动题先复用或获授权准备完整核心数据（沿用DATA_AUDIT，非新阶段），再做最小观察/MVP；理论/超大数据可先行独立合法原型。未选择仍TOPIC_EXPLORATION，选题不授权下载、训练",
       "playbook": "playbooks/01_DATA_BASELINE.md",
-      "deliverable": "核心数据可获取路径/实际已校验清单或PARTIAL_DATA/WAITING_FOR_AUTH/WAITING_FOR_DATA，以及最小观察/原型；比较时才补基线",
+      "deliverable": "核心数据可获取路径/实际已校验清单或PARTIAL_DATA/WAITING_FOR_AUTH/WAITING_FOR_DATA，以及最小原型验收或观察；比较时才补基线",
       "verify": "真实数据源/版本/许可、实际文件数量/校验状态、合法输入与封存test；无完整数据需求者按自身验证",
       "boundary": "完整下载非硬性准入；选题不等于下载/训练授权；不以封存test选模"
     },
@@ -447,7 +447,7 @@
       "action": "BUILD_NECESSARY_EXPERIMENT_CAPABILITY",
       "route": "03-C",
       "playbook": "playbooks/02_BUILD_DEBUG.md",
-      "why": "在原授权预算内恢复必要能力：合法数据获取/分片校验/索引、同步、标定、读取、测量或训练稳定性；完整数据不是所有合法MVP的前置门槛",
+      "why": "在原授权预算内恢复必要实验能力：合法数据获取/分片校验/索引、同步、标定、读取、测量或训练稳定性；完整数据不是所有合法MVP的前置门槛",
       "deliverable": "可复现的能力验收与受影响旧证据状态、最小回归测试",
       "verify": "真实数据/接口下功能或测量有效性；有参数更新须训练授权",
       "boundary": "工程能力通过不构成科学机制或论文增益确认；禁止无界修复"
