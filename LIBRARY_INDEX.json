@@ -271,23 +271,5 @@
       "https://github.com/UCL-ERL/skills"
     ],
     "source_status": "v2.2：从第08类移为独立第09类；Step 05 提交P1/P2/P3并等待真实用户选定，Step 06不得自动执行；无真实模型A/B效果测试。 新增 Step 05-R：用户选题后进行科学性、创新性、独立真值与可行性优化，重大改题需再次确认。"
-  },
-  {
-    "id": "PD10",
-    "name": "问题—数据驱动的开放式算法研究 PD-RW v1.0",
-    "group": "10_问题数据驱动的开放式算法研究",
-    "file": "10_问题数据驱动的开放式算法研究/README.md",
-    "source_urls": [
-      "https://github.com/microsoft/RD-Agent",
-      "https://github.com/karpathy/autoresearch",
-      "https://github.com/WecoAI/aideml",
-      "https://github.com/SakanaAI/AI-Scientist-v2",
-      "https://github.com/SakanaAI/AI-Scientist-v3",
-      "https://github.com/mlflow/mlflow",
-      "https://github.com/optuna/optuna",
-      "https://github.com/cleanlab/cleanlab",
-      "https://github.com/iterative/dvc"
-    ],
-    "source_status": "2026-11-02 独立原创第十章：固定大问题与可信数据，开放探索具体任务，有限资源科研实验和严格独立确认；只借鉴公开研究Agent/版本工具的组织方法，不复制原文、不安装第三方平台、不覆盖第08/09章；离线CI不代表真实论文成功率。"
   }
 ]

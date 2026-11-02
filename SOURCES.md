@@ -1,6 +1,6 @@
-## 2026-11-02 新增独立第十章：问题—数据驱动开放研究 PD-RW v1.0
+## 2026-11-02 历史：PD-RW 工作流已迁移至独立仓库
 
-新增 [第十章](10_问题数据驱动的开放式算法研究/README.md) 作为与第08章具体命题开发、第09章失败项目挽救并行的独立路线，不修改旧章节。由大科学问题/合法数据资源出发，在真实开发数据中发现任务、有限分支迭代并严格封存最终确认。借鉴 [RD-Agent](https://github.com/microsoft/RD-Agent) 的研究—实现反馈、[autoresearch](https://github.com/karpathy/autoresearch) 的固定评价与Run记录（不采用无限循环）、[AIDE](https://github.com/WecoAI/aideml) / [AI-Scientist-v2](https://github.com/SakanaAI/AI-Scientist-v2) 的有限分支、[AI-Scientist-v3](https://github.com/SakanaAI/AI-Scientist-v3) 的探索—消融—封存评价，以及 [MLflow](https://github.com/mlflow/mlflow)、[Optuna](https://github.com/optuna/optuna)、[Cleanlab](https://github.com/cleanlab/cleanlab) 等项目的日志、预算与数据质量思想。详细来源/Stars日期/适用与不可照搬部分见 [REFERENCES.md](10_问题数据驱动的开放式算法研究/REFERENCES.md)。不代表实际安装、端到端科研试验或论文成功率提升。
+新增 [PD-RW](https://github.com/phr-devil/Problem-Data-Research-Workflow) 作为与第08章具体命题开发、第09章失败项目挽救并行的独立路线，不修改旧章节。由大科学问题/合法数据资源出发，在真实开发数据中发现任务、有限分支迭代并严格封存最终确认。借鉴 [RD-Agent](https://github.com/microsoft/RD-Agent) 的研究—实现反馈、[autoresearch](https://github.com/karpathy/autoresearch) 的固定评价与Run记录（不采用无限循环）、[AIDE](https://github.com/WecoAI/aideml) / [AI-Scientist-v2](https://github.com/SakanaAI/AI-Scientist-v2) 的有限分支、[AI-Scientist-v3](https://github.com/SakanaAI/AI-Scientist-v3) 的探索—消融—封存评价，以及 [MLflow](https://github.com/mlflow/mlflow)、[Optuna](https://github.com/optuna/optuna)、[Cleanlab](https://github.com/cleanlab/cleanlab) 等项目的日志、预算与数据质量思想。详细来源/Stars日期/适用与不可照搬部分见 [REFERENCES.md](https://github.com/phr-devil/Problem-Data-Research-Workflow/blob/main/REFERENCES.md)。不代表实际安装、端到端科研试验或论文成功率提升。
 
 ## 2026-10-31 RevGraph 科学价值复盘进入 v6.1（非新增审核阶段）
 
