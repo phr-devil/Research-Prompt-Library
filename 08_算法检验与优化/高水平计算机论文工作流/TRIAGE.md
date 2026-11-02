@@ -65,7 +65,7 @@ B｜缩窄为探索性论文主张（请确认新主张）
 C｜HOLD/停止该主张
 ~~~
 
-## 4. 路由动作
+## 5. 路由动作
 
 `TRIAGE`（对**受影响目标**）→ `MINOR: DEFERRED_MINOR + CONTINUE`；`REPAIRABLE: 现有授权内无新风险时有界诊断继续；否则给一次选择 → 继续探索/先修/调整`；`CRITICAL: BLOCKED_CRITICAL` 且不得放行受影响动作。按 [RECOVERY.md](RECOVERY.md) 及 [REPAIR_ROUTES.json](REPAIR_ROUTES.json) 修根因；修复后重查原证据和严重度，不因换阶段而“自动消失”。
 
