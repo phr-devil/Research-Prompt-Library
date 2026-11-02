@@ -8,4 +8,4 @@
 - 已有任务、代码或 Pilot：读 [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)，写代码/排错才按需读 [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)；以可信性能与独立贡献为并行目标（按需读 [PAPER_FIRST.md](PAPER_FIRST.md)），有依据再深化机制；级间变更才按需读 [TASK_LADDER.md](TASK_LADDER.md)，负Pilot不自动项目级STOP。
 - 已有稳定候选贡献、要论文确认：读 [CONFIRMATION.md](CONFIRMATION.md)，公平基线、独立确认、具名近邻与统计严格核查。
 
-**输出**：实际新证据、可恢复路径、下一项最有信息量的任务及授权缺口；无执行工具标 NOT_RUN，证据不全标 UNKNOWN，禁止编造结果或自动承诺发表。
+**输出**：新证据/路径、判断变化、下一探针与授权；无变化只报阻碍。图片和长报告遵守[WORKFLOW.md](WORKFLOW.md) §5：早期不做精美科研图，必要诊断图除外。未执行NOT_RUN，缺证UNKNOWN，不编造结果。

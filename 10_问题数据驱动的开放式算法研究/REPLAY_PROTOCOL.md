@@ -1,6 +1,6 @@
 # 第十章｜真实Agent决策盲回放（按需评测，不增加科研阶段）
 
-**目的**：对比相同预算下下一行动质量、是否过早STOP、无效实验、有效科学证据与GPU/Token/人工成本。合成场景和Markdown关键词检查**不能**证明科研成功率。
+**目的**：对比相同预算下下一行动质量、是否过早STOP、无效实验、**无效图表/报告**、有效科学证据与GPU/Token/人工成本。合成场景和Markdown关键词检查**不能**证明科研成功率。
 
 1. **冻结真实历史快照**：选题搜索类还须冻结当时可见的论文/查询/日期，不注入未来论文；至少3类决策点（大方向/数据选择、有效基线后负Pilot、任务层级或机制转向），保存当时可见STATE、原始Run、代码/数据版本、权限、工具、预算。遮蔽最终论文/最佳模型、未来实验结果及封存集；缺历史原始证据记NOT_REPLAYABLE。
 2. **公平重放**：让第八章/第十章Agent分别只见同一冻结输入，按相同工具、GPU、Token及人力预算输出`ROUTE / EVIDENCE_USED / NEXT_ACTION / AUTH / DECISION_SCOPE / CLAIM_BOUNDARY / COST_CAP / EXPECTED_DECISION_CHANGE`。仅建议动作标NOT_RUN，不冒充执行。
