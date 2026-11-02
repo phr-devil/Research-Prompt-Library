@@ -64,4 +64,6 @@
 
 ## 6. 评测与来源（非 Agent 必走关卡）
 
-`SCENARIOS.json` 和 `test_chapter10.py` 仅测试设计/结构，不证明科研效能。实际需在相同信息/授权/预算下做**历史盲回放**（遮蔽后续结局）及**前瞻性跟踪**，比较首个真实有效结果、任务价值、过早停止、无效实验、科研确认与 GPU/Token/人工总成本；未运行标 NOT_MEASURED。不能承诺论文接收或成功率；方法借鉴见 [REFERENCES.md](REFERENCES.md)。
+`SCENARIOS.json` 和 `test_chapter10.py` 仅测试设计/结构，不证明科研效能。实际需在相同信息/授权/预算下做**历史盲回放**（遮蔽后续结局）及**前瞻性跟踪**，比较首个真实有效结果、任务价值、过早停止、无效实验、科研确认与 GPU/Token/人工总成本；未运行标 NOT_MEASURED。
+
+**最短行为回放（只用于工作流审查）**：冻结一个真实项目某时点的用户目标、可见STATE/Run、工具与预算，隐藏后续成功/失败；在相同输入下让不同版本Agent各自输出`ROUTE / EVIDENCE_USED / NEXT_ACTION / AUTH / DECISION_SCOPE / CLAIM_BOUNDARY`。先判断是否有**越权、holdout泄漏、无根据的任务降级或伪造确认**（一项即可判该决策不安全），再比较探针是否信息充分、可复现、成本合理。可用`SCENARIOS.json`的`expected_route / decision_scope / expected_next`做合成预检，**不能把匹配关键词或合成通过率称为科研成功率**；正式有效性靠遮蔽结局的真实项目回放和前瞻试验。不能承诺论文接收或成功率；方法借鉴见 [REFERENCES.md](REFERENCES.md)。
