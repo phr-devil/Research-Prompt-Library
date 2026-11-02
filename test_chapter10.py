@@ -288,7 +288,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         for term in ("DIRECTION_CARD", "ROOT_PROBLEM", "VARIATION_AXIS",
                      "TASK_FAMILY", "D1_DISCOVERY_DEV", "D2_EXTERNAL_REPLICATION",
                      "D3_STRESS_OR_TRANSFER", "DATA_PORTFOLIO", "PRE_DOWNLOAD_PLAN",
-                     "SECOND_DATASET_GAP", "CROSS_DATASET_TASK_GAP", "按D1→D2"):
+                     "SECOND_DATASET_GAP", "CROSS_DATASET_TASK_GAP", "可多库同步开发"):
             self.assertIn(term, data)
         for term in ("DIRECTION_CARD", "DATA_PORTFOLIO", "PRE_DOWNLOAD_PLAN"):
             self.assertIn(term, workflow)

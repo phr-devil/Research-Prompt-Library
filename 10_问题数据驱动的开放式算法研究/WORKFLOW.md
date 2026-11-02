@@ -26,7 +26,7 @@
 
 ## 2.5 最短决策产物（不额外加阶段）
 
-- **第一步方向已定、数据库待选**：直接完成官方来源核查，自动定`DATA_PORTFOLIO(默认D1–D4)`和`PRE_DOWNLOAD_PLAN`，**立即通知用户下载**（`DOWNLOAD_READY_NOTICE`）；不单独追问数据库选哪个。没有真实下载授权前，不执行下载、安装或拟合。
+- **第一步方向已定、数据库待选**：直接完成官方来源核查，记录`WHY_THIS_OVER_ALTERNATIVE`理由，自动定`DATA_PORTFOLIO(默认D1–D4)`和`PRE_DOWNLOAD_PLAN`，**立即通知用户下载**（`DOWNLOAD_READY_NOTICE`）；不单独追问数据库选哪个。没有真实下载授权前，不执行下载、安装或拟合。
 - **已有数据但未确定任务**：使用 [TASK_EXPLORATION.md](TASK_EXPLORATION.md) 形成`PRIMARY_TASK / WHY_THIS_OVER_RESERVE / VALUE_HYPOTHESIS / FEASIBILITY_UNKNOWN / MINIMUM_PROBE`；可只保留一个TASK。
 - **多层级研究**：只在真正有不同标签、部署信息或科学命题时按 [TASK_LADDER.md](TASK_LADDER.md) 进行`COMMON_PREMISE / NEW_LEVER / CLAIM_AND_TEST_CHANGE`检查；不满足则修复当前任务/收窄Claim，而非假降级。
 - **已有可信基线、准备实验**：公平Champion–Challenger，按需读 [PAPER_FIRST.md](PAPER_FIRST.md)；优先`PERFORMANCE_FLOOR→PAPER_PATH_CANDIDATE→SCIENCE_UPGRADE`（非硬门、非发表承诺）。
