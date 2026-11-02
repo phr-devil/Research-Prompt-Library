@@ -2,7 +2,7 @@
 
 > 若项目已有 STATE、RUNS、CLAIMS 或 data manifest，直接复用并记录路径，不迁移或重复建立。这里是示例占位，不是权限授予、已运行的证据或必填审批表。
 
-- WORKFLOW: CHAPTER_10 / PD-RW v1.0（用户明确选择）
+- WORKFLOW: CHAPTER_10 / PD-RW v1.1（用户明确选择）
 - AREA_DATA: <大科学问题、用户真实选择消息或来源；未选标 WAITING_FOR_USER_SELECTION>
 - SCIENTIFIC_VALUE: <成功后可能新增何种独立知识/真实任务能力；不明确 VALUE_UNVERIFIED>
 - DATA_MANIFEST: <官方URL/版本/许可/清单/文件指纹/实际路径；未下载为 NOT_RUN>
