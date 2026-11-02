@@ -15,7 +15,7 @@
 | 已失败项目重新选题、第09章 | [第09章README](09_失败算法项目挽救与转向/README.md) | Step05真实用户选P1/P2/P3 |
 | 其他资助、翻译、文档任务 | [根目录分类索引](README.md) | 不调用第08章全流程 |
 
-**检索原则**：先按上表打开精确文件路径，不搜索整库“算法/科研/优化”泛词；当前项目的STATE/Run优先于历史案例。需要24个具体场景时再用[ROUTES.json](08_算法检验与优化/高水平计算机论文工作流/ROUTES.json)或`workflow_route.py --event EVENT`（只读建议）；没看到原文就写未核实，不伪称已读取或执行。第08章总控是[ORCHESTRATOR.md](08_算法检验与优化/高水平计算机论文工作流/ORCHESTRATOR.md)，**无需同时加载README、START、SKILL和24条Prompt**。
+**检索原则**：先按上表打开精确文件路径，不搜索整库“算法/科研/优化”泛词；当前项目的STATE/Run优先于历史案例。需要24个具体场景时再用[ROUTES.json](08_算法检验与优化/高水平计算机论文工作流/ROUTES.json)或`workflow_route.py --event EVENT`（只读建议）；没看到原文就写未核实，不伪称已读取或执行。第08章总控是[ORCHESTRATOR.md](08_算法检验与优化/高水平计算机论文工作流/ORCHESTRATOR.md)，**无需同时加载README、START、SKILL和24条Prompt**。机器字段`default_path.mode=PROTOTYPE_FIRST`是旧版兼容标识，仅表示不强制逐关执行，**不代表仍按原型优先排序**。
 
 ## 证据成熟度与行动风险（第08/09章共用，不新增阶段）
 
