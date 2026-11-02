@@ -184,7 +184,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
         self.assertEqual(data["version"], "PD-RW-v1.3")
-        self.assertEqual(len(cases), 24)
+        self.assertEqual(len(cases), 26)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
@@ -197,7 +197,8 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                           "DATA_CHOICE_NO_REAL_EVAL", "COMMON_PREMISE_FAKE_FALLBACK",
                           "SUPPORT_QUERY_FUTURE_LEAK", "CHAMPION_CHALLENGER_MISMATCH",
                           "DATA_LABEL_MISALIGN", "LOSS_NAN_RECOVERY",
-                          "BASELINE_FAIR_TUNING", "TASK_LEVEL_ASSET_REUSE"})
+                          "BASELINE_FAIR_TUNING", "TASK_LEVEL_ASSET_REUSE",
+                          "DIRECTION_BEFORE_DOWNLOAD", "MULTIDATASET_ROLE_AND_COMPATIBILITY"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
@@ -210,7 +211,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("L2", " ".join(by_id["D10-14"]["should"]))
         self.assertIn("NO_INDEPENDENT_CLAIM", " ".join(by_id["D10-15"]["should"]))
         self.assertIn("LATERAL", " ".join(by_id["D10-16"]["should"]))
-        for i in range(17, 25):
+        for i in range(17, 27):
             case = by_id[f"D10-{i:02d}"]
             for field in ("expected_route", "decision_scope", "expected_next"):
                 self.assertTrue(case[field], (case["id"], field))
@@ -274,6 +275,33 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                     {**good, "route": "CONFIRMATION.md"}):
             self.assertEqual(audit_responses([bad], cases)[0]["status"], "INVALID")
         self.assertIn("NOT_MEASURED", read(CH10 / "REPLAY_PROTOCOL.md"))
+
+    def test_multidataset_direction_before_download_contract(self):
+        data = read(CH10 / "DATA_DISCOVERY.md")
+        workflow = read(CH10 / "WORKFLOW.md")
+        intro = read(CH10 / "START.md")
+        example = read(CH10 / "EXAMPLE_SENSOR.md")
+        state = read(CH10 / "templates/STATE.md")
+        for term in ("DIRECTION_CARD", "ROOT_PROBLEM", "VARIATION_AXIS",
+                     "TASK_FAMILY", "D1_DISCOVERY_DEV", "D2_EXTERNAL_REPLICATION",
+                     "D3_STRESS_OR_TRANSFER", "DATA_PORTFOLIO", "PRE_DOWNLOAD_PLAN",
+                     "SECOND_DATASET_GAP", "CROSS_DATASET_TASK_GAP", "按D1→D2"):
+            self.assertIn(term, data)
+        for term in ("DIRECTION_CARD", "DATA_PORTFOLIO", "PRE_DOWNLOAD_PLAN"):
+            self.assertIn(term, workflow)
+            self.assertIn(term, state)
+        self.assertIn("先确定宽研究方向", intro)
+        self.assertIn("先选方向，禁止先下载", intro)
+        self.assertIn("UCI HAR Smartphones", example)
+        self.assertIn("PAMAP2", example)
+        self.assertIn("不同采样率", read(CH10 / "README.md") + data + example)
+        confirm = read(CH10 / "CONFIRMATION.md")
+        self.assertIn("跨数据库确认", confirm)
+        self.assertIn("D2若用于任务选型", confirm)
+        self.assertIn("SINGLE_DATASET_EVIDENCE", read(CH10 / "EXPERIMENT_LOOP.md"))
+        cases = {x["id"]: x for x in json.loads(read(CH10 / "SCENARIOS.json"))["cases"]}
+        self.assertIn("方向未选", " ".join(cases["D10-25"]["must_not"]))
+        self.assertIn("同一库", " ".join(cases["D10-26"]["must_not"]))
 
     def test_existing_library_link_validator(self):
         errs, _, _, checked = validate()
