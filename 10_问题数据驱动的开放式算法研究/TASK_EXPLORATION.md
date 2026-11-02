@@ -27,6 +27,14 @@
 
 判别下一实验优先问：①问题是否真实且可重复？②允许的干预/额外信息可能解决吗？③收益在部署**决策之前**可识别吗？④强简单替代或具名近邻是否已解释？这四问是**按症状的假设选择器，不要求全做PASS**。机制互补性/Oracle并不自动代表可学、可部署。不要从一次欠收敛Pilot推导“机制不可能”。
 
+## 1.7 从“有意思的现象”到“值得投入的任务”
+
+候选必须给出**可被否定的最小实验**，否则先把它当成`QUESTION_UNFORMED`，继续合法观察，而不是写大型模型计划。优先任务应满足：真实问题与评价对象匹配；至少一种合法输入/干预能带来可区分预测；强简单替代尚有未解决的科学缺口；有可以负担的下一探针。尚未验证的“独立增量”记`VALUE_UNVERIFIED`，不因此自动拒绝探索。
+
+`TASK_DECISION`最短一行：`PRIMARY_TASK | WHY_THIS_OVER_RESERVE | VALUE_HYPOTHESIS | FEASIBILITY_UNKNOWN | MINIMUM_PROBE | STOP_OR_PIVOT_EVIDENCE`。选择它**不是因为开发F1最高**，而是问题更真实、评价路径更可信、能以较低成本区分解释。若只有一个候选，说明为什么无需备选，不要强造。
+
+**共同失败前提特别检查**：两个任务都依赖并不存在的独立设备ID或未知的目标标定标签时，即使名称不同也不是风险分散；与多个L层相关的输入、标定K、真值和确认组须按 [TASK_LADDER.md](TASK_LADDER.md) 核实际不同。任务选定后普通模型试验不每轮重新做选题漏斗。
+
 ## 2. 最小 TASK_CARD 与当前选择
 
 每项最多八要素，可复用现有文件：`TASK_ID/ORIGIN`｜`SCIENTIFIC_QUESTION`｜`INPUT_TARGET`（部署可见输入、独立真值/证明义务、组）｜`TESTABLE_DIFFERENCE`（只有机制归因才必须要求竞争 A/B 预测）｜`BASELINE`｜`VALUE`（近邻之外可能新增的知识或真实能力）｜`MINIMUM_PROBE`｜`COST_RISK`。
