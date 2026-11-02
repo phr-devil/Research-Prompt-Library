@@ -15,12 +15,12 @@
 |---|---|---|---|
 | 01 | 选择问题范围及可信数据：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | AREA_DATA_CARD：问题、数据、适配、验证路径、一个最大风险 | ChatGPT（检索/论文/判断） |
 | 02 | 数据准备及开放式观察：[DATA_DISCOVERY.md](DATA_DISCOVERY.md) | DATA_MANIFEST＋OBSERVATIONS；合法开发数据，不碰封存确认集 | 获授权的 WorkBuddy/Codex/本地环境 |
-| 03 | 从观察发现任务：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | TASK_CANDIDATES：候选任务与最小判别 | ChatGPT＋可访问真实数据的 Agent |
-| 04 | 有界算法探索：[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 可复核 Run、最佳有效版本、失败解释与下一探针 | 获授权的代码/实验 Agent |
+| 03 | 系统化发现任务：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | TASK_CANDIDATES：机会扫描、任务候选与最小判别 | ChatGPT＋可访问真实数据的 Agent |
+| 04 | 自适应有界算法探索：[EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md) | 可复核 Run、按症状诊断、下一探针与机制级止损 | 获授权的代码/实验 Agent |
 | 05 | 选定论文主张：[TASK_EXPLORATION.md](TASK_EXPLORATION.md) | CLAIM_CANDIDATE：明确独立价值、竞争解释与证据缺口 | ChatGPT＋代码 Agent |
 | 06 | 严格科学确认：[CONFIRMATION.md](CONFIRMATION.md) | 有效独立证据或 CONFIRMATION_UNAVAILABLE，论文声明边界 | 独立核验与获授权正式实验 |
 
-**实验内循环**：真实发现 → 候选任务/方法 → 最小公正比较 → KEEP / IMPROVE / REPAIR / INCONCLUSIVE / DISCARD（只针对具体 Run/机制）→ 新观察。**研究外循环**：确认该任务还值得做、同一问题—数据组合仍有价值，还是应该向用户提出重大转向；详见 [WORKFLOW.md](WORKFLOW.md)。
+**实验内循环**：真实发现 → 候选任务/方法 → 最小公正比较 → KEEP / IMPROVE / REPAIR / INCONCLUSIVE / DISCARD（只针对具体 Run/机制）→ 新观察。**研究外循环**：确认该任务还值得做、同一问题—数据组合仍有价值，还是应该向用户提出重大转向；详见 [WORKFLOW.md](WORKFLOW.md)。**改进重点**：机会扫描形成科研任务；按症状查可学性/正控/残差；继续与止损按新增信息或能力及总成本判断，避免“首轮无增益即STOP”或无界调参。
 
 ## 五条不可放宽的边界
 
@@ -35,11 +35,13 @@
 - [WORKFLOW.md](WORKFLOW.md)：总控、状态路由、权限和跨活动续做
 - [DATA_DISCOVERY.md](DATA_DISCOVERY.md)：研究问题＋数据的筛选与完整性/封存合同
 - [TASK_EXPLORATION.md](TASK_EXPLORATION.md)：任务产生、比较、收敛与止损
-- [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：实际 Agent 研发指令、实验循环、分支和排错
+- [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)：实际 Agent 研发指令、按症状可学性诊断、实验循环与分支止损；重大故障按需复用第八章 [TRIAGE](../08_算法检验与优化/高水平计算机论文工作流/TRIAGE.md) / [RECOVERY](../08_算法检验与优化/高水平计算机论文工作流/RECOVERY.md)
 - [CONFIRMATION.md](CONFIRMATION.md)：从开放探索到严格论文确认
 - [EXAMPLE_SENSOR.md](EXAMPLE_SENSOR.md)：传感器跨平台迁移的假想执行实例（明确非实测）
 - [templates/STATE.md](templates/STATE.md)：可选、极简的项目断点
 - [REFERENCES.md](REFERENCES.md)：高星 GitHub 项目的具体借鉴点、限制与原始链接
-- [SCENARIOS.json](SCENARIOS.json)：8个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
+- [SCENARIOS.json](SCENARIOS.json)：12个第十章专属的**合成**反例/风险场景；CI只校验结构和关键词，不调用模型
+
+**工作流质量评价**：结构回归并非科研成功率。[WORKFLOW.md 的评测协议](WORKFLOW.md) 要求使用信息隔离的历史盲回放和前瞻性项目审计，在相同预算下比较任务发现、有效科研证据、过早止损、无效循环与总资源成本；**目前尚未运行真实模型对照，效果未测量**。评测按需开展，不成为每个科研项目的强制阶段。
 
 **状态以真实项目文件和工具运行结果为准**；本文只提供指导，不能自动访问本地数据或替用户训练。
