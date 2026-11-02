@@ -333,7 +333,7 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         intro = read(CH10 / "README.md")
         for token in ("无需再问用户选哪个数据库", "DOWNLOAD_READY_NOTICE"):
             self.assertIn(token, start)
-        for token in ("本轮立即自主选定", "DOWNLOAD_READY_WAITING_FOR_USER",
+        for token in ("立即选定学科匹配", "DOWNLOAD_READY_WAITING_FOR_USER",
                       "活动01完成即继续选库", "URL_UNVERIFIED", "通知用户"):
             self.assertIn(token, data)
         for token in ("第一步确定方向后AI立即自主筛库", "DOWNLOAD_READY_NOTICE",
