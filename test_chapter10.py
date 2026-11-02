@@ -84,6 +84,20 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         self.assertIn("已授权范围", read(CH10 / "WORKFLOW.md"))
         self.assertIn("单次负Pilot", read(CH10 / "WORKFLOW.md"))
 
+    def test_adaptive_learning_and_scoped_repair_are_optional(self):
+        workflow = read(CH10 / "WORKFLOW.md")
+        tasks = read(CH10 / "TASK_EXPLORATION.md")
+        loop = read(CH10 / "EXPERIMENT_LOOP.md")
+        for marker in ("系统化任务机会扫描", "可学性", "不同失败前提"):
+            self.assertIn(marker, tasks)
+        for marker in ("负 Pilot", "按症状", "短/长", "CRITICAL",
+                       "REPAIRABLE", "MINOR", "TRIAGE.md", "RECOVERY.md",
+                       "NEXT_PROBE"):
+            self.assertIn(marker, loop)
+        for marker in ("历史盲回放", "前瞻性跟踪", "不机械全跑"):
+            self.assertIn(marker, workflow)
+        self.assertIn("非 Agent 必走关卡", workflow)
+
     def test_confirmation_requires_scientific_evidence(self):
         confirm = read(CH10 / "CONFIRMATION.md")
         for marker in ("具名最近邻", "独立", "原始证据", "TASK_SEARCH_DISCLOSURE",
@@ -107,12 +121,14 @@ class ProblemDataWorkflowTests(unittest.TestCase):
     def test_synthetic_scenarios_are_unique_and_guardrails_explicit(self):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
         cases = data["cases"]
-        self.assertEqual(len(cases), 8)
+        self.assertEqual(len(cases), 12)
         self.assertEqual(len({c["id"] for c in cases}), len(cases))
         self.assertEqual({c["event"] for c in cases},
                          {"AREA_DATA_DISCOVERY", "DATA_PARTIAL", "HOLDOUT_SEALED",
                           "TASK_DISCOVERY", "MECHANISM_NEGATIVE", "TASK_SWITCH",
-                          "CLAIM_CONFIRM", "ROUTE_ISOLATION"})
+                          "CLAIM_CONFIRM", "ROUTE_ISOLATION",
+                          "LEARNABILITY_DIAGNOSIS", "SCOPED_AUTOREPAIR",
+                          "VALUE_VS_BASELINE", "BLINDED_EVALUATION"})
         for case in cases:
             for k in ("situation", "should", "must_not"):
                 self.assertTrue(case[k], (case["id"], k))
