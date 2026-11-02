@@ -154,6 +154,10 @@ def load_triage(root=ROOT, routes=None):
         raise ValueError("Triage must cover exactly 24 ordered routes")
     if any(not e.get("focus") for e in doc["route_focus"]):
         raise ValueError("Empty route-specific guidance")
+    if any(not isinstance(doc["levels"]["REPAIRABLE"].get(k), str)
+           or not doc["levels"]["REPAIRABLE"][k].strip()
+           for k in ("fast_path", "user_choice_required_when")):
+        raise ValueError("Missing bounded repairable fast-path guidance")
     if [e.get("id") for e in doc.get("stages",[])]!=["01","02","03","04","05"]:
         raise ValueError("Missing stage-specific rules")
     expected_intents={"READ_ONLY_RESEARCH","SCOPED_EXPLORATION","DRAFT_PREPARATION","FORMAL_RUN","CONFIRMED_CLAIM","SUBMISSION"}
@@ -179,7 +183,12 @@ def show_triage(key):
     for level in ("CRITICAL","REPAIRABLE","MINOR"):
         rule=doc["levels"][level]
         out.append(level+": "+rule["default"]+" — "+rule["meaning"])
-        if rule["menu"]:out.append("OPTIONS: "+" / ".join(rule["menu"]))
+        if level == "REPAIRABLE":
+            out.append("FAST_PATH: "+rule["fast_path"])
+            out.append("ASK_USER_ONLY_IF: "+rule["user_choice_required_when"])
+        if rule["menu"]:
+            label = "USER_OPTIONS_IF_REQUIRED: " if level == "REPAIRABLE" else "OPTIONS: "
+            out.append(label+" / ".join(rule["menu"]))
     out.append("UNKNOWN -> classify CURRENT_ACTION_IMPACT only: UNRELATED=DEFER_UNKNOWN; MATERIAL=NEEDS_MINIMAL_EVIDENCE_CHECK; UNASSESSED=classify only (not STOP/PASS).")
     out.append("Actual later user messages must be verified by the host; stored choices alone are not approval.")
     out.append("No GPU/formal/paid permission is conferred by this read-only tool.")
