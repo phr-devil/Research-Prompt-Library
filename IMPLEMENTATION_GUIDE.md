@@ -1,6 +1,6 @@
-# 第十章｜算法编码与实验执行指南（只在编码/排错时加载）
+# PD-RW｜算法编码与实验执行指南（只在编码/排错时加载）
 
-> 总决策见 [WORKFLOW.md](WORKFLOW.md)，实验预算与公平性见 [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。借用第八章 [BUILD_DEBUG](../08_算法检验与优化/高水平计算机论文工作流/playbooks/02_BUILD_DEBUG.md) 与 [ALGORITHM_DESIGN_REFERENCE](../08_算法检验与优化/高水平计算机论文工作流/playbooks/ALGORITHM_DESIGN_REFERENCE.md) 的技术细节，但不改变第十章独立入口。只读当前TASK相关STATE/代码/Run，不重建已验证工程。
+> 总决策见 [WORKFLOW.md](WORKFLOW.md)，实验预算与公平性见 [EXPERIMENT_LOOP.md](EXPERIMENT_LOOP.md)。本库以现有真实 TASK、基线、原始Run和关键可证伪实验为执行依据。只读当前TASK相关STATE/代码/Run，不重建已验证工程。
 
 ## 1. 从研究任务到第一份有效代码
 

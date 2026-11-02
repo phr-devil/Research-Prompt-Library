@@ -1,4 +1,4 @@
-"""Chapter 10 replay output preflight: structural checks only, no science grading."""
+"""PD-RW replay output preflight: structural checks only, no science grading."""
 import argparse
 import json
 from pathlib import Path
@@ -36,8 +36,7 @@ def audit_responses(responses, cases):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("responses", help="JSON list of blind Agent decisions")
-    parser.add_argument("--scenarios", default=str(Path(__file__).resolve().parent /
-        "10_问题数据驱动的开放式算法研究" / "SCENARIOS.json"))
+    parser.add_argument("--scenarios", default=str(Path(__file__).resolve().parent / "SCENARIOS.json"))
     args = parser.parse_args()
     cases = json.loads(Path(args.scenarios).read_text(encoding="utf-8"))["cases"]
     decisions = json.loads(Path(args.responses).read_text(encoding="utf-8"))
