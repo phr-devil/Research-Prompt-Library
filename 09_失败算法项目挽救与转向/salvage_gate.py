@@ -71,7 +71,7 @@ def inspect_selection(candidates, selection=None):
         "P3": r"(?:(?<![A-Za-z0-9])P3(?![A-Za-z0-9])|第[三3]个(?:项目|课题|方案)|第[三3]项|方案三)",
     }
     for option, title in offered_titles.items():
-        aliases[option] = "(?:" + aliases[option] + "|" + re.escape(title) + r"(?![\w]))"
+        aliases[option] = "(?:" + aliases[option] + "|" + re.escape(title) + r"(?=$|[^\w]|和|或|与|以及|还是))"
     if not re.search(aliases[chosen], message, flags=re.IGNORECASE):
         raise ValueError("Selected ID not clearly expressed by user message")
     bare_choice = r"(?:P[123]|第[一二三123]个(?:项目|课题|方案)?|第[一二三123]项|方案[一二三])"

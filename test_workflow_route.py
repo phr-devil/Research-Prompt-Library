@@ -488,7 +488,7 @@ class WorkflowTests(unittest.TestCase):
                        "缺授权不启动", "GPU 利用率不是科学 KPI", "超范围需重新获批"):
             self.assertIn(phrase, experiment)
         self.assertIn("选题后的证据优先决策", post)
-        self.assertIn("一轮只交付一条决策记录", post)
+        self.assertIn("只增量记录本轮实际发生的事情", post)
         self.assertLess(len(data), 2700)
         self.assertLess(len(design), 3000)
         self.assertLess(len(experiment), 2700)
