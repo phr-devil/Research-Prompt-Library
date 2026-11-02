@@ -63,6 +63,10 @@ class ProblemDataWorkflowTests(unittest.TestCase):
                        "任务搜索", "同一个公开数据库", "换 seed"):
             self.assertIn(marker, post)
         self.assertIn("用户选择**研究组合**", read(CH10 / "WORKFLOW.md"))
+        self.assertIn("TASK_EVALUABLE", data)
+        self.assertIn("CLAIM_CONFIRMABLE", data)
+        self.assertIn("任务尚未确定时", data)
+        self.assertIn("eligible_holdout", post)
 
     def test_task_discovery_multiple_scientific_origins_and_scoped_stopping(self):
         tasks = read(CH10 / "TASK_EXPLORATION.md")
@@ -73,6 +77,8 @@ class ProblemDataWorkflowTests(unittest.TestCase):
             self.assertIn(marker, tasks)
         self.assertIn("RUN/机制", read(CH10 / "WORKFLOW.md"))
         self.assertIn("AREA_DATA", read(CH10 / "WORKFLOW.md"))
+        self.assertIn("NEIGHBOR_UNVERIFIED", tasks)
+        self.assertIn("task_id → selection_history → protocol_id", tasks)
 
     def test_experiment_loop_is_bounded_recoverable_and_authorized(self):
         experiment = read(CH10 / "EXPERIMENT_LOOP.md")
@@ -83,6 +89,8 @@ class ProblemDataWorkflowTests(unittest.TestCase):
             self.assertIn(marker, experiment)
         self.assertIn("已授权范围", read(CH10 / "WORKFLOW.md"))
         self.assertIn("单次负Pilot", read(CH10 / "WORKFLOW.md"))
+        self.assertIn("Run 证据与负结果不得被回退丢失", experiment)
+        self.assertIn("跨平台交接", experiment)
 
     def test_adaptive_learning_and_scoped_repair_are_optional(self):
         workflow = read(CH10 / "WORKFLOW.md")
@@ -97,6 +105,8 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         for marker in ("历史盲回放", "前瞻性跟踪", "不机械全跑"):
             self.assertIn(marker, workflow)
         self.assertIn("非 Agent 必走关卡", workflow)
+        self.assertIn("POSSIBLE_OUTCOMES_AND_DECISION", workflow)
+        self.assertIn("确认集污染", workflow)
 
     def test_confirmation_requires_scientific_evidence(self):
         confirm = read(CH10 / "CONFIRMATION.md")
@@ -113,10 +123,11 @@ class ProblemDataWorkflowTests(unittest.TestCase):
         for repo in ("karpathy/autoresearch", "microsoft/RD-Agent",
                      "SakanaAI/AI-Scientist-v2", "SakanaAI/AI-Scientist-v3",
                      "WecoAI/aideml", "mlflow/mlflow", "optuna/optuna",
-                     "cleanlab/cleanlab", "iterative/dvc"):
+                     "cleanlab/cleanlab", "treeverse/dvc"):
             self.assertIn("https://github.com/" + repo, refs)
-        self.assertIn("可能不如", refs)
+        self.assertIn("不一定优于", refs)
         self.assertIn("不强制安装", refs)
+        self.assertNotIn("Stars 约数", refs)
 
     def test_synthetic_scenarios_are_unique_and_guardrails_explicit(self):
         data = json.loads(read(CH10 / "SCENARIOS.json"))
