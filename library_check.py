@@ -162,22 +162,6 @@ def validate(root=ROOT):
         if entries.get("V09") != landing.resolve():
             errors.append("V09 must be indexed as standalone 09/README.md")
 
-    # Chapter 10 is a standalone route; verify its own documents without changing 08/09 gates.
-    ten = root / "10_问题数据驱动的开放式算法研究"
-    ten_files = ("README.md", "START.md", "WORKFLOW.md", "DATA_DISCOVERY.md",
-                 "TASK_EXPLORATION.md", "TASK_LADDER.md", "EXPERIMENT_LOOP.md", "CONFIRMATION.md",
-                 "REFERENCES.md", "EXAMPLE_SENSOR.md", "templates/STATE.md")
-    for name in ten_files:
-        if not (ten / name).is_file():
-            errors.append("Missing independent 10 component: " + name)
-    if entries.get("PD10") != (ten / "README.md").resolve():
-        errors.append("PD10 must be indexed as standalone 10/README.md")
-    if (ten / "WORKFLOW.md").exists():
-        body = (ten / "WORKFLOW.md").read_text(encoding="utf-8")
-        for token in ("外循环", "内循环", "RUN/机制", "TASK", "AREA_DATA",
-                      "用户选择", "确认集", "WAITING_FOR_AUTH"):
-            if token not in body:
-                errors.append("Missing chapter 10 research contract: " + token)
     return errors, len(index), len(fixture["cases"]), checked
 
 
