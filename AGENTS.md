@@ -13,6 +13,7 @@
 | 无增益、需要优化/止损 | [RESEARCH_DECISIONS.md](08_算法检验与优化/高水平计算机论文工作流/RESEARCH_DECISIONS.md) | 区分科研负证、工程故障与投入价值 |
 | 论文Claim、独立确认、证据问题 | [04_EVIDENCE_CONFIRM.md](08_算法检验与优化/高水平计算机论文工作流/playbooks/04_EVIDENCE_CONFIRM.md) | 保留确认集/独立真值及作者授权 |
 | 已失败项目重新选题、第09章 | [第09章README](09_失败算法项目挽救与转向/README.md) | Step05真实用户选P1/P2/P3 |
+| ChatGPT 长对话失忆、状态恢复、执行偏离、门禁校准、科研价值复核、第10章 | [第10章校准提示词](10_科研工作流状态校准/README.md) | 仅复制与当前情况对应的一种；PD-RW 权威规则仍在独立仓库 |
 | 其他资助、翻译、文档任务 | [根目录分类索引](README.md) | 不调用第08章全流程 |
 
 **跨仓库路由**：本库仅负责旧08/09等提示词与科研任务；PD-RW 已另建独立仓库（https://github.com/phr-devil/Problem-Data-Research-Workflow），使用该系统时应打开其 AGENTS.md / START.md。用户选研究组合不是下载、训练或投稿授权。
