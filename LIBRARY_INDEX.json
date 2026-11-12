@@ -271,5 +271,15 @@
       "https://github.com/UCL-ERL/skills"
     ],
     "source_status": "v2.2：从第08类移为独立第09类；Step 05 提交P1/P2/P3并等待真实用户选定，Step 06不得自动执行；无真实模型A/B效果测试。 新增 Step 05-R：用户选题后进行科学性、创新性、独立真值与可行性优化，重大改题需再次确认。"
+  },
+  {
+    "id": "C10",
+    "name": "科研工作流状态校准：状态恢复、执行校准、关键门禁、科研价值复核",
+    "group": "10_科研工作流状态校准",
+    "file": "10_科研工作流状态校准/README.md",
+    "source_urls": [
+      "https://github.com/phr-devil/Problem-Data-Research-Workflow"
+    ],
+    "source_status": "本库根据PD-RW长任务管理需求原创整理的四种可复制ChatGPT中途校准提示词；不修改PD-RW规则，不自动授予权限或证明效果。"
   }
 ]
