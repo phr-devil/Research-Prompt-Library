@@ -281,5 +281,13 @@
       "https://github.com/phr-devil/Problem-Data-Research-Workflow"
     ],
     "source_status": "本库根据PD-RW长任务管理需求原创整理的四种可复制ChatGPT中途校准提示词；不修改PD-RW规则，不自动授予权限或证明效果。"
+  },
+  {
+    "id": "F11",
+    "name": "算法方框图的绘制：SAFE-Gait Fig.2 HTML/SVG 最小逻辑纠正",
+    "group": "11_算法方框图的绘制",
+    "file": "11_算法方框图的绘制/F11-A_SAFE-Gait_Fig2_最小修改与逻辑纠正.md",
+    "source_urls": [],
+    "source_status": "用户提供的 SAFE-Gait Fig.2 历史 AI 绘图修正提示词，按 Markdown 排版归档；并非改写或引述第三方项目，也不是通用从零绘图指令。"
   }
 ]
