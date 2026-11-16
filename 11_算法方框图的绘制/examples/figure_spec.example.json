@@ -1,0 +1,29 @@
+{
+  "title": "Illustrated pipeline demo (no research claim)",
+  "nodes": [
+    {
+      "id": "analyze",
+      "label": "Analyze",
+      "icon": "robot-analyze",
+      "fill": "#edf4fa"
+    },
+    {
+      "id": "retrieve",
+      "label": "Retrieve",
+      "icon": "robot-retrieve",
+      "fill": "#edf6ee"
+    },
+    {
+      "id": "allocate",
+      "label": "Allocate",
+      "icon": "robot-allocate",
+      "fill": "#fff3e5"
+    },
+    {
+      "id": "propose",
+      "label": "Propose",
+      "icon": "robot-propose",
+      "fill": "#f3edf7"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "viewBox": "0 0 128 128",
+  "assets": [
+    {
+      "id": "robot-analyze",
+      "path": "robot-analyze.svg",
+      "concepts": [
+        "analysis",
+        "inspect",
+        "诊断"
+      ],
+      "kind": "character_scene",
+      "style": "flat-robot-v1",
+      "origin": "original-F11",
+      "license_status": "original; no third-party content",
+      "external_dependencies": false
+    },
+    {
+      "id": "robot-retrieve",
+      "path": "robot-retrieve.svg",
+      "concepts": [
+        "retrieve",
+        "search",
+        "检索"
+      ],
+      "kind": "character_scene",
+      "style": "flat-robot-v1",
+      "origin": "original-F11",
+      "license_status": "original; no third-party content",
+      "external_dependencies": false
+    },
+    {
+      "id": "robot-allocate",
+      "path": "robot-allocate.svg",
+      "concepts": [
+        "allocate",
+        "route",
+        "分配"
+      ],
+      "kind": "character_scene",
+      "style": "flat-robot-v1",
+      "origin": "original-F11",
+      "license_status": "original; no third-party content",
+      "external_dependencies": false
+    },
+    {
+      "id": "robot-propose",
+      "path": "robot-propose.svg",
+      "concepts": [
+        "propose",
+        "plan",
+        "规划"
+      ],
+      "kind": "character_scene",
+      "style": "flat-robot-v1",
+      "origin": "original-F11",
+      "license_status": "original; no third-party content",
+      "external_dependencies": false
+    },
+    {
+      "id": "document",
+      "path": "document.svg",
+      "concepts": [
+        "file",
+        "report",
+        "文档"
+      ],
+      "kind": "technical_icon",
+      "style": "flat-tech-v1",
+      "origin": "original-F11",
+      "license_status": "original; no third-party content",
+      "external_dependencies": false
+    },
+    {
+      "id": "database",
+      "path": "database.svg",
+      "concepts": [
+        "database",
+        "storage",
+        "数据"
+      ],
+      "kind": "technical_icon",
+      "style": "flat-tech-v1",
+      "origin": "original-F11",
+      "license_status": "original; no third-party content",
+      "external_dependencies": false
+    },
+    {
+      "id": "sensor",
+      "path": "sensor.svg",
+      "concepts": [
+        "sensor",
+        "measure",
+        "传感器"
+      ],
+      "kind": "technical_icon",
+      "style": "flat-tech-v1",
+      "origin": "original-F11",
+      "license_status": "original; no third-party content",
+      "external_dependencies": false
+    },
+    {
+      "id": "dag",
+      "path": "dag.svg",
+      "concepts": [
+        "graph",
+        "dependency",
+        "DAG"
+      ],
+      "kind": "technical_icon",
+      "style": "flat-tech-v1",
+      "origin": "original-F11",
+      "license_status": "original; no third-party content",
+      "external_dependencies": false
+    }
+  ]
+}
