@@ -14,7 +14,8 @@
 | 论文Claim、独立确认、证据问题 | [04_EVIDENCE_CONFIRM.md](08_算法检验与优化/高水平计算机论文工作流/playbooks/04_EVIDENCE_CONFIRM.md) | 保留确认集/独立真值及作者授权 |
 | 已失败项目重新选题、第09章 | [第09章README](09_失败算法项目挽救与转向/README.md) | Step05真实用户选P1/P2/P3 |
 | PD-RW-Agent / WorkBuddy 新项目启动、旧项目恢复、执行偏离、门禁校准、经验复用、第10章 | [第10章 Agent 提示词](10_科研工作流状态校准/README.md) | A–D 按需用于已有项目；E 用于新项目；只调用实际可用 MCP，不在 ChatGPT 冒充 WorkBuddy 已执行 |
-| 论文算法框架图、流程方框图、SVG、SAFE-Gait Fig.2、第11章 | [第11章绘图提示词](11_算法方框图的绘制/README.md) | F11-A 为已有 HTML/SVG 的定向小修案例，不是通用从零绘图；提供原始 HTML，禁止不必要重设计 |
+| 论文算法框架图、方法流程图、SVG、新建图、已有图局部修改、第11章 | [F11-B 通用简洁绘图](11_算法方框图的绘制/F11-B_科研算法框架图通用绘制与修改.md) | 默认只读此提示词：P0 必画/P1 按需/P2 省略；保留真实数据依赖；默认 HTML 内嵌 SVG |
+| SAFE-Gait Fig.2、CP/SB/DS/MCS 两条特定依赖线修复 | [F11-A 历史修图案例](11_算法方框图的绘制/F11-A_SAFE-Gait_Fig2_最小修改与逻辑纠正.md) | 只在指定原案例时读取，避免加载 F11-B 或重设计 |
 | 其他资助、翻译、文档任务 | [根目录分类索引](README.md) | 不调用第08章全流程 |
 
 **跨仓库路由**：本库仅负责旧08/09等提示词与科研任务；PD-RW 已另建独立仓库（https://github.com/phr-devil/Problem-Data-Research-Workflow），使用该系统时应打开其 AGENTS.md / START.md。用户选研究组合不是下载、训练或投稿授权。
