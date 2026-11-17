@@ -292,10 +292,10 @@
   },
   {
     "id": "F11-B",
-    "name": "科研算法框架图通用绘制与修改 v2（含原创 SVG 资产）",
+    "name": "科研算法框架图通用绘制与修改 v2（56 项 SVG 资产）",
     "group": "11_算法方框图的绘制",
     "file": "11_算法方框图的绘制/F11-B_科研算法框架图通用绘制与修改.md",
     "source_urls": [],
-    "source_status": "F11 资产库已收录用户批准的 OpenMoji 四图标（CC BY-SA 4.0）与 Robot Toast 16 姿态（MIT）；上游修订、许可、SHA 均登记。通用辅助小图标仍待用户选择。"
+    "source_status": "作者已批准：Robot Toast 16 姿态（MIT）、OpenMoji 4 项（CC BY-SA 4.0）、Lucide 12 项（ISC）、Tabler 12 项（MIT）、Phosphor Duotone 12 项（MIT），共 56 项；SciSVG（D）未选择、不入库。源提交/许可/哈希由 manifest 追溯。"
   }
 ]
