@@ -283,19 +283,27 @@
     "source_status": "本库根据PD-RW长任务管理需求原创整理的四种可复制ChatGPT中途校准提示词；不修改PD-RW规则，不自动授予权限或证明效果。"
   },
   {
-    "id": "F11",
-    "name": "算法方框图的绘制：SAFE-Gait Fig.2 HTML/SVG 最小逻辑纠正",
+    "id": "F11-A",
+    "name": "Step 1 科研框架图科学结构与文字蓝图",
     "group": "11_算法方框图的绘制",
-    "file": "11_算法方框图的绘制/F11-A_SAFE-Gait_Fig2_最小修改与逻辑纠正.md",
+    "file": "11_算法方框图的绘制/F11-A_科学结构设计与文字蓝图.md",
     "source_urls": [],
-    "source_status": "用户提供的 SAFE-Gait Fig.2 历史 AI 绘图修正提示词，按 Markdown 排版归档；并非改写或引述第三方项目，也不是通用从零绘图指令。"
+    "source_status": "作者向 ChatGPT 提交论文方法和参考图，ChatGPT 生成可确认的模块、科学依赖和布局文字方案；不绘图。"
   },
   {
     "id": "F11-B",
-    "name": "科研算法框架图通用绘制与修改 v2（56 项 SVG 资产）",
+    "name": "Step 2 基础方框图 Codex 指令生成",
     "group": "11_算法方框图的绘制",
-    "file": "11_算法方框图的绘制/F11-B_科研算法框架图通用绘制与修改.md",
+    "file": "11_算法方框图的绘制/F11-B_基础方框图_Codex指令生成.md",
     "source_urls": [],
-    "source_status": "作者已批准：Robot Toast 16 姿态（MIT）、OpenMoji 4 项（CC BY-SA 4.0）、Lucide 12 项（ISC）、Tabler 12 项（MIT）、Phosphor Duotone 12 项（MIT），共 56 项；SciSVG（D）未选择、不入库。源提交/许可/哈希由 manifest 追溯。"
+    "source_status": "作者向 ChatGPT 提交确认蓝图，ChatGPT 给 Codex 基础 HTML/SVG 指令；不引入插图。"
+  },
+  {
+    "id": "F11-C",
+    "name": "Step 3 设计增强与 SVG 资产 Codex 指令生成",
+    "group": "11_算法方框图的绘制",
+    "file": "11_算法方框图的绘制/F11-C_设计增强与SVG资产_Codex指令生成.md",
+    "source_urls": [],
+    "source_status": "作者向 ChatGPT 提交基础图和参考风格，ChatGPT 给 Codex 版式及 SVG 设计增强指令；锁定科学结构。"
   }
 ]
