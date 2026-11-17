@@ -1,9 +1,9 @@
-# SVG 资产与复用规范
+# SVG 素材库｜待作者选择
 
-当前入库 8 个**原创 SVG**：4 个同一机器人风格的分析、检索、分配、提案场景，以及文档、数据库、传感器与 DAG 图标。每幅均为原生矢量路径（128×128），可离线内联到论文 SVG/HTML。
+**状态：PENDING_AUTHOR_SELECTION**。旧版 8 个 SVG 已根据作者要求全部删除；当前 `manifest.json` 为 `assets: []`，尚无可引用的入库素材。
 
-AI 应先从真实方法中凝练科学信息和模块/箭头，再在 [manifest.json](manifest.json) 按 `concepts` 检索素材 ID，只读取所选 .svg。通常整图 0–4 个插图，一个模块至多一个。没有合适素材可留白，不得为配图添加新的算法内容。
+后续仅从实际核实的 GitHub 开源资源中挑选候选。必须先提供真实 SVG/图片预览、上游文件位置、许可证及适配建议；作者选择之前，**不得将任何候选 SVG 或临时预览加入本仓库**。
 
-**素材来源**：本目录所有 SVG 都是本次原创绘制，并非复制用户参考图或第三方仓库。当前没有添加新的整体项目许可证；`license_status` 是来源说明。未来可参考 [Lucide](https://github.com/lucide-icons/lucide)、[Tabler](https://github.com/tabler/tabler-icons)、[DiceBear](https://github.com/dicebear/dicebear)，但需要逐项确认资源许可、署名、来源及 SVG 安全后才能正式引入，不能把其全部图标默认为自由商用。
+批准后再执行：逐项许可审查、必要署名、SVG 安全清理、文件与 manifest 登记、SVG/HTML 实际渲染验证。不从不明来源自动下载。
 
-[示例代码](../examples/render_demo.py) 说明如何内联资产到 SVG 和 HTML。此脚本仅用于简单横向示例，不替代科学方法分析。
+当前 `examples/` 保留代码示例，但其 SVG 资产已删除，待用户选图后适配并运行。
