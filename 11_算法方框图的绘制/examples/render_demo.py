@@ -39,6 +39,10 @@ def main():
                 raise ValueError("Unsafe SVG element")
             if any(k.lower().startswith("on") or k.lower().endswith("}href") for k in el.attrib):
                 raise ValueError("Unsafe SVG attr")
+        # OpenMoji files reuse SVG ids; prefix them for safe inlining.
+        for j, element in enumerate(pic.iter()):
+            if "id" in element.attrib:
+                element.set("id", f"f11-{i}-{j}-" + element.get("id"))
         pic.attrib.update(x=str(x+27),y="79",width="126",height="126")
         doc.append(pic)
     svg=ET.tostring(doc,encoding="unicode")

@@ -1,5 +1,29 @@
 {
-  "title": "Figure demo pending approved assets",
-  "status": "PENDING_AUTHOR_SELECTION",
-  "nodes": []
+  "title": "F11 asset inlining demo (not a scientific claim)",
+  "nodes": [
+    {
+      "id": "bot",
+      "label": "Robot",
+      "icon": "openmoji-robot",
+      "fill": "#edf4fa"
+    },
+    {
+      "id": "brain",
+      "label": "Reason",
+      "icon": "openmoji-brain",
+      "fill": "#f3edf7"
+    },
+    {
+      "id": "inspect",
+      "label": "Inspect",
+      "icon": "openmoji-microscope",
+      "fill": "#edf6ee"
+    },
+    {
+      "id": "record",
+      "label": "Record",
+      "icon": "openmoji-clipboard",
+      "fill": "#fff3e5"
+    }
+  ]
 }

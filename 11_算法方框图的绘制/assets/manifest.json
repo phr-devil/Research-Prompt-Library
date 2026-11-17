@@ -1,5 +1,102 @@
 {
   "schema_version": 1,
-  "status": "PENDING_AUTHOR_SELECTION",
-  "assets": []
+  "status": "ACTIVE_APPROVED",
+  "assets": [
+    {
+      "id": "openmoji-robot",
+      "selection_id": "O01",
+      "path": "openmoji-O01-robot.svg",
+      "name": "机器人",
+      "concepts": [
+        "robot",
+        "agent",
+        "automation"
+      ],
+      "kind": "color-emoji",
+      "style": "openmoji-color-bold",
+      "viewBox": "0 0 72 72",
+      "source_repo": "https://github.com/hfg-gmuend/openmoji",
+      "source_url": "https://github.com/hfg-gmuend/openmoji/blob/3e01de523ddefe9c5e46a7765b15efef04bf9002/color/svg/1F916.svg",
+      "source_commit": "3e01de523ddefe9c5e46a7765b15efef04bf9002",
+      "source_blob_sha": "7add1a0726ffac2c58491f125824000a3abc3adc",
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "All emojis designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.",
+      "modified": false,
+      "selected_by_user": true,
+      "namespace_ids_when_inlining": true
+    },
+    {
+      "id": "openmoji-brain",
+      "selection_id": "O02",
+      "path": "openmoji-O02-brain.svg",
+      "name": "大脑",
+      "concepts": [
+        "reasoning",
+        "brain",
+        "learning"
+      ],
+      "kind": "color-emoji",
+      "style": "openmoji-color-bold",
+      "viewBox": "0 0 72 72",
+      "source_repo": "https://github.com/hfg-gmuend/openmoji",
+      "source_url": "https://github.com/hfg-gmuend/openmoji/blob/3e01de523ddefe9c5e46a7765b15efef04bf9002/color/svg/1F9E0.svg",
+      "source_commit": "3e01de523ddefe9c5e46a7765b15efef04bf9002",
+      "source_blob_sha": "a1e32c60e6be9676ecbfc241730cb77bf46a9edb",
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "All emojis designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.",
+      "modified": false,
+      "selected_by_user": true,
+      "namespace_ids_when_inlining": true
+    },
+    {
+      "id": "openmoji-microscope",
+      "selection_id": "O03",
+      "path": "openmoji-O03-microscope.svg",
+      "name": "显微镜",
+      "concepts": [
+        "science",
+        "microscope",
+        "experiment"
+      ],
+      "kind": "color-emoji",
+      "style": "openmoji-color-bold",
+      "viewBox": "0 0 72 72",
+      "source_repo": "https://github.com/hfg-gmuend/openmoji",
+      "source_url": "https://github.com/hfg-gmuend/openmoji/blob/3e01de523ddefe9c5e46a7765b15efef04bf9002/color/svg/1F52C.svg",
+      "source_commit": "3e01de523ddefe9c5e46a7765b15efef04bf9002",
+      "source_blob_sha": "2100685f9f40d5de44331d2117db5ea2e93d9f27",
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "All emojis designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.",
+      "modified": false,
+      "selected_by_user": true,
+      "namespace_ids_when_inlining": true
+    },
+    {
+      "id": "openmoji-clipboard",
+      "selection_id": "O04",
+      "path": "openmoji-O04-clipboard.svg",
+      "name": "剪贴板",
+      "concepts": [
+        "report",
+        "record",
+        "assessment"
+      ],
+      "kind": "color-emoji",
+      "style": "openmoji-color-bold",
+      "viewBox": "0 0 72 72",
+      "source_repo": "https://github.com/hfg-gmuend/openmoji",
+      "source_url": "https://github.com/hfg-gmuend/openmoji/blob/3e01de523ddefe9c5e46a7765b15efef04bf9002/color/svg/1F4CB.svg",
+      "source_commit": "3e01de523ddefe9c5e46a7765b15efef04bf9002",
+      "source_blob_sha": "9635a8cb93f1da2097d79f95b74533e211424dc8",
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "All emojis designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.",
+      "modified": false,
+      "selected_by_user": true,
+      "namespace_ids_when_inlining": true
+    }
+  ]
 }
