@@ -13,7 +13,9 @@
 | 无增益、需要优化/止损 | [RESEARCH_DECISIONS.md](08_算法检验与优化/高水平计算机论文工作流/RESEARCH_DECISIONS.md) | 区分科研负证、工程故障与投入价值 |
 | 论文Claim、独立确认、证据问题 | [04_EVIDENCE_CONFIRM.md](08_算法检验与优化/高水平计算机论文工作流/playbooks/04_EVIDENCE_CONFIRM.md) | 保留确认集/独立真值及作者授权 |
 | 已失败项目重新选题、第09章 | [第09章README](09_失败算法项目挽救与转向/README.md) | Step05真实用户选P1/P2/P3 |
-| PD-RW-Agent / WorkBuddy 新项目启动、旧项目恢复、执行偏离、门禁校准、经验复用、第10章 | [第10章 Agent 提示词](10_科研工作流状态校准/README.md) | A–D 按需用于已有项目；E 用于新项目；只调用实际可用 MCP，不在 ChatGPT 冒充 WorkBuddy 已执行 |
+| PD-RW-Agent / WorkBuddy 新项目启动、旧项目恢复、执行偏离、门禁校准、经验复用、第10章 | [第10章 Agent 提示词](10_科研工作流状态校准/README.md) | A–D 按需用于已有项目；E 用于新项目；只调用实际可用 MCP |
+| 无明显异常、ChatGPT 上下文遗忘或科研决策漂移、自校准 | [C10-F：ChatGPT 主动自校准](10_科研工作流状态校准/C10-F_ChatGPT_科研上下文自校准.md) | 只读核原始选择/证据/下一合法行动；不冒充 WorkBuddy 本地执行 |
+| 无明显故障、Codex 代码状态/工作区/科研执行一致性自校准 | [C10-G：Codex 主动自校准](10_科研工作流状态校准/C10-G_Codex_工作区执行自校准.md) | 先保护工作区和已有 Run；无偏差不修改，修复须有原授权 |
 | Fig.2 结构设计、参考图、算法框架方案、科学蓝图 | [F11-A 文字方案](11_算法方框图的绘制/F11-A_科学结构设计与文字蓝图.md) | ChatGPT 输出可独立交接的 N/E/F 蓝图和必要隔离条件；作者确认一次 |
 | 已确认 Fig 蓝图、基础方框图、Codex HTML/SVG 指令 | [F11-B 基础绘图](11_算法方框图的绘制/F11-B_基础方框图_Codex指令生成.md) | ChatGPT 将完整科学方案、布局、N/E/F 关系和明确指定的 SVG Skill 写入自包含 Codex 指令；无需论文原文；生成基础 HTML/SVG 和 figure_structure.json |
 | 论文图设计感、版式增强、Robot Toast、SVG 插画、Codex | [F11-C 设计增强](11_算法方框图的绘制/F11-C_设计增强与SVG资产_Codex指令生成.md) | ChatGPT 给 Codex 参考图视觉 brief/可访问路径；先整体构图，允许视觉重排，核对结构基准，按需取 SVG |

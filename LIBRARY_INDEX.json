@@ -274,13 +274,36 @@
   },
   {
     "id": "C10",
-    "name": "科研工作流状态校准：状态恢复、执行校准、关键门禁、科研价值复核",
+    "name": "科研工作流状态校准：恢复、纠偏、门禁、科研价值及主动自校准",
     "group": "10_科研工作流状态校准",
     "file": "10_科研工作流状态校准/README.md",
     "source_urls": [
       "https://github.com/phr-devil/Problem-Data-Research-Workflow"
     ],
-    "source_status": "本库根据PD-RW长任务管理需求原创整理的四种可复制ChatGPT中途校准提示词；不修改PD-RW规则，不自动授予权限或证明效果。"
+    "source_status": "本库按需整理 C10-A～G：A～D 旧项目恢复/校准/门禁/经验，E 新项目启动，F/G 为 ChatGPT/Codex 在无明确错误时的主动自校准；不改变 PD-RW 规则，不自行授予授权；实际效果与 Token 收益未实测。"
+  },
+  {
+    "id": "C10-F",
+    "name": "ChatGPT 科研连续性与主动自校准 v2",
+    "group": "10_科研工作流状态校准",
+    "file": "10_科研工作流状态校准/C10-F_ChatGPT_科研上下文自校准.md",
+    "source_urls": [
+      "https://github.com/phr-devil/Problem-Data-Research-Workflow",
+      "https://github.com/phr-devil/PD-RW-Agent"
+    ],
+    "source_status": "原创建议：六项状态锚点、原始证据优先、增量核查、最小纠偏；ChatGPT 不冒充本地执行或永久记忆，真实效果 NOT_MEASURED。"
+  },
+  {
+    "id": "C10-G",
+    "name": "Codex 工作区与科研执行自校准 v2",
+    "group": "10_科研工作流状态校准",
+    "file": "10_科研工作流状态校准/C10-G_Codex_工作区执行自校准.md",
+    "source_urls": [
+      "https://github.com/openai/codex",
+      "https://github.com/Aider-AI/aider",
+      "https://github.com/phr-devil/PD-RW-Agent"
+    ],
+    "source_status": "原创建议：保护已有改动、真实 Run 和冻结协议；检查差异与必要测试，无实质问题不修改；真实效果 NOT_MEASURED。"
   },
   {
     "id": "F11-A",
