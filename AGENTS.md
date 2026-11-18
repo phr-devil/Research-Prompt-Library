@@ -15,7 +15,7 @@
 | 已失败项目重新选题、第09章 | [第09章README](09_失败算法项目挽救与转向/README.md) | Step05真实用户选P1/P2/P3 |
 | PD-RW-Agent / WorkBuddy 新项目启动、旧项目恢复、执行偏离、门禁校准、经验复用、第10章 | [第10章 Agent 提示词](10_科研工作流状态校准/README.md) | A–D 按需用于已有项目；E 用于新项目；只调用实际可用 MCP，不在 ChatGPT 冒充 WorkBuddy 已执行 |
 | Fig.2 结构设计、参考图、算法框架方案、科学蓝图 | [F11-A 文字方案](11_算法方框图的绘制/F11-A_科学结构设计与文字蓝图.md) | ChatGPT 输出可独立交接的 N/E/F 蓝图和必要隔离条件；作者确认一次 |
-| 已确认 Fig 蓝图、基础方框图、Codex HTML/SVG 指令 | [F11-B 基础绘图](11_算法方框图的绘制/F11-B_基础方框图_Codex指令生成.md) | ChatGPT 给 Codex 指令并明确蓝图可访问路径/必要内容；生成基础 HTML/SVG 和 figure_structure.json，不加插图 |
+| 已确认 Fig 蓝图、基础方框图、Codex HTML/SVG 指令 | [F11-B 基础绘图](11_算法方框图的绘制/F11-B_基础方框图_Codex指令生成.md) | ChatGPT 将完整科学方案、布局、N/E/F 关系和明确指定的 SVG Skill 写入自包含 Codex 指令；无需论文原文；生成基础 HTML/SVG 和 figure_structure.json |
 | 论文图设计感、版式增强、Robot Toast、SVG 插画、Codex | [F11-C 设计增强](11_算法方框图的绘制/F11-C_设计增强与SVG资产_Codex指令生成.md) | ChatGPT 给 Codex 参考图视觉 brief/可访问路径；先整体构图，允许视觉重排，核对结构基准，按需取 SVG |
 | 其他资助、翻译、文档任务 | [根目录分类索引](README.md) | 不调用第08章全流程 |
 
