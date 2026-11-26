@@ -307,26 +307,26 @@
   },
   {
     "id": "F11-A",
-    "name": "Step 1 科研框架图科学结构与文字蓝图",
+    "name": "Step 1 科学蓝图与视觉构思",
     "group": "11_算法方框图的绘制",
     "file": "11_算法方框图的绘制/F11-A_科学结构设计与文字蓝图.md",
     "source_urls": [],
-    "source_status": "Step 1 用户向 ChatGPT 提供 Methods/参考图；直接输出可独立交接的 N/E/F 蓝图，包含来源、关键公式、隔离、禁止依赖和布局意图；只需一次人工确认。"
+    "source_status": "Step 1 ChatGPT 根据科研材料输出图形类型、N/E/F 科学语义、证据及视觉编码/布局建议；仅科学语义冻结，只需一次人工确认。"
   },
   {
     "id": "F11-B",
-    "name": "Step 2 基础方框图 Codex 指令生成",
+    "name": "Step 2 基础结构与矢量实现 Codex 指令生成",
     "group": "11_算法方框图的绘制",
     "file": "11_算法方框图的绘制/F11-B_基础方框图_Codex指令生成.md",
     "source_urls": [],
-    "source_status": "Step 2 ChatGPT 仅给 Codex 指令，明确蓝图路径或内嵌必要科学合同；Codex 生成基础 HTML/SVG 与 figure_structure.json，保留语义 ID，不引入插图。"
+    "source_status": "Step 2 ChatGPT 输出完整自包含的 Codex 指令；Codex 生成基础 HTML/SVG 与冻结 figure_structure.json，保留语义 ID、预留原生 Draw.io 映射，不引入装饰插图。"
   },
   {
     "id": "F11-C",
-    "name": "Step 3 设计增强与 SVG 资产 Codex 指令生成",
+    "name": "Step 3 全局视觉设计与原生 Draw.io 交付 Codex 指令生成",
     "group": "11_算法方框图的绘制",
     "file": "11_算法方框图的绘制/F11-C_设计增强与SVG资产_Codex指令生成.md",
     "source_urls": [],
-    "source_status": "Step 3 ChatGPT 仅给 Codex 指令，将参考图转换成可执行视觉 brief；Codex 可充分重排布局并按需使用 56 个 SVG，比较 figure_structure.json 锁定科学语义，执行视觉/许可检查。"
+    "source_status": "Step 3 ChatGPT 提供具体视觉 brief；Codex 开放构图、复用主题及素材，强制生成 figure_final.html、figure_final.svg、原生可编辑 figure_final.drawio，保留冻结结构，进行科学/跨格式/实际尺寸/可编辑性验收；不设第四步。"
   }
 ]
